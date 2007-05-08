@@ -1,0 +1,29 @@
+label   {
+	font-weight: bold;
+	line-height: normal;
+	text-align: right;
+	margin-right: 10px;
+	position: relative;
+	display: block;
+	float: left;
+	width: 200px;
+}
+input, select {
+	margin-bottom: 5px
+}
+div#orar1 input,div#orar select{
+	margin-bottom:0px
+}
+.hidden {
+	display: none;
+}
+div.hidden {
+	margin-left:150px;
+	margin-bottom:10px;
+}
+body {
+	width:80%;
+	max-width:900px;
+	min-width:400px
+}
+
