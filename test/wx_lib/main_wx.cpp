@@ -46,7 +46,7 @@ my_frame::my_frame(const wxString &title, const wxPoint &pos, const wxSize &size
 void my_frame::OnBtnPress(wxCommandEvent& event)
 {
 	wxString ws((const char *)mesaj(), wxConvUTF8);
-	std::cout << mesaj() << std::endl;
+	//std::cout << mesaj() << std::endl;
 	
 	wxMessageDialog *md = new wxMessageDialog(this, ws);
 	md->ShowModal();
