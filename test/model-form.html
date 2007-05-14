@@ -1,63 +1,70 @@
+<!-- 14.05.2007		Razvan Deaconescu, indentare -->
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+			  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Formular</title>
-<script type="text/javascript" src="form.js"></script>
-<link rel="stylesheet" type="text/css" href="stil.css" />
-</head>
-<body>
-<form action="do.php" method="post">
-<fieldset>
-<legend>Date personale</legend>
-<label for="nume">Nume:</label>
-<input type="text" name="nume" id="nume"/>
-</fieldset>
-<fieldset>
-<legend>Detalii curs</legend>
-<label for="universitate">Universitatea:</label>
-<select name="universitate" id="universitate">
-<option value="upb">Politehnica Bucuresti</option>
-</select><br/>
-<label for="facultate">Facultatea:</label>
-<select name="facultate" id="facultate">
-<option value="ac">ACS</option>
-</select><br/>
-<label for="catedra">Catedra:</label>
-<select name="catedra" id="catedra">
-<option value="calculatoare">Calculatoare</option>
-</select><br/>
-<label for="curs">Nume curs:</label>
-<input type="text" name="curs" id="curs"/><br/>
-<label for="titular">Titular:</label>
-<input type="text" name="titular" id="titular"/><br/>
-</fieldset>
-<fieldset>
-<legend>Orar</legend>
-<div id="orar">
-<div id="orar_1">
-<!-- fel si nr. post, an/grupa, ziua, ora start-ora stop, MORE-->
-nr post:<input name="orar[1][numarpost]" id="fel_1" type="text" size="4" value=""/>
-tip:<select name="orar[1][felpost]"><option>prof</option></select>
-fac.:<select name="orar[1][facultatea]"></select>
-disciplina:<select name="orar[1][disciplina]"></select>
-grupa:<input name="orar[1][grupa]" type="text" size="5" value=""/>
-ziua: <select name="orar[1][zi]"><option>luni</option></select>
-orele: <input name="orar[1][ore]" type="text" size="5" value=""/>
-<a href="#" onclick="show_hide('complex_1')">complex</a>
-<button id="do_more_1" onclick="do_more(); return false;">more</button>
-<button id="less_1" onclick="less('orar_1'); return false;" class="hidden">less</button>
-<div id="complex_1" class="hidden">
-paritate: <select name="orar[1][paritate]"><option>1</option><option>2</option></select>
-prima saptamana: <select name="orar[1][paritate_prima]"><option>1</option></select>
-</div>
-</div>
-</div>
-</fieldset>
-<p>
-<input type="submit" value="trimite" name="submit"/>
-</p>
-</form>
-</body>
+	<head>
+		<title>Formular</title>
+		<!-- RD: nu ar putea sa fie un " />" la sfasit in loc de "</script>"-->
+		<script type="text/javascript" src="form.js"></script>
+		<link rel="stylesheet" type="text/css" href="stil.css" />
+	</head>
+
+	<body>
+		<form action="do.php" method="post">
+		<fieldset>
+			<legend>Date personale</legend>
+			<label for="nume">Nume:</label>
+			<input type="text" name="nume" id="nume"/>
+		</fieldset>
+		<fieldset>
+			<legend>Detalii curs</legend>
+			<label for="universitate">Universitatea:</label>
+			<select name="universitate" id="universitate">
+				<option value="upb">Politehnica Bucuresti</option>
+			</select>
+			<br />
+			<label for="facultate">Facultatea:</label>
+			<select name="facultate" id="facultate">
+				<option value="ac">ACS</option>
+			</select>
+			<br />
+			<label for="catedra">Catedra:</label>
+			<select name="catedra" id="catedra">
+				<option value="calculatoare">Calculatoare</option>
+			</select>
+			<br/>
+			<label for="curs">Nume curs:</label>
+			<input type="text" name="curs" id="curs"/><br/>
+			<label for="titular">Titular:</label>
+			<input type="text" name="titular" id="titular"/><br/>
+		</fieldset>
+		<fieldset>
+			<legend>Orar</legend>
+			<div id="orar">
+			<div id="orar_1">
+			<!-- fel si nr. post, an/grupa, ziua, ora start-ora stop, MORE-->
+				nr post:<input name="orar[1][numarpost]" id="fel_1" type="text" size="4" value=""/>
+				tip:<select name="orar[1][felpost]"><option>prof</option></select>
+				fac.:<select name="orar[1][facultatea]"></select>
+				disciplina:<select name="orar[1][disciplina]"></select>
+				grupa:<input name="orar[1][grupa]" type="text" size="5" value=""/>
+				ziua: <select name="orar[1][zi]"><option>luni</option></select>
+				orele: <input name="orar[1][ore]" type="text" size="5" value=""/>
+				<a href="#" onclick="show_hide('complex_1')">complex</a>
+				<button id="do_more_1" onclick="do_more(); return false;">more</button>
+				<button id="less_1" onclick="less('orar_1'); return false;" class="hidden">less</button>
+				<div id="complex_1" class="hidden">
+					paritate: <select name="orar[1][paritate]"><option>1</option><option>2</option></select>
+					prima saptamana: <select name="orar[1][paritate_prima]"><option>1</option></select>
+				</div>
+			</div>
+			</div>
+		</fieldset>
+
+		<p>
+		<input type="submit" value="trimite" name="submit"/>
+		</p>
+		</form>
+	</body>
 </html>
