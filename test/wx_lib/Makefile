@@ -1,9 +1,24 @@
-default:
-	@gcc -Wall -c cspay.c -o cspay.o 
-	@ar rcs libcspay.a cspay.o
-	@g++ -Wall main_wx.cpp -o main_static -L. -lcspay `wx-config --libs` `wx-config --cxxflags`
+# RD: try to use as many of GNU make's built-in rules as possible
+CXXFLAGS = -Wall -g `wx-config --cxxflags`
+LDFLAGS = -L. -lcspay `wx-config --libs`
+
+# RD: default rule is usually all
+all: main_static
+
+#
+# RD: we shoud ususally print compile/linking messages
+# if one really wants silent operations, he/she should use make's -s flag
+#
+main_static: main_wx.o libcspay.a
+	$(CXX) $< -o $@ $(LDFLAGS) 
 	@echo "main_static este gata"
+
+libcspay.a: cspay.o
+	$(AR) rcs $@ $^
+
+.PHONY: clean
+
 clean: 
-	rm -f cspay.o main libcspay.a
-	rm -f lib*
-	rm -f main_static main_dinamic
+	-rm -f *.o *~ main libcspay.a
+	-rm -f lib*
+	-rm -f main_static main_dinamic

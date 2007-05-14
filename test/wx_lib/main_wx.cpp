@@ -1,3 +1,8 @@
+/*
+ * RD: a short description of what this source code is used for is
+ * always beneficial for future developers
+ */
+
 #include "cspay.h"
 
 #include <wx/wx.h>
@@ -14,6 +19,11 @@ public:
 	void OnBtnPress(wxCommandEvent& event);
 	DECLARE_EVENT_TABLE()
 };
+
+/*
+ * RD: I like to use "enum {" and "struct {"; I'll talk about this on
+ * the mailing list ;-)
+ */
 
 enum 
 {

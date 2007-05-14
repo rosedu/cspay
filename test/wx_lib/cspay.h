@@ -1,3 +1,11 @@
+/*
+ * RD: header-ele linux, glibc, etc. folosesc ceva de genul
+ * #ifndef _CSPAY_H
+ * #define _CSPAY_H	1
+ *
+ * ar trebui sa ne orientam si noi la fel, nu?
+ */
+
 #ifndef __CSPAY_H__
 #define __CSPAY_H__
 
@@ -6,7 +14,7 @@ extern "C" {
 #endif
 
 	float media(int, int, int);
-	char *mesaj();
+	char *mesaj(void);
 #ifdef __cplusplus
 }
 #endif
