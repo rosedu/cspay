@@ -11,6 +11,7 @@ int
 main(void)
 {
 	char *fname;
+	char *temp_fname;
 	int len, fd;
 	FILE *f;
 
@@ -30,7 +31,17 @@ main(void)
 	len = strlen(fname);
 	fname[len - 1] = 0;
 	len += 6;
-	fname = realloc(fname, len);
+	/*
+	 * Trebuie testat daca s-a putut face realocarea.
+	 * Stiu ca nu e ceva important, dar in unele cazuri
+	 * poate fi, si e bine de stiut.
+	 */
+	temp_fname = realloc(fname, len);
+	if (temp_fname == 0) {
+		perror("realloc");
+		return errno;
+	}
+	fname = temp_fname;
 	strncat(fname, "XXXXXX", len);
 
 	/*
