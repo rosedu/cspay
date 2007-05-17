@@ -6,7 +6,7 @@
  *
  * Adica widgerturile cu toate butonaele pentru optiuni
  * 
- * Este derivata din wxGridSizer
+ * Este derivata din wxFlexGridSizer
  *
  */
 
@@ -28,7 +28,7 @@ OptionSizer :: OptionSizer(wxWindow *pw)
 	//Grupa
 	this->Insert(2, new wxStaticText(pw, -1, _T("Grupa:")), 0,
 		wxALIGN_RIGHT, 0);
-	edit_group = new wxTextCtrl(pw, -1);
+	edit_group =  new wxTextCtrl(pw, -1);
 	this->Insert(3, edit_group, 0, wxALIGN_LEFT, 0);
 
 
@@ -52,7 +52,13 @@ OptionSizer :: OptionSizer(wxWindow *pw)
 	//Butonul more
 	button_more = new wxButton(pw, ID_on_more, _T("More"));
 	this->Insert(6, button_more, 0, wxEXPAND, 0);
-	this->SetSizeHints(pw);
+
+	//Butonul less
+	button_less = new wxButton(pw, ID_on_less, _T("Less"));
+	this->Insert(7, button_less, 0, wxEXPAND, 0);
+
+	//this->SetSizeHints(pw);
+	this->Layout();
 }
 void OptionSizer :: HideMore(void)
 {
@@ -61,4 +67,12 @@ void OptionSizer :: HideMore(void)
 void OptionSizer :: ShowMore(void)
 {
 	button_more->Show();
+}
+void OptionSizer :: HideLess(void)
+{
+	button_less->Hide();
+}
+void OptionSizer :: ShowLess(void)
+{
+	button_less->Show();
 }

@@ -15,12 +15,13 @@ class MainFrame :  public wxFrame
 {
 	public :
 		MainFrame(const wxString &title, const wxPoint& pos, const wxSize& size);
-		void OnSelectFac(wxCommandEvent& event);
-		void OnPressMore(wxCommandEvent& event);
+		void OnSelectFac(wxCommandEvent& event);	//selectarea facultatii
+		void OnPressMore(wxCommandEvent& event);	//apasarea lui more
+		void OnPressLess(wxCommandEvent& event);	//apasarea lui less
 
 		int n; 				//cate de optiuni avem afisate
 
-		class OptionSizer *rules[OMAX];
+		class OptionSizer *rules[OMAX];	//butonase pentru reguli
 	/*
 	 * Framul principal ale tabela de evenimente
 	 */
@@ -41,11 +42,15 @@ class MainFrame :  public wxFrame
 
 		wxArrayString faculty_names;	//stringuri cu toate facultatile
 		wxArrayString catedre_names;	//stringuri cu catedrele (din fac selecteata)
+
+		wxStaticText *labels[OMAX];	//etichete cu numar curent, adaugare reguli
+						//FIXME trebuia gandit altfel
 };
 
 enum {
 	ID_on_select_fac = 1,			//evenimentul pentru selectarea facultatii
 	ID_on_more,				//evenimetntul pentru butonul more, din opt
+	ID_on_less,
 };
 
 #endif

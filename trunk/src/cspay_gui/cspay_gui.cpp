@@ -14,6 +14,7 @@
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_CHOICE(ID_on_select_fac, MainFrame :: OnSelectFac)
 	EVT_BUTTON(ID_on_more, MainFrame :: OnPressMore)
+	EVT_BUTTON(ID_on_less, MainFrame :: OnPressLess)
 END_EVENT_TABLE()
 
 IMPLEMENT_APP(CSpayGUI)
@@ -35,7 +36,7 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	 * aici voi scrie toata interfata initiala
 	 */
 	//Matricea in care bagam tot
-	main_sizer = new wxFlexGridSizer(6, 2, 0, 0);
+	main_sizer = new wxFlexGridSizer(OMAX + 10, 2, 0, 0);
 
 	
 	//Numele si prenumele
@@ -54,7 +55,8 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	faculty_names.Add(_T("Automatica si Calculatoare"));
 	faculty_names.Add(_T("Inginerie in limbi straine"));
 	faculty_names.Add(_T("I me se te"));
-	choice_fac = new wxChoice(this, ID_on_select_fac, wxDefaultPosition, wxDefaultSize, faculty_names);
+	choice_fac = new wxChoice(this, ID_on_select_fac, wxDefaultPosition, wxDefaultSize,
+			faculty_names);
 	main_sizer->Insert(3, choice_fac);
 
 	
@@ -76,10 +78,13 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 
 
 	//Prima regula
-	main_sizer->Insert(8, new wxStaticText(this, -1, _T("1")),
-		0, wxALIGN_RIGHT, 0);
-	main_sizer->Insert(9, new OptionSizer(this), 0, wxALIGN_LEFT, 0);
-	this->n = 0;	//avem o regula inserta
+	this->n = 0;		//avem o regula inserta
+	labels[this->n] = new wxStaticText(this, -1, _T("0 "));
+	main_sizer->Insert(8, labels[this->n],	0, wxALIGN_RIGHT, 0);
+	rules[this->n] = new OptionSizer(this);
+	main_sizer->Insert(9, rules[this->n], 0, wxALIGN_LEFT, 0);
+	rules[this->n]->HideLess();
+	++ this->n;
 
 	main_sizer->SetSizeHints(this);
 
@@ -115,16 +120,64 @@ void MainFrame :: OnSelectFac(wxCommandEvent& WXUNUSED(event))
 }
 void MainFrame :: OnPressMore(wxCommandEvent& WXUNUSED(event))
 {
-	//TODO
-	std :: cout << "TODO" << std :: endl;
+	//testez daca se mai pot insera reguli
 	if (this->n + 1 >= OMAX) {
-		std::cout << "Prea multe" << std :: endl;
+		//std::cout << "Prea multe" << std :: endl;
 		return ;
 	}
-	rules[this->n] = new OptionSizer(this);
-	main_sizer->Add(new wxStaticText(this, -1, _T("+")),
-		0, wxALIGN_RIGHT, 0);
-	main_sizer->Add(rules[this->n]);
-	++ this->n;
 
+	//creez eticheta din dreapta (aia cu numarul)
+	wxString t;
+	t.Printf(_("%d "), n);
+	labels[this->n] = new wxStaticText(this, -1, t);
+	main_sizer->Add(labels[this->n], 0, wxALIGN_RIGHT, 0);
+
+	//creez si noul set de butoane
+	rules[this->n] = new OptionSizer(this);
+	main_sizer->Add(rules[this->n]);
+	rules[this->n - 1]->HideMore();
+	rules[this->n - 1]->HideLess();
+
+	//testez daca nu cumva, am inserat ultima regula
+	if ((this->n - 1) == OMAX) {
+		//nu se mai pot insera
+		rules[this->n]->HideMore();
+	}
+
+	//crestem numarul de butoane de reguli, inserate
+	++ this->n;
+	
+	//FIXME SetSizeHints, trebuie apelat o singur data
+	//cred.
+	main_sizer->SetSizeHints(this);
+	main_sizer->Layout();
+	main_sizer->SetSizeHints(this);
+}
+void MainFrame :: OnPressLess(wxCommandEvent& WXUNUSED(event))
+{
+	if (this->n <= 0) {
+		//std::cout << "Prea putine" << std :: endl;
+		return;
+	}
+	-- this->n;
+
+	//detasam eticheta si sizerul care trebuie
+	main_sizer->Detach(rules[this->n]);
+	main_sizer->Detach(labels[this->n]);
+
+	//le "stergem"
+	rules[this->n]->Clear(true);
+	labels[this->n]->Destroy();
+
+	//afisam buton more
+	rules[this->n - 1]->ShowMore();
+	if (this->n - 1)	//afisam buton less
+		rules[this->n - 1]->ShowLess();
+	
+	//redesanam tot
+	//FIXME: SetSizeHints, trebuie apelat o singura data,
+	//cred.
+	main_sizer->SetSizeHints(this);
+	main_sizer->Layout();
+	main_sizer->SetSizeHints(this);
 }

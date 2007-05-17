@@ -1,5 +1,5 @@
-#ifndef __CEVA_H__
-#define __CEVA_H__
+#ifndef __OPT_GUI_H__
+#define __OPT_GUI_H__	1
 
 class OptionSizer : public wxFlexGridSizer
 {
@@ -8,14 +8,19 @@ class OptionSizer : public wxFlexGridSizer
  * optiunilor
  */
 	public:
-		OptionSizer(wxWindow *pw);
+		OptionSizer(wxWindow *pw);	//functia consturctor
+						//pw parent window
 		void HideMore(void);		//ascunde butonul more
 		void ShowMore(void);		//arata butonul more
+		void HideLess(void);		//ascunde butonul less
+		void ShowLess(void);		//arata butonul less
+	
 	private:
 		wxTextCtrl *edit_type;		//tipul postului
 		wxTextCtrl *edit_group;		//grupa
 		wxChoice *choice_days;		//ziua selectata
 		wxButton *button_more;		//butonul more
+		wxButton *button_less;		//butonul less
 
 		wxArrayString array_days;	//zilele din saptamana
 
