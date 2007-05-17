@@ -9,10 +9,11 @@
 #include <wx/wx.h>
 
 #include "cspay_gui.h"
-
+#include "opt_gui.h"
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_CHOICE(ID_on_select_fac, MainFrame :: OnSelectFac)
+	EVT_BUTTON(ID_on_more, MainFrame :: OnPressMore)
 END_EVENT_TABLE()
 
 IMPLEMENT_APP(CSpayGUI)
@@ -34,7 +35,7 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	 * aici voi scrie toata interfata initiala
 	 */
 	//Matricea in care bagam tot
-	main_sizer = new wxGridSizer(4, 2, 0, 0);
+	main_sizer = new wxFlexGridSizer(6, 2, 0, 0);
 
 	
 	//Numele si prenumele
@@ -73,7 +74,15 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	edit_course = new wxTextCtrl(this, -1);
 	main_sizer->Insert(7, edit_course);
 
+
+	//Prima regula
+	main_sizer->Insert(8, new wxStaticText(this, -1, _T("1")),
+		0, wxALIGN_RIGHT, 0);
+	main_sizer->Insert(9, new OptionSizer(this), 0, wxALIGN_LEFT, 0);
+	this->n = 0;	//avem o regula inserta
+
 	main_sizer->SetSizeHints(this);
+
 	SetSizer(main_sizer);
 }
 void MainFrame :: OnSelectFac(wxCommandEvent& WXUNUSED(event))
@@ -103,4 +112,19 @@ void MainFrame :: OnSelectFac(wxCommandEvent& WXUNUSED(event))
 	delete choice_cat;
 	choice_cat = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, catedre_names);
 	main_sizer->Insert(5, choice_cat);
+}
+void MainFrame :: OnPressMore(wxCommandEvent& WXUNUSED(event))
+{
+	//TODO
+	std :: cout << "TODO" << std :: endl;
+	if (this->n + 1 >= OMAX) {
+		std::cout << "Prea multe" << std :: endl;
+		return ;
+	}
+	rules[this->n] = new OptionSizer(this);
+	main_sizer->Add(new wxStaticText(this, -1, _T("+")),
+		0, wxALIGN_RIGHT, 0);
+	main_sizer->Add(rules[this->n]);
+	++ this->n;
+
 }

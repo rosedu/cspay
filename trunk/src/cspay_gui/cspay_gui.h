@@ -1,6 +1,8 @@
 #ifndef __CSPAY_GUI_H__
 #define __CSPAY_GUI_H__ 1
 
+#define OMAX	30	//cate reguli putem da, maxim
+
 class CSpayGUI : public wxApp
 {
 	public :
@@ -14,6 +16,11 @@ class MainFrame :  public wxFrame
 	public :
 		MainFrame(const wxString &title, const wxPoint& pos, const wxSize& size);
 		void OnSelectFac(wxCommandEvent& event);
+		void OnPressMore(wxCommandEvent& event);
+
+		int n; 				//cate de optiuni avem afisate
+
+		class OptionSizer *rules[OMAX];
 	/*
 	 * Framul principal ale tabela de evenimente
 	 */
@@ -38,6 +45,7 @@ class MainFrame :  public wxFrame
 
 enum {
 	ID_on_select_fac = 1,			//evenimentul pentru selectarea facultatii
+	ID_on_more,				//evenimetntul pentru butonul more, din opt
 };
 
 #endif
