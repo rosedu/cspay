@@ -1,9 +1,10 @@
 var 	orar = null;
+var 	catedra_select = null;
 
 //adauga un nou camp cu date de orar
 //foloseste variabila globala orar
 //care retine cate astfel de campuri au fost adaugate
-function do_more() {
+function more() {
 	//obtin div-ul cadru, si div-ul continut
 	cadru = document.getElementById('orar');
 	continut = document.getElementById('orar_1');
@@ -27,9 +28,18 @@ function do_more() {
 	document.getElementById('complex_'+orar).style.display = 'none';
 	document.getElementById('less_'+orar).style.display = 'inline';
 	//fac focus
-	primul_input = document.getElementById('fel_'+orar);
+	primul_input = document.getElementById('numarpost_'+orar);
 	primul_input.focus();
-	//TODO: copiez valori existente in ultimul div
+	//copiez valori existente in ultimul div: 
+	document.getElementById('numarpost_'+orar).value = document.getElementById('numarpost_'+(orar-1)).value;
+	document.getElementById('disciplina_'+orar).value = document.getElementById('disciplina_'+(orar-1)).value;	
+	document.getElementById('grupa_'+orar).value = document.getElementById('grupa_'+(orar-1)).value;
+	document.getElementById('orele_'+orar).value = document.getElementById('orele_'+(orar-1)).value;	
+	
+	document.getElementById('zi_'+orar).selectedIndex = document.getElementById('zi_'+(orar-1)).selectedIndex;
+	document.getElementById('felpost_'+orar).selectedIndex = document.getElementById('felpost_'+(orar-1)).selectedIndex;
+	document.getElementById('facultatea_'+orar).selectedIndex = document.getElementById('facultatea_'+(orar-1)).selectedIndex;
+	document.getElementById('tipora_'+orar).selectedIndex = document.getElementById('tipora_'+(orar-1)).selectedIndex;
 	//incrementez orar pt o urmatoare adaugare (more)
 	orar++;
 }
@@ -57,4 +67,25 @@ function show_hide( id ) {
 		element.style.display = 'block';
 	else
 		element.style.display = 'none';
+}
+
+function input_copy( src, dest )
+{
+	src = document.getElementById(src);
+	dest = document.getElementById(dest);
+	if( dest.value == '')
+		dest.value = src.value;
+}
+
+function select_catedra( facultate_element)
+{
+	facultate = facultate_element.value;
+	//ascund selectul
+	if( catedra_select ) 
+		catedra_select.style.display = 'none';
+	else
+		document.getElementById('catedradisabled').style.display = 'none';
+	//afisez pe cel nou
+	catedra_select = document.getElementById(facultate+'_catedre');
+	catedra_select.style.display = 'inline';
 }

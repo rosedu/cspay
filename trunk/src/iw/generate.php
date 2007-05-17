@@ -9,6 +9,11 @@
 $tmpfname = tempnam("/tmp", "personalini");
 $file = fopen($tmpfname, "w");
 
+# mica initializare
+if( !is_array($_POST['tip_fisier']) )
+	$_POST['tip_fisier'] = array( 'odt' );
+$_POST['catedra'] = $_POST[$_POST['facultate'].'_catedre'];
+
 # scriu un model personal.ini cu date reale
 fwrite($file, "[antet]\n".
 	"nume=$_POST[nume]\n".
@@ -17,7 +22,8 @@ fwrite($file, "[antet]\n".
 	"facultate=$_POST[facultate]\n".
 	"decan=$_POST[decan]\n".
 	"catedra=$_POST[catedra]\n".
-	"sefcatedra=$_POST[sefcatedra]\n\n");
+	"sefcatedra=$_POST[sefcatedra]\n".
+	"tip_fisier=".implode(',',$_POST['tip_fisier'])."\n\n");
 fwrite($file, "[ore]\n");
 $i = 1;
 foreach( $_POST[orar] as $o) {
@@ -35,9 +41,10 @@ exec("cat $tmpfname", $lista_fisiere); # exec("./cspay $tmpfname"
 echo implode('<br />', $lista_fisiere);
 
 # debug:
+/*
 unset($_POST['submit']);
 
 echo "<pre>";
 print_r($_POST);
-echo "</pre>";
+echo "</pre>";*/
 ?>

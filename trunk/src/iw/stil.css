@@ -1,3 +1,8 @@
+body {
+	width:90%;
+	max-width:1000px;
+	min-width:600px
+}
 label   {
 	font-weight: bold;
 	line-height: normal;
@@ -9,7 +14,11 @@ label   {
 	width: 200px;
 }
 input, select {
+	margin: 0px;
 	margin-bottom: 5px
+}
+div#orar {
+	font-size:8pt
 }
 div#orar1 input,div#orar select{
 	margin-bottom:0px
@@ -17,13 +26,10 @@ div#orar1 input,div#orar select{
 .hidden {
 	display: none;
 }
-div.hidden {
-	margin-left:150px;
+div.complex_div {
+	display: none;
+	margin:5px;
 	margin-bottom:10px;
-}
-body {
-	width:80%;
-	max-width:900px;
-	min-width:400px
+	padding-left:40px
 }
 
