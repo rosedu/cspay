@@ -1,0 +1,64 @@
+Sketch of an ods document, with page references in the specification.
+- Temporary, of course. 
+- Pages refered by #<number>
+- Sections refered by $<sec.sub>
+- Contents at #5 (if I see the tite page and abstract one more time, I'll
+kill myself).
+- Might go into the wiki to be referenced for a further discussion on
+  the mailing list when it grows up.
+
+Namespaces -- go in the root element. #33
+
+* Document root #39
+	<office:document> 
+		- for standalone (single-file) documents
+		- may contain all content models: metadata, application
+		  settings, script, font declarations, style, auto
+		  style, master style, body
+	document root attributes #41
+		- office:version - "1.0" or "1.1" probably
+		- office:mimetype - important for standalone files
+* Document metadata #42
+	- may be omitted or occur multiple times
+	- pre-defined vs user-defined vs custom
+* Body element and document types
+	- spreadsheet documents, overview only #48
+* Application settings #50
+	- <office:settings>
+	- may be divided into multiple <config:config-item-set>
+	- items are defined with <config:config-item>
+	- also may contain indexed or mapped configuration settings
+* Scripts #54
+	- single <office:scripts> element, containing <office:script>
+	  elements
+* Font face declarations #55
+	- forwarded to $14.6
+* Styles #55
+	- common styles - those supported by applications
+	- automatic styles - styles assigned by default to a content
+	  element; will probably be the ones used in libspreadconv
+	- master styles - headers, footers, backgrounds etc
+	- may be CSS2 or XSLT
+	- style tags #56
+* Page styles and layout
+	- page layout - size, margins, header and footer height etc
+	- master page - template for other pages, static elements i.e.
+	  headers and footers.
+
+Metadata #59
+------------
+predefined #59
+	- meta:generator - specifies application which last modified the
+	  file; _should_ match definition for user agents specified in
+	  $14.43 or RFC2616 and should allow for version numbers
+	- dc:title - specifies document title (how utterly unsurprising)
+	- dc:description - brief description of document
+	- meta:creation-date - creation date and time
+	- dc:language - language code according to standards #64
+	- meta:editing-cycles - number of editing cycles document has
+	  been through. Not needed, but since applications are supposed
+	  to update it, I suppose it should be added.
+	- meta:document-statistic #65
+user-defined #67
+
+Tables #182
