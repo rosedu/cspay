@@ -57,6 +57,7 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	faculty_names.Add(_T("I me se te"));
 	choice_fac = new wxChoice(this, ID_on_select_fac, wxDefaultPosition, wxDefaultSize,
 			faculty_names);
+	choice_fac->SetSelection(0);
 	main_sizer->Insert(3, choice_fac);
 
 	
@@ -67,6 +68,7 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	catedre_names.Add(_T("Calculatoare"));
 	catedre_names.Add(_T("TI"));
 	choice_cat = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, catedre_names);
+	choice_cat->SetSelection(0);
 	main_sizer->Insert(5, choice_cat, 0);
 
 
@@ -114,9 +116,11 @@ void MainFrame :: OnSelectFac(wxCommandEvent& WXUNUSED(event))
 			catedre_names.Add(_T("O alta cat din fa 3"));
 			break;
 	}
-	delete choice_cat;
-	choice_cat = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, catedre_names);
-	main_sizer->Insert(5, choice_cat);
+
+	choice_cat->Clear();
+	choice_cat->Append(catedre_names);
+	choice_cat->SetSelection(0);
+
 }
 void MainFrame :: OnPressMore(wxCommandEvent& WXUNUSED(event))
 {
@@ -138,11 +142,6 @@ void MainFrame :: OnPressMore(wxCommandEvent& WXUNUSED(event))
 	rules[this->n - 1]->HideMore();
 	rules[this->n - 1]->HideLess();
 
-	//testez daca nu cumva, am inserat ultima regula
-	if ((this->n - 1) == OMAX) {
-		//nu se mai pot insera
-		rules[this->n]->HideMore();
-	}
 
 	//crestem numarul de butoane de reguli, inserate
 	++ this->n;
@@ -152,6 +151,11 @@ void MainFrame :: OnPressMore(wxCommandEvent& WXUNUSED(event))
 	main_sizer->SetSizeHints(this);
 	main_sizer->Layout();
 	main_sizer->SetSizeHints(this);
+	//testez daca nu cumva, am inserat ultima regula
+	if ((this->n - 1) == OMAX) {
+		//nu se mai pot insera
+		rules[this->n]->HideMore();
+	}
 }
 void MainFrame :: OnPressLess(wxCommandEvent& WXUNUSED(event))
 {
