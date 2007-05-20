@@ -21,6 +21,23 @@ struct spreadconv_data {
 	char ***cells;
 };
 
+/*
+ * RD: I would like this better (wit
+ */
+#if 0
+struct spreadconv_cell {
+	char *info;
+	/* metadata/style/etc. could go here */
+};
+
+struct spreadconv_data {
+	/* number of rows and columns */
+	int nrows, ncols;
+	/* spreadsheet cells */
+	struct spreadconv_cell **cells;
+};
+#endif
+
 /* 
  * Converts a generic spreadconv_data structure into the associated
  * file(s). The second parameter is a bit field which determines which
