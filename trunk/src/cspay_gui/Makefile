@@ -6,7 +6,7 @@ LDFLAGS = `wx-config --libs`
 
 SRC = cspay_gui.cpp opt_gui.cpp
 BIN = cspay_gui
-OBJ =$(SRC:.cpp=.o)
+OBJ = $(SRC:.cpp=.o)
 
 all: $(BIN)
 

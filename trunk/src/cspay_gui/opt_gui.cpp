@@ -4,7 +4,7 @@
  * Fisierul acesta contine clasele pentru manunchiul
  * de widgeturi afisat cand se da more.
  *
- * Adica widgerturile cu toate butonaele pentru optiuni
+ * Adica widget-urile cu toate butoanele pentru optiuni
  * 
  * Este derivata din wxFlexGridSizer
  *
