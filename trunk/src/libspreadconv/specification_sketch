@@ -19,6 +19,7 @@ Namespaces -- go in the root element. #33
 		- office:version - "1.0" or "1.1" probably
 		- office:mimetype - important for standalone files
 * Document metadata #42
+	- office:meta
 	- may be omitted or occur multiple times
 	- pre-defined vs user-defined vs custom
 * Body element and document types
@@ -159,4 +160,8 @@ Advanced table cells #207
 		  trace-precedents, remove-precedents, or trace-errors
 		- table:index - specifies order in which detective
 		  operations are applied
-	- table:highlighted-range 
+	- table:highlighted-range - specifies cell range that is
+	  highlighted beacause of a detective or because it contains an
+	  error or invalid data
+Spreadsheet document content #211
+	- cell content validations #214

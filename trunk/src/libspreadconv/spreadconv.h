@@ -3,6 +3,9 @@
  * First draft: 16.05.2007, Vlad
  */
 
+#ifndef _SPREADCONV_H_
+#define _SPREADCONV_H_
+
 /* 
  * file type constants 
  * Initially, only ODS will be implemented. Others will be included via
@@ -45,3 +48,5 @@ struct spreadconv_data {
  * without an extension, is returned.
  */
 char* spreadconv_create_spreadsheet(struct spreadconv_data *, int);
+
+#endif /* _SPREADCONV_H_ */
