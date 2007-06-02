@@ -165,3 +165,83 @@ Advanced table cells #207
 	  error or invalid data
 Spreadsheet document content #211
 	- cell content validations #214
+
+Styles #479
+-----------
+style:style #479
+	- style:name - uniquely identifies the style, along with
+	  style:family
+	- style:display-name - name as it should appear in the user
+	  interface
+	- style:family - possible values: paragraph, text, section,
+	  table, table-column, table-row, table-cell, table-page, chart,
+	  default, drawing-page, graphic, presentation, control, ruby
+	- style:parent-style-name - cannot be an automatic style and it
+	  has to exist; if a parent is not specified, a default defined
+	  by the application will be used
+	- style:data-style-name - a cell style can have an associated
+	  data style; this only applies to automatic and common styles
+	- style:class - arbitrary class, no strict meaning
+	- formatting properties - forwarded to $15
+Style mappings #483
+	- specify conditional styles
+Default styles #485
+	- specify default formatiing properties for a certain style
+	  family
+	- exist for all style families
+	- represented by <style:default-style>
+	- only support attribute style:family
+Page layout #485
+Master pages #487
+	- contain the content of headers and footers
+	- only in documents and spreadsheets
+	- hopefully not needed
+Table templates #493
+Font face declarations #496
+	- similar to CSS2 and SVG, which are forwarded to $15.5
+	- introduced by style:font-face (probably)
+	- attributes include: svg:font-family, svg:font-style,
+	  svg:font-variant, svg:font-weight, svg:font-stretch,
+	  svg:font-size, etc. (long list)
+	- style:name defines the unique style name, which can be used
+	  inside styles for style:text-properties
+Data styles #501
+	- number style - number:number-style
+		- can contain one of: number:number,
+		  number:scientific-number, number:fraction, which
+		  specify the display format
+		- can also contain number:text, before or atfer the
+		  above elements
+		- can contain style:text-properties and style:map
+		- specifications for number:number etc elements follow
+	- currency style - number:currency-style #505
+	- date style - number:date-style #508
+		- can contain _one_ instance of the following (not a
+		  complete list): number:day, number:month, number:year,
+		  number:day-of-week, number:hours, number:minutes,
+		  number:seconds, number:am-pm
+		- can also contain number:text
+		- can contain a style:text-properties and a style:map
+	- boolean style #517
+	- text style - number:text-style #517
+		- can contain number:text-content, number:text,
+		  style:text-properties, style:map
+	- common data style attributes #519
+		- style:name, style:display-name
+		- number:automatic-order - with number:currency-style or
+		  number:date-style; can be either true or false
+	- common data style element attributes #523
+		- may be used for localization
+Text styles #525
+	- test styles - style:style elements with the text family
+	- paragraph styles - have the paragraph family
+	- section styles - have the section family
+Enhanced text styles #526
+List style #535
+Outline style #541
+Table styles #543
+	- styles with family table, table-column, table-row, table-cell
+	- forwarded to $15.8
+
+Formatting properties #561
+--------------------------
