@@ -46,6 +46,7 @@ OptionSizer :: OptionSizer(wxWindow *pw)
 
 	choice_days = new wxChoice(pw, -1, wxDefaultPosition, wxDefaultSize,
 			array_days);
+	choice_days->SetSelection(0);
 	this->Insert(5, choice_days, 0, wxALIGN_LEFT, 0);
 
 
@@ -75,4 +76,20 @@ void OptionSizer :: HideLess(void)
 void OptionSizer :: ShowLess(void)
 {
 	button_less->Show();
+}
+wxString OptionSizer ::GetType()
+{
+	return edit_type->GetValue();
+}
+int OptionSizer :: GetIntDay()
+{
+	return choice_days->GetSelection();
+}
+wxString OptionSizer :: GetStrDay()
+{
+	return array_days[GetIntDay()];
+}
+wxString OptionSizer :: GetGroup()
+{
+	return edit_group->GetValue();
 }

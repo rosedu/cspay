@@ -15,6 +15,8 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_CHOICE(ID_on_select_fac, MainFrame :: OnSelectFac)
 	EVT_BUTTON(ID_on_more, MainFrame :: OnPressMore)
 	EVT_BUTTON(ID_on_less, MainFrame :: OnPressLess)
+	EVT_TOOL(ID_on_save, MainFrame :: OnPressSave)
+	EVT_TOOL(ID_on_quit, MainFrame :: OnPressQuit)
 END_EVENT_TABLE()
 
 IMPLEMENT_APP(CSpayGUI)
@@ -32,7 +34,7 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
 	/*
-	 * functia constructor a framului principal
+	 * functia constructor a frame-ului principal
 	 * aici voi scrie toata interfata initiala
 	 */
 	//Matricea in care bagam tot
@@ -65,11 +67,11 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	main_sizer->Insert(4, new wxStaticText(this, -1, _T("Catedra")),
 		0, wxALIGN_RIGHT, 0);
 	//Si asta vin din alta parte, ele vor fi pentru prima selctie doar
-	catedre_names.Add(_T("Calculatoare"));
-	catedre_names.Add(_T("TI"));
-	choice_cat = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, catedre_names);
-	choice_cat->SetSelection(0);
-	main_sizer->Insert(5, choice_cat, 0);
+	dep_names.Add(_T("Calculatoare"));
+	dep_names.Add(_T("TI"));
+	choice_dep = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, dep_names);
+	choice_dep->SetSelection(0);
+	main_sizer->Insert(5, choice_dep, 0);
 
 
 	//Nume curs
@@ -88,9 +90,31 @@ MainFrame :: MainFrame(const wxString& title, const wxPoint& pos, const wxSize& 
 	rules[this->n]->HideLess();
 	++ this->n;
 
+
+	/*
+	 * toolbarul
+	 */
+
+	this->CreateToolBar(wxNO_BORDER|wxHORIZONTAL|wxTB_FLAT, 0);
+	wxToolBar *tb = this->GetToolBar();
+
+	#include "document-save-48.xpm"
+	#include "process-stop-48.xpm"
+
+	wxBitmap *wb = new wxBitmap(document_save_48_xpm);
+	wb->SetWidth(2);
+	tb->AddTool(ID_on_save, _T("Save"), *wb, _T("Save"));
+	delete wb;
+	wb = new wxBitmap(process_stop_48_xpm);
+	tb->AddTool(ID_on_quit, _T("Quit"), *wb, _T("Quit"));
+	delete wb;
+	tb->Realize();
+
+	main_sizer->Layout();
 	main_sizer->SetSizeHints(this);
 
 	SetSizer(main_sizer);
+	main_sizer->Layout();
 }
 void MainFrame :: OnSelectFac(wxCommandEvent& WXUNUSED(event))
 {
@@ -99,33 +123,34 @@ void MainFrame :: OnSelectFac(wxCommandEvent& WXUNUSED(event))
 		case 0 : 
 			//catedrele din prima facultate
 			//asta nu prea au valoare acum
-			catedre_names.Empty();
-			catedre_names.Add(_T("Calculatoare"));
-			catedre_names.Add(_T("TI"));
+			dep_names.Empty();
+			dep_names.Add(_T("Calculatoare"));
+			dep_names.Add(_T("TI"));
 			break;
 		case 1 :
 			//o alta faculate
-			catedre_names.Empty();
-			catedre_names.Add(_T("Catedra din fac 2"));
-			catedre_names.Add(_T("O alta catedra din fac 2"));
+			dep_names.Empty();
+			dep_names.Add(_T("Catedra din fac 2"));
+			dep_names.Add(_T("O alta catedra din fac 2"));
 			break;
 		case 2 :
 			//alta facultate
-			catedre_names.Empty();
-			catedre_names.Add(_T("Cat din fac 3"));
-			catedre_names.Add(_T("O alta cat din fa 3"));
+			dep_names.Empty();
+			dep_names.Add(_T("Cat din fac 3"));
+			dep_names.Add(_T("O alta cat din fa 3"));
 			break;
 	}
 
-	choice_cat->Clear();
-	choice_cat->Append(catedre_names);
-	choice_cat->SetSelection(0);
+	choice_dep->Clear();
+	choice_dep->Append(dep_names);
+	choice_dep->SetSelection(0);
+	main_sizer->Layout();
 
 }
 void MainFrame :: OnPressMore(wxCommandEvent& WXUNUSED(event))
 {
 	//testez daca se mai pot insera reguli
-	if (this->n + 1 >= OMAX) {
+	if (this->n  >= OMAX) {
 		//std::cout << "Prea multe" << std :: endl;
 		return ;
 	}
@@ -146,16 +171,16 @@ void MainFrame :: OnPressMore(wxCommandEvent& WXUNUSED(event))
 	//crestem numarul de butoane de reguli, inserate
 	++ this->n;
 	
+	//testez daca nu cumva, am inserat ultima regula
+	if ((this->n) == OMAX) {
+		//nu se mai pot insera
+		rules[this->n - 1]->HideMore();
+	}
 	//FIXME SetSizeHints, trebuie apelat o singur data
 	//cred.
-	main_sizer->SetSizeHints(this);
+	//main_sizer->SetSizeHints(this);
 	main_sizer->Layout();
 	main_sizer->SetSizeHints(this);
-	//testez daca nu cumva, am inserat ultima regula
-	if ((this->n - 1) == OMAX) {
-		//nu se mai pot insera
-		rules[this->n]->HideMore();
-	}
 }
 void MainFrame :: OnPressLess(wxCommandEvent& WXUNUSED(event))
 {
@@ -184,4 +209,30 @@ void MainFrame :: OnPressLess(wxCommandEvent& WXUNUSED(event))
 	main_sizer->SetSizeHints(this);
 	main_sizer->Layout();
 	main_sizer->SetSizeHints(this);
+}
+void MainFrame :: OnPressSave(wxCommandEvent& WXUNUSED(event))
+{
+	using namespace std;
+	cout << "========================================" << endl;
+	cout << "Avem " << this->n  << " optiuni completate" << endl;
+	wxString edn = edit_name->GetValue();
+	cout << "Nume\t" << edn.ToAscii() << endl;
+	cout << "Facu\t" << faculty_names[choice_fac->GetSelection()].ToAscii() << endl;
+	cout << "Cate\t" << dep_names[choice_dep->GetSelection()].ToAscii() << endl;
+	cout << "Curs\t" << edit_course->GetValue().ToAscii() << endl;
+
+	int i;
+	for (i = 0; i < this->n; ++ i) {
+		cout << "OP   \t" << i << endl;
+		cout << "Tipul\t" << rules[i]->GetType().ToAscii() << endl;
+		cout << "Grupa\t" << rules[i]->GetGroup().ToAscii() << endl;
+		cout << "Ziua \t" << rules[i]->GetStrDay().ToAscii() << endl;
+	}
+	cout << "========================================" << endl;
+
+}
+void MainFrame :: OnPressQuit(wxCommandEvent& WXUNUSED(event))
+{
+	std :: cout << "PA" << std :: endl;
+	Close(TRUE);
 }
