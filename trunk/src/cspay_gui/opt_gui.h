@@ -8,26 +8,37 @@ class OptionSizer : public wxFlexGridSizer
  * optiunilor
  */
 	public:
-		OptionSizer(wxWindow *pw);	//functia consturctor
-						//pw parent window
+		OptionSizer(wxWindow *pw,
+					wxArrayString arr_str_days,
+					wxArrayString arr_str_fac_names,
+					wxArrayString arr_str_titles);	
+									
 		void HideMore(void);		//ascunde butonul more
 		void ShowMore(void);		//arata butonul more
 		void HideLess(void);		//ascunde butonul less
 		void ShowLess(void);		//arata butonul less
-		wxString GetType();		//returneaza tipul cursului
-		int GetIntDay();		//returneaza ziua, int
-		wxString GetStrDay();		//retunreaza ziua, string
-		wxString GetGroup();		//returneaza grupa
+
+		int GetIntDay();			//returneaza ziua, int
 	
-	private:
-		wxTextCtrl *edit_type;		//tipul postului
-		wxTextCtrl *edit_group;		//grupa
-		wxChoice *choice_days;		//ziua selectata
+	protected:
 		wxButton *button_more;		//butonul more
 		wxButton *button_less;		//butonul less
+	
+		wxChoice *choice_days;		//ziua selectata
+		wxChoice *choice_fac;		//facultatea la care preda
+		wxChoice *choice_title;		//titulatura, asitent etc.
+	
+		wxRadioBox *radio_type;		//tipul postuli
+		wxRadioBox *radio_par;		//paritea
+		wxRadioBox *radio_start_w;	//saptamana de start
 
-		wxArrayString array_days;	//zilele din saptamana
-
+		wxSpinCtrl *spin_start_h;	//ora de inceput
+		wxSpinCtrl *spin_stop_h;	//ora de sfarsti
+	
+		wxTextCtrl *edit_type;		//tipul postului
+		wxTextCtrl *edit_matter;	//materia
+		wxTextCtrl *edit_post;		//numarul postului
+		wxTextCtrl *edit_srs_grp;	//seria si grupa
 };
 
 #endif
