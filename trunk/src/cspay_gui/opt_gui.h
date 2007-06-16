@@ -18,7 +18,17 @@ class OptionSizer : public wxFlexGridSizer
 		void HideLess(void);		//ascunde butonul less
 		void ShowLess(void);		//arata butonul less
 
-		int GetIntDay();			//returneaza ziua, int
+		wxString GetSelDay();		//returneaza ziua, str
+		wxString GetSelFac();
+		wxString GetEditMat();		//materia
+		wxString GetCourseNo();		//numarul cursuli
+		wxString GetSrGrp();
+		int GetTitle();
+		int GetType();				//tipul aplicatie, curs
+		int GetStartH();
+		int GetStopH();
+		int GetPar();
+		int GetStartW();
 	
 	protected:
 		wxButton *button_more;		//butonul more

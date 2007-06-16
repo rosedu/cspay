@@ -53,6 +53,8 @@ class MainFrame :  public wxFrame
 		wxArrayString p_arr_str_short_titles;
 		wxStaticLine *sl1[OMAX];	//liniile orizontale
 		wxStaticLine *sl2[OMAX];
+	
+		void ShowErr(wxString field);
 };
 
 enum {

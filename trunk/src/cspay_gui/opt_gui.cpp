@@ -338,7 +338,51 @@ void OptionSizer :: ShowLess(void)
 	button_less->Show();
 }
 
-int OptionSizer :: GetIntDay()
+wxString OptionSizer :: GetSelDay()
 {
-	return choice_days->GetSelection();
+	return choice_days->GetStringSelection();
+}
+
+wxString OptionSizer :: GetSelFac()
+{
+	return choice_fac->GetStringSelection();
+}
+
+wxString OptionSizer :: GetEditMat()
+{
+	return edit_matter->GetValue();
+}
+
+int OptionSizer :: GetTitle()
+{
+	return choice_title->GetSelection();
+}
+
+wxString OptionSizer :: GetCourseNo()
+{
+	return edit_post->GetValue();
+}
+int OptionSizer :: GetType()
+{
+	return radio_type->GetSelection();
+}
+wxString OptionSizer :: GetSrGrp()
+{
+	return edit_srs_grp->GetValue();
+}
+int OptionSizer :: GetStartH()
+{
+	return spin_start_h->GetValue();
+}
+int OptionSizer :: GetStopH()
+{
+	return spin_stop_h->GetValue();
+}
+int OptionSizer :: GetPar()
+{
+	return radio_par->GetSelection();
+}
+int OptionSizer :: GetStartW()
+{
+	return radio_start_w->GetSelection();
 }
