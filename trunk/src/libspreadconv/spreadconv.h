@@ -135,7 +135,7 @@ struct spreadconv_data {
 	 * row. So the length is always \a nrows.
 	 */
 	struct spreadconv_rc_style **row_styles;
-	/* column styles. Contains a pointer to a unique row/column style
+	/** column styles. Contains a pointer to a unique row/column style
 	 * for each column.  So the length is always \a ncols.
 	 */
 	struct spreadconv_rc_style **col_styles;
@@ -168,5 +168,37 @@ char * spreadconv_create_spreadsheet(struct spreadconv_data *, int);
  * B, 27 is AA, 28 is AB etc.
  */
 char * spreadconv_convert_column_number(int);
+
+/**
+ * Creates a new \a spreadconv_data structure, with the specified
+ * dimensions. This function also allocates the needed space for 
+ * the arrays contained in the structure.
+ */
+struct spreadconv_data * spreadconv_new_spreadconv_data(char *, int, int);
+
+/**
+ * Adds a new unique row or column style to a spreadsheet.
+ */
+int spreadconv_add_unique_rc_style(struct spreadconv_rc_style, struct spreadconv_data *);
+
+/**
+ * Adds a new unique cell style to a spreadsheet.
+ */
+int spreadconv_add_unique_cell_style(struct spreadconv_cell_style, struct spreadconv_data *);
+
+/**
+ * Associates a row with a unique style
+ */
+int spreadconv_add_row_style(int, int, struct spreadconv_data *);
+
+/**
+ * Associates a column with a unique style
+ */
+int spreadconv_add_col_style(int, int, struct spreadconv_data *);
+
+/**
+ * Associates a cell with a unique cell style
+ */
+int spreadconv_add_cell_style(int, int, int, struct spreadconv_data *);
 
 #endif /* _SPREADCONV_H_ */
