@@ -118,10 +118,10 @@ table:table-cell, table:covered-table-cell #188
 	- table:formula #190 - forwarded to $8.3.1
 	- may be part of matrices, which have special functions
 	  associated to them
-	- table:value-type - one of: float, percentage, currency, date,
+	- office:value-type - one of: float, percentage, currency, date,
 	  time, boolean, string. For the first 3 (numeric values),
 	  office:value tag defines their numeric value; similarly, there
-	  is tableoffice:currency, office:date-value, office:time-value,
+	  is office:currency, office:date-value, office:time-value,
 	  office:boolean-value and office:string-value; not sure if
 	  actual text can substitute at least string-value
 Advanced table model (?) #193
@@ -165,6 +165,13 @@ Advanced table cells #207
 	  error or invalid data
 Spreadsheet document content #211
 	- cell content validations #214
+
+Common content #452
+-------------------
+Number format #453
+	- style:num-prefix, style:num-suffix
+	- style:num-format - 1, a, A, i, or I
+	- 
 
 Styles #479
 -----------
@@ -245,3 +252,67 @@ Table styles #543
 
 Formatting properties #561
 --------------------------
+Simple and complex formatting properties
+	- when possible, attributes to the formatting property elements
+	  are used; namespace fo is used for [XSL] attributes
+	- if a property is too complex, it is represented by an XML
+	  element
+Text formatting properties #575
+	- contained in style:text-properties
+	- fo:color - the foreground color of text
+	- style:font-name - a value declared in a style:font-face
+	  element within the office:font-face-decls element
+	- fo:font-family - may be used instead of style:font-name, but
+	  it is not recomended
+	- fo:font-size
+	- fo:font-style - either normal, italic or oblique
+	- style:text-underline-type - either none, single or double
+	- style:text-underline-style - none, solid, etc; more at #587
+	- fo:font-weight - normal, bold, or absolute values
+	- fo:background-color - transparent or a color as in $7.7.2 XSL
+	- fo:hyphenate - boolean to enable or disable auto-hyphenation
+Paragraph formatting properties #594
+	- contained in style:paragraph-properties
+	- properties described can also be contained in other styles
+	- fo:text-align - left, right, center, justify, start or end
+Table formatting properties #622
+	- contained in style:table-properties
+Column formatting properties #626
+	- contained in style:table-column-properties
+	- style:column-width - may be measured in inches (seen in ex)
+	- style:use-optimal-column-width - specifies whether the column
+	  width should be recalculated if content in the column changes
+Table row formatting properties #627
+	- contained in style:table-row-properties
+	- style:row-height and style:min-row-height
+	- style:use-optimal-row-height
+Table cell formatting properties #629
+	- contained in style:table-cell-properties
+	- style:vertical-align - either top, middle, bottom or automatic
+	- fo:border, fo:border-{top,bottom,left,right}
+		- from example, should contain a string with:
+		- width (in inches etc)
+		- line style (solid)
+		- color (#000000)
+Packages #709
+--------
+Manifest file #711
+	- always stored at META-INF/manifest.xml
+	- contains a list of all the files in the package
+	- contains the media type of each file
+	- if a file is encrypted, the information required to decrypt it
+	  is also stored
+	- namespace: urn:oasis:names:tc:opendocument:xmlns:manifest:1.0
+	- root element - manifest
+	- manifest:file-entry
+		- manifest:full-path
+		- manifest:size - only if encrypted
+		- manifest:media-type (text/xml for xml files)
+Mimetype #710
+	- a package should contain a file (stream) called mimetype
+	- should be the first stream in the zip file
+	- shall not be compressed
+	- shall not use an extra field in its header
+	- mimetype for spreadsheets is
+	  application/vnd.oasis.opendocument.spreadsheet #722
+	
