@@ -143,7 +143,7 @@ struct spreadconv_data {
 	/** number of unique cell styles */
 	int n_unique_cell_styles;
 	/** unique cell styles */
-	struct spreadconv_cell_styles *unique_cell_styles;
+	struct spreadconv_cell_style *unique_cell_styles;
 
 	/**
 	 * spreadsheet cells. A \a nrows by \a ncols matrix of cells.
@@ -189,16 +189,16 @@ int spreadconv_add_unique_cell_style(struct spreadconv_cell_style, struct spread
 /**
  * Associates a row with a unique style
  */
-int spreadconv_add_row_style(int, int, struct spreadconv_data *);
+int spreadconv_set_row_style(int, int, struct spreadconv_data *);
 
 /**
  * Associates a column with a unique style
  */
-int spreadconv_add_col_style(int, int, struct spreadconv_data *);
+int spreadconv_set_col_style(int, int, struct spreadconv_data *);
 
 /**
  * Associates a cell with a unique cell style
  */
-int spreadconv_add_cell_style(int, int, int, struct spreadconv_data *);
+int spreadconv_set_cell_style(int, int, int, struct spreadconv_data *);
 
 #endif /* _SPREADCONV_H_ */

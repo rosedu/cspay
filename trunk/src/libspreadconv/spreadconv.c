@@ -37,19 +37,20 @@ struct spreadconv_xml_namespace {
 };
 
 /** Number of existing XML namespaces */
-static const int xml_namespace_count = 7;
+static const int xml_namespace_count = 8;
 
 /**
  * Existing XML namespaces. These are all written in the root element of
  * all files in an ODS package.
  */
 static const struct spreadconv_xml_namespace xml_namespaces[] = {
-	{ "office", "urn:oasis:name:tc:opendocument:xmlns:office:1.0" },
-	{ "table", "urn:oasis:name:tc:opendocument:xmlns:table:1.0" },
-	{ "text", "urn:oasis:name:tc:opendocument:xmlns:text:1.0" },
-	{ "meta", "urn:oasis:name:tc:opendocument:xmlns:meta:1.0" },
-	{ "manifest", "urn:oasis:name:tc:opendocument:xmlns:manifest:1.0" },
-	{ "fo", "urn:oasis:name:tc:opendocument:xmlns:xsl-fo-compatible:1.0" },
+	{ "office", "urn:oasis:names:tc:opendocument:xmlns:office:1.0" },
+	{ "table", "urn:oasis:names:tc:opendocument:xmlns:table:1.0" },
+	{ "text", "urn:oasis:names:tc:opendocument:xmlns:text:1.0" },
+	{ "meta", "urn:oasis:names:tc:opendocument:xmlns:meta:1.0" },
+	{ "style", "urn:oasis:names:tc:opendocument:xmlns:style:1.0" },
+	{ "manifest", "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" },
+	{ "fo", "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" },
 	{ "dc", "http://purl.org/dc/elements/1.1" }
 };
 
@@ -57,7 +58,6 @@ char *
 spreadconv_convert_column_number(int n)
 {
 	int max_value, string_length;
-	int i;
 	char *text;
 	
 	if (n <= 0)
@@ -68,13 +68,13 @@ spreadconv_convert_column_number(int n)
 			max_value *= 27, string_length++)
 		;
 	
-	text = malloc(string_legth+1);
+	text = malloc(string_length+1);
 	if (text == 0) 
 		return 0;
 
-	text[length] = 0;
-	for (; string_legth>=1; string_length--) {
-		text[string_legth-1] = n % 26;
+	text[string_length] = 0;
+	for (; string_length>=1; string_length--) {
+		text[string_length-1] = n % 26;
 		n /= 26;
 	}
 
@@ -120,7 +120,7 @@ create_manifest_file(struct spreadconv_data *data)
 	const int nfiles = 4;
 
 	/* attempt to create directory */
-	if (mkdir("META-INF", S_IFDIR | S_IRUSR | S_IWUSR) == -1)
+	if (mkdir("META-INF", S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR) == -1)
 		return -1;
 
 	f = fopen("META-INF/manifest.xml", "w");
@@ -238,6 +238,7 @@ create_meta_file(struct spreadconv_data *data)
 	fprintf(f, "<meta:generator>%s %s</meta:generator>\n",
 			LSC_NAME, LSC_VERSION);
 	fprintf(f, "</office:meta>\n");
+	fprintf(f, "</office:document-meta>\n");
 
 	fclose(f);
 	return 0;
@@ -324,8 +325,8 @@ print_table_cell(struct spreadconv_cell *cell, FILE *f)
 
 	if (strncmp(cell->value_type, "float", strlen("float")) == 0) {
 		fprintf(f, "office:value-type=\"float\" ");
-		fprintf(f, "office:value=\"%s\">\n", cell->value);
-		fprintf(f, "<text:p>%s</text:p>\n", cell->value);
+		fprintf(f, "office:value=\"%s\">\n", cell->text);
+		fprintf(f, "<text:p>%s</text:p>\n", cell->text);
 		fprintf(f, "</table:table-cell>\n");
 		return;
 	}
@@ -361,9 +362,9 @@ create_content_file(struct spreadconv_data *data)
 	/* print style information */
 	fprintf(f, "<office:automatic-styles>\n");
 	for (i=0; i<data->n_unique_rc_styles; i++)
-		print_rc_style(data->unique_rc_styles[i], f);
+		print_rc_style(&data->unique_rc_styles[i], f);
 	for (i=0; i<data->n_unique_cell_styles; i++)
-		print_cell_style(data->unique_cell_styles[i], f);
+		print_cell_style(&data->unique_cell_styles[i], f);
 	fprintf(f, "</office:automatic-styles>\n");
 
 	/* print the actual spreadsheet */
@@ -377,7 +378,7 @@ create_content_file(struct spreadconv_data *data)
 	fprintf(f, "<table:table table:name=\"%s\">\n", data->name);
 	
 	/* print the columns */
-	for (i=0; i<n_cols; i++) {
+	for (i=0; i<data->n_cols; i++) {
 		fprintf(f, "<table:table-column ");
 		if (data->col_styles[i] != 0)
 			fprintf(f, "table:style-name=\"%s\" ", 
@@ -386,14 +387,14 @@ create_content_file(struct spreadconv_data *data)
 	}
 
 	/* print the rows, each with the associated cells */
-	for (i=0; i<n_rows; i++) {
+	for (i=0; i<data->n_rows; i++) {
 		fprintf(f, "<table:table-row ");
 		if (data->row_styles[i] != 0)
 			fprintf(f, "table:style-name=\"%s\" ",
 					data->row_styles[i]->name);
 		fprintf(f, ">\n");
 		
-		for (j=0; j<n_cols; j++)
+		for (j=0; j<data->n_cols; j++)
 			print_table_cell(&data->cells[i][j], f);
 		fprintf(f, "</table:table-row>\n");
 	}
@@ -419,9 +420,6 @@ create_content_file(struct spreadconv_data *data)
 char * 
 spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 {
-	FILE *f; /* the file which will be written */
-	int fd; /* file descriptor returned by mkstemp */
-	int i,j;
 	char *dirname;
 	char *prev_dir;
 	char *buffer, *buffer2;
@@ -446,13 +444,13 @@ spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 	create_manifest_file(data);
 	create_mimetype_file();
 	create_settings_file(data);
-	create_styles_file(data);
+	create_style_file(data);
 	create_meta_file(data);
 	create_content_file(data);
 
 	/* package the files according to the standard */
-	buffer = malloc(100);
-	snprintf(buffer, 100, "zip %s.ods mimetype META-INF/manifest.xml "
+	buffer = malloc(1000);
+	snprintf(buffer, 1000, "zip -r %s.ods mimetype META-INF "
 			"content.xml meta.xml styles.xml settings.xml -n mimetype", dirname);
 	system(buffer);
 
@@ -460,9 +458,9 @@ spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 	 * Move created file a level up and delete the temporary
 	 * directory.
 	 */
-	buffer2 = malloc(100);
-	snprintf(buffer, 100, "%s.ods", dirname);
-	snprintf(buffer2, 100, "../%s", buffer);
+	buffer2 = malloc(1000);
+	snprintf(buffer, 1000, "%s.ods", dirname);
+	snprintf(buffer2, 1000, "../%s", buffer);
 	rename(buffer, buffer2);
 
 	chdir("..");
@@ -504,8 +502,9 @@ spreadconv_new_spreadconv_data(char *sheet_name, int rows, int cols)
 	 * Unique styles arrays are (re)allocated as needed by the
 	 * style-adding functions.
 	 */
-	data->n_unique_rc_styles = data->unique_rc_styles = 0;
-	data->n_unique_cell_styles = data->unique_cell_styles = 0;
+	data->n_unique_rc_styles = data->n_unique_cell_styles = 0;
+	data->unique_rc_styles = 0;
+	data->unique_cell_styles = 0;
 
 	/*
 	 * Row and column styles, as well as the cell array, have a
@@ -608,7 +607,7 @@ int spreadconv_add_unique_rc_style(struct spreadconv_rc_style style,
  * \remarks A return value of 0 is perfectly correct. The style array,
  * like any other C array, is zero-indexed.
  */
-int spreadconv_add_unique_data_style(struct spreadconv_cell_style style, 
+int spreadconv_add_unique_cell_style(struct spreadconv_cell_style style, 
 		struct spreadconv_data *data)
 {
 	if (data->unique_cell_styles == 0) 
@@ -632,7 +631,7 @@ int spreadconv_add_unique_data_style(struct spreadconv_cell_style style,
  * \param data the associated data structure
  * \return 0 on success, -1 on error
  */
-int spreadconv_add_row_style(int row, int style, struct spreadconv_data *data)
+int spreadconv_set_row_style(int row, int style, struct spreadconv_data *data)
 {
 	if (row >= data->n_rows)
 		return -1;
@@ -651,7 +650,7 @@ int spreadconv_add_row_style(int row, int style, struct spreadconv_data *data)
  * \param data the asociated data structure
  * \return 0 on success, -1 on error
  */
-int spreadconv_add_col_style(int col, int style, struct spreadconv_data *data)
+int spreadconv_set_col_style(int col, int style, struct spreadconv_data *data)
 {
 	if (col >= data->n_cols)
 		return -1;
@@ -671,7 +670,7 @@ int spreadconv_add_col_style(int col, int style, struct spreadconv_data *data)
  * \param data the associated data structure
  * \return 0 on success, -1 on error
  */
-int spreadconv_add_cell_style(int row, int col, 
+int spreadconv_set_cell_style(int row, int col, 
 		int style, struct spreadconv_data *data)
 {
 	if ((row >= data->n_rows) || (col >= data->n_cols))
