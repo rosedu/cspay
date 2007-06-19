@@ -74,8 +74,8 @@ spreadconv_convert_column_number(int n)
 
 	text[string_length] = 0;
 	for (; string_length>=1; string_length--) {
-		text[string_length-1] = n % 26;
-		n /= 26;
+		text[string_length-1] = (n-1) % 26 + 'A';
+		n = (n-1) / 26;
 	}
 
 	return text;

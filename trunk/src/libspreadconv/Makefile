@@ -12,10 +12,14 @@ libspreadconv.a: $(OBJ)
 	ar rc libspreadconv.a $(OBJ)
 	ranlib libspreadconv.a
 
-.PHONY: clean
+test: test.o col_test.o
+	$(CC) test.o -L. -lspreadconv -o test
+	$(CC) col_test.o -L. -lspreadconv -o col_test
 
-test: test.o
-	$(CC) test.o -L. -lspreadconv
+.PHONY: clean clean_test
+
+clean_test:
+	rm -rf test.o col_test.o test col_test
 
 clean:
 	rm -rf $(OBJ)
