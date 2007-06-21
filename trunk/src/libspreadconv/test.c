@@ -5,7 +5,11 @@
 
 #include "spreadconv.h"
 
-extern int errno;
+/*
+ * RD: $ cat /usr/include/errno.h | grep errno
+ * No need for variable declaration
+ */
+/*extern int errno;*/
 
 int
 main(void)

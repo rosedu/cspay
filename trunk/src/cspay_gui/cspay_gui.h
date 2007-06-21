@@ -3,6 +3,7 @@
 
 #define OMAX	10	//cate reguli putem da, maxim
 #define FMAX	4	//cate facultati avem, maxim
+
 class CSpayGUI : public wxApp
 {
 	public :
@@ -59,7 +60,7 @@ class MainFrame :  public wxFrame
 
 enum {
 	ID_on_select_fac = 1,	//evenimentul pentru selectarea facultatii
-	ID_on_more,				//evenimetntul pentru butonul more, din opt
+	ID_on_more,		//evenimentul pentru butonul more, din opt
 	ID_on_less,
 	ID_on_save,
 	ID_on_quit,

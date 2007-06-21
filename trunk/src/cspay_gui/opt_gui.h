@@ -1,6 +1,10 @@
 #ifndef __OPT_GUI_H__
 #define __OPT_GUI_H__	1
 
+/*
+ * RD: why do class comments go inside the class?
+ */
+
 class OptionSizer : public wxFlexGridSizer
 {
 /*
@@ -24,7 +28,7 @@ class OptionSizer : public wxFlexGridSizer
 		wxString GetCourseNo();		//numarul cursuli
 		wxString GetSrGrp();
 		int GetTitle();
-		int GetType();				//tipul aplicatie, curs
+		int GetType();			//tipul aplicatie, curs
 		int GetStartH();
 		int GetStopH();
 		int GetPar();

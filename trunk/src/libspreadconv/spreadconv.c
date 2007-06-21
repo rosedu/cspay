@@ -22,7 +22,11 @@
 #include "spreadconv.h"
 
 /** Global external error code */
-extern int errno;
+/*
+ * RD: $ cat /usr/include/errno.h | grep errno
+ * No need for variable declaration
+ */
+/*extern int errno;*/
 
 /**
  * XML namespace declaration. An XML namespace--URL pair.
@@ -91,7 +95,7 @@ print_namespaces(FILE *f)
 {
 	int i;
 
-	for (i=0; i<xml_namespace_count; i++)
+	for (i = 0; i < xml_namespace_count; i++)
 		fprintf(f, "xmlns:%s=\"%s\" ", 
 				xml_namespaces[i].name,
 				xml_namespaces[i].url);
@@ -120,6 +124,10 @@ create_manifest_file(struct spreadconv_data *data)
 	const int nfiles = 4;
 
 	/* attempt to create directory */
+	/*
+	 * RD: beware of portability issue; mkdir is only available on
+	 * POSIX-compliant systems/
+	 */
 	if (mkdir("META-INF", S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR) == -1)
 		return -1;
 
