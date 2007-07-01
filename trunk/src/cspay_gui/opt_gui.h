@@ -2,15 +2,13 @@
 #define __OPT_GUI_H__	1
 
 /*
- * RD: why do class comments go inside the class?
- */
-
-class OptionSizer : public wxFlexGridSizer
-{
-/*
  * clasa cu widgeturile necesare alegerii
  * optiunilor
  */
+ 
+class OptionSizer : public wxFlexGridSizer
+{
+
 	public:
 		OptionSizer(wxWindow *pw,
 					wxArrayString arr_str_days,
