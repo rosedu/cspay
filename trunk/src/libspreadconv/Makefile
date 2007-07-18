@@ -33,5 +33,5 @@ clean_test:
 	-rm -rf test.o col_test.o test col_test
 
 clean:
-	-rm -rf $(OBJ)
+	-rm -rf $(OBJ) *~
 	-rm -rf libspreadconv.a
