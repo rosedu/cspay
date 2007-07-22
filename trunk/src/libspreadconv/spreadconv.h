@@ -4,9 +4,11 @@
  */
 
 /**
+ * \ingroup libspreadconv
  * \file spreadconv.h
  * libspreadconv header file
  * \author Vlad Dogaru
+ * \defgroup libspreadconv Library for creating spreadsheet files
  */
 
 #ifndef _SPREADCONV_H_
@@ -177,14 +179,19 @@ char * spreadconv_convert_column_number(int);
 struct spreadconv_data * spreadconv_new_spreadconv_data(char *, int, int);
 
 /**
+ * Frees all memory used by a \a spreadconv_data structure.
+ */
+void spreadconv_free_spreadconv_data(struct spreadconv_data *data);
+
+/**
  * Adds a new unique row or column style to a spreadsheet.
  */
-int spreadconv_add_unique_rc_style(struct spreadconv_rc_style, struct spreadconv_data *);
+int spreadconv_add_unique_rc_style(struct spreadconv_rc_style *, struct spreadconv_data *);
 
 /**
  * Adds a new unique cell style to a spreadsheet.
  */
-int spreadconv_add_unique_cell_style(struct spreadconv_cell_style, struct spreadconv_data *);
+int spreadconv_add_unique_cell_style(struct spreadconv_cell_style *, struct spreadconv_data *);
 
 /**
  * Associates a row with a unique style

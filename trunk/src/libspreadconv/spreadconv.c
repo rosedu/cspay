@@ -4,6 +4,7 @@
  */
 
 /**
+ * \ingroup libspreadconv
  * \file spreadconv.c
  * \todo Move the auxiliary functions (those at the top of the file --
  * the static ones) into a separate file.
@@ -20,6 +21,7 @@
 #include <sys/stat.h>
 
 #include "spreadconv.h"
+#include "debug.h"
 
 /** Global external error code */
 /*
@@ -61,6 +63,7 @@ static const struct spreadconv_xml_namespace xml_namespaces[] = {
 char *
 spreadconv_convert_column_number(int n)
 {
+	/*
 	int max_value, string_length;
 	char *text;
 	
@@ -83,6 +86,30 @@ spreadconv_convert_column_number(int n)
 	}
 
 	return text;
+	*/
+
+	/*
+	 * Please pardon the retarded attempts. This should be nothing
+	 * more than a conversion to base 26 of the number (n-1).
+	 */
+	char *text = malloc(100); /* sufficient size */
+	char *result;
+	int k=0;
+
+	if (text == 0)
+		return 0;
+
+	do {
+		n--;
+		text[k] = n%26 + 'A' ;
+		n /= 26;
+		k++;
+	} while (n != 0);
+
+	result = realloc(result, k+1);
+	if (result == 0) 
+		return 0;
+	return result;
 }
 
 /**
@@ -429,7 +456,7 @@ char *
 spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 {
 	char *dirname;
-	char *prev_dir;
+	char *prev_dir = 0;
 	char *buffer, *buffer2;
 
 	/* Only ODS files are currently supported. */
@@ -475,6 +502,10 @@ spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 	remove(dirname);
 	
 	chdir(prev_dir);
+	free(buffer);
+	free(buffer2);
+	free(prev_dir);
+
 	return dirname;
 }
 
@@ -492,7 +523,7 @@ spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 struct spreadconv_data *
 spreadconv_new_spreadconv_data(char *sheet_name, int rows, int cols)
 {
-	struct spreadconv_data *data;
+	struct spreadconv_data *data = 0;
 	int i, j;
 	
 	data = malloc(sizeof *data);
@@ -579,7 +610,75 @@ spreadconv_new_spreadconv_data(char *sheet_name, int rows, int cols)
 }
 
 /**
- * Adds a new unique row or column style to a spreadsheet.
+ * Frees all memory used by a \a spreadconv_data structure.
+ * \param data The structure to free
+ */
+void spreadconv_free_spreadconv_data(struct spreadconv_data *data)
+{
+	int i, j;
+
+	/* 
+	 * Have no idea why, but this doesn't work. I shamelessly copied
+	 * Razvan's snippet from an older email into debug.h, but it's a
+	 * no-go.
+	 * Dprintf("in spreadconv_free_spreadconv_data\n");
+	 */
+
+	/* Free all cell data */
+	for (i=0; i<data->n_rows; i++) {
+		for (j=0; j<data->n_cols;j++) {
+			if (data->cells[i][j].value_type != 0)
+				free(data->cells[i][j].value_type);
+			if (data->cells[i][j].text != 0)
+				free(data->cells[i][j].text);
+			data->cells[i][j].style = 0;
+		}
+		free(data->cells[i]);
+	}
+	free(data->cells);
+
+	/* Free all style data */
+	free(data->col_styles);
+	free(data->row_styles);
+	for (i = 0 ;i < data->n_unique_rc_styles; i++) {
+		struct spreadconv_rc_style *style = &data->unique_rc_styles[i];
+		if (style->name != 0)
+			free(style->name);
+		if (style->size != 0)
+			free(style->size);
+	}
+	if (data->unique_rc_styles != 0) 
+		free(data->unique_rc_styles);
+	for (i = 0; i < data->n_unique_cell_styles; i++) {
+		struct spreadconv_cell_style *style = &data->unique_cell_styles[i];
+		if (style->name != 0)
+			free(style->name);
+		if (style->valign != 0)
+			free(style->valign);
+		if (style->border != 0)
+			free(style->border);
+		if (style->border_top != 0)
+			free(style->border_top);
+		if (style->border_bottom != 0)
+			free(style->border_bottom);
+		if (style->border_left != 0)
+			free(style->border_left);
+		if (style->border_right != 0)
+			free(style->border_right);
+	}
+	if (data->unique_cell_styles != 0)
+		free(data->unique_cell_styles);
+
+	/* Free the sheet name and finally the entire structure */
+	free(data->name);
+	free(data);
+}
+
+
+/**
+ * Adds a new unique row or column style to a spreadsheet. The style
+ * pointer is afterwards freed and set to NULL, so that it can be used
+ * again for adding another style.
  * \param style The style to add
  * \param data Pointer to the structure that the style should be added
  * to
@@ -588,7 +687,7 @@ spreadconv_new_spreadconv_data(char *sheet_name, int rows, int cols)
  * \remarks A return value of 0 is perfectly correct. The style array,
  * like any other C array, is zero-indexed.
  */
-int spreadconv_add_unique_rc_style(struct spreadconv_rc_style style, 
+int spreadconv_add_unique_rc_style(struct spreadconv_rc_style *style, 
 		struct spreadconv_data *data)
 {
 	if (data->unique_rc_styles == 0) 
@@ -601,12 +700,17 @@ int spreadconv_add_unique_rc_style(struct spreadconv_rc_style style,
 	if (data->unique_rc_styles == 0)
 		return -1;
 
-	data->unique_rc_styles[data->n_unique_rc_styles++] = style;
+	data->unique_rc_styles[data->n_unique_rc_styles++] = *style;
+	style->name = style->size = 0;
+	style->type = 0;
+	free(style);
 	return data->n_unique_rc_styles-1;
 }
 
 /**
- * Adds a new unique cell style to a spreadsheet.
+ * Adds a new unique cell style to a spreadsheet. The style
+ * pointer is afterwards freed and set to NULL, so that it can be used
+ * again for adding another style.
  * \param style The style to add
  * \param data Pointer to the structure that the style should be added
  * to
@@ -615,7 +719,7 @@ int spreadconv_add_unique_rc_style(struct spreadconv_rc_style style,
  * \remarks A return value of 0 is perfectly correct. The style array,
  * like any other C array, is zero-indexed.
  */
-int spreadconv_add_unique_cell_style(struct spreadconv_cell_style style, 
+int spreadconv_add_unique_cell_style(struct spreadconv_cell_style *style, 
 		struct spreadconv_data *data)
 {
 	if (data->unique_cell_styles == 0) 
@@ -628,7 +732,19 @@ int spreadconv_add_unique_cell_style(struct spreadconv_cell_style style,
 	if (data->unique_cell_styles == 0)
 		return -1;
 
-	data->unique_cell_styles[data->n_unique_cell_styles++] = style;
+	data->unique_cell_styles[data->n_unique_cell_styles++] = *style;
+	/* 
+	 * Clumsy as it seems, we set all fields to NULL here so that if
+	 * another style of the same type gets malloc'ed over it it
+	 * doesn't get its old properties.
+	 *
+	 * Note that we cannot free the fields, as they values to which
+	 * they had pointed are now pointed to by the unique_cell_styles
+	 * fields.
+	 */
+	style->name = style->valign = style->border = style->border_top = 
+		style->border_bottom = style->border_left = style->border_right = 0;
+	free(style);
 	return data->n_unique_cell_styles-1;
 }
 

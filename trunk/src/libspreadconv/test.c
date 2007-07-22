@@ -29,7 +29,7 @@ main(void)
 	cell_style = malloc(sizeof *cell_style);
 	cell_style->name = strdup("ce1");
 	cell_style->border = strdup("2pt solid #0000FF");
-	ce1 = spreadconv_add_unique_cell_style(*cell_style, d);
+	ce1 = spreadconv_add_unique_cell_style(cell_style, d);
 	if (ce1 == -1) {
 		perror("spreadconv_add_unique_cell_style");
 		return errno;
@@ -38,34 +38,37 @@ main(void)
 	cell_style = malloc(sizeof *cell_style);
 	cell_style->name = strdup("ce2");
 	cell_style->border_bottom = strdup("2pt solid #FF00FF");
-	ce2 = spreadconv_add_unique_cell_style(*cell_style, d);
+	ce2 = spreadconv_add_unique_cell_style(cell_style, d);
 	if (ce2 == -1) {
 		perror("spreadconv_add_unique_cell_style");
 		return errno;
 	}
-	free(cell_style);
 
 	col_style = malloc(sizeof *col_style);
 	col_style->name = strdup("co1");
 	col_style->type = LSC_STYLE_COL;
 	col_style->size = strdup("5cm");
-	co1 = spreadconv_add_unique_rc_style(*col_style, d);
+	co1 = spreadconv_add_unique_rc_style(col_style, d);
 	if (co1 == -1) {
 		perror("spreadconv_add_unique_rc_style");
 		return errno;
 	}
-	free(col_style);
 
 	spreadconv_set_cell_style(0, 0, ce1, d);
 	spreadconv_set_cell_style(0, 1, ce2, d);
 	spreadconv_set_col_style(0, co1, d);
 
-	d->cells[0][0].value_type = "float";
-	d->cells[0][0].text = "12";
-	d->cells[0][1].value_type = "float";
-	d->cells[0][1].text = "1.5";
-	d->cells[0][2].value_type = "formula";
-	d->cells[0][2].text = "=sum(A1:B1)";
+	/*
+	 * Lines like the one below are EVIL! Always use strdup(),
+	 * because the free routine attempts to free all strings.
+	 * d->cells[0][0].value_type = "float";
+	 */
+	d->cells[0][0].value_type = strdup("float");
+	d->cells[0][0].text = strdup("12");
+	d->cells[0][1].value_type = strdup("float");
+	d->cells[0][1].text = strdup("1.5");
+	d->cells[0][2].value_type = strdup("formula");
+	d->cells[0][2].text = strdup("=sum(A1:B1)");
 
 	spreadconv_dir_name = strdup("/tmp/libspreadconv");
 	name = spreadconv_create_spreadsheet(d, LSC_FILE_ODS);
@@ -79,5 +82,9 @@ main(void)
 	printf("Size of spreadconv data structure is: %d bytes.\n", sizeof *d);
 	printf("Date structura:\n\tNume foaie:\t\t%s\n\tNr linii:\t\t%d\n\tNr coloane:\t\t%d\n",
 			d->name, d->n_rows, d->n_cols);
+
+	free(name);
+	spreadconv_free_spreadconv_data(d);
+	free(spreadconv_dir_name);
 	return 0;
 }
