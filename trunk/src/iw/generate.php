@@ -27,7 +27,17 @@ fwrite($file, "[antet]\n".
 fwrite($file, "[ore]\n");
 $i = 1;
 foreach( $_POST[orar] as $o) {
-	fwrite($file, "$i=$o[zi]:$o[facultatea]:$o[disciplina]:$o[felpost]:$o[numarpost]:$o[tipora]:$o[grupa]:$o[ore]:$o[paritate]:$o[paritate_prima]\n");
+	fwrite($file, "\n[ore/$i]\n".
+	"zi=$o[zi]\n".
+	"facultate=$o[facultatea]\n".
+	"disciplina=$o[disciplina]\n".
+	"rol=$o[felpost]\n".   			#TODO: transform c,a,...in 1,2,3...
+	"numar_post=$o[numarpost]\n".
+	"tip_post=$o[tipora]\n".
+	"grupa=$o[grupa]\n".
+	"ore=$o[ore]\n".
+	"paritate=$o[paritate]\n".
+	"paritate_start=$o[paritate_prima]\n");
 	$i++;
 }
 
