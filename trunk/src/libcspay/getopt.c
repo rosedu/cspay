@@ -174,11 +174,11 @@ xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 		
 	for (prop = node->properties; prop; prop=prop->next){
 		if (prop->type == XML_ATTRIBUTE_NODE) {/* nu trebuie*/
-			if (!xmlStrncmp(prop->name, (xmlChar *)"decan", 5))
+			if (!xmlStrcmp(prop->name, (xmlChar *)"decan"))
 				fac->decan = strdup((char *)prop->children->content);
-			if (!xmlStrncmp(prop->name, (xmlChar *)"nume", 5))
+			if (!xmlStrcmp(prop->name, (xmlChar *)"nume"))
 				fac->name = strdup((char *)prop->children->content);
-			if (!xmlStrncmp(prop->name, (xmlChar *)"nume_scurt", 10))
+			if (!xmlStrcmp(prop->name, (xmlChar *)"nume_scurt"))
 				fac->short_name = strdup((char *)prop->children->content);
 		}
 		
