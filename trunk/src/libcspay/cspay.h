@@ -3,6 +3,7 @@
 
 #define MAXR	20	/*maximum number of restrictions*/
 #define MAXF	13
+#define MAXD	10	/*maximum number of departments*/
 /* TODO doxygen! */
 struct cspay_config {
 	time_t start[MAXR];	/*restrictions start, see wiki*/
@@ -16,8 +17,12 @@ struct faculty {
 	char *name;		/*faculty name*/
 	char *short_name;/* short fac name*/
 	char *decan;	/* :) */	
-	char **dept;	/*departments of that faculty*/
+	struct department *depts[MAXD];	/*departments of that faculty*/
 	int dept_no;	/*number of departments*/
+};
+struct department {
+	char *name;
+	char *chief;
 };
 struct cspay_file_list {
 	int nr;

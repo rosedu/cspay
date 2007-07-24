@@ -17,6 +17,9 @@ void xml_parse_rest_element(xmlNode *node, struct cspay_config *load);
 /*adauga in load informatii despre facultate din nodul node*/
 void xml_parse_fac_element(xmlNode *node, struct cspay_config *load);
 	
+/*adauga in load informatii depsre universitate*/
+void xml_parse_univ_element(xmlNode *node, struct cspay_config *load);
+	
 struct cspay_config *
 read_cspay_xml(char *fname)
 {
@@ -76,14 +79,14 @@ xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 	xmlNode *cur_node;
 	for (cur_node=element; cur_node; cur_node=cur_node->next){
 		if (cur_node->type == XML_ELEMENT_NODE){
-			if (!xmlStrncmp(cur_node->name, (xmlChar *)"vacanta", 7)){
+			if (!xmlStrcmp(cur_node->name, (xmlChar *)"vacanta")){
 				#ifdef __DEBUG__
 				printf("Sunt pe <vacante>\n");
 				#endif /* __DEBUG__ */
 				
 				xml_parse_rest_element(cur_node, load);
 			}															
-			if (!xmlStrncmp(cur_node->name, (xmlChar *)"facultate", 9)){
+			if (!xmlStrcmp(cur_node->name, (xmlChar *)"facultate")){
 				
 				#ifdef __DEBUG__
 				printf("Sunt pe <facultate>\n");
@@ -91,7 +94,14 @@ xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 				
 				xml_parse_fac_element(cur_node, load);
 			}
-			
+			if (!xmlStrcmp(cur_node->name, (xmlChar *)"universitate")){
+				
+				#ifdef __DEBUG__
+				printf("Sunt pe <universitate>\n");
+				#endif /* __DEBUG__ */
+				
+				xml_parse_univ_element(cur_node, load);
+			}
 		}
 		xml_extract_from_tree(cur_node->children, load);
 	}
@@ -155,9 +165,9 @@ xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 		
 		
 	#ifdef __DEBUG__
-	printf("Am terminat cu nodul pentru restrictii\n");
 	printf("[%d]:\tSTART: %ld\tEND: %ld\n", load->rest_no, (unsigned long)start, 
 		(unsigned long)end);	
+	printf("Am terminat cu nodul pentru restrictii\n");
 	#endif /* __DEBUG__ */
 }
 void
@@ -168,8 +178,9 @@ xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 	#endif /* __DEBUG__ */
 	
 	xmlAttr *prop;
-	xmlNode *prop_val;
+	xmlNode *dept;
 	struct faculty *fac;
+ 	struct department *dep;
 	fac = malloc(sizeof (struct faculty));
 		
 	for (prop = node->properties; prop; prop=prop->next){
@@ -184,9 +195,47 @@ xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 		
 	}
 	
-	/* TODO scoate catedrele*/
+	fac->dept_no = 0;
+	for (dept = node->children; dept; dept=dept->next)
+		if (dept->type == XML_ELEMENT_NODE)
+			if (!xmlStrcmp(dept->name, (xmlChar *)"catedra")) {
+				dep = malloc(sizeof (struct department));
+				for (prop = dept->properties; prop; prop=prop->next)
+					if (prop->type == XML_ATTRIBUTE_NODE) {
+						if (!xmlStrcmp(prop->name, (xmlChar *)"nume")) {
+							/*FIXME malloc, assert prop->children*/
+							dep->name = strdup((char *)prop->children->content);
+						}
+						if (!xmlStrcmp(prop->name, (xmlChar *)"sef")) {
+							dep->chief = strdup((char *)prop->children->content);
+						}
+						
+					}
+				fac->depts[fac->dept_no] = dep;
+				++ fac->dept_no;
+			}
+	load->fac[load->fac_no] = fac;
+	++ load->fac_no;
+			
 	#ifdef __DEBUG__
+	printf("%s\t%s\t%s\n", fac->name, fac->decan, fac->short_name);
+	int i;
+	for (i = 0; i < fac->dept_no; ++ i)
+		printf("\t%s\t%s\n", fac->depts[i]->name, fac->depts[i]->chief);
 	printf("Am terminat cu nodul cu facultate\n");
-	printf("Fac:%s dec:%s scur:%s\n", fac->name, fac->decan, fac->short_name);
 	#endif /* __DEBUG__ */
+}
+void 
+xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
+{
+	xmlAttr *prop;
+	
+	for (prop=node->properties; prop; prop=prop->next)
+		if (prop->type == XML_ATTRIBUTE_NODE)
+			if (!xmlStrcmp(prop->name, (xmlChar *)"nume")){
+				load->univ_name = strdup((char *)prop->children->content);
+			}
+	#ifdef __DEBUG__
+	printf("Am extras numele universitatii :%s\n", load->univ_name);
+	#endif
 }

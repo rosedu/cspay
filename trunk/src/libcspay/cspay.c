@@ -14,6 +14,12 @@ cspay_free_file_list(struct cspay_file_list *list)
 	free(list->names);
 	free(list);
 }		       
+struct cspay_config *
+cspay_get_config(void)
+{
+	/*TODO poate ceva verificari aici?*/
+	return read_cspay_xml("cspay.xml");
+}
 int 
 main(void)
 {
