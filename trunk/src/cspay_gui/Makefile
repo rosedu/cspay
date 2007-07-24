@@ -16,3 +16,4 @@ $(BIN): $(OBJ)
 clean: 
 	-rm -f $(BIN)
 	-rm -f $(OBJ)
+	-rm -f *~
