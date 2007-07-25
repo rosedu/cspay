@@ -370,12 +370,12 @@ cspay_convert_single_file(char *fname)
 		printf("Am creat %s\n\n", name);
 		#endif
 	}
+	
 	spreadconv_free_spreadconv_data(doc);
 	iniparser_freedict(ini);
 	free(spreadconv_dir_name);
 	cspay_free_config(cfg);
-	free(tmp_date);
-	free(val);
+	
 	return name;
 }
 
