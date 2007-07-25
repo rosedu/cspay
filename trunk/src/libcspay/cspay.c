@@ -30,6 +30,10 @@ cspay_free_file_list(struct cspay_file_list *list)
 	       free(list->names[i]);
 	free(list->names);
 	free(list);
+	
+	#ifdef __DEBUG__
+	printf("AM eliberat memoria pentru cspay_file_list\n");
+	#endif
 }		       
 
 struct cspay_config *
@@ -242,7 +246,6 @@ cspay_convert_single_file(char *fname)
 		
 		/* ROLUL */
 		strcpy(get_val + len, "rol");
-		printf("====>%s\n", get_val);
 		role = iniparser_getint(ini,  get_val, -1);
 		if (role < 0) {
 			fprintf(stderr, "Nu am gasit rol\n");
@@ -257,7 +260,6 @@ cspay_convert_single_file(char *fname)
 		char *faculty_name;
 		strcpy(get_val + len, "facultate");
 		faculty_name = iniparser_getstr(ini, get_val);
-		printf("====>%s\n", get_val);
 		if (!faculty_name) {
 			fprintf(stderr, "Nu am gasit facultatea");
 			return NULL;
@@ -383,7 +385,7 @@ int
 is_work(struct cspay_config *cfg, time_t t)
 {
 	int i;
-	for (i = 0; i < cfg->rest_no; ++ i){
+	for (i = 0; i < cfg->vac_no; ++ i){
 		if ((cfg->vac[i]->start <= t) &&
 			(t < cfg->vac[i]->end))
 			return 0;
@@ -414,7 +416,7 @@ cspay_free_config(struct cspay_config *cfg)
 {
 	int i, j;
 	free(cfg->sem);
-	for (i = 0; i < cfg->rest_no; ++ i)
+	for (i = 0; i < cfg->vac_no; ++ i)
 		free(cfg->vac[i]);
 	for (i = 0; i < cfg->fac_no; ++ i) {
 		for (j = 0; j < cfg->fac[i]->dept_no; ++ j) {
@@ -427,13 +429,19 @@ cspay_free_config(struct cspay_config *cfg)
 	}
 	free(cfg->univ_name);				
 	free(cfg);
+	
+	#ifdef __DEBUG__
+	printf("AM eliberat memoria pentru cspay_config\n");
+	#endif
 }
 
 int 
 main(void)
 {
 	struct cspay_file_list *res;
-	res = cspay_convert_options(NULL);
+	res = cspay_convert_options("personal.ini");
+	if (res)
+		printf("A fost creat fisierul: %s.ods\n", res->names[0]);
 	cspay_free_file_list(res);
 	return 0;
 }

@@ -63,7 +63,7 @@ read_cspay_xml(char *fname)
 		fprintf(stderr, "Nu am putut aloca struct cspay_config");
 		return NULL;
 	}
-	ret->rest_no = 0;
+	ret->vac_no = 0;
 	ret->fac_no = 0;
 	
 	#ifdef __DEBUG__
@@ -170,14 +170,14 @@ cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 	end = mktime(conv_to);	
 	free(conv_to);
 	
-	load->vac[load->rest_no] = malloc(sizeof (struct interval));
-	load->vac[load->rest_no]->start = start;
-	load->vac[load->rest_no]->end = end;
-	++ load->rest_no;
+	load->vac[load->vac_no] = malloc(sizeof (struct interval));
+	load->vac[load->vac_no]->start = start;
+	load->vac[load->vac_no]->end = end;
+	++ load->vac_no;
 		
 		
 	#ifdef __DEBUG__
-	printf("[%d]:\tSTART: %ld\tEND: %ld\n", load->rest_no, (unsigned long)start, 
+	printf("[%d]:\tSTART: %ld\tEND: %ld\n", load->vac_no, (unsigned long)start, 
 		(unsigned long)end);	
 	printf("Am terminat cu nodul pentru restrictii\n");
 	#endif /* __DEBUG__ */

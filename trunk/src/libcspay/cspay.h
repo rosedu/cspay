@@ -8,7 +8,7 @@
 struct cspay_config {
 	struct interval *sem; /* semester interval */
 	struct interval *vac[MAXR];/* vacation */
-	int rest_no;		/*number of vacations*/
+	int vac_no;		/*number of vacations*/
 	struct faculty *fac[MAXF];
 	int fac_no;			/*number of faculties*/
 	char *univ_name;	/*university name*/
