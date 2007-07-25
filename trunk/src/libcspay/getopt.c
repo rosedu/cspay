@@ -9,16 +9,19 @@
 #include "getopt.h"
 
 /*extrage informatiile din arborle extras din fisierul xml*/
-void xml_extract_from_tree(xmlNode *element, struct cspay_config *ret);
+void cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *ret);
 	
 /*adauga in load informatii depsre restrictiile din nodul node*/
-void xml_parse_rest_element(xmlNode *node, struct cspay_config *load);
+void cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load);
 	
 /*adauga in load informatii despre facultate din nodul node*/
-void xml_parse_fac_element(xmlNode *node, struct cspay_config *load);
+void cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load);
 	
 /*adauga in load informatii depsre universitate*/
-void xml_parse_univ_element(xmlNode *node, struct cspay_config *load);
+void cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load);
+	
+/*adauga in load informatii depsre semestru*/
+void cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load);
 	
 struct cspay_config *
 read_cspay_xml(char *fname)
@@ -67,15 +70,16 @@ read_cspay_xml(char *fname)
 	printf("Am citi root_element\n");
 	#endif /* __DEBUG__ */
 	
-	xml_extract_from_tree(root_element, ret);
+	cspay_xml_extract_from_tree(root_element, ret);
 	
 	xmlFreeDoc(doc);
 	xmlCleanupParser();
 	return ret;
 }
 void 
-xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
+cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 {
+	/* TODO load <semestru>*/
 	xmlNode *cur_node;
 	for (cur_node=element; cur_node; cur_node=cur_node->next){
 		if (cur_node->type == XML_ELEMENT_NODE){
@@ -84,7 +88,7 @@ xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 				printf("Sunt pe <vacante>\n");
 				#endif /* __DEBUG__ */
 				
-				xml_parse_rest_element(cur_node, load);
+				cspay_xml_parse_rest_element(cur_node, load);
 			}															
 			if (!xmlStrcmp(cur_node->name, (xmlChar *)"facultate")){
 				
@@ -92,7 +96,7 @@ xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 				printf("Sunt pe <facultate>\n");
 				#endif /* __DEBUG__ */
 				
-				xml_parse_fac_element(cur_node, load);
+				cspay_xml_parse_fac_element(cur_node, load);
 			}
 			if (!xmlStrcmp(cur_node->name, (xmlChar *)"universitate")){
 				
@@ -100,15 +104,22 @@ xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 				printf("Sunt pe <universitate>\n");
 				#endif /* __DEBUG__ */
 				
-				xml_parse_univ_element(cur_node, load);
+				cspay_xml_parse_univ_element(cur_node, load);
+			}
+			if (!xmlStrcmp(cur_node->name, (xmlChar *)"semestru")){
+				#ifdef __DEBUG__
+				printf("Sunt pe <universitate>\n");
+				#endif /* __DEBUG__ */
+				
+				cspay_xml_parse_sem_element(cur_node, load);
 			}
 		}
-		xml_extract_from_tree(cur_node->children, load);
+		cspay_xml_extract_from_tree(cur_node->children, load);
 	}
 }
 
 void
-xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
+cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 {
 	#ifdef __DEBUG__
 	printf("Tratez un nod pentru restrictii\n");
@@ -156,7 +167,7 @@ xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 	-- conv_to->tm_mon;	/* january is 0*/
 	conv_to->tm_year -= 1900;	/* 1900 is 0*/
 	
-	end = mktime(conv_to) - 1;	/*interval deschis*/
+	end = mktime(conv_to);	
 	free(conv_to);
 	
 	load->start[load->rest_no] = start;
@@ -171,7 +182,7 @@ xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 	#endif /* __DEBUG__ */
 }
 void
-xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
+cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 {
 	#ifdef __DEBUG__
 	printf("Tratez un nod cu facultate\n");
@@ -225,8 +236,9 @@ xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 	printf("Am terminat cu nodul cu facultate\n");
 	#endif /* __DEBUG__ */
 }
+
 void 
-xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
+cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 {
 	xmlAttr *prop;
 	
@@ -237,5 +249,37 @@ xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 			}
 	#ifdef __DEBUG__
 	printf("Am extras numele universitatii :%s\n", load->univ_name);
+	#endif
+}
+
+void 
+cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
+{
+	xmlAttr *prop;
+	struct tm *conv_to;
+	conv_to = calloc(1, sizeof (struct tm));
+	
+	for (prop=node->properties; prop; prop=prop->next)
+		if (prop->type == XML_ATTRIBUTE_NODE) {
+			if (!xmlStrcmp(prop->name, (xmlChar *)"data_start")){
+				sscanf((char *)prop->children->content, "%d.%d.%d",
+					&conv_to->tm_mday, &conv_to->tm_mon, &conv_to->tm_year);
+				-- conv_to->tm_mon;	/* january is 0*/
+				conv_to->tm_year -= 1900;	/* 1900 is 0*/
+				load->sem_start = mktime(conv_to);
+			}
+			if (!xmlStrcmp(prop->name, (xmlChar *)"data_sfarsit")){
+				sscanf((char *)prop->children->content, "%d.%d.%d",
+					&conv_to->tm_mday, &conv_to->tm_mon, &conv_to->tm_year);
+				-- conv_to->tm_mon;	/* january is 0*/
+				conv_to->tm_year -= 1900;	/* 1900 is 0*/
+				load->sem_end = mktime(conv_to);
+			}
+		}
+	free(conv_to);
+	
+	#ifdef __DEBUG__
+	printf("Semestrul incepe la %ld si se termina la %ld\n",
+		load->sem_start, load->sem_end);
 	#endif
 }

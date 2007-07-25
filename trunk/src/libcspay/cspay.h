@@ -6,6 +6,8 @@
 #define MAXD	10	/*maximum number of departments*/
 /* TODO doxygen! */
 struct cspay_config {
+	time_t sem_start;
+	time_t sem_end;		/*TODO struct interval*/
 	time_t start[MAXR];	/*restrictions start, see wiki*/
 	time_t end[MAXR];	/*and end time*/
 	int rest_no;		/*number of restrictions*/

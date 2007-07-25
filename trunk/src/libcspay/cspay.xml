@@ -4,7 +4,8 @@
             data_sfarsit="01.02.2007" />
         <vacante>
             <vacanta data_start="22.12.2006" data_end="05.01.2007" />
-            <vacanta data_start="01.12.2007" data_end="02.12.2007" />
+            <vacanta data_start="01.12.2006" data_end="02.12.2006" />
+			<vacanta data_start="11.12.2006" data_end="12.12.2006" />
         </vacante>
         <facultati>
             <facultate nume="Automatica si Calculatoare" nume_scurt="A&amp;C" decan="lipsum">
