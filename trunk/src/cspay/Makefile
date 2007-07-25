@@ -1,7 +1,4 @@
-CFLAGS = -Wall `xml2-config --cflags`
-LDFLAGS = `xml2-config --libs` -L.
-LDLIBS = -lspreadconv -liniparser
-
+CFLAGS = -Wall 
 SRC = main.c
 BIN = cspay
 OBJ = $(SRC:.c=.o)
