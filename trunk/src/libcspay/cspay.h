@@ -6,11 +6,9 @@
 #define MAXD	10	/*maximum number of departments*/
 /* TODO doxygen! */
 struct cspay_config {
-	time_t sem_start;
-	time_t sem_end;		/*TODO struct interval*/
-	time_t start[MAXR];	/*restrictions start, see wiki*/
-	time_t end[MAXR];	/*and end time*/
-	int rest_no;		/*number of restrictions*/
+	struct interval *sem; /* semester interval */
+	struct interval *vac[MAXR];/* vacation */
+	int rest_no;		/*number of vacations*/
 	struct faculty *fac[MAXF];
 	int fac_no;			/*number of faculties*/
 	char *univ_name;	/*university name*/
@@ -21,6 +19,10 @@ struct faculty {
 	char *decan;	/* :) */	
 	struct department *depts[MAXD];	/*departments of that faculty*/
 	int dept_no;	/*number of departments*/
+};
+struct interval{
+	time_t start;
+	time_t end;
 };
 struct department {
 	char *name;

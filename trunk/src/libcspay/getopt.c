@@ -170,8 +170,9 @@ cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 	end = mktime(conv_to);	
 	free(conv_to);
 	
-	load->start[load->rest_no] = start;
-	load->end[load->rest_no] = end;
+	load->vac[load->rest_no] = malloc(sizeof (struct interval));
+	load->vac[load->rest_no]->start = start;
+	load->vac[load->rest_no]->end = end;
 	++ load->rest_no;
 		
 		
@@ -258,7 +259,8 @@ cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
 	xmlAttr *prop;
 	struct tm *conv_to;
 	conv_to = calloc(1, sizeof (struct tm));
-	
+	load->sem = malloc(sizeof (struct interval));
+		
 	for (prop=node->properties; prop; prop=prop->next)
 		if (prop->type == XML_ATTRIBUTE_NODE) {
 			if (!xmlStrcmp(prop->name, (xmlChar *)"data_start")){
@@ -266,20 +268,20 @@ cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
 					&conv_to->tm_mday, &conv_to->tm_mon, &conv_to->tm_year);
 				-- conv_to->tm_mon;	/* january is 0*/
 				conv_to->tm_year -= 1900;	/* 1900 is 0*/
-				load->sem_start = mktime(conv_to);
+				load->sem->start = mktime(conv_to);
 			}
 			if (!xmlStrcmp(prop->name, (xmlChar *)"data_sfarsit")){
 				sscanf((char *)prop->children->content, "%d.%d.%d",
 					&conv_to->tm_mday, &conv_to->tm_mon, &conv_to->tm_year);
 				-- conv_to->tm_mon;	/* january is 0*/
 				conv_to->tm_year -= 1900;	/* 1900 is 0*/
-				load->sem_end = mktime(conv_to);
+				load->sem->end = mktime(conv_to);
 			}
 		}
 	free(conv_to);
 	
 	#ifdef __DEBUG__
 	printf("Semestrul incepe la %ld si se termina la %ld\n",
-		load->sem_start, load->sem_end);
+		load->sem->start, load->sem->end);
 	#endif
 }
