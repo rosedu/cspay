@@ -208,4 +208,11 @@ int spreadconv_set_col_style(int, int, struct spreadconv_data *);
  */
 int spreadconv_set_cell_style(int, int, int, struct spreadconv_data *);
 
+/**
+ * Changes the dimensions of a \a spreadconv_data structure.
+ * \remarks Not implemented yet. The spreadsheet structure is passed as
+ * last parameter for uniformity (?) with the other functions.
+ */
+int spreadconv_change_dimenstions(int, int, struct spreadconv_data *);
+
 #endif /* _SPREADCONV_H_ */
