@@ -79,7 +79,6 @@ read_cspay_xml(char *fname)
 void 
 cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 {
-	/* TODO load <semestru>*/
 	xmlNode *cur_node;
 	for (cur_node=element; cur_node; cur_node=cur_node->next){
 		if (cur_node->type == XML_ELEMENT_NODE){
