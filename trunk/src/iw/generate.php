@@ -4,6 +4,12 @@
  *	Primeste date prin _POST de la formularul din index.php. Creeaza personal.ini din datele introduse de utilizator, 
  *	apeleaza cspay (consola) si afiseaza rezultatul (calea catre fisierele spreadsheet pentru download).
  */
+/**
+ * \ingroup iw
+ * \file generate.php
+ * \brief iw personal.ini generator
+ * \author Alex Eftimie
+ */
 
 # creez fisier personal.ini temporar
 $tmpfname = tempnam("/tmp", "personalini");
@@ -24,7 +30,7 @@ fwrite($file, "[antet]\n".
 	"catedra=$_POST[catedra]\n".
 	"sefcatedra=$_POST[sefcatedra]\n".
 	"tip_fisier=".implode(',',$_POST['tip_fisier'])."\n\n");
-fwrite($file, "[ore]\n");
+// fwrite($file, "[ore]\n"); # nu mai este necesar
 $i = 1;
 foreach( $_POST[orar] as $o) {
 	fwrite($file, "\n[ore/$i]\n".

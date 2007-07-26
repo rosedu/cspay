@@ -4,10 +4,26 @@
  *	Citeste cspay.xml si afiseaza formularul.
  *
  */
-define('CSPAY_XML_URI','http://anaconda.cs.pub.ro/~cspay/cspay.xml'); //discutabila alegere...
+/**
+ * \ingroup iw
+ * \file index.php
+ * \brief iw index file
+ *
+ * Obtains data from configuration cspay.xml, then loads the template and prints it in browser.
+ * \author Alex Eftimie
+ * \defgroup iw Web interface for CSPay
+ */
 
-# metoda recursiva de transformat XML DOM in dictionar
-function dom2array( $node ) {
+/** Configuration's file (`cspay.xml') address */
+define('CSPAY_XML_URI', 'http://anaconda.cs.pub.ro/~cspay/cspay.xml'); //discutabila alegere...
+
+/**
+ * Metoda recursiva de transformat XML DOM in dictionar
+ * source: php.net manual (modified)
+ * \param node the root node of the xml tree
+ */
+function dom2array( $node ) 
+{
 	$result = array();
 	if($node->nodeType == XML_TEXT_NODE) {
 		$result = $node->nodeValue;
@@ -37,10 +53,10 @@ function dom2array( $node ) {
 	return $result;
 }
 
-# incarc continutul html TODO it somehow else
+# incarc sablonul html TODO it somehow else
 $template = implode("",@file('model-form.html'));
 
-# incarc cspay.xml
+# incarc cspay.xml TODO: error checking
 $doc = new DOMDocument();
 $doc->load(CSPAY_XML_URI);
 $cspay = dom2array( $doc );

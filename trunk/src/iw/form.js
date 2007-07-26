@@ -1,10 +1,23 @@
+/*
+ *	form.js - javascript functions
+ *	26.07.2007 Alex Eftimie	
+ */
+/**
+ * \ingroup iw
+ * \file form.js
+ * \brief iw script library
+ * \author Alex Eftimie
+ */
+
 var 	orar = null;
 var 	catedra_select = null;
 
-//adauga un nou camp cu date de orar
-//foloseste variabila globala orar
-//care retine cate astfel de campuri au fost adaugate
-function more() {
+/**
+ * Adds a new empty fieldset
+ * Uses global variable orar to retain the number of added fieldsets
+ */
+function more() 
+{
 	//obtin div-ul cadru, si div-ul continut
 	cadru = document.getElementById('orar');
 	continut = document.getElementById('orar_1');
@@ -44,7 +57,13 @@ function more() {
 	orar++;
 }
 
-function less( id ) {
+/**
+ * Remove the element specified by id from the container element 'orar'
+ * \param id the to be removed element's id
+ * \todo error checking
+ */
+function less( id ) 
+{
 	//obtin divul cadru si divul care trebuie sters
 	cadru = document.getElementById('orar');
 	continut = document.getElementById(id);
@@ -53,14 +72,24 @@ function less( id ) {
 	cadru.removeChild( continut );
 }
 
-function get_orar() {
+/**
+ * Returns the number of consecutive orar fieldsets
+ * \return orar int >= 1
+ */
+function get_orar() 
+{
 	i = 1;
 	while(document.getElementById('orar_'+i)) 
 		i++;
 	orar = i;
 }
 
-function show_hide( id ) {
+/**
+ * Switch the visibility state of an element, using the DOM style.display property
+ * \param id element's id
+ */
+function show_hide( id ) 
+{
 	//obtin elementul de afisat/ascuns
 	element = document.getElementById(id);
 	if(!element.style.display || element.style.display == 'none')
@@ -69,6 +98,11 @@ function show_hide( id ) {
 		element.style.display = 'none';
 }
 
+/**
+ * Copies the value of src to dest, if dest is empty
+ * \param src source element
+ * \param dest destination element
+ */
 function input_copy( src, dest )
 {
 	src = document.getElementById(src);
@@ -77,6 +111,13 @@ function input_copy( src, dest )
 		dest.value = src.value;
 }
 
+/**
+ * Displays the coresponding catedra SELECT (initially hidden) for the chosen faculty.
+ * It's called by an ONCLICK or ONCHANGE event.
+ * Uses global catedra_select variable to keep the currently visible SELECT (catedra_select 
+ * is initialy null, that means 'catedradisabled' is visible).
+ * \param facultate_element the id of faculty's html SELECT
+ */
 function select_catedra( facultate_element)
 {
 	facultate = facultate_element.value;
