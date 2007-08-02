@@ -5,6 +5,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+#include "debug.h"
 #include "cspay.h"
 #include "getopt.h"
 
@@ -45,9 +46,7 @@ read_cspay_xml(char *fname)
 		}
 	}
 	
-#ifdef __DEBUG__
-	printf("Am citit fisierul *.xml\n");
-#endif /* __DEBUG__ */
+	Dprintf("Am citit fisierul *.xml\n");
 	
 	root_element = xmlDocGetRootElement(doc);
 	if (!root_element){
@@ -66,9 +65,7 @@ read_cspay_xml(char *fname)
 	cfg->vac_no = 0;
 	cfg->fac_no = 0;
 	
-#ifdef __DEBUG__
-	printf("Am citi root_element\n");
-#endif /* __DEBUG__ */
+	Dprintf("Am citi root_element\n");
 	
 	cspay_xml_extract_from_tree(root_element, cfg);
 	
@@ -90,27 +87,19 @@ cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 	for (node = element; node; node = node->next){
 		if (node->type == XML_ELEMENT_NODE){
 			if (!xmlStrcmp(node->name, (xmlChar *)"vacanta")){
-#ifdef __DEBUG__
-				printf("Sunt pe <vacante>\n");
-#endif /* __DEBUG__ */
+				Dprintf("Sunt pe <vacante>\n");
 				cspay_xml_parse_rest_element(node, load);
 			}															
 			if (!xmlStrcmp(node->name, (xmlChar *)"facultate")){
-#ifdef __DEBUG__
-				printf("Sunt pe <facultate>\n");
-#endif /* __DEBUG__ */
+				Dprintf("Sunt pe <facultate>\n");
 				cspay_xml_parse_fac_element(node, load);
 			}
 			if (!xmlStrcmp(node->name, (xmlChar *)"universitate")){
-#ifdef __DEBUG__
-				printf("Sunt pe <universitate>\n");
-#endif /* __DEBUG__ */
+				Dprintf("Sunt pe <universitate>\n");
 				cspay_xml_parse_univ_element(node, load);
 			}
 			if (!xmlStrcmp(node->name, (xmlChar *)"semestru")){
-#ifdef __DEBUG__
-				printf("Sunt pe <universitate>\n");
-#endif /* __DEBUG__ */
+				Dprintf("Sunt pe <universitate>\n");
 				cspay_xml_parse_sem_element(node, load);
 			}
 		}
@@ -121,14 +110,13 @@ cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 void
 cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 {
-#ifdef __DEBUG__
-	printf("Tratez un nod pentru restrictii\n");
-#endif /* __DEBUG__ */
 
 	time_t start;
 	time_t end;
 	struct tm *conv_to;
 	
+	Dprintf("Tratez un nod pentru restrictii\n");
+
 	xmlAttr *prop;
 	xmlNode *prop_val;
 	
@@ -176,27 +164,22 @@ cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 	load->vac[load->vac_no]->end = end;
 	++ load->vac_no;
 		
-		
-#ifdef __DEBUG__
-	printf("[%d]:\tSTART: %ld\tEND: %ld\n", load->vac_no, (unsigned long)start, 
+	Dprintf("[%d]:\tSTART: %ld\tEND: %ld\n", load->vac_no, (unsigned long)start, 
 		(unsigned long)end);	
-	printf("Am terminat cu nodul pentru restrictii\n");
-#endif /* __DEBUG__ */
+	Dprintf("Am terminat cu nodul pentru restrictii\n");
 }
 
 void
 cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 {
-#ifdef __DEBUG__
-	printf("Tratez un nod cu facultate\n");
-#endif /* __DEBUG__ */
-	
 	xmlAttr *prop;
 	xmlNode *dept;
 	struct faculty *fac;
  	struct department *dep;
 	fac = malloc(sizeof (struct faculty));
-		
+
+	Dprintf("Tratez un nod cu facultate\n");
+
 	for (prop = node->properties; prop; prop=prop->next){
 		if (prop->type == XML_ATTRIBUTE_NODE) {/* nu trebuie*/
 			if (!xmlStrcmp(prop->name, (xmlChar *)"decan"))
@@ -230,14 +213,14 @@ cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 			}
 	load->fac[load->fac_no] = fac;
 	++ load->fac_no;
-			
-#ifdef __DEBUG__
-	printf("%s\t%s\t%s\n", fac->name, fac->dean, fac->short_name);
-	int i;
-	for (i = 0; i < fac->dept_no; ++ i)
-		printf("\t%s\t%s\n", fac->depts[i]->name, fac->depts[i]->chief);
-	printf("Am terminat cu nodul cu facultate\n");
-#endif /* __DEBUG__ */
+
+	{
+		int i;
+		Dprintf("%s\t%s\t%s\n", fac->name, fac->dean, fac->short_name);
+		for (i = 0; i < fac->dept_no; ++ i)
+			Dprintf("\t%s\t%s\n", fac->depts[i]->name, fac->depts[i]->chief);
+		Dprintf("Am terminat cu nodul cu facultate\n");
+	}
 }
 
 void 
@@ -250,9 +233,7 @@ cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 			if (!xmlStrcmp(prop->name, (xmlChar *)"nume")){
 				load->univ_name = strdup((char *)prop->children->content);
 			}
-#ifdef __DEBUG__
-	printf("Am extras numele universitatii :%s\n", load->univ_name);
-#endif
+	Dprintf("Am extras numele universitatii :%s\n", load->univ_name);
 }
 
 void 
@@ -282,8 +263,6 @@ cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
 		}
 	free(conv_to);
 	
-#ifdef __DEBUG__
-	printf("Semestrul incepe la %ld si se termina la %ld\n",
+	Dprintf("Semestrul incepe la %ld si se termina la %ld\n",
 		load->sem->start, load->sem->end);
-#endif
 }

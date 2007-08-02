@@ -8,6 +8,7 @@
 #		   $ info make "Catalogue of Rules" (with make-doc package))
 #		 - added tests rules for creating test and col_test
 
+CPPFLAGS = -I../common
 CFLAGS = -Wall -O0 -g
 LDFLAGS = -L.
 LDLIBS = -lspreadconv
