@@ -17,7 +17,7 @@
 /* daca este functia intoarce 1, 0 altfel*/
 int is_work(struct cspay_config *cfg, time_t t);
 
-/* intoarce numele unui singur fisier creata */
+/* intoarce numele unui singur fisier creat */
 char *cspay_convert_single_file(char *fname);
 
 void
@@ -31,9 +31,9 @@ cspay_free_file_list(struct cspay_file_list *list)
 	free(list->names);
 	free(list);
 	
-	#ifdef __DEBUG__
-	printf("AM eliberat memoria pentru cspay_file_list\n");
-	#endif
+#ifdef __DEBUG__
+	printf("Am eliberat memoria pentru cspay_file_list\n");
+#endif
 }		       
 
 struct cspay_config *
@@ -43,6 +43,9 @@ cspay_get_config(void)
 	return read_cspay_xml("cspay.xml");
 }
 
+static struct cspay_config *cfg = NULL;
+static struct spreadconv_data *doc = NULL;
+
 char *
 cspay_convert_single_file(char *fname)
 {
@@ -51,12 +54,10 @@ cspay_convert_single_file(char *fname)
 	/* initilizarea pointerilor, cu goto: */
 	/* FIXME anumite caractere trebuie escapate (&)*/
 	/* sau in libspreadconv trebuie? */
-	#ifdef __DEBUG__
-	printf("Am inceptu sa convertesc fisierul\n");
-	#endif
+#ifdef __DEBUG__
+	printf("Am inceput sa convertesc fisierul\n");
+#endif
 	
-	struct cspay_config *cfg = NULL;
-	struct spreadconv_data *doc = NULL;
 	dictionary *ini;
 	char *name = NULL;
 	char *val = NULL;
@@ -72,46 +73,52 @@ cspay_convert_single_file(char *fname)
 	time_t tmp_start;
 	time_t tmp_end;
 	time_t index;
-		
+
+	/* load configuration from XML file (cspay.xml) */
 	cfg = cspay_get_config();
+
+	/* init ini file parsing */
 	ini = iniparser_load(fname);
-	if (!ini){
-		fprintf(stderr, "Fsier ini negasit, incercam altul\n");
+	if (!ini) {
+		fprintf(stderr, "Fisier .ini negasit, incercam altul\n");
 		ini = iniparser_load("personal.ini");
 		if (!ini){
 			fprintf(stderr, "personal.ini nu a fost gasit\n");
 			return NULL;
 		}
 	}
-	
-	doc = spreadconv_new_spreadconv_data("Date", 20, 9);
-	
-	/* setarea coloanelor */
-	#ifdef __DEBUG__
+
+	/* create new spreadsheet */
+	doc = spreadconv_new_spreadconv_data("Date", 60, 9);
+
+	/* configure columns */
+#ifdef __DEBUG__
 	printf("Am inceput sa creez stiluri pentru coloane\n");
-	#endif
+#endif
 	struct spreadconv_rc_style *wide, *narrow;
 	int co_wide, co_narrow;
+
 	wide = calloc(1, sizeof (struct spreadconv_rc_style));
 	wide->name = strdup("wide_col");
 	wide->size = strdup("5cm");
 	co_wide = spreadconv_add_unique_rc_style(wide, doc);
-	
+
 	narrow = malloc(sizeof (struct spreadconv_rc_style));
 	narrow->name = strdup("narrow_col");
 	narrow->size = strdup("0.6cm");
 	co_narrow = spreadconv_add_unique_rc_style(narrow, doc);
-	
+
 	spreadconv_set_col_style(0, co_narrow, doc);
 	spreadconv_set_col_style(3, co_wide, doc);
-	
+
 	/* stiluri pentru casute*/
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	printf("Am inceput sa creez stiluri pentru casute\n");
-	#endif
-	
+#endif
+
 	struct spreadconv_cell_style *table;
 	int ce_table;
+
 	/* calloc vs. malloc, calloc wins! */
 	table = calloc(1, sizeof (struct spreadconv_cell_style));
 	table->name = strdup("table_celffl");
@@ -124,46 +131,47 @@ cspay_convert_single_file(char *fname)
 	
 	/* FIXME assert iniparser_getstr */
 	/* universitatea si faculateatea  */
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	printf("Caut universitatea si facultatea\n");
-	#endif
+#endif
 	doc->cells[0][0].text = strdup(iniparser_getstr(ini, "antet:universitate"));
 	doc->cells[1][0].text = strdup(iniparser_getstr(ini, "antet:facultate"));
 	
 	/* FIXME str* hazards */
 	/* catedra */
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	printf("Caut catedra\n");
-	#endif
+#endif
 	val = strdup(iniparser_getstr(ini, "antet:catedra"));
 	doc->cells[0][6].text = malloc(strlen(val) + strlen("Catedra ") + 1);
 	strcpy(doc->cells[0][6].text, "Catedra ");
 	strcat(doc->cells[0][6].text, val);
 	
 	/* luna */
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	printf("Caut luna\n");
-	#endif
+#endif
 	
 	tmp_date = calloc(1, sizeof (struct tm));
 	tmp_date->tm_mon = iniparser_getint(ini, "antet:luna", -1);
 	if (tmp_date->tm_mon < 0) {
 		fprintf(stderr, "Eroare la obtinerea lunii\n");
 	}
-	doc->cells[1][6].text = malloc(strlen("Luna ") + 12);
-	strcpy(doc->cells[1][6].text, "Luna ");
-	strftime(doc->cells[1][6].text + strlen("Luna "), 12, "%B",tmp_date);
+	doc->cells[1][6].text = malloc(strlen("Luna") + 1);
+	strcpy(doc->cells[1][6].text, "Luna");
+	doc->cells[1][7].text = malloc(12);
+	strftime(doc->cells[1][7].text, 12, "%B",tmp_date);
 	
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	printf("Am scris luna\n");
-	#endif
+#endif
 	/* Salvam in tmp_date data de start a perioadei*/ 
 	tmp_date->tm_year = localtime(&cfg->sem->start)->tm_year;
 	tmp_date->tm_mday = 1;
 	
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	printf("Am aflat anul din semestru\n");
-	#endif 
+#endif 
 	tmp_start = mktime(tmp_date);
 	
 	++ tmp_date->tm_mon;
@@ -179,9 +187,9 @@ cspay_convert_single_file(char *fname)
 	i = 1;
 	crt = 0;
 	while (1){
-		#ifdef __DEBUG__
+#ifdef __DEBUG__
 		printf("Tratez regula %d\n", i);
-		#endif
+#endif
 		
 		/*caut ziua*/
 		strcpy(get_val, "ore/");
@@ -231,17 +239,18 @@ cspay_convert_single_file(char *fname)
 			fprintf(stderr, "Nu am gasit o prima zi ?\n");
 			return NULL;
 		}
-		#ifdef __DEBUG__
+#ifdef __DEBUG__
 		printf("Am gasit prima zi in care se va lucra %d\n",
 					localtime(&index)->tm_mday);
-		#endif
+#endif
 		
 		/* Acum ca am gasit prima zi in care se va lucra*/
 		/* Pot incepe sa iterez saptamanal */
-		static const char roles[3][14] = {
-				{"asist"},
+		static const char roles[4][14] = {
+				{"as"},
 				{"conf"},
-				{"sef l"}
+				{"sl"},
+				{"prof"}
 		};
 		
 		/* ROLUL */
@@ -255,7 +264,7 @@ cspay_convert_single_file(char *fname)
 		/* NR POST */
 		char *post_no;
 		post_no = iniparser_getstr(ini, strcpy(get_val + len, "numar_post") - len);
-		
+	
 		/* FACUTATEEA*/
 		char *faculty_name;
 		strcpy(get_val + len, "facultate");
@@ -349,18 +358,18 @@ cspay_convert_single_file(char *fname)
 			}
 			index += par * WEEK;
 		}
-		#ifdef __DEBUG__
+#ifdef __DEBUG__
 		printf("Am terminat regula %d\n", i);
-		#endif
+#endif
 		
 		++ i;
 	}
 	
 	spreadconv_dir_name = strdup("./out/");
 	
-	#ifdef __DEBUG__
+#ifdef __DEBUG__
 	printf("Am inceput sa creez fisierul output\n");
-	#endif
+#endif
 	
 	name = spreadconv_create_spreadsheet(doc, LSC_FILE_ODS);
 	
@@ -368,9 +377,9 @@ cspay_convert_single_file(char *fname)
 		fprintf(stderr, "ERoare la creaarea fisierului ods\n");
 		return NULL;
 	} else {
-		#ifdef __DEBUG__
+#ifdef __DEBUG__
 		printf("Am creat %s\n\n", name);
-		#endif
+#endif
 	}
 	
 	spreadconv_free_spreadconv_data(doc);
@@ -397,17 +406,23 @@ is_work(struct cspay_config *cfg, time_t t)
 struct cspay_file_list *
 cspay_convert_options(char *fname)
 {
-	/* tipul finctiei cred ca e gresit */
-	/* In ce caz se returneaza mai multe fisiere? */
-	
+	/* tipul functiei cred ca e gresit */
+	/*
+	 * In ce caz se returneaza mai multe fisiere? 
+	 * RD: In cazul in care se realizeaza plata cu ora pe mai multe luni.
+	 * Se extrage un fisier .ods pentru fiecare luna.
+	 */
+
 	struct cspay_file_list *ret;
 	char *temp;
+
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 1;
 	ret->names = malloc(sizeof (char *));
 	temp = cspay_convert_single_file(fname);
 	ret->names[0] = strdup(temp);
 	free(temp);
+
 	return ret;
 }
 
@@ -425,23 +440,25 @@ cspay_free_config(struct cspay_config *cfg)
 		}
 		free(cfg->fac[i]->name);
 		free(cfg->fac[i]->short_name);
-		free(cfg->fac[i]->decan);
+		free(cfg->fac[i]->dean);
 	}
 	free(cfg->univ_name);				
 	free(cfg);
 	
-	#ifdef __DEBUG__
-	printf("AM eliberat memoria pentru cspay_config\n");
-	#endif
+#ifdef __DEBUG__
+	printf("Am eliberat memoria pentru cspay_config\n");
+#endif
 }
 
 int 
 main(void)
 {
 	struct cspay_file_list *res;
+
 	res = cspay_convert_options("personal.ini");
 	if (res)
 		printf("A fost creat fisierul: %s.ods\n", res->names[0]);
 	cspay_free_file_list(res);
+
 	return 0;
 }

@@ -1,5 +1,5 @@
 CFLAGS = -Wall `xml2-config --cflags`
-LDFLAGS = `xml2-config --libs` -L.
+LDFLAGS = `xml2-config --libs` -L. -L../libspreadconv
 LDLIBS = -lspreadconv -liniparser
 
 SRC = getopt.c cspay.c
