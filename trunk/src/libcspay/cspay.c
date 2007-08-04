@@ -35,7 +35,16 @@ struct class_info {
 	int class_h_end;
 	int class_first_week;
 };
-
+struct sum_hours {
+	int prof;
+	int conf;
+	int sl;
+	int as;
+};
+struct total_hours {
+	struct sum_hours course;
+	struct sum_hours aplic;
+};
 struct table_styles {
 	int ce_table;	/* normal cell_table*/
 	int up_table;	/* up bold line */
@@ -53,6 +62,8 @@ static struct spreadconv_data *doc;
 static struct cspay_config *cfg;
 static struct tm *month_date;
 static struct table_styles *ts;
+static struct total_hours result;
+
 
 static size_t get_first_work_day(time_t start, time_t end, 
 							struct cspay_config *cfg, struct class_info *ci);
@@ -445,7 +456,11 @@ static int create_header (void)
 
 static int create_footer (size_t last_row)
 {
+	char formula[32];
+	sprintf(formula, "=sum(E9:F%d)", (int) last_row - 1);
 	doc->cells[last_row][7].text = strdup("Total:");
+	doc->cells[last_row][8].value_type = strdup("formula");
+	doc->cells[last_row][8].text= strdup("=sum(E9:F50)");
 	last_row += 2;
 
 	doc->cells[last_row][1].text = strdup("TOTAL ore:");
@@ -456,19 +471,35 @@ static int create_footer (size_t last_row)
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("Prof.");
+	doc->cells[last_row][3].text = malloc(5);
+	sprintf(doc->cells[last_row][3].text, "%d", result.course.prof);
 	doc->cells[last_row][4].text = strdup("Prof.");
+	doc->cells[last_row][5].text = malloc(5);
+	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.prof);
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("Conf.");
+	doc->cells[last_row][3].text = malloc(5);
+	sprintf(doc->cells[last_row][3].text, "%d", result.course.conf);
 	doc->cells[last_row][4].text = strdup("Conf.");
+	doc->cells[last_row][5].text = malloc(5);
+	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.conf);
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("S.l.");
+	doc->cells[last_row][3].text = malloc(5);
+	sprintf(doc->cells[last_row][3].text, "%d", result.course.sl);
 	doc->cells[last_row][4].text = strdup("S.l.");
+	doc->cells[last_row][5].text = malloc(5);
+	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.sl);
 	last_row++;
 
-	doc->cells[last_row][2].text = strdup("As.");
+	doc->cells[last_row][2].text =	 strdup("As.");
+	doc->cells[last_row][3].text = malloc(5);
+	sprintf(doc->cells[last_row][3].text, "%d", result.course.as);
 	doc->cells[last_row][4].text = strdup("As.");
+	doc->cells[last_row][5].text = malloc(5);
+	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.as);
 	last_row += 2;
 
 	doc->cells[last_row][0].text = strdup("Intocmit,");
@@ -517,6 +548,12 @@ cspay_convert_single_file(char *fname)
 	size_t table_crt;	/* int vs. size_t ???*/
 	char *tmp_str;
 	int ccs;	/* current cell style */
+
+	int tmp_sum_prof;
+	int tmp_sum_conf;
+	int tmp_sum_sl;
+	int tmp_sum_as;
+	int tmp_sum;
 
 	const char roles[4][14] = {
 			{"as"},
@@ -580,11 +617,12 @@ cspay_convert_single_file(char *fname)
 		 * iterate through the same day of different weeks
 		 */
 
+		tmp_sum_prof = tmp_sum_conf = tmp_sum_sl = tmp_sum_as = 0;
+		tmp_sum = 0;
 		for (/* no init */; index < month_end;
 				index += ci->class_parity * WEEK) {
 			if (!is_work(cfg, index))
 				continue;
-
 			/* row index in table */
 			if (table_crt == 0) {
 				ccs = ts->up_left_corner;
@@ -604,6 +642,7 @@ cspay_convert_single_file(char *fname)
 			doc->cells[8 + table_crt][1].text = malloc(10);
 			sprintf(doc->cells[8 + table_crt][1].text, "%s%d", roles[ci->class_role_type], ci->class_role_num);
 			spreadconv_set_cell_style(8 + table_crt, 1, ccs, doc);
+
 
 			/* faculty */
 			doc->cells[8 + table_crt][2].text = strdup(ci->class_faculty);
@@ -647,10 +686,29 @@ cspay_convert_single_file(char *fname)
 			spreadconv_set_cell_style(8 + table_crt, 8, ccs, doc);
 
 			++ table_crt;
+			tmp_sum +=  ci->class_h_end - ci->class_h_start;
 		}
 
 		Dprintf("End rule number: %d\n", class_index);
-
+		if (ci->class_type) {/* e aplicatie*/
+			if (ci->class_role_type == 0)
+				result.aplic.as += tmp_sum;
+			if (ci->class_role_type == 1)
+				result.aplic.conf += tmp_sum;
+			if (ci->class_role_type == 2)
+				result.aplic.sl += tmp_sum;
+			if (ci->class_role_type == 3)
+				result.aplic.prof += tmp_sum;
+		} else {	/* e curs */
+			if (ci->class_role_type == 0)
+				result.course.as += tmp_sum;
+			if (ci->class_role_type == 1)
+				result.course.conf += tmp_sum;
+			if (ci->class_role_type == 2)
+				result.course.sl += tmp_sum;
+			if (ci->class_role_type == 3)
+				result.course.prof += tmp_sum;
+		}
 		++ class_index;
 		free (ci);
 	}
