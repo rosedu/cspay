@@ -54,13 +54,15 @@ static struct cspay_config *cfg;
 static struct tm *month_date;
 static struct table_styles *ts;
 
+static size_t get_first_work_day(time_t start, time_t end, 
+							struct cspay_config *cfg, struct class_info *ci);
 /*
  * citeste configuratia unei ore.
  * In caz ca este gresita configuratia,
  * inexistenta, sau incompleta, este returnat NULL.
  * Altfel, este returnat un pointer catre o
  * structura de tipul class_info;
- */
+ */								
 static struct class_info *read_class_info (size_t index)
 {
 	struct class_info *ci;
@@ -499,6 +501,8 @@ static int create_footer (size_t last_row)
  * FIXME:
  *  * anumite caractere trebuie escapate (&)
  *    sau in libspreadconv trebuie?
+ *
+ * Asta este cea mai importanta din biblioteca
  */
 
 char *
@@ -511,7 +515,6 @@ cspay_convert_single_file(char *fname)
 	time_t month_end;
 	time_t index;
 	size_t table_crt;	/* int vs. size_t ???*/
-	struct tm *tmp_date;
 	char *tmp_str;
 	int ccs;	/* current cell style */
 
@@ -568,26 +571,8 @@ cspay_convert_single_file(char *fname)
 		if (ci == NULL)
 			break;
 
-		/*
-		 * start from first day
-		 * RD: could this happen in a new function?
-		 */
-		tmp_date = localtime(&month_start);
-		tmp_date->tm_mday = 1;
-		index = mktime(tmp_date);
-		while (index < month_end) {
-			if (localtime(&index)->tm_wday == ci->class_day)
-				if (is_work(cfg, index)) {
-					-- ci->class_first_week;
-					if (!ci->class_first_week)
-						break;
-				}
-			index += DAY;
-		}
-		if (index >= month_end) {
-			fprintf(stderr, "Impossible error\n");
-			return NULL;
-		}
+		index = get_first_work_day(month_start, month_end, cfg, ci);
+		
 		Dprintf("First working day is: %d\n",
 					localtime(&index)->tm_mday);
 		
@@ -760,6 +745,33 @@ cspay_free_config(struct cspay_config *cfg)
 	Dprintf("freed cspay_config\n");
 }
 
+/*
+ * afla prima zi de lucru
+ */
+static size_t get_first_work_day(time_t start, time_t end, 
+							struct cspay_config *cfg, struct class_info *ci)
+{
+	struct tm *tmp_date;
+	time_t ret;
+	tmp_date = localtime(&start);
+	tmp_date->tm_mday = 1;
+	ret = mktime(tmp_date);
+	while (ret < end) {
+		if (localtime(&ret)->tm_wday == ci->class_day) {
+			-- ci->class_first_week;
+			if (is_work(cfg, ret)) {
+				if (ci->class_first_week <= 0)
+					break;
+			}
+		}
+		ret += DAY;
+	}
+	if (ret >= end) {
+		fprintf(stderr, "Impossible error\n");
+		return -1;
+	}
+	return ret;
+}
 /*
  * main function for internal testing
  */
