@@ -38,8 +38,23 @@ struct cspay_file_list {
 	char **names;
 };
 
-struct cspay_config *cspay_get_config(void);
-struct cspay_file_list *cspay_convert_options(char *);
+/*
+ * functia intoarce informatiile dintr-un fisier xml
+ * primit ca parametru
+ */
+struct cspay_config *cspay_get_config(char *);
+
+/*
+ * functia intoarce un set de fisere create, in urma
+ * procesarii fisierul ini, primit ca parametru, si a 
+ * unei structuri de configurare, (deobicei itnoarsa de functia)
+ * de mai sus.
+ */
+struct cspay_file_list *cspay_convert_options(struct cspay_config *, char *);
+
+/*
+ * functii pentru eliberare celor doua structuri
+ */
 void cspay_free_file_list(struct cspay_file_list *);
 void cspay_free_config(struct cspay_config *);
 

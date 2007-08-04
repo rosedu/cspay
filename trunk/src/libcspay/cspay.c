@@ -36,17 +36,36 @@ struct class_info {
 	int class_first_week;
 };
 
+struct table_styles {
+	int ce_table;	/* normal cell_table*/
+	int up_table;	/* up bold line */
+	int down_table;	/* bottom bold line*/
+	int right_table;	/* right bold line */
+	int left_table;	/* left bold line */
+	int up_left_corner;	/* up left corner bold*/
+	int up_right_corner;	/* up right corner bold*/
+	int down_left_corner;	/* down left corner bold*/
+	int down_right_corner;	/* down right corner bold*/
+};
+
 static dictionary *ini;
 static struct spreadconv_data *doc;
 static struct cspay_config *cfg;
-static int ce_table;
 static struct tm *month_date;
+static struct table_styles *ts;
 
+/*
+ * citeste configuratia unei ore.
+ * In caz ca este gresita configuratia,
+ * inexistenta, sau incompleta, este returnat NULL.
+ * Altfel, este returnat un pointer catre o
+ * structura de tipul class_info;
+ */
 static struct class_info *read_class_info (size_t index)
 {
 	struct class_info *ci;
 	char class_data[32];
-	char *timeline;
+	char *timeline = NULL;	/* Nu trebuie eliberat! */
 
 	ci = malloc (sizeof (*ci));
 	if (ci == NULL) {
@@ -60,10 +79,11 @@ static struct class_info *read_class_info (size_t index)
 	 * this is how iniparser works
 	 */
 
+	#define STR_LEN_ORE_	4	/* lungimea lui "ore/" */
 	strcpy(class_data, "ore/");
-	sprintf(class_data + strlen("ore/"), "%d", index);
+	ci->section_len = STR_LEN_ORE_;
+	ci->section_len += sprintf(class_data + STR_LEN_ORE_, "%d", (int) index);
 	strcpy (ci->section_name, class_data);
-	ci->section_len = strlen(class_data);	/* FIXME double strlen*/
 	strcat(class_data + ci->section_len, ":");
 	++ ci->section_len;
 
@@ -71,48 +91,48 @@ static struct class_info *read_class_info (size_t index)
 	strcpy(class_data + ci->section_len, "facultate");
 	ci->class_faculty = iniparser_getstr(ini, class_data);
 	if (!ci->class_faculty) {
-		fprintf(stderr, "Nu am gasit facultatea");
-		return NULL;
+		fprintf(stderr, "Error reading \"facultate\" variable.\n");
+		goto READ_ERR;
 	}
 
 	/* get course name */
 	strcpy(class_data + ci->section_len, "disciplina");
 	ci->class_course = iniparser_getstr(ini, class_data);
 	if (!ci->class_course) {
-		fprintf(stderr, "Nu am gasit disciplina");
-		return NULL;
+		fprintf(stderr, "Error reading \"disciplina\" variable.\n");
+		goto READ_ERR;
 	}
 
 	/* get role for that class */
 	strcpy(class_data + ci->section_len, "rol");
 	ci->class_role_type = iniparser_getint(ini, class_data, -1);
 	if (ci->class_role_type < 0) {
-		fprintf(stderr, "Nu am gasit rol\n");
-		return NULL;
+		fprintf(stderr, "Error reading \"rol\" variable.\n");
+		goto READ_ERR;
 	}
 
 	/* get role number for class */
 	strcpy(class_data + ci->section_len, "numar_post");
 	ci->class_role_num = iniparser_getint(ini, class_data, -1);
 	if (ci->class_role_num < 0) {
-		fprintf(stderr, "Nu am gasit rol\n");
-		return NULL;
+		fprintf(stderr, "Error reading \"numar_post\" variable.\n");
+		goto READ_ERR;
 	}
 
 	/* get class type (course/lab) */
 	strcpy(class_data + ci->section_len, "tip_post");
 	ci->class_type = iniparser_getint(ini, class_data, -1);
 	if (ci->class_type < 0) {
-		fprintf(stderr, "Nu am gasit tipul post.\n");
-		return NULL;
+		fprintf(stderr, "Error reading \"tip_post\" variable.\n");
+		goto READ_ERR;
 	}
 
 	/* get group for that class */
 	strcpy(class_data + ci->section_len, "grupa");
 	ci->class_group = iniparser_getstr(ini, class_data);
 	if (!ci->class_group) {
-		fprintf(stderr, "Nu am gasit grupa anul");
-		return NULL;
+		fprintf(stderr, "Error reading \"grupa\" variable.\n");
+		goto READ_ERR;
 	}
 
 	/* get class day */
@@ -120,15 +140,15 @@ static struct class_info *read_class_info (size_t index)
 	ci->class_day = iniparser_getint(ini, class_data, -1);
 	if (ci->class_day < 0){
 		fprintf(stderr, "Error reading \"zi\" variable.\n");
-		return NULL;
+		goto READ_ERR;
 	}
 
 	/* get class timeline */
 	strcpy(class_data + ci->section_len, "ore");
 	timeline = iniparser_getstr(ini, class_data);
 	if (!timeline) {
-		fprintf(stderr, "Nu am gasit grupa anul");
-		return NULL;
+		fprintf(stderr, "Error reading \"ore\" variable.\n");
+		goto READ_ERR;
 	}
 	sscanf(timeline, "%d-%d", &ci->class_h_start, &ci->class_h_end);
 
@@ -136,19 +156,22 @@ static struct class_info *read_class_info (size_t index)
 	strcpy(class_data + ci->section_len, "paritate");
 	ci->class_parity = iniparser_getint(ini, class_data, -1);
 	if (ci->class_parity < 0){
-		fprintf(stderr, "Eroare la paritate\n");
-		return NULL;
+		fprintf(stderr, "Error reading \"paritate\" variable.\n");
+		goto READ_ERR;
 	}
 
 	/* first week */
 	strcpy(class_data + ci->section_len, "paritate_start");
 	ci->class_first_week = iniparser_getint(ini, class_data, -1);
 	if (ci->class_first_week < 0){
-		fprintf(stderr, "Eroare la prima saptamana\n");
-		return NULL;
+		fprintf(stderr, "Error reading \"paritate_start\" variable.\n");
+		goto READ_ERR;
 	}
-
 	return ci;
+
+	READ_ERR:
+	free(ci);
+	return NULL;
 }
 
 /* verifica daca t este zi (perioada) de lucru*/
@@ -169,25 +192,27 @@ cspay_free_file_list(struct cspay_file_list *list)
 	free(list->names);
 	free(list);
 	
-	Dprintf("Am eliberat memoria pentru cspay_file_list\n");
+	Dprintf("freed cspay_file_list\n");
 }		       
 
 struct cspay_config *
-cspay_get_config(void)
+cspay_get_config(char *xml_file_name)
 {
 	/*TODO poate ceva verificari aici?*/
-	return read_cspay_xml("cspay.xml");
+	if (xml_file_name == NULL)
+		xml_file_name = strdup("cspay.xml");
+	return read_cspay_xml(xml_file_name);
 }
 
 static int config_styles (void)
 {
 	/* configure columns */
-	struct spreadconv_cell_style *table;
+	struct spreadconv_cell_style *curr;
 
 	struct spreadconv_rc_style *wide, *narrow;
 	int co_wide, co_narrow;
 
-	Dprintf("Am inceput sa creez stiluri pentru coloane\n");
+	Dprintf("Begin columns styles\n");
 
 	wide = calloc(1, sizeof (struct spreadconv_rc_style));
 	wide->name = strdup("wide_col");
@@ -203,68 +228,193 @@ static int config_styles (void)
 	spreadconv_set_col_style(3, co_wide, doc);
 
 	/* stiluri pentru casute*/
-	Dprintf("Am inceput sa creez stiluri pentru casute\n");
+	/* TABLE STYLES */
+	Dprintf("Begin cells styles\n");
+	ts = malloc(sizeof (struct table_styles));
 
 	/* calloc vs. malloc, calloc wins! */
-	table = calloc(1, sizeof (struct spreadconv_cell_style));
-	table->name = strdup("table_celffl");
-	table->border = strdup("1pt solid #000000");
-	ce_table = spreadconv_add_unique_cell_style(table, doc);
-	if (ce_table < 0){
-		fprintf(stderr, "Eroare la crearea stilui celulelor\n");
-		return -1;
+
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_normal_cell");
+	curr->border = strdup("1pt solid #000000");
+	ts->ce_table = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->ce_table < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_up_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_top = strdup("2pt solid #000000");
+	ts->up_table = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->up_table < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_down_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_bottom = strdup("2pt solid #000000");
+	ts->down_table = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->down_table < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_left_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_left = strdup("2pt solid #000000");
+	ts->left_table = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->left_table < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_right_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_right = strdup("2pt solid #000000");
+	ts->right_table = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->right_table < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
 	}
 
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_up_left_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_top = strdup("2pt solid #000000");
+	curr->border_left = strdup("2pt solid #000000");
+	ts->up_left_corner = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->up_left_corner < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_up_right_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_top = strdup("2pt solid #000000");
+	curr->border_right = strdup("2pt solid #000000");
+	ts->up_right_corner = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->up_right_corner < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_down_left_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_bottom = strdup("2pt solid #000000");
+	curr->border_left = strdup("2pt solid #000000");
+	ts->down_left_corner = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->down_left_corner < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+	curr = calloc(1, sizeof (struct spreadconv_cell_style));
+	curr->name = strdup("table_down_right_cell");
+	curr->border = strdup("1pt solid #000000");
+	curr->border_bottom = strdup("2pt solid #000000");
+	curr->border_right = strdup("2pt solid #000000");
+	ts->down_right_corner = spreadconv_add_unique_cell_style(curr, doc);
+	if (ts->down_right_corner < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
 	return 0;
+
+	ERR_TS:
+	free(ts);
+	return -1;
+
 }
 
 /*
  * create header data for spreadsheet
- * FIXME:
- * 	assert iniparser_getstr
- * 	str* hazards
  */
 
 static int create_header (void)
 {
-	char *val = NULL;
-
+	char *val = NULL;		
+	/* TODO cred ca se poate si cu un singur char* */
 	/* universitatea si faculateatea  */
-	Dprintf("Caut universitatea si facultatea\n");
-	doc->cells[0][0].text = strdup(iniparser_getstr(ini, "antet:universitate"));
-	doc->cells[1][0].text = strdup(iniparser_getstr(ini, "antet:facultate"));
+	Dprintf("I look for university name\n");
+	val = iniparser_getstr(ini, "antet:universitate");
+	if (!val){
+		fprintf(stderr, "Error obatining university name.\n");
+		goto ERR_;
+	}
+	doc->cells[0][0].text = strdup(val);
+
+	Dprintf("I look for faculty name\n");
+	val = iniparser_getstr(ini, "antet:facultate");
+	if (!val){
+		fprintf(stderr, "Error obatining university name.\n");
+		goto ERR_;
+	}
+	doc->cells[1][0].text = strdup(val);
 
 	/* catedra */
-	Dprintf("Caut catedra\n");
-	val = strdup(iniparser_getstr(ini, "antet:catedra"));
-	doc->cells[0][6].text = malloc(strlen(val) + strlen("Catedra ") + 1);
-	strcpy(doc->cells[0][6].text, "Catedra ");
-	strcat(doc->cells[0][6].text, val);
+	#define DEPT_LIMIT	30	/* nr. max. de car. ptr catedra */
+	#define STR_DEPT_SIZE	7	/* strlen("Catedra ") */
+	Dprintf("I look for department\n");
+	val = iniparser_getstr(ini, "antet:catedra");
+	if (!val) {
+		fprintf(stderr, "Error obatining department.\n");
+		goto ERR_;
+	}
+
+	doc->cells[0][6].text = malloc(DEPT_LIMIT);
+	strncpy(doc->cells[0][6].text, "Catedra ", STR_DEPT_SIZE);
+	strncat(doc->cells[0][6].text, val, DEPT_LIMIT - STR_DEPT_SIZE - 1);
 
 	/* luna */
-	Dprintf("Caut luna\n");
+	static char months[12][32] = {
+		{"Ianuarie"},
+		{"Februarie"},
+		{"Martie"},
+		{"Aprilie"},
+		{"Mai"},
+		{"Iunie"},
+		{"Iulie"},
+		{"August"},
+		{"Septembrie"},
+		{"Octombrie"},
+		{"Noiembrie"},
+		{"Decembrie"}
+	};
+	Dprintf("I look for month\n");
 	month_date = calloc(1, sizeof (struct tm));
 	month_date->tm_mon = iniparser_getint(ini, "antet:luna", -1);
 	if (month_date->tm_mon < 0) {
-		fprintf(stderr, "Eroare la obtinerea lunii\n");
+		fprintf(stderr, "Error obtaining month\n");
+		goto ERR_;
 	}
-	doc->cells[1][6].text = malloc(strlen("Luna") + 1);
-	strcpy(doc->cells[1][6].text, "Luna");
-	doc->cells[1][7].text = malloc(12);
-	strftime(doc->cells[1][7].text, 12, "%B", month_date);
-	Dprintf("Am scris luna\n");
+	doc->cells[1][6].text = strdup("Luna ");
+	doc->cells[1][7].text = strdup(months[month_date->tm_mon]);
+
+	Dprintf("I wrote the month\n");
 
 	/* Salvam in month_date data de start a perioadei*/ 
+	if (!localtime(&cfg->sem->start)) {
+		fprintf(stderr, "Error converting date.\n");
+		goto ERR_;     
+	}
 	month_date->tm_year = localtime(&cfg->sem->start)->tm_year;
 	month_date->tm_mday = 1;
 
-	Dprintf("Am aflat anul din semestru\n");
+	Dprintf("I have calculated the year from semester's limits\n");
 
 	/* some header data */
 	doc->cells[3][2].text = strdup("Situatia orelor efectuate de");
 	doc->cells[4][2].text = strdup("cu functia de baza la");
-	doc->cells[3][5].text = strdup(iniparser_getstr(ini, "antet:nume"));
-	
+	val = iniparser_getstr(ini, "antet:nume");
+	if (!val) {
+		fprintf(stderr, "Error obtaining name.\n");
+		goto ERR_;
+	}
+	doc->cells[3][5].text = strdup(val);
+
+
+
 	/* table head */
 	doc->cells[6][0].text = strdup("Nr.");
 	doc->cells[6][1].text = strdup("Felul si");
@@ -272,20 +422,23 @@ static int create_header (void)
 	doc->cells[6][3].text = strdup("Disciplina");
 	doc->cells[6][4].text = strdup("Curs");
 	doc->cells[6][5].text = strdup("Aplicatii");
-	doc->cells[6][5].text = strdup("An/Gr");
-	doc->cells[6][6].text = strdup("Data");
-	doc->cells[6][7].text = strdup("Ore");
+	doc->cells[6][6].text = strdup("An/Gr");
+	doc->cells[6][7].text = strdup("Data");
+	doc->cells[6][8].text = strdup("Ore");
 
 	doc->cells[7][0].text = strdup("crt.");
 	doc->cells[7][1].text = strdup("nr. post");
 
 	return 0;
+	ERR_:
+	return -1;
 }
 
 /*
  * create footer data for spreadsheet
  *
  * TODO: computations ...
+ * 	assert inipaser_getstr
  */
 
 static int create_footer (size_t last_row)
@@ -357,9 +510,10 @@ cspay_convert_single_file(char *fname)
 	time_t month_start;
 	time_t month_end;
 	time_t index;
-	size_t table_crt;
+	size_t table_crt;	/* int vs. size_t ???*/
 	struct tm *tmp_date;
 	char *tmp_str;
+	int ccs;	/* current cell style */
 
 	const char roles[4][14] = {
 			{"as"},
@@ -368,18 +522,16 @@ cspay_convert_single_file(char *fname)
 			{"prof"}
 	};
 
-	Dprintf("Am inceput sa convertesc fisierul\n");
+	Dprintf("Processing ini file\n");
 
-	/* load configuration from XML file (cspay.xml) */
-	cfg = cspay_get_config();
 
 	/* init ini file parsing */
 	ini = iniparser_load(fname);
 	if (!ini) {
-		fprintf(stderr, "Fisier .ini negasit, incercam altul\n");
+		fprintf(stderr, ".ini file not found, try personal.ini\n");
 		ini = iniparser_load("personal.ini");
 		if (!ini){
-			fprintf(stderr, "personal.ini nu a fost gasit\n");
+			fprintf(stderr, "personal.ini not found, bye!\n");
 			return NULL;
 		}
 	}
@@ -410,7 +562,7 @@ cspay_convert_single_file(char *fname)
 	table_crt = 0;
 
 	while (1) {
-		Dprintf("Tratez regula %d\n", class_index);
+		Dprintf("Begin rule number%d\n", class_index);
 
 		ci = read_class_info (class_index);
 		if (ci == NULL)
@@ -433,10 +585,10 @@ cspay_convert_single_file(char *fname)
 			index += DAY;
 		}
 		if (index >= month_end) {
-			fprintf(stderr, "Nu am gasit o prima zi ?\n");
+			fprintf(stderr, "Impossible error\n");
 			return NULL;
 		}
-		Dprintf("Am gasit prima zi in care se va lucra %d\n",
+		Dprintf("First working day is: %d\n",
 					localtime(&index)->tm_mday);
 		
 		/*
@@ -449,38 +601,32 @@ cspay_convert_single_file(char *fname)
 				continue;
 
 			/* row index in table */
+			if (table_crt == 0) {
+				ccs = ts->up_left_corner;
+			} else {
+				ccs = ts->left_table;
+			}
 			doc->cells[8 + table_crt][0].text = malloc(4);
-			sprintf(doc->cells[8 + table_crt][0].text, "%d", table_crt + 1);
-			spreadconv_set_cell_style(8 + table_crt, 0, ce_table, doc);
+			sprintf(doc->cells[8 + table_crt][0].text, "%d", (int) table_crt + 1);
+			spreadconv_set_cell_style(8 + table_crt, 0, ccs, doc);
 
 			/* role type and number */
+			if (table_crt == 0){
+				ccs = ts->up_table;
+			} else {
+				ccs = ts->ce_table;
+			}
 			doc->cells[8 + table_crt][1].text = malloc(10);
 			sprintf(doc->cells[8 + table_crt][1].text, "%s%d", roles[ci->class_role_type], ci->class_role_num);
-			spreadconv_set_cell_style(8 + table_crt, 1, ce_table, doc);
+			spreadconv_set_cell_style(8 + table_crt, 1, ccs, doc);
 
-			/* facultaty */
+			/* faculty */
 			doc->cells[8 + table_crt][2].text = strdup(ci->class_faculty);
-			spreadconv_set_cell_style(8 + table_crt, 2, ce_table, doc);
+			spreadconv_set_cell_style(8 + table_crt, 2, ccs, doc);
 
 			/* course */
 			doc->cells[8 + table_crt][3].text = strdup(ci->class_course);
-			spreadconv_set_cell_style(8 + table_crt, 3, ce_table, doc);
-
-			/* group */
-			doc->cells[8 + table_crt][6].text = strdup(ci->class_group);
-			spreadconv_set_cell_style(8 + table_crt, 6, ce_table, doc);
-
-			/* date */
-			doc->cells[8 + table_crt][7].text = malloc(20);
-			strftime(doc->cells[8 + table_crt][7].text, 19, "%d-%b", localtime(&index));
-			spreadconv_set_cell_style(8 + table_crt, 7, ce_table, doc);
-				
-			/* FIXME: no validation on class timeline */
-			tmp_str = malloc (10);
-			sprintf (tmp_str, "%d-%d", ci->class_h_start,
-					ci->class_h_end);
-			doc->cells[8 + table_crt][8].text = tmp_str;
-			spreadconv_set_cell_style(8 + table_crt, 8, ce_table, doc);
+			spreadconv_set_cell_style(8 + table_crt, 3, ccs, doc);
 
 			if (ci->class_type) {/* e aplicatie */
 				doc->cells[8 + table_crt][5].value_type = strdup("float");
@@ -491,37 +637,66 @@ cspay_convert_single_file(char *fname)
 				doc->cells[8 + table_crt][4].text = malloc(4);
 				sprintf(doc->cells[8 + table_crt][4].text, "%d", ci->class_h_end - ci->class_h_start);
 			}
-			spreadconv_set_cell_style(8 + table_crt, 4, ce_table, doc);
-			spreadconv_set_cell_style(8 + table_crt, 5, ce_table, doc);
+			spreadconv_set_cell_style(8 + table_crt, 4, ccs, doc);
+			spreadconv_set_cell_style(8 + table_crt, 5, ccs, doc);
+
+			/* group */
+			doc->cells[8 + table_crt][6].text = strdup(ci->class_group);
+			spreadconv_set_cell_style(8 + table_crt, 6, ccs, doc);
+
+			/* date */
+			doc->cells[8 + table_crt][7].text = malloc(20);
+			strftime(doc->cells[8 + table_crt][7].text, 19, "%d-%b", localtime(&index));
+			spreadconv_set_cell_style(8 + table_crt, 7, ccs, doc);
+				
+			/* FIXME: no validation on class timeline */
+			if (table_crt == 0) {
+				ccs = ts->up_right_corner;
+			} else {
+				ccs = ts->right_table;
+			}
+			tmp_str = malloc (10);
+			sprintf (tmp_str, "%d-%d", ci->class_h_start,
+					ci->class_h_end);
+			doc->cells[8 + table_crt][8].text = tmp_str;
+			spreadconv_set_cell_style(8 + table_crt, 8, ccs, doc);
 
 			++ table_crt;
 		}
 
-		Dprintf("Am terminat regula %d\n", class_index);
+		Dprintf("End rule number: %d\n", class_index);
 
 		++ class_index;
 		free (ci);
 	}
-
+	
+	spreadconv_set_cell_style(8 + table_crt - 1, 0, ts->down_left_corner, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 1, ts->down_table, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 2, ts->down_table, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 3, ts->down_table, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 4, ts->down_table, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 5, ts->down_table, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 6, ts->down_table, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 7, ts->down_table, doc);
+	spreadconv_set_cell_style(8 + table_crt - 1, 8, ts->down_right_corner, doc);
 	/* create spreadsheet footer */
 	create_footer (table_crt + 8);
 
 	spreadconv_dir_name = strdup("./out/");
 
-	Dprintf("Am inceput sa creez fisierul output\n");
+	Dprintf("Begin output file\n");
 
 	ods_fname = spreadconv_create_spreadsheet(doc, LSC_FILE_ODS);
 	if (!ods_fname) {
-		fprintf(stderr, "Eroare la creaarea fisierului ods\n");
+		fprintf(stderr, "Error creating .ods file\n");
 		return NULL;
 	} else {
-		Dprintf("Am creat %s\n\n", name);
+		Dprintf("Output: %s\n\n", name);
 	}
 
 	spreadconv_free_spreadconv_data(doc);
 	iniparser_freedict(ini);
 	free(spreadconv_dir_name);
-	cspay_free_config(cfg);
 
 	return ods_fname;
 }
@@ -540,7 +715,7 @@ is_work(struct cspay_config *cfg, time_t t)
 }
 
 struct cspay_file_list *
-cspay_convert_options(char *fname)
+cspay_convert_options(struct cspay_config *config, char *fname)
 {
 	/* tipul functiei cred ca e gresit */
 	/*
@@ -551,7 +726,8 @@ cspay_convert_options(char *fname)
 
 	struct cspay_file_list *ret;
 	char *temp;
-
+	
+	cfg = config; /* FIXME ugly! cfg is global */
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 1;
 	ret->names = malloc(sizeof (char *));
@@ -581,7 +757,7 @@ cspay_free_config(struct cspay_config *cfg)
 	free(cfg->univ_name);				
 	free(cfg);
 	
-	Dprintf("Am eliberat memoria pentru cspay_config\n");
+	Dprintf("freed cspay_config\n");
 }
 
 /*
@@ -592,10 +768,14 @@ int
 main(void)
 {
 	struct cspay_file_list *res;
+	struct cspay_config *cf;
+	cf = cspay_get_config(NULL);
 
-	res = cspay_convert_options("personal.ini");
+	
+	res = cspay_convert_options(cf, "personal.ini");
 	if (res)
 		printf("A fost creat fisierul: %s.ods\n", res->names[0]);
+	cspay_free_config(cf);
 	cspay_free_file_list(res);
 
 	return 0;
