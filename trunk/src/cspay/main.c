@@ -4,9 +4,10 @@
 */
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include<time.h>
-#include "../libcspay/cspay.h"
-
+//#include "../libcspay/cspay.h"
+#include "E:\CSpay\trunk\src\libcspay"
 void 
 usage(void)
 {
@@ -28,19 +29,24 @@ int
 main( int argc, char **argv )
 {	
     int i;
+    char *inif,*xmlf;
     struct cspay_file_list *lista;
 	struct cspay_config *cf;
 	if( argv[0]=="-n")
     { 
         //mod neinteractiv 
         if (strcmp(argv[1],"-x")==0 && argv[2][0]!='-')
-        {
-            cf=cspay_get_config(argv[1]);
+        {   
+            //xmlf=(char*)malloc(strlen(argv[2]));
+            //strcpy(xmlf,argv[2]);
+            cf=cspay_get_config(xmlf);
+            printf("xml functional");
                     if(strcmp(argv[3],"-f")==0 && argv[4][0]!='-')
                        {
                         lista = cspay_convert_options( cf, argv[3]);
 		    		          for( i = 0; i < lista->nr; i++)
 		                           printf( lista->names[i] );
+                        printf("ini functional");
                        }
                        else usage();
         }
