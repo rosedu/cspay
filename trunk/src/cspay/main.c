@@ -22,7 +22,7 @@ usage(void)
      printf("been previously created through the GUI or the Web interface\n");
      printf("The correct syntax for the non-interactive usage is:\n");
      printf("cspay -n -x <xml file name> -f <ini file name>");
-     return 1;
+     exit(1);
 }
 int
 main( int argc, char **argv )
@@ -33,12 +33,12 @@ main( int argc, char **argv )
 	if( argv[0]=="-n")
     { 
         //mod neinteractiv 
-        if (argv[1]=='-x' && argv[2][0]!='-')
+        if (strcmp(argv[1],"-x")==0 && argv[2][0]!='-')
         {
             cf=cspay_get_config(argv[1]);
-                    if(argv[3]=='-x' && argv[4][0]!='-')
+                    if(strcmp(argv[3],"-f")==0 && argv[4][0]!='-')
                        {
-                        lista = cspay_convert_options( argv[1] , cf);
+                        lista = cspay_convert_options( cf, argv[3]);
 		    		          for( i = 0; i < lista->nr; i++)
 		                           printf( lista->names[i] );
                        }
@@ -51,7 +51,7 @@ main( int argc, char **argv )
          if( argv[0]=="-i")
          {
          //mod interactiv
-         if (argv[1]=='-x' && argv[2][0]!='-')
+         if (strcmp(argv[1],"-x")==0 && argv[2][0]!='-')
         {
             cf=cspay_get_config(argv[1]);
         }
