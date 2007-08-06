@@ -1,15 +1,17 @@
-CFLAGS = -Wall 
+# CL: nu se poate si mai simplu de atat?
+#
+CFLAGS = -Wall `xml2-config --cflags`
+LDFLAGS = -L. -L../libcspay `xml2-config --libs` -L../libspreadconv -L../iniparser-2.17
+LDLIBS = -lcspay -lspreadconv -liniparser
+
 SRC = main.c
 BIN = cspay
 OBJ = $(SRC:.c=.o)
 
 all: $(BIN)
 
-cspay:
-	gcc $(OBJ) -o $(BIN)
-	
 $(BIN): $(OBJ)
-
+	gcc $(OBJ) $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o $(BIN)
 .PHONY: clean
 clean: 
 	-rm -f $(BIN)

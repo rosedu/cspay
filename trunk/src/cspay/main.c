@@ -6,8 +6,10 @@
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
-//#include "../libcspay/cspay.h"
-#include "E:\CSpay\trunk\src\libcspay"
+#include "../libcspay/cspay.h"
+#if 0	/* win 32 ?*/
+#	include "E:\CSpay\trunk\src\libcspay"
+#endif
 void 
 usage(void)
 {
