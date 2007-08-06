@@ -833,7 +833,7 @@ static size_t get_first_work_day(time_t start, time_t end,
 /*
  * main function for internal testing
  */
-
+#if 0
 int 
 main(void)
 {
@@ -850,3 +850,4 @@ main(void)
 
 	return 0;
 }
+#endif
