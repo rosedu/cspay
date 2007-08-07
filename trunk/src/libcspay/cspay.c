@@ -454,7 +454,7 @@ static int create_footer (size_t last_row)
 {
 	char formula[32];
 	char *tmp_ini_val;
-	sprintf(formula, "=sum(E9:F%d)", (int) last_row - 1);
+	sprintf(formula, "=sum(E9:F%d)", (int) last_row);
 	doc->cells[last_row][7].text = strdup("Total:");
 	doc->cells[last_row][8].value_type = strdup("formula");
 	doc->cells[last_row][8].text= strdup(formula);
