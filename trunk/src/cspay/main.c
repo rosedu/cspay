@@ -35,7 +35,7 @@ main( int argc, char **argv )
     struct cspay_file_list *lista;
 	struct cspay_config *cf;
 	for(i=0;i<argc;i++)
-       printf("%s %d ",argv[i],i);
+       printf("%c %d ",argv[i][0],i);
 	if( argv[1]=="-n")
     { 
         //mod neinteractiv 
