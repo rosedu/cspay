@@ -34,7 +34,7 @@ main( int argc, char **argv )
     char *inif,*xmlf;
     struct cspay_file_list *lista;
 	struct cspay_config *cf;
-	if(strcmp(argv[1],"-n")==0 && argc==4)
+	if(strcmp(argv[1],"-n")==0 && argc==5)
     { 
         printf("non-interactive\n");
         //mod neinteractiv 
@@ -57,7 +57,7 @@ main( int argc, char **argv )
 	}
 	else 
 	     {
-         if(strcmp(argv[1],"-i")==0 && argc==2)
+         if(strcmp(argv[1],"-i")==0 && argc==3)
          {
          printf("interactive\n");
          //mod interactiv
