@@ -35,19 +35,19 @@ main( int argc, char **argv )
     struct cspay_file_list *lista;
 	struct cspay_config *cf;
 	for(i=0;i<argc;i++)
-       printf("%s",argv[i]);
-	if( argv[0]=="-n")
+       printf("%s ",argv[i]);
+	if( argv[1]=="-n")
     { 
         //mod neinteractiv 
-        if (strcmp(argv[1],"-x")==0 && argv[2][0]!='-')
+        if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-')
         {   
             //xmlf=(char*)malloc(strlen(argv[2]));
             //strcpy(xmlf,argv[2]);
             cf=cspay_get_config(xmlf);
             printf("xml functional");
-                    if(strcmp(argv[3],"-f")==0 && argv[4][0]!='-')
+                    if(strcmp(argv[4],"-f")==0 && argv[5][0]!='-')
                        {
-                        lista = cspay_convert_options( cf, argv[3]);
+                        lista = cspay_convert_options( cf, argv[4]);
 		    		          for( i = 0; i < lista->nr; i++)
 		                           printf( lista->names[i] );
                         printf("ini functional");
@@ -58,10 +58,10 @@ main( int argc, char **argv )
 	}
 	else 
 	     {
-         if( argv[0]=="-i")
+         if( argv[1]=="-i")
          {
          //mod interactiv
-         if (strcmp(argv[1],"-x")==0 && argv[2][0]!='-')
+         if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-')
         {
             cf=cspay_get_config(argv[1]);
         }
