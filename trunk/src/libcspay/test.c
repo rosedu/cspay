@@ -14,6 +14,7 @@ main()
 	cfg = cspay_get_config(NULL);
 	fl = cspay_convert_options(cfg, "personal.ini");
 	cspay_free_config(cfg);
+	printf("Creat: %s\n", fl->names[0]);
 	cspay_free_file_list(fl);
 	return 0;
 }

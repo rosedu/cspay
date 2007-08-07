@@ -211,7 +211,6 @@ cspay_free_file_list(struct cspay_file_list *list)
 struct cspay_config *
 cspay_get_config(char *xml_file_name)
 {
-	/*TODO poate ceva verificari aici?*/
 	if (xml_file_name == NULL)
 		xml_file_name = strdup("cspay.xml");
 	return read_cspay_xml(xml_file_name);
@@ -449,18 +448,16 @@ static int create_header (void)
 
 /*
  * create footer data for spreadsheet
- *
- * TODO: computations ...
- * 	assert inipaser_getstr
  */
 
 static int create_footer (size_t last_row)
 {
 	char formula[32];
+	char *tmp_ini_val;
 	sprintf(formula, "=sum(E9:F%d)", (int) last_row - 1);
 	doc->cells[last_row][7].text = strdup("Total:");
 	doc->cells[last_row][8].value_type = strdup("formula");
-	doc->cells[last_row][8].text= strdup("=sum(E9:F50)");
+	doc->cells[last_row][8].text= strdup(formula);
 	last_row += 2;
 
 	doc->cells[last_row][1].text = strdup("TOTAL ore:");
@@ -514,6 +511,8 @@ static int create_footer (size_t last_row)
 	/*
 	 * TODO: indexes for the faculty in the cfg->fac array
 	 * and for the department in the cfg->fac[i]->depts arraty
+	 *
+	 * De ce, informatia vine din personal.ini?
 	 */
 
 #if 0
@@ -521,18 +520,26 @@ static int create_footer (size_t last_row)
 	doc->cells[last_row+7][6].text =
 		strdup(cfg->fac[f_index]->depts[d_index].chief);
 #endif
+/*
+ * TODO titular curs? ce-i cu el?
+ */
+	tmp_ini_val = iniparser_getstr(ini, "antet:decan");
+	if (!tmp_ini_val) {
+		fprintf(stderr, "Nu am gasit decanul.\n");
+	} else {
+		doc->cells[last_row][6].text = strdup(tmp_ini_val);
+	}
 
+	tmp_ini_val = iniparser_getstr(ini, "antet:sef_catedra");
+	if (!tmp_ini_val) {
+		fprintf(stderr, "Nu am gasit sefcatedra.\n");
+	} else {
+		doc->cells[last_row][4].text = strdup(tmp_ini_val);
+	}
 	return 0;
 }
 
 /*
- * TODO:
- *  * eliberari de memorie, in caz de eroare
- *  * initilizarea pointerilor, cu goto
- * FIXME:
- *  * anumite caractere trebuie escapate (&)
- *    sau in libspreadconv trebuie?
- *
  * Asta este cea mai importanta din biblioteca
  */
 
@@ -830,24 +837,3 @@ static size_t get_first_work_day(time_t start, time_t end,
 	}
 	return ret;
 }
-/*
- * main function for internal testing
- */
-#if 0
-int 
-main(void)
-{
-	struct cspay_file_list *res;
-	struct cspay_config *cf;
-	cf = cspay_get_config(NULL);
-
-	
-	res = cspay_convert_options(cf, "personal.ini");
-	if (res)
-		printf("A fost creat fisierul: %s.ods\n", res->names[0]);
-	cspay_free_config(cf);
-	cspay_free_file_list(res);
-
-	return 0;
-}
-#endif
