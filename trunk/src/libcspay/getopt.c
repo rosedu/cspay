@@ -227,7 +227,7 @@ void
 cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 {
 	xmlAttr *prop;
-	Dprintf("Begin universitate\n")
+	Dprintf("Begin universitate\n");
 	for (prop=node->properties; prop; prop=prop->next)
 		if (prop->type == XML_ATTRIBUTE_NODE)
 			if (!xmlStrcmp(prop->name, (xmlChar *)"nume")){

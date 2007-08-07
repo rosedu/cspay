@@ -21,7 +21,7 @@
 #include <sys/stat.h>
 
 #include "spreadconv.h"
-#include "debug.h"
+//#include "debug.h"
 
 /** Global external error code */
 /*

@@ -70,6 +70,9 @@ main(void)
 	d->cells[0][2].value_type = strdup("formula");
 	d->cells[0][2].text = strdup("=sum(A1:B1)");
 
+	d->cells[0][3].text = "ceva maaaaaareeeeeeeeeeee";
+	d->cells[0][4].text = "altceva";
+
 	spreadconv_dir_name = strdup("/tmp/libspreadconv");
 	name = spreadconv_create_spreadsheet(d, LSC_FILE_ODS);
 	if (name == 0) {

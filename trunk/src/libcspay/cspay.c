@@ -734,7 +734,7 @@ cspay_convert_single_file(char *fname)
 		fprintf(stderr, "Error creating .ods file\n");
 		return NULL;
 	} else {
-		Dprintf("Output: %s\n\n", name);
+		Dprintf("Output: %s\n\n", ods_fname);
 	}
 
 	spreadconv_free_spreadconv_data(doc);
