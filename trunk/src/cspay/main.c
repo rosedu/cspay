@@ -69,7 +69,7 @@ main( int argc, char **argv )
 		 printf("Not yet");
 		 exit(-1);
 	     }
-	     else usage();
+	     else { printf("\n\nTEST!!!\n\n"); usage();}
          }
 	return 0;
 }
