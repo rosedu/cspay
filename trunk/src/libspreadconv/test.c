@@ -20,7 +20,7 @@ main(void)
 	int ce1, ce2, co1;
 	char *name;
 
-	d = spreadconv_new_spreadconv_data("Date", 5, 5);
+	d = spreadconv_new_spreadconv_data("Date", 50, 5);
 	if (d == 0) {
 		perror("spreadconv_new_spreadconv_data");
 		return errno;
@@ -70,8 +70,16 @@ main(void)
 	d->cells[0][2].value_type = strdup("formula");
 	d->cells[0][2].text = strdup("=sum(A1:B1)");
 
-	d->cells[0][3].text = "ceva maaaaaareeeeeeeeeeee";
-	d->cells[0][4].text = "altceva";
+	d->cells[0][3].text = strdup("ceva maaaaaareeeeeeeeeeee");
+	d->cells[0][4].text = strdup("altceva");
+
+	d->cells[1][0].text = strdup("Testing escape sequences:");
+	d->cells[2][0].text = strdup("\'");
+	d->cells[3][0].text = strdup("\"");
+	d->cells[4][0].text = strdup("\\");
+	d->cells[5][0].text = strdup("a\nb");
+	d->cells[6][0].text = strdup("a&c");
+	d->cells[7][0].text = strdup("<test>");
 
 	spreadconv_dir_name = strdup("/tmp/libspreadconv");
 	name = spreadconv_create_spreadsheet(d, LSC_FILE_ODS);

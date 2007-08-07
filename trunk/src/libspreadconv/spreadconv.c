@@ -23,13 +23,6 @@
 #include "spreadconv.h"
 #include "debug.h"
 
-/** Global external error code */
-/*
- * RD: $ cat /usr/include/errno.h | grep errno
- * No need for variable declaration
- */
-/*extern int errno;*/
-
 /**
  * XML namespace declaration. An XML namespace--URL pair.
  * \todo This type should be hidden. Apparently static has no effect in
@@ -60,57 +53,66 @@ static const struct spreadconv_xml_namespace xml_namespaces[] = {
 	{ "dc", "http://purl.org/dc/elements/1.1" }
 };
 
+/**
+ * Converts a number to its representation in `spreadsheet speak' :-P
+ * \remarks Since we number columns and rows beginning with 0, this
+ * should just be a base 26 conversion of the number, with `digits'
+ * being A-Z.
+ * TODO: Test this out. Alas, I must see which car passes through the
+ * intersection second :-(
+ */
 char *
 spreadconv_convert_column_number(int n)
 {
-	/*
-	int max_value, string_length;
-	char *text;
-	
-	if (n <= 0)
-		return 0;
-		
-	for (max_value=26, string_length=1; 
-			n > max_value;
-			max_value *= 27, string_length++)
-		;
-	
-	text = malloc(string_length+1);
-	if (text == 0) 
-		return 0;
+	int len, i;
+	char *temp = malloc (100); /* sufficiently big */
+	char *result = 0;
 
-	text[string_length] = 0;
-	for (; string_length>=1; string_length--) {
-		text[string_length-1] = (n-1) % 26 + 'A';
-		n = (n-1) / 26;
+	len = 0;
+	while (n) {
+		temp[len++] = 'A' + (n % 26);
+		n /= 26;
 	}
 
-	return text;
-	*/
+	result = malloc(len + 1);
+	for (i = 0; i < len; i++)
+		result[i] = temp[len-i-1];
+	result[len] = 0;
 
-	/*
-	 * Please pardon the retarded attempts. This should be nothing
-	 * more than a conversion to base 26 of the number (n-1).
-	 */
-	char *text = malloc(100); /* sufficient size */
-	char *result;
-	int k=0;
-
-	if (text == 0)
-		return 0;
-
-	do {
-		n--;
-		text[k] = n%26 + 'A' ;
-		n /= 26;
-		k++;
-	} while (n != 0);
-
-	result = realloc(result, k+1);
-	if (result == 0) 
-		return 0;
+	free(temp);
 	return result;
 }
+
+/**
+ * Inline function to print an escaped character sequence to a stream.
+ * \param f The file stream
+ * \param s The string
+ * \remarks Hopefully I have understood the use of \c inline.
+ */
+static inline void print_escaped(FILE *f, char *s)
+{
+	while (*s) {
+		/* The commented out cases appear at my reference
+		 * point[1], but don't work with the test file.
+		 * http://www.codecodex.com/wiki/index.php?title=Escape_sequences_and_escape_characters#XML
+		 * What's more, backslashes and newlines seem to be
+		 * correctly handled without being escaped. Leaving this
+		 * here only serves hypothetical further inquiry.
+		 */
+		switch (*s) {
+			case '\'': fprintf(f, "&apos;"); break;
+			case '\"': fprintf(f, "&quot;"); break;
+			/* case '\\': fprintf(f, "\\\\"); break; */
+			/* case '\n': fprintf(f, "\\n"); break; */
+			case '&':  fprintf(f, "&amp;"); break;
+			case '<':  fprintf(f, "&lt;"); break;
+			case '>':  fprintf(f, "&gt;"); break;
+			default: fprintf(f, "%c", *s);
+		}
+		s++;
+	}
+}
+
 
 /**
  * Prints all the needed namespaces to a stream. The namespaces are
@@ -287,17 +289,19 @@ create_meta_file(struct spreadconv_data *data)
 static void
 print_rc_style(struct spreadconv_rc_style *style, FILE *f)
 {
-	fprintf(f, "<style:style style:name=\"\%s\" ", style->name);
+	fprintf(f, "<style:style style:name=\"");
+	print_escaped(f, style->name);
+	fprintf(f, "\" ");
 	if (style->type == LSC_STYLE_ROW) {
 		fprintf(f, "style:family=\"table-row\">\n");
-		fprintf(f, "<style:table-row-properties style:row-height=\"%s\" />\n",
-				style->size);
+		fprintf(f, "<style:table-row-properties style:row-height=\"");
 	} else {
 		/* assuming LSC_STYLE_COLUMN */
 		fprintf(f, "style:family=\"table-column\">\n");
-		fprintf(f, "<style:table-column-properties style:column-width=\"%s\" />\n",
-				style->size);
+		fprintf(f, "<style:table-column-properties style:column-width=\"");
 	}
+	print_escaped(f, style->size);
+	fprintf(f, "\" />\n");
 	fprintf(f, "</style:style>\n");
 }
 
@@ -309,21 +313,41 @@ print_rc_style(struct spreadconv_rc_style *style, FILE *f)
 static void
 print_cell_style(struct spreadconv_cell_style *style, FILE *f)
 {
-	fprintf(f, "<style:style style:name=\"%s\" ", style->name);
+	fprintf(f, "<style:style style:name=\"");
+	print_escaped(f, style->name);
+	fprintf(f, "\" ");
 	fprintf(f, "style:family=\"table-cell\">\n");
 	fprintf(f, "<style:table-cell-properties ");
-	if (style->valign != 0) 
-		fprintf(f, "style:vertical-align=\"%s\" ", style->valign);
-	if (style->border != 0)
-		fprintf(f, "fo:border=\"%s\" ", style->border);
-	if (style->border_top != 0)
-		fprintf(f, "fo:border-top=\"%s\" ", style->border_top);
-	if (style->border_bottom != 0)
-		fprintf(f, "fo:border-bottom=\"%s\" ", style->border_bottom);
-	if (style->border_left != 0)
-		fprintf(f, "fo:border-left=\"%s\" ", style->border_left);
-	if (style->border_right != 0)
-		fprintf(f, "fo:border-right=\"%s\" ", style->border_right);
+	if (style->valign != 0) {
+		fprintf(f, "style:vertical-align=\"");
+		print_escaped(f, style->valign);
+		fprintf(f, "\" ");
+	}
+	if (style->border != 0) {
+		fprintf(f, "fo:border=\"");
+		print_escaped(f, style->border);
+		fprintf(f, "\" ");
+	}
+	if (style->border_top != 0) {
+		fprintf(f, "fo:border-top=\"");
+		print_escaped(f, style->border_top);
+		fprintf(f, "\" ");
+	}
+	if (style->border_bottom != 0) {
+		fprintf(f, "fo:border-bottom=\"");
+		print_escaped(f, style->border_bottom);
+		fprintf(f, "\" ");
+	}
+	if (style->border_left != 0) {
+		fprintf(f, "fo:border-left=\"");
+		print_escaped(f, style->border_left);
+		fprintf(f, "\" ");
+	}
+	if (style->border_right != 0) {
+		fprintf(f, "fo:border-right=\"");
+		print_escaped(f, style->border_left);
+		fprintf(f, "\" ");
+	}
 	fprintf(f, "/>\n");
 	fprintf(f, "</style:style>\n");
 }
@@ -342,27 +366,37 @@ print_table_cell(struct spreadconv_cell *cell, FILE *f)
 		cell->text = strdup("");
 
 	fprintf(f, "<table:table-cell ");
-	if (cell->style != 0) 
-		fprintf(f, "table:style-name=\"%s\" ", cell->style->name);
+	if (cell->style != 0) {
+		fprintf(f, "table:style-name=\"");
+		print_escaped(f, cell->style->name);
+		fprintf(f, "\" ");
+	}
 
 	if ((cell->value_type == NULL) || 
 			(strncmp(cell->value_type, "string", strlen("string")) == 0)) {
 		fprintf(f, ">\n");
-		fprintf(f, "<text:p>%s</text:p>\n", cell->text?cell->text:"");
+		fprintf(f, "<text:p>");
+		print_escaped(f, cell->text);
+		fprintf(f, "</text:p>\n");
 		fprintf(f, "</table:table-cell>\n");
 		return;
 	}
 
 	if (strncmp(cell->value_type, "formula", strlen("formula")) == 0) {
-		fprintf(f, "table:formula=\"%s\" />\n", cell->text);
+		fprintf(f, "table:formula=\"");
+		print_escaped(f, cell->text);
+		fprintf(f, "\" />\n");
 		return;
 	}
 
 	if (strncmp(cell->value_type, "float", strlen("float")) == 0) {
 		fprintf(f, "office:value-type=\"float\" ");
 		fprintf(f, "office:value=\"%s\">\n", cell->text);
-		fprintf(f, "<text:p>%s</text:p>\n", cell->text);
-		fprintf(f, "</table:table-cell>\n");
+		fprintf(f, "office:value=\"");
+		print_escaped(f, cell->text);
+		fprintf(f, "\">\n<text:p>");
+		print_escaped(f, cell->text);
+		fprintf(f, "</text:p>\n</table:table-cell>\n");
 		return;
 	}
 
@@ -415,18 +449,22 @@ create_content_file(struct spreadconv_data *data)
 	/* print the columns */
 	for (i=0; i<data->n_cols; i++) {
 		fprintf(f, "<table:table-column ");
-		if (data->col_styles[i] != 0)
-			fprintf(f, "table:style-name=\"%s\" ", 
-					data->col_styles[i]->name);
+		if (data->col_styles[i] != 0) {
+			fprintf(f, "table:style-name=\"");
+			print_escaped(f, data->col_styles[i]->name);
+			fprintf(f, "\" ");
+		}
 		fprintf(f, "/>\n");
 	}
 
 	/* print the rows, each with the associated cells */
 	for (i=0; i<data->n_rows; i++) {
 		fprintf(f, "<table:table-row ");
-		if (data->row_styles[i] != 0)
-			fprintf(f, "table:style-name=\"%s\" ",
-					data->row_styles[i]->name);
+		if (data->row_styles[i] != 0) {
+			fprintf(f, "table:style-name=\"");
+			print_escaped(f, data->row_styles[i]->name);
+			fprintf(f, "\" ");
+		}
 		fprintf(f, ">\n");
 		
 		for (j=0; j<data->n_cols; j++)
@@ -499,7 +537,11 @@ spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 	rename(buffer, buffer2);
 
 	chdir("..");
-	remove(dirname);
+	/* 
+	 * This doesn't work. Directory remains there. Dammit.
+	 */
+	if (remove(dirname) != 0)
+		perror("libspreadconv: create_spreadsheet");
 	
 	chdir(prev_dir);
 	free(buffer);
