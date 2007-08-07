@@ -38,19 +38,20 @@ main( int argc, char **argv )
        printf("%c %d ",argv[i][0],i);
 	if( argv[1]=="-n")
     { 
+        printf("non-interactive\n");
         //mod neinteractiv 
         if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-')
         {   
             //xmlf=(char*)malloc(strlen(argv[2]));
             //strcpy(xmlf,argv[2]);
             cf=cspay_get_config(xmlf);
-            printf("xml functional");
+            printf("xml functional\n");
                     if(strcmp(argv[4],"-f")==0 && argv[5][0]!='-')
                        {
                         lista = cspay_convert_options( cf, argv[4]);
 		    		          for( i = 0; i < lista->nr; i++)
 		                           printf( lista->names[i] );
-                        printf("ini functional");
+                        printf("ini functional\n");
                        }
                        else usage();
         }
@@ -60,6 +61,7 @@ main( int argc, char **argv )
 	     {
          if( argv[1]=="-i")
          {
+         printf("interactive\n");
          //mod interactiv
          if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-')
         {
