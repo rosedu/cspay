@@ -20,6 +20,8 @@ if( !is_array($_POST['tip_fisier']) )
 	$_POST['tip_fisier'] = array( 'odt' );
 $_POST['catedra'] = $_POST[$_POST['facultate'].'_catedre'];
 
+##TODO: obtine sefcatedra!!! din cspay.xml sau transmite-l din model-form;)
+
 # scriu un model personal.ini cu date reale
 fwrite($file, "[antet]\n".
 	"nume=$_POST[nume]\n".
@@ -28,19 +30,20 @@ fwrite($file, "[antet]\n".
 	"facultate=$_POST[facultate]\n".
 	"decan=$_POST[decan]\n".
 	"catedra=$_POST[catedra]\n".
-	"sefcatedra=$_POST[sefcatedra]\n".
+	"sef_catedra=\n".
+	"luna=$_POST[luna]\n".
 	"tip_fisier=".implode(',',$_POST['tip_fisier'])."\n\n");
 // fwrite($file, "[ore]\n"); # nu mai este necesar
 $i = 1;
 foreach( $_POST[orar] as $o) {
 	fwrite($file, "\n[ore/$i]\n".
-	"zi=$o[zi]\n".
 	"facultate=$o[facultatea]\n".
 	"disciplina=$o[disciplina]\n".
 	"rol=$o[felpost]\n".   			#TODO: transform c,a,...in 1,2,3...
 	"numar_post=$o[numarpost]\n".
 	"tip_post=$o[tipora]\n".
 	"grupa=$o[grupa]\n".
+	"zi=$o[zi]\n".
 	"ore=$o[ore]\n".
 	"paritate=$o[paritate]\n".
 	"paritate_start=$o[paritate_prima]\n");
