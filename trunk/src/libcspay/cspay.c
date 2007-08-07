@@ -366,7 +366,7 @@ static int create_header (void)
 
 	/* catedra */
 	#define DEPT_LIMIT	30	/* nr. max. de car. ptr catedra */
-	#define STR_DEPT_SIZE	7	/* strlen("Catedra ") */
+	#define STR_DEPT_SIZE	8	/* strlen("Catedra ") */
 	Dprintf("I look for department\n");
 	val = iniparser_getstr(ini, "antet:catedra");
 	if (!val) {
@@ -375,7 +375,7 @@ static int create_header (void)
 	}
 
 	doc->cells[0][6].text = malloc(DEPT_LIMIT);
-	strncpy(doc->cells[0][6].text, "Catedra ", STR_DEPT_SIZE);
+	strcpy(doc->cells[0][6].text, "Catedra ");
 	strncat(doc->cells[0][6].text, val, DEPT_LIMIT - STR_DEPT_SIZE - 1);
 
 	/* luna */
