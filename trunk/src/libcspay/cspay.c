@@ -232,7 +232,7 @@ static int config_styles (void)
 	wide->size = strdup("5cm");
 	co_wide = spreadconv_add_unique_rc_style(wide, doc);
 
-	narrow = malloc(sizeof (struct spreadconv_rc_style));
+	narrow = calloc(1, sizeof (struct spreadconv_rc_style));
 	narrow->name = strdup("narrow_col");
 	narrow->size = strdup("0.6cm");
 	co_narrow = spreadconv_add_unique_rc_style(narrow, doc);
@@ -243,7 +243,7 @@ static int config_styles (void)
 	/* stiluri pentru casute*/
 	/* TABLE STYLES */
 	Dprintf("Begin cells styles\n");
-	ts = malloc(sizeof (struct table_styles));
+	ts = calloc(1, sizeof (struct table_styles));
 
 	/* calloc vs. malloc, calloc wins! */
 
@@ -712,7 +712,7 @@ cspay_convert_single_file(char *fname)
 		++ class_index;
 		free (ci);
 	}
-	
+	Dprintf("End of all rules.\n");
 	spreadconv_set_cell_style(8 + table_crt - 1, 0, ts->down_left_corner, doc);
 	spreadconv_set_cell_style(8 + table_crt - 1, 1, ts->down_table, doc);
 	spreadconv_set_cell_style(8 + table_crt - 1, 2, ts->down_table, doc);

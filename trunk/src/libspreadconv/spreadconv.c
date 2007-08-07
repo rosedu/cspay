@@ -345,7 +345,7 @@ print_cell_style(struct spreadconv_cell_style *style, FILE *f)
 	}
 	if (style->border_right != 0) {
 		fprintf(f, "fo:border-right=\"");
-		print_escaped(f, style->border_left);
+		print_escaped(f, style->border_right);
 		fprintf(f, "\" ");
 	}
 	fprintf(f, "/>\n");
