@@ -11,16 +11,26 @@
  * \author Alex Eftimie
  */
 
+# Initializare sesiune!
+session_start();
+
+# Captcha test (10x lucian)
+if( md5($_POST['seccode']) != $_SESSION['security_code'] ) {
+	die("Bad security code!");
+	#TODO: redirect to index.php. ideas needed
+}
+
 # creez fisier personal.ini temporar
 $tmpfname = tempnam("/tmp", "personalini");
 $file = fopen($tmpfname, "w");
 
-# mica initializare
+# mica initializare si adjustementuri
 if( !is_array($_POST['tip_fisier']) )
-	$_POST['tip_fisier'] = array( 'odt' );
-$_POST['catedra'] = $_POST[$_POST['facultate'].'_catedre'];
-
-##TODO: obtine sefcatedra!!! din cspay.xml sau transmite-l din model-form;)
+	$_POST['tip_fisier'] = array( 'ods' );
+$_POST['catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate']).'_catedre'];
+$_POST['sef_catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate'].'_'.$_POST['catedra'])];
+$_POST['decan'] = $_POST['decan_'.str_replace(' ', '_', $_POST['facultate'])];
+//echo "<pre>";print_r($_POST);
 
 # scriu un model personal.ini cu date reale
 fwrite($file, "[antet]\n".
@@ -30,7 +40,7 @@ fwrite($file, "[antet]\n".
 	"facultate=$_POST[facultate]\n".
 	"decan=$_POST[decan]\n".
 	"catedra=$_POST[catedra]\n".
-	"sef_catedra=\n".
+	"sef_catedra=$_POST[sef_catedra]\n".
 	"luna=$_POST[luna]\n".
 	"tip_fisier=".implode(',',$_POST['tip_fisier'])."\n\n");
 // fwrite($file, "[ore]\n"); # nu mai este necesar
@@ -39,7 +49,7 @@ foreach( $_POST[orar] as $o) {
 	fwrite($file, "\n[ore/$i]\n".
 	"facultate=$o[facultatea]\n".
 	"disciplina=$o[disciplina]\n".
-	"rol=$o[felpost]\n".   			#TODO: transform c,a,...in 1,2,3...
+	"rol=$o[felpost]\n".   	
 	"numar_post=$o[numarpost]\n".
 	"tip_post=$o[tipora]\n".
 	"grupa=$o[grupa]\n".
@@ -53,17 +63,14 @@ foreach( $_POST[orar] as $o) {
 # il inchid
 fclose($file);
 
-# apelez cspay
-exec("cat $tmpfname", $lista_fisiere); # exec("./cspay $tmpfname"
+# listez continutul personal.ini obtinut
+exec("cat $tmpfname", $continut);
 
 # afisez TODO: formatare links
-echo implode('<br />', $lista_fisiere);
+if($_POST['debug'] == 1)
+	echo implode('<br />', $continut);
 
-# debug:
-/*
-unset($_POST['submit']);
-
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";*/
+# Apelez cspay si afisez outputul
+# exec("./cspay $tmpfname", $lista_fisiere);
+echo "<h1>Fisiere spreadsheet obtinute:</h1>";
 ?>

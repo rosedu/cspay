@@ -120,13 +120,13 @@ function input_copy( src, dest )
  */
 function select_catedra( facultate_element)
 {
-	facultate = facultate_element.value;
+	facultate = facultate_element.selectedIndex;
 	//ascund selectul
 	if( catedra_select ) 
 		catedra_select.style.display = 'none';
 	else
 		document.getElementById('catedradisabled').style.display = 'none';
 	//afisez pe cel nou
-	catedra_select = document.getElementById(facultate+'_catedre');
+	catedra_select = document.getElementById('catedre_'+facultate);
 	catedra_select.style.display = 'inline';
 }
