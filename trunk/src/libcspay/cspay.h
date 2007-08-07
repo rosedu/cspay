@@ -6,6 +6,10 @@
 #define MAXD	10	/*maximum number of departments*/
 
 /* TODO doxygen! */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct cspay_config {
 	char *univ_name;	/*university name*/
 	struct interval *sem;	/* semester interval */
@@ -58,4 +62,7 @@ struct cspay_file_list *cspay_convert_options(struct cspay_config *, char *);
 void cspay_free_file_list(struct cspay_file_list *);
 void cspay_free_config(struct cspay_config *);
 
+#ifdef __cplusplus
+}
 #endif
+#endif /* _CSPAY_H_ */

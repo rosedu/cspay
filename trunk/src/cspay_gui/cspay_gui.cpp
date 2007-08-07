@@ -12,7 +12,7 @@
 
 #include "cspay_gui.h"
 #include "opt_gui.h"
-
+#include "cspay.h"
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_CHOICE(ID_on_select_fac, MainFrame :: OnSelectFac)
@@ -28,21 +28,17 @@ bool
 CSpayGUI :: OnInit()
 {
 	//astea de mai jos vin din alta parte
-	arr_str_fac_names.Add(_T("Automatica si Calculatoare"));
-	arr_str_fac_names.Add(_T("Inginerie in limbi straine"));
-	arr_str_fac_names.Add(_T("I me se te"));
-	
-	//catedrele
-	arr_str_dep_names[0].Add(_T("Calculatoare"));
-	arr_str_dep_names[0].Add(_T("TI"));
-
-
-	arr_str_dep_names[1].Add(_T("Catedra din fac 2"));
-	arr_str_dep_names[1].Add(_T("O alta catedra din fac 2"));
-			
-	arr_str_dep_names[2].Add(_T("Cat din fac 3"));
-	arr_str_dep_names[2].Add(_T("O alta cat din fa 3"));
-	
+	struct cspay_config *cfg;
+	cfg = cspay_get_config("cspay.xml");
+	if (!cfg) {
+		std :: cerr << "Eroare la citirea xml" << std :: endl;
+	}
+	int i, j;
+	for (i = 0; i < cfg->fac_no; ++ i) {
+		arr_str_fac_names.Add(wxString :: FromAscii(cfg->fac[i]->name));
+		for (j = 0; j < cfg->fac[i]->dept_no; ++ j)
+			arr_str_dep_names[i].Add(wxString :: FromAscii(cfg->fac[i]->depts[j]->name));
+	}
 	//Initializam zilele
 	
 	arr_str_days.Add(_T("Luni"));
