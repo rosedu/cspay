@@ -17,8 +17,9 @@
 		<fieldset>
 			<legend>General</legend>
 			<label for="nume">Nume:</label>
-			<input type="text" name="nume" id="nume"/>
-			<a href="#" onclick="input_copy('nume','intocmit');show_hide('intocmit_div');">mai mult</a>
+			<input type="text" name="nume" id="nume"/>&nbsp;
+			<a href="#" id="a_more"
+			onclick="input_copy('nume','intocmit');show_hide('intocmit_div');switch_text('a_more','mai mult','mai puţin');">mai mult</a>
 			<div class="hidden" id="intocmit_div">
 				<label for="intocmit">Intocmit:</label>
 				<input type="text" name="intocmit" id="intocmit" value="">
@@ -104,8 +105,8 @@
 				orele: <input name="orar[1][ore]" id="orele_1" type="text" size="5" value=""/>
 				
 				<a href="#" onclick="show_hide('complex_1')">complex</a>
-				<button id="more_1" onclick="more(); return false;">more</button>
-				<button id="less_1" onclick="less('orar_1'); return false;" class="hidden">less</button>
+				<button id="more_1" onclick="more(); return false;">mai mult</button>
+				<button id="less_1" onclick="less('orar_1'); return false;" class="hidden">mai puţin</button>
 				<!-- setari complexe ascunse implicit -->
 				<div id="complex_1" class="complex_div">
 					paritate: 

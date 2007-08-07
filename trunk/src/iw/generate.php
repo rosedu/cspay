@@ -15,7 +15,7 @@
 session_start();
 
 # Captcha test (10x lucian)
-if( md5($_POST['seccode']) != $_SESSION['security_code'] ) {
+if( md5($_POST['seccode']) != $_SESSION['security_code'] and !$_POST['debug']) { #TODO: be carefull with debug!!!
 	die("Bad security code!");
 	#TODO: redirect to index.php. ideas needed
 }

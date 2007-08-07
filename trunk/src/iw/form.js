@@ -130,3 +130,17 @@ function select_catedra( facultate_element)
 	catedra_select = document.getElementById('catedre_'+facultate);
 	catedra_select.style.display = 'inline';
 }
+/**
+ * Switches text using the innerHTML atribute of the element passed as parameter
+ * \param label_element element to be changed's id
+ * \param text1
+ * \param text2
+ */
+function switch_text( label_element, text1, text2)
+{
+	var elem = document.getElementById( label_element );
+	if( elem.innerHTML != text2 )
+		elem.innerHTML = text2;
+	else
+		elem.innerHTML = text1;
+}
