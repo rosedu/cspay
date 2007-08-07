@@ -7,7 +7,7 @@
 
 #include "debug.h"
 #include "cspay.h"
-#include "getopt.h"
+#include "load_cfg.h"
 
 /*extrage informatiile din arborle extras din fisierul xml*/
 void cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *ret);

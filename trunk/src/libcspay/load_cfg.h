@@ -4,8 +4,8 @@
 	
 	Mon Jul 23 22:38:26 EEST 2007
 */
-#ifndef __GETOPT_H__
-#define __GETOPT_H__ 1
+#ifndef __LOAD_CFG_H__
+#define __LOAD_CFG_H__ 1
 
 
 #include "cspay.h"
@@ -13,4 +13,4 @@
 /*read data from cspay.xml, or from char * */
 struct cspay_config *read_cspay_xml(char *);
 
-#endif /* __GETOPT_H__ */
+#endif /* __LOAD_CFG_H__ */
