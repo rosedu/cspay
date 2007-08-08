@@ -1,10 +1,10 @@
-<!-- 14.05.2007		Razvan Deaconescu, indentare -->
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- 14.05.2007		Razvan Deaconescu, indentare -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title>Formular</title>
+		<title>CSPay Formular</title>
 		<!-- RD: nu ar putea sa fie un " />" la sfasit in loc de "</script>"-->
 		<!-- AE: din pacate, nu merge, tag-ul script cerand inchidere deschidere... -->
 		<script type="text/javascript" src="form.js"></script>
@@ -41,6 +41,8 @@
 				<option value="7">august</option>
 				<option value="8">septembrie</option>
 			</select>
+			<!-- anul de inceput pentru octombrie -->
+			<input type="hidden" name="anul" value="{ANUL}" />
 		</fieldset>
 		<fieldset>
 			<legend>Detalii curs</legend>
@@ -54,7 +56,7 @@
 				{FACULTATI}
 			</select>
 			<br />
-			<label for="catedra">Catedra:</label>
+			<label for="catedradisabled">Catedra:</label>
 			<select disabled="disabled" id="catedradisabled">
 				<option>selectati mai intai facultatea</option>
 			</select>
@@ -131,22 +133,24 @@
 		<fieldset>
 			<legend>Diverse</legend>
 			<label for="tip_fisier">Tip fisier:</label>
-			<select name="tip_fisier[]" id="tip_fisier" multiple="true">
-				<option>ods</option>
-				<option disabled="true">xls</option>				
+			<select name="tip_fisier[]" id="tip_fisier" multiple="multiple">
+				<option selected="selected">ods</option>
+				<option disabled="disabled">xls</option>				
 			</select>
 			<br />
 			<label for="seccode">Cod securitate:</label>
 			<input name="seccode" value="" id="seccode" size="5" maxlength="5" />
-			<img src="seccode.php" align="absmiddle" />
+			<img src="seccode.php" alt="security code" style="vertical-align:middle" />
 			<br />
 			<!-- TODO: not for final release -->
 			<i>debug: </i><input type="checkbox" name="debug" value="1" />
 		</fieldset>
-		<p align="center">
+		<p style="text-align:center">
 			<input type="submit" value="Trimite" name="submit" />
 		</p>
 		</form>
-	<hr noshade="true" size="1">&copy; 2007 <a href="http://anaconda.cs.pub.ro/~cspay/">The CSpay Team</a>.
+	<hr />
+	<p>&copy; 2007 <a href="http://anaconda.cs.pub.ro/~cspay/">The CSpay Team</a>.
+	</p>
 	</body>
 </html>

@@ -30,7 +30,6 @@ if( !is_array($_POST['tip_fisier']) )
 $_POST['catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate']).'_catedre'];
 $_POST['sef_catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate'].'_'.$_POST['catedra'])];
 $_POST['decan'] = $_POST['decan_'.str_replace(' ', '_', $_POST['facultate'])];
-//echo "<pre>";print_r($_POST);
 
 # scriu un model personal.ini cu date reale
 fwrite($file, "[antet]\n".
@@ -72,8 +71,10 @@ if( !empty($lista_fisiere) ) {
 		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
 		"</head><body>";
 	echo "<h1>Fisiere spreadsheet obtinute:</h1><ul>";
-	foreach( $lista_fisiere as $file )
-		echo "<li><a href=\"download.php?f=$file\">$file</a></li>\n";
+	foreach( $lista_fisiere as $file ) {
+		$name = $_POST['anul'].'_'.($_POST['luna']+1).str_replace(' ','_',$_POST['nume']).'.ods';
+		echo "<li><a href=\"download.php?f=$file\">$name</a></li>\n";
+	}
 
 	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
 	echo "</body>";

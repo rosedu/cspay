@@ -33,7 +33,7 @@ function dom2array( $node )
 		        $attributes = $node->attributes;
 		        if(!is_null($attributes)) 
 			        foreach ($attributes as $index=>$attr) 
-		        	   $result[$attr->name] = $attr->value;
+		        	   $result[$attr->name] = htmlspecialchars($attr->value);
 		}
 		if($node->hasChildNodes()){
 		        $children = $node->childNodes;
@@ -67,7 +67,7 @@ $cspay = dom2array( $doc );
 # TODO: verificari de corectitudine and so
 $universitate = $cspay['cspay-config']['universitate'];
 
-# pregatesc campurile care se inlocuiesc: facultati, catedre
+# pregatesc campurile care se inlocuiesc: facultati, catedre, sefi, anul
 if(!isset($universitate['facultati']['facultate']['nume']))
 	$universitate['facultati'] = $universitate['facultati']['facultate'];
 	
@@ -89,6 +89,12 @@ foreach( $universitate['facultati'] as $facultate) {
 		$sefi_catedre[$facultate['nume'].'_'.$catedra['nume']] = $catedra['sef'];
 	}
 }
+# scot anul din data semestrului !Atentie, aleg primul semestru din xml TODO: data cea mai recenta
+if( isset($universitate['semestru']['nume']) )
+	$data_start = $universitate['semestru']['data_start'];
+else
+	$data_start = $universitate['semestru'][0]['data_start'];
+$anul = substr($data_start, strrpos($data_start, '.')+1);
 
 # am obtinut facultati_info, catedre_fac si sefi_catedre; transform in HTML:
 foreach( $facultati_info as $nume => $descriere ) {
@@ -116,6 +122,7 @@ $template = str_replace('{FACULTATI_SCURT}', $facultati_scurt, $template);
 $template = str_replace('{CATEDRE}', $catedre, $template);
 $template = str_replace('{SEFI}', $sefi, $template);
 $template = str_replace('{DECANI}', $decani, $template);
+$template = str_replace('{ANUL}', $anul, $template);
 
 # afisez
 echo $template;
