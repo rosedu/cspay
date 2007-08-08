@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "debug.h"
-#include "getopt.h"
+#include "load_cfg.h"
 #include "cspay.h"
 
 #include "../libspreadconv/spreadconv.h"
@@ -120,7 +120,9 @@ static struct class_info *read_class_info (size_t index)
 	strcpy(class_data + ci->section_len, "rol");
 	ci->class_role_type = iniparser_getint(ini, class_data, -1);
 	if (ci->class_role_type < 0) {
+#if 0
 		fprintf(stderr, "Error reading \"rol\" variable.\n");
+#endif
 		goto READ_ERR;
 	}
 
@@ -587,10 +589,18 @@ cspay_convert_single_file(char *fname)
 	doc = spreadconv_new_spreadconv_data("Date", 60, 9);
 
 	/* configure spreadsheet column and cell styles */
-	config_styles ();
+	if (config_styles()){
+		iniparser_freedict(ini);
+		spreadconv_free_spreadconv_data(doc);
+		return NULL;
+	}
 
 	/* use ini file to create spreadsheet header */
-	create_header ();
+	if (create_header()) {
+		iniparser_freedict(ini);
+		spreadconv_free_spreadconv_data(doc);
+		return NULL;
+	}
 
 	month_start = mktime(month_date);
 	++ month_date->tm_mon;
@@ -776,15 +786,14 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 
 	struct cspay_file_list *ret;
 	char *temp;
-	
 	cfg = config; /* FIXME ugly! cfg is global */
 	ret = malloc(sizeof (struct cspay_file_list));
-	ret->nr = 1;
-	ret->names = malloc(sizeof (char *));
-	temp = cspay_convert_single_file(fname);
-	ret->names[0] = strdup(temp);
-	free(temp);
-
+	ret->nr = 0;
+	ret->names = malloc(12 * sizeof (char *));
+	if ((temp = cspay_convert_single_file(fname)) != NULL) {
+		ret->names[ret->nr ++] = strdup(temp);
+		free(temp);
+	}
 	return ret;
 }
 
