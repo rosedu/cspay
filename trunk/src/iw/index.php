@@ -110,6 +110,7 @@ foreach( $sefi_catedre as $catedra => $sef ) {
 	$sefi .= "<input type=hidden name=\"".str_replace(' ', '_',$catedra)."\" value=\"".$sef."\">\n";
 }
 # inlocuiesc in xhtmlu
+$template = str_replace('{UNIVERSITATE}', $universitate['nume'], $template);
 $template = str_replace('{FACULTATI}', $facultati, $template);
 $template = str_replace('{FACULTATI_SCURT}', $facultati_scurt, $template);
 $template = str_replace('{CATEDRE}', $catedre, $template);

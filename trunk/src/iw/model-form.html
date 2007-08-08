@@ -9,6 +9,7 @@
 		<!-- AE: din pacate, nu merge, tag-ul script cerand inchidere deschidere... -->
 		<script type="text/javascript" src="form.js"></script>
 		<link rel="stylesheet" type="text/css" href="stil.css" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	</head>
 
 	<body>
@@ -44,10 +45,9 @@
 		<fieldset>
 			<legend>Detalii curs</legend>
 			<label for="universitate">Universitatea:</label>
-			<select id="universitate" disabled="true">
-				<option value="upb">Politehnica Bucuresti</option>
+			<select id="universitate" name="universitate">
+				<option value="{UNIVERSITATE}">{UNIVERSITATE}</option>
 			</select>
-			<input type="hidden" name="universitate" value="upb">
 			<br />
 			<label for="facultate">Facultatea:</label>
 			<select name="facultate" id="facultate" onchange="select_catedra( this )" onfocus="select_catedra( this )">
@@ -131,8 +131,8 @@
 			<legend>Diverse</legend>
 			<label for="tip_fisier">Tip fisier:</label>
 			<select name="tip_fisier[]" id="tip_fisier" multiple="true">
-				<option>xls</option>
-				<option>odt</option>
+				<option>ods</option>
+				<option disabled="true">xls</option>				
 			</select>
 			<br />
 			<label for="seccode">Cod securitate:</label>

@@ -63,6 +63,7 @@ foreach( $_POST[orar] as $o) {
 # il inchid
 fclose($file);
 
+##debug:
 # listez continutul personal.ini obtinut
 exec("cat $tmpfname", $continut);
 
@@ -71,6 +72,26 @@ if($_POST['debug'] == 1)
 	echo implode('<br />', $continut);
 
 # Apelez cspay si afisez outputul
-# exec("./cspay $tmpfname", $lista_fisiere);
-echo "<h1>Fisiere spreadsheet obtinute:</h1>";
+exec("./cspay cspay.xml $tmpfname", $lista_fisiere);
+# Verific daca am primit output
+if( !empty($lista_fisiere) ) {
+	echo "<html><head><title>CSpay download</title>".
+		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
+		"</head><body>";
+	echo "<h1>Fisiere spreadsheet obtinute:</h1><ul>";
+	foreach( $lista_fisiere as $file )
+		echo "<li><a href=\"download.php?f=$file\">$file</a></li>\n";
+
+	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
+	echo "</body>";
+}
+else {
+	echo "<html><head><title>CSpay download</title>".
+		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
+		"</head><body>";
+	echo "<h1>Eroare</h1>";
+	echo "<p>O eroare necunoscuta s-a produs. Verificati datele introduse si incercati din nou</p>";
+	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
+	echo "</body>";
+}
 ?>
