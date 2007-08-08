@@ -10,7 +10,9 @@ $file_location = '/tmp';
 if( isset($_GET['f']) ) {
 	# numele fisierului e primit parametru get ?f=<nume>
 	$file_name = urldecode($_GET['f']);
-
+	# fac curat, nu am voie cu subdirectoare (lucian: ../etc/passwd :))
+	$file_name = basename( $file_name );
+	
 	$fp = @fopen($file_location."/".$file_name, "r");
 	if($fp) {
 		header("Content-Type: application/octet-stream");
