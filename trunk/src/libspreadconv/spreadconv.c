@@ -523,7 +523,7 @@ spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_types)
 
 	/* package the files according to the standard */
 	buffer = malloc(1000);
-	snprintf(buffer, 1000, "zip -r %s.ods mimetype META-INF "
+	snprintf(buffer, 1000, "zip -q -r %s.ods mimetype META-INF "
 			"content.xml meta.xml styles.xml settings.xml -n mimetype", dirname);
 	system(buffer);
 

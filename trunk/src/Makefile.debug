@@ -1,4 +1,4 @@
-SUBDIRS = iniparser-2.17 libspreadconv libcspay cspay cspay_gui
+SUBDIRS = iniparser-2.17 libspreadconv libcspay cspay
 
 all:
 	for dir in ${SUBDIRS}; do\

@@ -20,7 +20,7 @@ main(int argc, char **argv)
 	cspay_free_config(cfg);
 	int i;
 	for (i = 0; i < fl->nr; ++ i)
-		printf("%s\n", fl->names[i]);
+		printf("%s.ods\n", fl->names[i]);
 	cspay_free_file_list(fl);
 	return 0;
 }
