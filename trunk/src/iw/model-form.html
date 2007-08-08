@@ -23,7 +23,7 @@
 			onclick="input_copy('nume','intocmit');show_hide('intocmit_div');switch_text('a_more','mai mult','mai puţin');">mai mult</a>
 			<div class="hidden" id="intocmit_div">
 				<label for="intocmit">Intocmit:</label>
-				<input type="text" name="intocmit" id="intocmit" value="">
+				<input type="text" name="intocmit" id="intocmit" value="" />
 			</div>
 			<br />
 			<label for="luna">Luna:</label>
@@ -55,7 +55,7 @@
 			</select>
 			<br />
 			<label for="catedra">Catedra:</label>
-			<select disabled="true" id="catedradisabled">
+			<select disabled="disabled" id="catedradisabled">
 				<option>selectati mai intai facultatea</option>
 			</select>
 			<!-- urmeaza select-uri ascunse, catedre pentru fiecare facultate -->
@@ -95,7 +95,7 @@
 				<select name="orar[1][facultatea]" id="facultatea_1">
 					{FACULTATI_SCURT}
 				</select>
-				disc.:<input name="orar[1][disciplina]" id="disciplina_1" type="text" size="4">
+				disc.:<input name="orar[1][disciplina]" id="disciplina_1" type="text" size="4" />
 				curs:
 				<select name="orar[1][tipora]" id="tipora_1">
 					<option value="0">curs</option>
@@ -105,8 +105,6 @@
 				orele: <input name="orar[1][ore]" id="orele_1" type="text" size="5" value=""/>
 				
 				<a href="#" onclick="show_hide('complex_1')">complex</a>
-				<button id="more_1" onclick="more(); return false;">mai mult</button>
-				<button id="less_1" onclick="less('orar_1'); return false;" class="hidden">mai puţin</button>
 				<!-- setari complexe ascunse implicit -->
 				<div id="complex_1" class="complex_div">
 					paritate: 
@@ -126,6 +124,9 @@
 				</div>
 			</div>
 			</div>
+			<!-- butoane de less si de more -->
+			<button id="more_1" onclick="more(); return false;">mai mult</button>
+			<button id="less_1" onclick="less(); return false;" class="hidden">mai puţin</button>
 		</fieldset>
 		<fieldset>
 			<legend>Diverse</legend>
@@ -136,15 +137,16 @@
 			</select>
 			<br />
 			<label for="seccode">Cod securitate:</label>
-			<input name="seccode" value="" id="seccode" size=5 maxlength=5>
-			<img src="seccode.php" align="absmiddle">
+			<input name="seccode" value="" id="seccode" size="5" maxlength="5" />
+			<img src="seccode.php" align="absmiddle" />
 			<br />
 			<!-- TODO: not for final release -->
-			<i>debug: </i><input type="checkbox" name="debug" value="1">
+			<i>debug: </i><input type="checkbox" name="debug" value="1" />
 		</fieldset>
 		<p align="center">
-			<input type="submit" value="Trimite" name="submit"/>
+			<input type="submit" value="Trimite" name="submit" />
 		</p>
 		</form>
+	<hr noshade="true" size="1">&copy; 2007 <a href="http://anaconda.cs.pub.ro/~cspay/">The CSpay Team</a>.
 	</body>
 </html>

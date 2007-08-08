@@ -94,7 +94,7 @@ foreach( $universitate['facultati'] as $facultate) {
 foreach( $facultati_info as $nume => $descriere ) {
 	$facultati .= "<option value=\"$descriere[nume]\">$descriere[nume]</option>\n";
 	$facultati_scurt .= "<option value=\"$nume\">$descriere[nume_scurt]</option>\n";
-	$decani .= "<input type=hidden name=\"decan_".str_replace(' ', '_',$descriere['nume'])."\" value=\"".$descriere['decan']."\">\n";
+	$decani .= "<input type=\"hidden\" name=\"decan_".str_replace(' ', '_',$descriere['nume'])."\" value=\"".$descriere['decan']."\" />\n";
 }
 
 $i = 0;
@@ -107,7 +107,7 @@ foreach( $catedre_fac as $nume => $catedrele) {
 }
 
 foreach( $sefi_catedre as $catedra => $sef ) {
-	$sefi .= "<input type=hidden name=\"".str_replace(' ', '_',$catedra)."\" value=\"".$sef."\">\n";
+	$sefi .= "<input type=\"hidden\" name=\"".str_replace(' ', '_',$catedra)."\" value=\"".$sef."\" />\n";
 }
 # inlocuiesc in xhtmlu
 $template = str_replace('{UNIVERSITATE}', $universitate['nume'], $template);

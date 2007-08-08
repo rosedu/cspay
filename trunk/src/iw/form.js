@@ -9,7 +9,7 @@
  * \author Alex Eftimie
  */
 
-var 	orar = null;
+var 	orar_count = null;
 var 	catedra_select = null;
 
 /**
@@ -24,64 +24,73 @@ function more()
 	
 	template = continut.innerHTML;
 	//vad al catelea sunt orar = 2, 3, 4...
-	if( orar == null )
+	if( orar_count == null )
 		get_orar();
 	//modific template [1] -> [orar] , _1 -> _orar
-	template = template.replace(/\[1\]/g, '['+orar+']');
-	template = template.replace(/_1/g, '_'+orar);
+	template = template.replace(/\[1\]/g, '['+orar_count+']');
+	template = template.replace(/_1/g, '_'+orar_count);
 
 	//creez un nou div, cu id orar2(3,4...)
 	newdiv = document.createElement('div');
-	newdiv.setAttribute('id', 'orar_'+orar);
+	newdiv.setAttribute('id', 'orar_'+orar_count);
 	//pun continut
 	newdiv.innerHTML = template;
 	//adaug la cadru:
 	cadru.appendChild(newdiv);
-	//ascund campul complex si afisez boton less
-	document.getElementById('complex_'+orar).style.display = 'none';
-	document.getElementById('less_'+orar).style.display = 'inline';
+	//ascund campul complex si il afisez pe cel less:
+	document.getElementById('complex_'+orar_count).style.display = 'none';
+	document.getElementById('less_1').style.display = 'inline';
 	//fac focus
-	primul_input = document.getElementById('numarpost_'+orar);
+	primul_input = document.getElementById('numarpost_'+orar_count);
 	primul_input.focus();
-	//copiez valori existente in ultimul div: 
-	document.getElementById('numarpost_'+orar).value = document.getElementById('numarpost_'+(orar-1)).value;
-	document.getElementById('disciplina_'+orar).value = document.getElementById('disciplina_'+(orar-1)).value;	
-	document.getElementById('grupa_'+orar).value = document.getElementById('grupa_'+(orar-1)).value;
-	document.getElementById('orele_'+orar).value = document.getElementById('orele_'+(orar-1)).value;	
+	//copiez valori existente din div precedent in div nou: 
+	document.getElementById('numarpost_'+orar_count).value = document.getElementById('numarpost_'+(orar_count-1)).value;
+	document.getElementById('disciplina_'+orar_count).value = document.getElementById('disciplina_'+(orar_count-1)).value;	
+	document.getElementById('grupa_'+orar_count).value = document.getElementById('grupa_'+(orar_count-1)).value;
+	document.getElementById('orele_'+orar_count).value = document.getElementById('orele_'+(orar_count-1)).value;	
 	
-	document.getElementById('zi_'+orar).selectedIndex = document.getElementById('zi_'+(orar-1)).selectedIndex;
-	document.getElementById('felpost_'+orar).selectedIndex = document.getElementById('felpost_'+(orar-1)).selectedIndex;
-	document.getElementById('facultatea_'+orar).selectedIndex = document.getElementById('facultatea_'+(orar-1)).selectedIndex;
-	document.getElementById('tipora_'+orar).selectedIndex = document.getElementById('tipora_'+(orar-1)).selectedIndex;
+	document.getElementById('zi_'+orar_count).selectedIndex = document.getElementById('zi_'+(orar_count-1)).selectedIndex;
+	document.getElementById('felpost_'+orar_count).selectedIndex = document.getElementById('felpost_'+(orar_count-1)).selectedIndex;
+	document.getElementById('facultatea_'+orar_count).selectedIndex = document.getElementById('facultatea_'+(orar_count-1)).selectedIndex;
+	document.getElementById('tipora_'+orar_count).selectedIndex = document.getElementById('tipora_'+(orar_count-1)).selectedIndex;
 	//incrementez orar pt o urmatoare adaugare (more)
-	orar++;
+	orar_count++;
 }
 
 /**
- * Remove the element specified by id from the container element 'orar'
- * \param id the to be removed element's id
+ * Remove the last orar fieldset, given by global orar_count variable from the container element 'orar'
  * \todo error checking
  */
-function less( id ) 
+function less( ) 
 {
 	//obtin divul cadru si divul care trebuie sters
 	cadru = document.getElementById('orar');
-	continut = document.getElementById(id);
+	continut = document.getElementById('orar_'+(orar_count-1));
 	
-	//sterg continut din cadru
-	cadru.removeChild( continut );
+	if( orar_count > 1 ) {
+		//sterg continut din cadru
+		cadru.removeChild( continut );
+		
+		//decrementez orar_count
+		orar_count--;
+	}
+	//daca nu mai am decat un camp, ascund pe less:
+	if( orar_count == 2 ) {
+		document.getElementById('less_1').style.display = 'none';
+	}
 }
 
 /**
- * Returns the number of consecutive orar fieldsets
- * \return orar int >= 1
+ * Returns the number of consecutive orar fieldsets into global orar_count
+ * \return orar_count int >= 1
  */
 function get_orar() 
 {
 	i = 1;
 	while(document.getElementById('orar_'+i)) 
 		i++;
-	orar = i;
+	orar_count = i;
+	return orar_count;
 }
 
 /**
