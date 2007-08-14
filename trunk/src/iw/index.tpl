@@ -138,6 +138,10 @@
 				<option disabled="disabled">xls</option>				
 			</select>
 			<br />
+			<label for="send_mail">Trimite prin e-mail</label>
+			<input name="send_mail" id="send_mail" type="checkbox" value="1">&nbsp;
+			<input name="email" value="" size=20>
+			<br />
 			<label for="seccode">Cod securitate:</label>
 			<input name="seccode" value="" id="seccode" size="5" maxlength="5" />
 			<img src="seccode.php" alt="security code" style="vertical-align:middle" />

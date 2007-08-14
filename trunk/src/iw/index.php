@@ -13,55 +13,17 @@
  * \author Alex Eftimie
  * \defgroup iw Web interface for CSPay
  */
-
-/** Configuration's file (`cspay.xml') address */
-define('CSPAY_XML_URI', 'cspay.xml'); //discutabila alegere...
-
-/**
- * Metoda recursiva de transformat XML DOM in dictionar
- * source: php.net manual (modified)
- * \param node the root node of the xml tree
- */
-function dom2array( $node ) 
-{
-	$result = array();
-	if($node->nodeType == XML_TEXT_NODE) {
-		$result = $node->nodeValue;
-	}
-	else {
-		if( $node->hasAttributes() ) {
-		        $attributes = $node->attributes;
-		        if(!is_null($attributes)) 
-			        foreach ($attributes as $index=>$attr) 
-		        	   $result[$attr->name] = htmlspecialchars($attr->value);
-		}
-		if($node->hasChildNodes()){
-		        $children = $node->childNodes;
-		        for($i=0; $i<$children->length; $i++) {
-		        	$child = $children->item($i);
-		        	if($child->nodeName != '#text') {
-		        		if(!isset($result[$child->nodeName]))
-		              			$result[$child->nodeName] = dom2array($child);
-		              		else {
-		              			if(!isset( $result[$child->nodeName][0] ) ) {
-		              				$aux = $result[$child->nodeName];
-		              				$result[$child->nodeName] = array( $aux );
-		              			}
-		              			$result[$child->nodeName][] = dom2array($child);
-		              		}
-		             	}
-		        }
-		}
-	}
-	return $result;
-}
+ 
+# configuration data (vlad's ideea)
+include('config.php');
+include('utils.php');
 
 # incarc sablonul html TODO it somehow else
-$template = implode("",@file('model-form.html'));
+$template = implode("", @file('index.tpl'));
 
 # incarc cspay.xml TODO: error checking
 $doc = new DOMDocument();
-$doc->load(CSPAY_XML_URI);
+$doc->load( CSPAY_XML_URI );
 $cspay = dom2array( $doc );
 
 # TODO: verificari de corectitudine and so
@@ -89,6 +51,7 @@ foreach( $universitate['facultati'] as $facultate) {
 		$sefi_catedre[$facultate['nume'].'_'.$catedra['nume']] = $catedra['sef'];
 	}
 }
+
 # scot anul din data semestrului !Atentie, aleg primul semestru din xml TODO: data cea mai recenta
 if( isset($universitate['semestru']['nume']) )
 	$data_start = $universitate['semestru']['data_start'];

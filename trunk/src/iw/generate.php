@@ -11,16 +11,29 @@
  * \author Alex Eftimie
  */
 
+# Configuration data (vlad's ideea)
+include('config.php');
+include('utils.php');
+
 # Initializare sesiune!
 session_start();
 
 # Captcha test (10x lucian)
 if( md5($_POST['seccode']) != $_SESSION['security_code'] and !$_POST['debug']) { #TODO: be carefull with debug!!!
-	die("Bad security code!");
+	echo "<html><head><title>CSpay parser</title>".
+		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
+		"</head><body>";
+	echo "<h1>Cod de securitate gresit</h1>";
+	echo "<p>Codul introdus este gresit. Va rugam sa il introduceti din nou.</p>";
+	echo "<p>Se foloseste un cod imagine pentru a se asigura interactiunea cu un utilizator uman, nu robot</p>";
+	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
+	echo "</body>";
+
+	die;
 	#TODO: redirect to index.php. ideas needed
 }
 
-# creez fisier personal.ini temporar
+# Creez fisier personal.ini temporar
 $tmpfname = tempnam("/tmp", "personalini");
 $file = fopen($tmpfname, "w");
 
@@ -63,7 +76,7 @@ foreach( $_POST[orar] as $o) {
 fclose($file);
 
 # Apelez cspay si afisez outputul
-exec("./cspay cspay.xml $tmpfname", $lista_fisiere);
+exec(CSPAY_URI." ".CSPAY_XML_URI." ".$tmpfname, $lista_fisiere);
 
 # Verific daca am primit output
 if( !empty($lista_fisiere) ) {
@@ -75,8 +88,18 @@ if( !empty($lista_fisiere) ) {
 		$name = $_POST['anul'].'_'.($_POST['luna']+1).str_replace(' ','_',$_POST['nume']).'.ods';
 		echo "<li><a href=\"download.php?f=$file\">$name</a></li>\n";
 	}
+	echo "</ul>\n<br />\n";
+	
+	# Daca s-a comandat mail ma conformez:
+	if( $_POST['send_mail'] == 1 ) {
+		$attachments = array();
+		for($i = 0; $i<count($lista_fisiere); $i++)
+			$attachments[] = array('file' =>'/tmp/'.$lista_fisiere[$i], 'content_type'=>'application/ods');#TODO change it
 
-	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
+		send_mail( 'no-reply@anaconda.cs.pub.ro', $_POST['email'], 'CSPay Download', '<p>Fisiere rezultate:</p>', $attachments );
+		echo "Un mail a fost trimis la: <i>".$_POST['email']."</i>.<br />";
+	} 
+	echo "<a href=index.php>&laquo;înapoi la formular</a>";
 	echo "</body>";
 }
 else {
