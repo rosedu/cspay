@@ -34,7 +34,7 @@ main( int argc, char **argv )
 {	
     int i,luna,no,rol,nrp,tip_post,zi,oi,of,par,pari;
     char nume[40], intocmit[40],facultate[80],decan[40],sef[40],catedra[40];
-    char tip[3],next[2],fac[5],dis[6],grupa[7];
+    char *inif,*xmlf,tip[4],next[3],fac[6],dis[7],grupa[8];
     FILE *f;
     struct cspay_file_list *lista;
 	struct cspay_config *config;
@@ -99,7 +99,7 @@ main( int argc, char **argv )
              scanf("%s",tip);
              fprintf(f,"\n tip_fisier = %s",tip);
              // se introduc datele pentru ore
-             next="Da";
+             strcpy(next,"Da");
              no=0;
              while(strcmp(next,"Da")==0)
              {
@@ -109,7 +109,7 @@ main( int argc, char **argv )
              scanf("%s",fac);
              fprintf(f,"\n facultate = %s",fac);
              printf("\n Introduceti disciplina(abreviat): ");
-             scanf("%s",&dis);
+             scanf("%s",dis);
              fprintf(f,"\n facultate = %s",dis);
              printf("\n Introduceti rolul(0=asistent,1=conferentiar,2=sef lucrari,3=profesor): ");
              scanf("%d",&rol);
@@ -125,17 +125,17 @@ main( int argc, char **argv )
              fprintf(f,"\n grupa = %s",grupa);
              printf("\n Introduceti ziua saptamanii(1 = luni, 2 = marti, etc.): ");
              scanf("%d",&zi);
-             fprintf(f,"\n facultate = %s",zi);
+             fprintf(f,"\n facultate = %d",zi);
              printf("\n Introduceti intervalul orar: ");
              scanf("%d-%d",&oi,&of);
              fprintf(f,"\n ore = %d-%d",oi,of);
              printf("\n Odata la cate saptamani se tine cursul/aplicatia: ");
-             scanf("%d",par);
-             fprintf(f,"\n paritate = %s",par);
+             scanf("%d",&par);
+             fprintf(f,"\n paritate = %d",par);
              printf("\n In ce saptamana se tine cursul/aplicatia prima data:");
-             scanf("%d",pari);
-             fprintf(f,"\n paritate_start = %s",pari);
-             printf("\n Doriti sa mai introduceti inca un set de ore?(Da/Nu)")
+             scanf("%d",&pari);
+             fprintf(f,"\n paritate_start = %d",pari);
+             printf("\n Doriti sa mai introduceti inca un set de ore?(Da/Nu)");
              scanf("%s",next);
              }    
 	     }
