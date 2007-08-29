@@ -67,8 +67,8 @@
 				{SEFI}
 				{DECANI}
 			<!-- -->
-			<label for="curs">Nume curs:</label>
-			<input type="text" name="curs" id="curs"/> <i>la care aveti functia de baza</i><br/>
+			<label for="nume_curs">Nume curs:</label>
+			<input type="text" name="nume_curs" id="nume_curs"/> <i>la care aveti functia de baza</i><br/>
 			<label for="titular">Titular:</label>
 			<input type="text" name="titular" id="titular"/><br/>
 		</fieldset>

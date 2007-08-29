@@ -50,6 +50,8 @@ fwrite($file, "[antet]\n".
 	"intocmit=$_POST[intocmit]\n".
 	"universitate=$_POST[universitate]\n".
 	"facultate=$_POST[facultate]\n".
+	"nume_curs=$_POST[nume_curs]\n".
+	"titular=$_POST[titular]\n".
 	"decan=$_POST[decan]\n".
 	"catedra=$_POST[catedra]\n".
 	"sef_catedra=$_POST[sef_catedra]\n".
@@ -78,6 +80,11 @@ fclose($file);
 # Apelez cspay si afisez outputul
 exec(CSPAY_URI." ".CSPAY_XML_URI." ".$tmpfname, $lista_fisiere);
 
+# Cojocar Lucian:
+# vreau sa vad personalini creat, asa ca-i schimb grupul pentru a putea fi citit
+exec("chgrp cspay ".$tmpfname, $_output);
+exec("chmod g+r ".$tmpfname, $_output);
+
 # Verific daca am primit output
 if( !empty($lista_fisiere) ) {
 	echo "<html><head><title>CSpay download</title>".
@@ -96,7 +103,9 @@ if( !empty($lista_fisiere) ) {
 		for($i = 0; $i<count($lista_fisiere); $i++)
 			$attachments[] = array('file' =>'/tmp/'.$lista_fisiere[$i], 'content_type'=>'application/ods');#TODO change it
 
-		send_mail( 'no-reply@anaconda.cs.pub.ro', $_POST['email'], 'CSPay Download', '<p>Fisiere rezultate:</p>', $attachments );
+		send_mail( 'no-reply@anaconda.cs.pub.ro', $_POST['email'],
+			'CSPay Download', '<p>Fisiere rezultate:</p>',
+			 $attachments );
 		echo "Un mail a fost trimis la: <i>".$_POST['email']."</i>.<br />";
 	} 
 	echo "<a href=index.php>&laquo;înapoi la formular</a>";
