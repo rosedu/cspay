@@ -1,3 +1,4 @@
+
 /*
 	program in consola (cspay), foloseste biblioteca libcspay. Este fie 
     interactiv, fie apelat cu un fisier ca parametru.
@@ -11,6 +12,31 @@
 #if 0	/* win 32 ?*/
 #	include "E:\CSpay\trunk\src\libcspay"
 #endif
+
+int 
+read_num()
+{
+char line[255];
+char *endp;
+long nr;
+     fgets(line,sizeof(line),stdin);
+     	if (line[0] == '\n')
+		return -1;
+  nr = strtol (line, &endp, 0);
+  if (*endp != '\0' && *endp != '\n')
+     {
+      printf("Nu ati introdus un numar!");
+      return read_num();
+     }
+  return (int)
+}
+char * 
+read_string()
+{
+char line[255];
+     fgets(line,sizeof(line),stdin);
+     line[strlen(line)-1]='\0';
+}
 void 
 usage(void)
 {
@@ -75,7 +101,7 @@ main( int argc, char **argv )
              f=fopen("personal.ini","wt");
              //se introduc datele pentru antet
              printf("\n Introduceti numele: ");
-             scanf("%s",nume);
+             nume = read_string;
              fprintf(f,"[antet]\n nume = %s",nume);
              printf("\n Intocmit de: ");
              scanf("%s",intocmit);
