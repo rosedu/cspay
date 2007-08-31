@@ -502,13 +502,16 @@ static int create_footer (size_t last_row)
 	last_row += 2;
 
 	doc->cells[last_row][0].text = strdup("Intocmit,");
-	doc->cells[last_row][2].text = strdup("Titular curs,");
+	doc->cells[last_row][3].text = strdup("Titular curs,");
 	doc->cells[last_row][4].text = strdup("Sef catedra,");
 	doc->cells[last_row][6].text = strdup("Decan,");
 	last_row++;
 
 	doc->cells[last_row][0].text =
 		strdup(iniparser_getstr (ini, "antet:nume"));
+	tmp_ini_val = iniparser_getstr(ini, "antet:titular");
+	if (tmp_ini_val)
+	doc->cells[last_row][3].text = strdup(tmp_ini_val);
 
 	/*
 	 * TODO: indexes for the faculty in the cfg->fac array
