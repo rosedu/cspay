@@ -16,10 +16,13 @@
 int 
 read_num()
 {
-char line[255];
+char *line;
 char *endp;
 long nr;
-     fgets(line,sizeof(line),stdin);
+     fflush(stdin);
+     fflush(stdout);
+     line=malloc(255);
+     fgets(line,255,stdin);
      	if (line[0] == '\n')
 		return -1;
   nr = strtol (line, &endp, 0);
@@ -28,14 +31,16 @@ long nr;
       printf("Nu ati introdus un numar!");
       return read_num();
      }
-  return (int)
+  return (int)nr;
 }
-char * 
-read_string()
+void
+read_string(char ** str)
 {
-char line[255];
-     fgets(line,sizeof(line),stdin);
+char *line;
+     line=malloc(255);
+     fgets(line,255,stdin);
      line[strlen(line)-1]='\0';
+     * str = line;
 }
 void 
 usage(void)
@@ -59,7 +64,7 @@ int
 main( int argc, char **argv )
 {	
     int i,luna,no,rol,nrp,tip_post,zi,oi,of,par,pari;
-    char nume[40], intocmit[40],facultate[80],decan[40],sef[40],catedra[40];
+    char *nume, intocmit[40],facultate[80],decan[40],sef[40],catedra[40];
     char *inif,*xmlf,tip[4],next[3],fac[6],dis[7],grupa[8];
     FILE *f;
     struct cspay_file_list *lista;
@@ -101,8 +106,8 @@ main( int argc, char **argv )
              f=fopen("personal.ini","wt");
              //se introduc datele pentru antet
              printf("\n Introduceti numele: ");
-             nume = read_string;
-             fprintf(f,"[antet]\n nume = %s",nume);
+             read_string(&nume);
+	     fprintf(f,"[antet]\n nume = %s",nume);
              printf("\n Intocmit de: ");
              scanf("%s",intocmit);
              fprintf(f,"\n intocmit = %s",intocmit);
@@ -119,7 +124,7 @@ main( int argc, char **argv )
              scanf("%s",catedra);
              fprintf(f,"\n catedra = %s",catedra);
              printf("\n Introduceti numarul lunii: ");
-             scanf("%d",&luna);
+             luna=read_num();
              fprintf(f,"\n luna = %d",luna);
              printf("\n Introduceti tipul fisierul ce urmeaza fi generat: ");
              scanf("%s",tip);
