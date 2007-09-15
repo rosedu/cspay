@@ -349,6 +349,13 @@ print_cell_style(struct spreadconv_cell_style *style, FILE *f)
 		fprintf(f, "\" ");
 	}
 	fprintf(f, "/>\n");
+	if (style->halign != 0) {
+		fprintf(f, "<style:paragraph-properties ");
+		fprintf(f, "fo:text-align=\"");
+		print_escaped(f, style->halign);
+		fprintf(f, "\"");
+		fprintf(f, "/>\n");
+	}
 	fprintf(f, "</style:style>\n");
 }
 
@@ -697,6 +704,8 @@ void spreadconv_free_spreadconv_data(struct spreadconv_data *data)
 			free(style->name);
 		if (style->valign != 0)
 			free(style->valign);
+		if (style->halign != 0)
+			free(style->halign);
 		if (style->border != 0)
 			free(style->border);
 		if (style->border_top != 0)
@@ -784,7 +793,7 @@ int spreadconv_add_unique_cell_style(struct spreadconv_cell_style *style,
 	 * they had pointed are now pointed to by the unique_cell_styles
 	 * fields.
 	 */
-	style->name = style->valign = style->border = style->border_top = 
+	style->name = style->valign = style->halign = style->border = style->border_top = 
 		style->border_bottom = style->border_left = style->border_right = 0;
 	free(style);
 	return data->n_unique_cell_styles-1;

@@ -59,6 +59,10 @@ struct spreadconv_cell_style {
 	 * \remarks Possible values include: top, middle, bottom,
 	 * automatic */
 	char *valign;
+	/** horizontal alignment
+	 * \remarks Possible values: center, start, end,
+	 * left, right, justify */
+	char *halign;
 	/** 
 	 * general border specifier
 	 * \remarks If this is set, all other border specificators are

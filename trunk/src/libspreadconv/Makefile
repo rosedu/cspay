@@ -22,11 +22,13 @@ libspreadconv.a: $(OBJ)
 	ar rc libspreadconv.a $(OBJ)
 	ranlib libspreadconv.a
 
-tests: test col_test
+tests: test col_test align_test
 
 test: test.o libspreadconv.a
 
 col_test: col_test.o libspreadconv.a
+
+align_test: align_test.o libspreadconv.a
 
 .PHONY: clean clean_test
 
