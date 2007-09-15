@@ -30,6 +30,8 @@ col_test: col_test.o libspreadconv.a
 
 align_test: align_test.o libspreadconv.a
 
+span_test: span_test.o libspreadconv.a
+
 .PHONY: clean clean_test
 
 clean_test:

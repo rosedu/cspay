@@ -313,6 +313,11 @@ print_rc_style(struct spreadconv_rc_style *style, FILE *f)
 static void
 print_cell_style(struct spreadconv_cell_style *style, FILE *f)
 {
+	/*
+	 * TODO
+	 * if only row_span || col_span are != NULL then 
+	 * we have nothing to print
+	 */
 	fprintf(f, "<style:style style:name=\"");
 	print_escaped(f, style->name);
 	fprintf(f, "\" ");
@@ -381,6 +386,20 @@ print_table_cell(struct spreadconv_cell *cell, FILE *f)
 
 	if ((cell->value_type == NULL) || 
 			(strncmp(cell->value_type, "string", strlen("string")) == 0)) {
+		if (cell->style) 
+			if (cell->style->row_span || cell->style->col_span) {
+				if (!cell->style->row_span) {
+					cell->style->row_span = strdup("1");
+				} else {
+					if (!cell->style->col_span) {
+						cell->style->col_span = strdup("1");
+					}
+				}
+				fprintf(f, "table:number-columns-spanned=\"%s\" ", cell->style->col_span);
+				fprintf(f, "table:number-rows-spanned=\"%s\"", cell->style->row_span);
+			}
+			
+		
 		fprintf(f, ">\n");
 		fprintf(f, "<text:p>");
 		print_escaped(f, cell->text);
@@ -401,7 +420,22 @@ print_table_cell(struct spreadconv_cell *cell, FILE *f)
 		fprintf(f, "office:value=\"%s\">\n", cell->text);
 		fprintf(f, "office:value=\"");
 		print_escaped(f, cell->text);
-		fprintf(f, "\">\n<text:p>");
+		fprintf(f, "\" ");
+		/* redundant code*/
+		if (cell->style) 
+			if (cell->style->row_span || cell->style->col_span) {
+				if (!cell->style->row_span) {
+					cell->style->row_span = strdup("1");
+				} else {
+					if (!cell->style->col_span) {
+						cell->style->col_span = strdup("1");
+					}
+				}
+				fprintf(f, "table:number-columns-spanned=\"%s\" ", cell->style->col_span);
+				fprintf(f, "table:number-rows-spanned=\"%s\"", cell->style->row_span);
+			}
+			
+		fprintf(f, ">\n<text:p>");
 		print_escaped(f, cell->text);
 		fprintf(f, "</text:p>\n</table:table-cell>\n");
 		return;
@@ -716,6 +750,10 @@ void spreadconv_free_spreadconv_data(struct spreadconv_data *data)
 			free(style->border_left);
 		if (style->border_right != 0)
 			free(style->border_right);
+		if (style->row_span != 0)
+			free(style->row_span);
+		if (style->col_span != 0)
+			free(style->col_span);
 	}
 	if (data->unique_cell_styles != 0)
 		free(data->unique_cell_styles);
@@ -794,7 +832,8 @@ int spreadconv_add_unique_cell_style(struct spreadconv_cell_style *style,
 	 * fields.
 	 */
 	style->name = style->valign = style->halign = style->border = style->border_top = 
-		style->border_bottom = style->border_left = style->border_right = 0;
+		style->border_bottom = style->border_left = style->border_right = 
+		style->row_span = style->col_span = 0;
 	free(style);
 	return data->n_unique_cell_styles-1;
 }

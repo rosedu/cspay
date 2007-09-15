@@ -63,6 +63,16 @@ struct spreadconv_cell_style {
 	 * \remarks Possible values: center, start, end,
 	 * left, right, justify */
 	char *halign;
+	/** number of rows on wich the cell is spanned
+	 * \remarks Possible values: "1", "2", "3", etc.
+	 * default is "1";
+	 */
+	char *row_span;
+	/** number of columns on wich the cell is spanned
+	 * \remarks Possible values: "1", "2", "3", etc.
+	 * default is "1";
+	 */
+	char *col_span;
 	/** 
 	 * general border specifier
 	 * \remarks If this is set, all other border specificators are
