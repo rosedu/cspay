@@ -64,11 +64,11 @@ foreach( $_POST[orar] as $o) {
 	"facultate=$o[facultatea]\n".
 	"disciplina=$o[disciplina]\n".
 	"rol=$o[felpost]\n".   	
-	"numar_post=$o[numarpost]\n".
+	"numar_post=$o[numar_post]\n".
 	"tip_post=$o[tipora]\n".
 	"grupa=$o[grupa]\n".
 	"zi=$o[zi]\n".
-	"ore=$o[ore]\n".
+	"ore=$o[ore_start]-$o[ore_stop]\n".
 	"paritate=$o[paritate]\n".
 	"paritate_start=$o[paritate_prima]\n");
 	$i++;

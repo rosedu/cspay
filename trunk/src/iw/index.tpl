@@ -12,17 +12,17 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	</head>
 
-	<body>
+	<body onload="select_catedra( 'facultate' )">
 		<h1>Formular detalii plata cu ora</h1>
-		<form action="generate.php" method="post" onsubmit="input_copy('nume','intocmit');">
+		<form action="generate.php" method="post" onsubmit="input_copy('nume','intocmit');return verify();">
 		<fieldset>
 			<legend>General</legend>
 			<label for="nume">Nume:</label>
 			<input type="text" name="nume" id="nume"/>&nbsp;
-			<a href="#" id="a_more"
+			<a id="a_more"
 			onclick="input_copy('nume','intocmit');show_hide('intocmit_div');switch_text('a_more','mai mult','mai puţin');">mai mult</a>
 			<div class="hidden" id="intocmit_div">
-				<label for="intocmit">Intocmit:</label>
+				<label for="intocmit">Întocmit:</label>
 				<input type="text" name="intocmit" id="intocmit" value="" />
 			</div>
 			<br />
@@ -52,7 +52,7 @@
 			</select>
 			<br />
 			<label for="facultate">Facultatea:</label>
-			<select name="facultate" id="facultate" onchange="select_catedra( this )" onfocus="select_catedra( this )">
+			<select name="facultate" id="facultate" onchange="select_catedra( 'facultate' )" onfocus="select_catedra( 'facultate' )">
 				{FACULTATI}
 			</select>
 			<br />
@@ -68,7 +68,7 @@
 				{DECANI}
 			<!-- -->
 			<label for="nume_curs">Nume curs:</label>
-			<input type="text" name="nume_curs" id="nume_curs"/> <i>la care aveti functia de baza</i><br/>
+			<input type="text" name="nume_curs" id="nume_curs"/> <i>la care aveţi funcţia de bază</i><br/>
 			<label for="titular">Titular:</label>
 			<input type="text" name="titular" id="titular"/><br/>
 		</fieldset>
@@ -85,28 +85,59 @@
 					<option value="4">joi</option>
 					<option value="5">vineri</option>
 				</select>
-				post:<input name="orar[1][numarpost]" id="numarpost_1" type="text" size="2" value=""/>
-				fel:
+				număr post:<input name="orar[1][numar_post]" id="numar_post_1" type="text" size="2" value=""/>
+				titulatura:
 				<select name="orar[1][felpost]" id="felpost_1">
 					<option value="3">profesor</option>
 					<option value="0">asistent</option>
 					<option value="1">conferentiar</option>
 					<option value="2">sef lucrari</option>
 				</select>
-				fac.:
-				<select name="orar[1][facultatea]" id="facultatea_1">
+				facultate:
+				<select name="orar[1][facultatea]" id="facultatea_1"> 
 					{FACULTATI_SCURT}
 				</select>
-				disc.:<input name="orar[1][disciplina]" id="disciplina_1" type="text" size="4" />
+				disciplina:<input name="orar[1][disciplina]" id="disciplina_1" type="text" size="4" />
 				curs:
 				<select name="orar[1][tipora]" id="tipora_1">
 					<option value="0">curs</option>
-					<option value="1">aplicatii</option>
+					<option value="1">aplicaţii</option>
 				</select>
-				seria:<input name="orar[1][grupa]" id="grupa_1" type="text" size="5" value=""/>
-				orele: <input name="orar[1][ore]" id="orele_1" type="text" size="5" value=""/>
-				
-				<a href="#" onclick="show_hide('complex_1')">complex</a>
+				seria/grupa:<input name="orar[1][grupa]" id="grupa_1" type="text" size="5" value=""/>
+				orele: 
+				<select name="orar[1][ore_start]" id="ore_start_1">
+					<option>08</option>
+					<option>09</option>
+					<option>10</option>
+					<option>11</option>
+					<option>12</option>
+					<option>13</option>
+					<option>14</option>
+					<option>15</option>
+					<option>16</option>
+					<option>17</option>
+					<option>18</option>
+					<option>19</option>
+					<option>20</option>
+					<option>21</option>
+				</select> -
+				<select name="orar[1][ore_stop]" id="ore_stop_1">
+					<option>09</option>
+					<option>10</option>
+					<option>11</option>
+					<option>12</option>
+					<option>13</option>
+					<option>14</option>
+					<option>15</option>
+					<option>16</option>
+					<option>17</option>
+					<option>18</option>
+					<option>19</option>
+					<option>20</option>
+					<option>21</option>
+					<option>22</option>
+				</select> 
+				<a onclick="show_hide('complex_1')">complex</a>
 				<!-- setari complexe ascunse implicit -->
 				<div id="complex_1" class="complex_div">
 					paritate: 
@@ -116,7 +147,7 @@
 						<option>3</option>
 						<option>4</option>
 					</select>
-					prima saptamana: 
+					prima săptămână: 
 					<select name="orar[1][paritate_prima]">
 						<option>1</option>
 						<option>2</option>
@@ -127,21 +158,25 @@
 			</div>
 			</div>
 			<!-- butoane de less si de more -->
-			<button id="more_1" onclick="more(); return false;">mai mult</button>
-			<button id="less_1" onclick="less(); return false;" class="hidden">mai puţin</button>
+			<input type="button" id="more_1" onclick="more(); return false;" value="mai mult" />
+			<input type="button" id="less_1" onclick="less(); return false;" class="hidden"  value="mai puţin" />
 		</fieldset>
 		<fieldset>
 			<legend>Diverse</legend>
-			<label for="tip_fisier">Tip fisier:</label>
+			<label for="tip_fisier">Tip fişier:</label>
 			<select name="tip_fisier[]" id="tip_fisier" multiple="multiple">
 				<option selected="selected">ods</option>
 				<option disabled="disabled">xls</option>				
 			</select>
+			<a id="b_more"
+			onclick="show_hide('email_div');switch_text('b_more','mai mult','mai puţin');">mai mult</a>
+			<div id="email_div" class="hidden">
+				<label for="send_mail">Trimite prin e-mail</label>
+				<input name="send_mail" id="send_mail" type="checkbox" value="1">&nbsp;
+				<input name="email" id="email" value="" size=20>
 			<br />
-			<label for="send_mail">Trimite prin e-mail</label>
-			<input name="send_mail" id="send_mail" type="checkbox" value="1">&nbsp;
-			<input name="email" value="" size=20>
-			<br />
+			</div>
+			<br/>
 			<label for="seccode">Cod securitate:</label>
 			<input name="seccode" value="" id="seccode" size="5" maxlength="5" />
 			<img src="seccode.php" alt="security code" style="vertical-align:middle" />

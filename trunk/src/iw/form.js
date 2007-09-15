@@ -41,13 +41,12 @@ function more()
 	document.getElementById('complex_'+orar_count).style.display = 'none';
 	document.getElementById('less_1').style.display = 'inline';
 	//fac focus
-	primul_input = document.getElementById('numarpost_'+orar_count);
+	primul_input = document.getElementById('numar_post_'+orar_count);
 	primul_input.focus();
 	//copiez valori existente din div precedent in div nou: 
-	document.getElementById('numarpost_'+orar_count).value = document.getElementById('numarpost_'+(orar_count-1)).value;
+	document.getElementById('numar_post_'+orar_count).value = document.getElementById('numar_post_'+(orar_count-1)).value;
 	document.getElementById('disciplina_'+orar_count).value = document.getElementById('disciplina_'+(orar_count-1)).value;	
 	document.getElementById('grupa_'+orar_count).value = document.getElementById('grupa_'+(orar_count-1)).value;
-	document.getElementById('orele_'+orar_count).value = document.getElementById('orele_'+(orar_count-1)).value;	
 	
 	document.getElementById('zi_'+orar_count).selectedIndex = document.getElementById('zi_'+(orar_count-1)).selectedIndex;
 	document.getElementById('felpost_'+orar_count).selectedIndex = document.getElementById('felpost_'+(orar_count-1)).selectedIndex;
@@ -125,11 +124,12 @@ function input_copy( src, dest )
  * It's called by an ONCLICK or ONCHANGE event.
  * Uses global catedra_select variable to keep the currently visible SELECT (catedra_select 
  * is initialy null, that means 'catedradisabled' is visible).
- * \param facultate_element the id of faculty's html SELECT
+ * \param id_facultate the id of faculty's html SELECT
  */
-function select_catedra( facultate_element)
+function select_catedra( id_facultate )
 {
-	facultate = facultate_element.selectedIndex;
+	var	facultate = document.getElementById( id_facultate ).selectedIndex;
+	
 	//ascund selectul
 	if( catedra_select ) 
 		catedra_select.style.display = 'none';
@@ -152,4 +152,65 @@ function switch_text( label_element, text1, text2)
 		elem.innerHTML = text2;
 	else
 		elem.innerHTML = text1;
+}
+/**
+ * Verifies the form for possible type mismatches. 
+ * \return true if ok to submit, false elseway
+ */
+function verify ( )
+{
+	var i, ok, ora_start;
+	
+	// Initializez orar_count;
+	get_orar();
+	
+	// Verific campuri care nu pot fi goale
+	var ok = 
+		check_input( 'nume', 'notempty' ) &&
+		check_input( 'nume_curs', 'notempty' ) &&
+		check_input( 'titular', 'notempty' );
+	
+	// Verificari prin orar
+	for ( i = 1; (i < orar_count) && ok; i++ ) {
+		ok = ok &&
+			check_input( 'numar_post_'+i, 'notempty') &&
+			check_input( 'disciplina_'+i, 'notempty') &&
+			check_input( 'grupa_'+i, 'notempty');
+		ora_start = document.getElementById ( 'ore_start_'+i ).value;
+		ok = ok &&
+			check_input( 'ore_stop_'+i, 'greatthan', ora_start );
+	}
+	return ok;
+}
+
+/** 
+ * Utility for verify()
+ *
+ */
+function check_input ( id_input, type, additional )
+{
+	var elem = document.getElementById( id_input ),
+		elem_name = id_input.toString().replace('_', ' ');
+	if ( !elem ) {
+		alert( 'Câmpul "'+ id_input +'" nu a putut fi gasit!' );
+		return false;
+	}
+	switch ( type ) {
+	case 'notempty':
+		if ( elem.value == '' ) {
+			alert( 'Câmpul "'+ elem_name +'" nu poate fi gol' );
+			elem.focus();
+			return false;
+		}
+		break;
+	case 'greatthan':
+		if( elem.value <= additional ) {
+			alert( 'Câmpul "'+ elem_name +'" nu poate fi mai mic decât '+ additional );
+			elem.focus();
+			return false;
+		}
+		break;
+	}
+	
+	return true;
 }
