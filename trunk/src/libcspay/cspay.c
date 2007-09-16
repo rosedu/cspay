@@ -448,7 +448,12 @@ static int create_header (void)
 		goto ERR_;
 	}
 	doc->cells[3][5].text = strdup(val);
-
+	val = iniparser_getstr(ini, "antet:nume_curs");
+	if (!val) {
+		fprintf(stderr, "Error obtaining course name.\n");
+		goto ERR_;
+	}
+	doc->cells[4][5].text = strdup(val);
 
 
 	/* table head */
