@@ -45,7 +45,7 @@ char *line;
 void 
 usage(void)
 {
-     Dprintf("Incorrect syntax\n");
+     //printf("Incorrect syntax\n");
      printf("The CSpay application allows two types of usages:\n");
      printf(" The interactive usage in which the user has to answer queries \n");
      printf(" so that the personal configuration file(ini file) is generated.\n");
@@ -75,20 +75,20 @@ main( int argc, char **argv )
 	}
 	if(argc==6 && strcmp(argv[1],"-n")==0)
     { 
-        Dprintf("non-interactive\n");
+
         //mod neinteractiv 
         if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-')
         {   
             xmlf = argv[3];
             inif = argv[5];
             config = cspay_get_config( argv[3] );
-            Dprintf("xml functional\n");
+
             if (strcmp(argv[4],"-f")==0 && argv[5][0]!='-') {
             	lista = cspay_convert_options( config, inif);
             	cspay_free_config(config);
             	for( i = 0; i < lista->nr; i++)
 		        	printf( "%s.ods\n", lista->names[i] );
-                Dprintf("ini functional\n");
+
                 exit(0);
             }
         }
@@ -97,7 +97,7 @@ main( int argc, char **argv )
 	}
 	else {
          if(argc==4 && strcmp(argv[1],"-i")==0) {
-	         printf("interactive\n");
+
 	         //mod interactiv
 	         if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-') {
 	            config = cspay_get_config(argv[1]);
@@ -107,7 +107,7 @@ main( int argc, char **argv )
              //se introduc datele pentru antet
              printf("\n Introduceti numele: ");
              read_string(&nume);
-	     fprintf(f,"[antet]\n nume = %s",nume);
+	         fprintf(f,"[antet]\n nume = %s",nume);
              printf("\n Intocmit de: ");
              scanf("%s",intocmit);
              fprintf(f,"\n intocmit = %s",intocmit);
