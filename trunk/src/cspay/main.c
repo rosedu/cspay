@@ -19,13 +19,14 @@ read_num()
 char *line;
 char *endp;
 long nr;
-     fflush(stdin);
+     //fflush(stdin);
      fflush(stdout);
      line=malloc(255);
      fgets(line,255,stdin);
+     printf("%s",line);
      	if (line[0] == '\n')
-		return -1;
-  nr = strtol (line, &endp, 0);
+		fgets(line,255,stdin);
+  nr = strtol (line, &endp, 10);
   if (*endp != '\0' && *endp != '\n')
      {
       printf("Nu ati introdus un numar!");
@@ -107,7 +108,7 @@ main( int argc, char **argv )
              //se introduc datele pentru antet
              printf("\n Introduceti numele: ");
              read_string(&nume);
-	         fprintf(f,"[antet]\n nume = %s",nume);
+	     fprintf(f,"[antet]\n nume = %s",nume);
              printf("\n Intocmit de: ");
              scanf("%s",intocmit);
              fprintf(f,"\n intocmit = %s",intocmit);
@@ -173,5 +174,6 @@ main( int argc, char **argv )
 	     else 
               usage();
 	}
+	free(nume);
 	return 0;
 }
