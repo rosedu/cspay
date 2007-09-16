@@ -118,7 +118,9 @@ static struct class_info *read_class_info (size_t index)
 	strcpy(class_data + ci->section_len, "facultate");
 	ci->class_faculty = iniparser_getstr(ini, class_data);
 	if (!ci->class_faculty) {
+	/*
 		fprintf(stderr, "Error reading \"facultate\" variable.\n");
+	*/
 		goto READ_ERR;
 	}
 
