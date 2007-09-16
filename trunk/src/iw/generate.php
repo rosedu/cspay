@@ -91,17 +91,23 @@ if( !empty($lista_fisiere) ) {
 		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
 		"</head><body>";
 	echo "<h1>Fisiere spreadsheet obtinute:</h1><ul>";
-	foreach( $lista_fisiere as $file ) {
-		$name = $_POST['anul'].'_'.($_POST['luna']+1).str_replace(' ','_',$_POST['nume']).'.ods';
-		echo "<li><a href=\"download.php?f=$file\">$name</a></li>\n";
+	
+	for($i = 0; $i<count($lista_fisiere); $i++) {
+		$name = $_POST['anul'].'_'.($_POST['luna']<9?'0':'').($_POST['luna']+1). '_PO_' .str_replace(' ','_',$_POST['nume']).'.ods';
+		# TODO $name trebuie sa fie corect!
+		echo "<li><a href=\"download.php?f=$lista_fisiere[$i]&n=$name\">$name</a></li>\n";
 	}
 	echo "</ul>\n<br />\n";
 	
 	# Daca s-a comandat mail ma conformez:
 	if( $_POST['send_mail'] == 1 ) {
 		$attachments = array();
-		for($i = 0; $i<count($lista_fisiere); $i++)
-			$attachments[] = array('file' =>'/tmp/'.$lista_fisiere[$i], 'content_type'=>'application/ods');#TODO change it
+		for($i = 0; $i<count($lista_fisiere); $i++) {
+			$name = $_POST['anul'].'_'.($_POST['luna']<9?'0':'').($_POST['luna']+1). '_PO_' .str_replace(' ','_',$_POST['nume']).'.ods';
+			$attachments[] = array(	'file' =>'/tmp/'.$lista_fisiere[$i], 
+								'content_type'=>'application/ods',
+								'name' => $name);#TODO change it
+		}
 
 		send_mail( 'no-reply@anaconda.cs.pub.ro', $_POST['email'],
 			'CSPay Download', '<p>Fisiere rezultate:</p>',

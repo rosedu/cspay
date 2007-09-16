@@ -10,7 +10,12 @@ body {
 }
 a {
 	cursor: pointer !important;
-	color: red !important
+	color: blue !important;
+	text-decoration:none
+}
+a:hover {
+	color: red !important;
+	text-decoration: underline !important;
 }
 label   {
 	font-weight: bold;

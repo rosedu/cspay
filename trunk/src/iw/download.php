@@ -12,12 +12,18 @@ if( isset($_GET['f']) ) {
 	$file_name = urldecode($_GET['f']);
 	# fac curat, nu am voie cu subdirectoare (lucian: ../etc/passwd :))
 	$file_name = basename( $file_name );
+	# pot avea un alt nume cu care il servesc:
+	if ( isset($_GET['n']) ) 
+		$out_name = basename( urldecode( $_GET['n']) );
+	else
+		$out_name = $file_name;
 	
+	# citesc si scuip in browser
 	$fp = @fopen($file_location."/".$file_name, "r");
 	if($fp) {
 		header("Content-Type: application/octet-stream");
 		header("Accept-Ranges: bytes");
-		header("Content-Disposition: ; attachment; Filename=$file_name");
+		header("Content-Disposition: ; attachment; Filename=$out_name");
 		while ( !feof($fp) ) {
 			echo( fgets($fp, 4096) );
 		}

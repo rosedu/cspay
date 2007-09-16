@@ -39,7 +39,7 @@ function send_mail( $fromaddress, $emailaddress, $emailsubject, $body, $attachme
 		for ($i=0; $i < count($attachments); $i++) {
 			if (is_file($attachments[$i]["file"])) {  
 			# File for Attachment
-			$file_name = basename($attachments[$i]["file"]);
+			$file_name = isset($attachments[$i]["name"])?$attachments[$i]["name"]:basename($attachments[$i]["file"]);
 
 			$handle = fopen($attachments[$i]["file"], 'rb');
 			$f_contents = fread($handle, filesize($attachments[$i]["file"]));
