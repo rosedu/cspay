@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <cspay-config>
-    <universitate nume="Universitatea Politehnica Bucuresti">
+    <universitate nume="Universitatea Politehnică Bucureşti">
         <semestru nume="Semestrul 1" data_start="02.10.2006"
             data_sfarsit="19.01.2007" />
         <vacante>
