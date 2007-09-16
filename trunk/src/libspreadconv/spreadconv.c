@@ -103,7 +103,7 @@ static inline void print_escaped(FILE *f, char *s)
 			case '\'': fprintf(f, "&apos;"); break;
 			case '\"': fprintf(f, "&quot;"); break;
 			/* case '\\': fprintf(f, "\\\\"); break; */
-			/* case '\n': fprintf(f, "\\n"); break; */
+			case '\n': fprintf(f, "&#13;"); break; 
 			case '&':  fprintf(f, "&amp;"); break;
 			case '<':  fprintf(f, "&lt;"); break;
 			case '>':  fprintf(f, "&gt;"); break;
