@@ -25,7 +25,7 @@ struct class_info {
 	int class_day;
 	int class_parity;
 	int class_role_type;
-	int class_role_num;
+	char *class_role_num;
 	char *class_course;
 	char *class_faculty;
 	char *class_timeline;
@@ -45,23 +45,37 @@ struct total_hours {
 	struct sum_hours course;
 	struct sum_hours aplic;
 };
-struct table_styles {
-	int ce_table;	/* normal cell_table*/
-	int up_table;	/* up bold line */
-	int down_table;	/* bottom bold line*/
-	int right_table;	/* right bold line */
-	int left_table;	/* left bold line */
-	int up_left_corner;	/* up left corner bold*/
-	int up_right_corner;	/* up right corner bold*/
-	int down_left_corner;	/* down left corner bold*/
-	int down_right_corner;	/* down right corner bold*/
+struct defined_styles {
+	/*
+	 * same style for all cell from header
+	 */
+	int table_h;
+	/* table content styles
+	 * table_c[0], first col
+	 * table_c[1], 1, 2, 3, 4, 5,  col
+	 * table_c[2], 6, 7, 8 col
+	 */
+	int table_c[3];
+	/* last row styles
+	 * table_b[0], 0 col
+	 * table_b[1], 1, 2, 3, 4, 5 col
+	 * table_b[2], 6, 7, 8 col
+	 */
+	int table_b[3];
+	/*
+	 * row/columns styles
+	 * rc[0], wide col
+	 * rc[1], narrow col
+	 * rc[2], wide row
+	 */
+	int rc[3];
 };
 
 static dictionary *ini;
 static struct spreadconv_data *doc;
 static struct cspay_config *cfg;
 static struct tm *month_date;
-static struct table_styles *ts;
+static struct defined_styles *ds;
 static struct total_hours result;
 
 
@@ -128,8 +142,8 @@ static struct class_info *read_class_info (size_t index)
 
 	/* get role number for class */
 	strcpy(class_data + ci->section_len, "numar_post");
-	ci->class_role_num = iniparser_getint(ini, class_data, -1);
-	if (ci->class_role_num < 0) {
+	ci->class_role_num = iniparser_getstr(ini, class_data);
+	if (!ci->class_role_num) {
 		fprintf(stderr, "Error reading \"numar_post\" variable.\n");
 		goto READ_ERR;
 	}
@@ -218,125 +232,131 @@ cspay_get_config(char *xml_file_name)
 	return read_cspay_xml(xml_file_name);
 }
 
-static int config_styles (void)
+static int 
+config_styles (void)
 {
 	/* configure columns */
-	struct spreadconv_cell_style *curr;
+	struct spreadconv_cell_style *ccs;
+	struct spreadconv_rc_style *rcs;
 
-	struct spreadconv_rc_style *wide, *narrow;
-	int co_wide, co_narrow;
+	ds = calloc(1, sizeof (struct defined_styles));
 
-	Dprintf("Begin columns styles\n");
+	Dprintf("Begin row/columns styles\n");
 
-	wide = calloc(1, sizeof (struct spreadconv_rc_style));
-	wide->name = strdup("wide_col");
-	wide->size = strdup("5cm");
-	co_wide = spreadconv_add_unique_rc_style(wide, doc);
+	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
+	rcs->type = LSC_STYLE_COL;
+	rcs->name = strdup("wide_col");
+	rcs->size = strdup("5cm");
+	ds->rc[0] = spreadconv_add_unique_rc_style(rcs, doc);
 
-	narrow = calloc(1, sizeof (struct spreadconv_rc_style));
-	narrow->name = strdup("narrow_col");
-	narrow->size = strdup("0.6cm");
-	co_narrow = spreadconv_add_unique_rc_style(narrow, doc);
+	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
+	rcs->type = LSC_STYLE_COL;
+	rcs->name = strdup("narrow_col");
+	rcs->size = strdup("0.6cm");
+	ds->rc[1] = spreadconv_add_unique_rc_style(rcs, doc);
 
-	spreadconv_set_col_style(0, co_narrow, doc);
-	spreadconv_set_col_style(3, co_wide, doc);
+	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
+	rcs->type = LSC_STYLE_ROW;
+	rcs->name = strdup("wide_row");
+	rcs->size = strdup("1cm");
+	ds->rc[2] = spreadconv_add_unique_rc_style(rcs, doc);
 
-	/* stiluri pentru casute*/
-	/* TABLE STYLES */
+	
+	spreadconv_set_col_style(0, ds->rc[1], doc);
+	spreadconv_set_col_style(3, ds->rc[0], doc);
+	spreadconv_set_row_style(6, ds->rc[2], doc);
+	
+	/* cell styles */
 	Dprintf("Begin cells styles\n");
-	ts = calloc(1, sizeof (struct table_styles));
 
-	/* calloc vs. malloc, calloc wins! */
-
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_normal_cell");
-	curr->border = strdup("1pt solid #000000");
-	ts->ce_table = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->ce_table < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_up_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_top = strdup("2pt solid #000000");
-	ts->up_table = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->up_table < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_down_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_bottom = strdup("2pt solid #000000");
-	ts->down_table = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->down_table < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_left_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_left = strdup("2pt solid #000000");
-	ts->left_table = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->left_table < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_right_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_right = strdup("2pt solid #000000");
-	ts->right_table = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->right_table < 0){
+	/* Table Header */
+	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
+	ccs->name = strdup("table_header_1");
+	ccs->halign = strdup("center");
+	ccs->valign = strdup("middle");
+	ccs->border = strdup("2pt solid #000000");
+	ds->table_h = spreadconv_add_unique_cell_style(ccs, doc);
+	if (ds->table_h < 0){
 		fprintf(stderr, "Error at cells styles\n");
 		goto ERR_TS;
 	}
 
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_up_left_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_top = strdup("2pt solid #000000");
-	curr->border_left = strdup("2pt solid #000000");
-	ts->up_left_corner = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->up_left_corner < 0){
+	/* Table content */
+	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
+	ccs->name = strdup("table_content_1");
+	ccs->border_bottom = strdup("1pt solid #000000");
+	ccs->border_left = strdup("2pt solid #000000");
+	ccs->border_right = strdup("2pt solid #000000");
+	ccs->halign = strdup("end");
+	ds->table_c[0] = spreadconv_add_unique_cell_style(ccs, doc);
+	if (ds->table_c[0] < 0){
 		fprintf(stderr, "Error at cells styles\n");
 		goto ERR_TS;
 	}
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_up_right_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_top = strdup("2pt solid #000000");
-	curr->border_right = strdup("2pt solid #000000");
-	ts->up_right_corner = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->up_right_corner < 0){
+
+	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
+	ccs->name = strdup("table_content_2");
+	ccs->border_bottom = strdup("1pt solid #000000");
+	ccs->border_left = strdup("2pt solid #000000");
+	ccs->border_right = strdup("2pt solid #000000");
+	ccs->halign = strdup("center");
+	ds->table_c[1] = spreadconv_add_unique_cell_style(ccs, doc);
+	if (ds->table_c[1] < 0){
 		fprintf(stderr, "Error at cells styles\n");
 		goto ERR_TS;
 	}
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_down_left_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_bottom = strdup("2pt solid #000000");
-	curr->border_left = strdup("2pt solid #000000");
-	ts->down_left_corner = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->down_left_corner < 0){
+
+	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
+	ccs->name = strdup("table_content_3");
+	ccs->border_bottom = strdup("1pt solid #000000");
+	ccs->border_left = strdup("2pt solid #000000");
+	ccs->border_right = strdup("2pt solid #000000");
+	ccs->halign = strdup("start");
+	ds->table_c[2] = spreadconv_add_unique_cell_style(ccs, doc);
+	if (ds->table_c[2] < 0){
 		fprintf(stderr, "Error at cells styles\n");
 		goto ERR_TS;
 	}
-	curr = calloc(1, sizeof (struct spreadconv_cell_style));
-	curr->name = strdup("table_down_right_cell");
-	curr->border = strdup("1pt solid #000000");
-	curr->border_bottom = strdup("2pt solid #000000");
-	curr->border_right = strdup("2pt solid #000000");
-	ts->down_right_corner = spreadconv_add_unique_cell_style(curr, doc);
-	if (ts->down_right_corner < 0){
+	/* Table bottom */
+	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
+	ccs->name = strdup("table_bottom_1");
+	ccs->border_bottom = strdup("2pt solid #000000");
+	ccs->border_left = strdup("2pt solid #000000");
+	ccs->border_right = strdup("2pt solid #000000");
+	ccs->halign = strdup("end");
+	ds->table_b[0] = spreadconv_add_unique_cell_style(ccs, doc);
+	if (ds->table_b[0] < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+
+	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
+	ccs->name = strdup("table_bottom_2");
+	ccs->border_bottom = strdup("2pt solid #000000");
+	ccs->border_left = strdup("2pt solid #000000");
+	ccs->border_right = strdup("2pt solid #000000");
+	ccs->halign = strdup("center");
+	ds->table_b[1] = spreadconv_add_unique_cell_style(ccs, doc);
+	if (ds->table_b[1] < 0){
+		fprintf(stderr, "Error at cells styles\n");
+		goto ERR_TS;
+	}
+
+	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
+	ccs->name = strdup("table_bottom_3");
+	ccs->border_bottom = strdup("2pt solid #000000");
+	ccs->border_left = strdup("2pt solid #000000");
+	ccs->border_right = strdup("2pt solid #000000");
+	ccs->halign = strdup("start");
+	ds->table_b[2] = spreadconv_add_unique_cell_style(ccs, doc);
+	if (ds->table_b[2] < 0){
 		fprintf(stderr, "Error at cells styles\n");
 		goto ERR_TS;
 	}
 	return 0;
 
 	ERR_TS:
-	free(ts);
+	free(ds);
 	return -1;
 
 }
@@ -430,18 +450,32 @@ static int create_header (void)
 
 
 	/* table head */
-	doc->cells[6][0].text = strdup("Nr.");
-	doc->cells[6][1].text = strdup("Felul si");
-	doc->cells[6][2].text = strdup("Facultatea");
-	doc->cells[6][3].text = strdup("Disciplina");
-	doc->cells[6][4].text = strdup("Curs");
-	doc->cells[6][5].text = strdup("Aplicatii");
-	doc->cells[6][6].text = strdup("An/Gr");
-	doc->cells[6][7].text = strdup("Data");
-	doc->cells[6][8].text = strdup("Ore");
+	doc->cells[6][0].text = strdup("Nr.\ncrt.");
+	spreadconv_set_cell_style(6, 0, ds->table_h, doc);
 
-	doc->cells[7][0].text = strdup("crt.");
-	doc->cells[7][1].text = strdup("nr. post");
+	doc->cells[6][1].text = strdup("Felul si\nnr. post");
+	spreadconv_set_cell_style(6, 1, ds->table_h, doc);
+
+	doc->cells[6][2].text = strdup("Facultatea");
+	spreadconv_set_cell_style(6, 2, ds->table_h, doc);
+
+	doc->cells[6][3].text = strdup("Disciplina");
+	spreadconv_set_cell_style(6, 3, ds->table_h, doc);
+
+	doc->cells[6][4].text = strdup("Curs");
+	spreadconv_set_cell_style(6, 4, ds->table_h, doc);
+
+	doc->cells[6][5].text = strdup("Aplicatii");
+	spreadconv_set_cell_style(6, 5, ds->table_h, doc);
+
+	doc->cells[6][6].text = strdup("An/Gr");
+	spreadconv_set_cell_style(6, 6, ds->table_h, doc);
+
+	doc->cells[6][7].text = strdup("Data");
+	spreadconv_set_cell_style(6, 7, ds->table_h, doc);
+
+	doc->cells[6][8].text = strdup("Ore");
+	spreadconv_set_cell_style(6, 8, ds->table_h, doc);
 
 	return 0;
 	ERR_:
@@ -454,51 +488,77 @@ static int create_header (void)
 
 static int create_footer (size_t last_row)
 {
+	
 	char formula[32];
 	char *tmp_ini_val;
+	int i;
 	sprintf(formula, "=sum(E9:F%d)", (int) last_row);
 	doc->cells[last_row][7].text = strdup("Total:");
 	doc->cells[last_row][8].value_type = strdup("formula");
 	doc->cells[last_row][8].text= strdup(formula);
 	last_row += 2;
 
-	doc->cells[last_row][1].text = strdup("TOTAL ore:");
-	doc->cells[last_row][2].text = strdup("Curs");
-	doc->cells[last_row][3].text = strdup("Nr. ore");
+	/* doc->cells[last_row][1].text = strdup("TOTAL ore:");
+	 */
+	doc->cells[last_row][3].text = strdup("Curs");
+	spreadconv_set_cell_style(last_row, 3, ds->table_h, doc);
+
+/*	doc->cells[last_row][3].text = strdup("Nr. ore");
+	spreadconv_set_cell_style(last_row, 3, ds->table_h, doc);*/
+
 	doc->cells[last_row][4].text = strdup("Aplicatii");
-	doc->cells[last_row][5].text = strdup("Nr. ore");
+	spreadconv_set_cell_style(last_row, 4, ds->table_h, doc);
+
+/*	doc->cells[last_row][5].text = strdup("Nr. ore");
+	spreadconv_set_cell_style(last_row, 5, ds->table_h, doc);*/
+
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("Prof.");
+	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
 	doc->cells[last_row][3].text = malloc(5);
 	sprintf(doc->cells[last_row][3].text, "%d", result.course.prof);
-	doc->cells[last_row][4].text = strdup("Prof.");
-	doc->cells[last_row][5].text = malloc(5);
-	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.prof);
+	
+/*	doc->cells[last_row][4].text = strdup("Prof."); */
+	doc->cells[last_row][4].text = malloc(5);
+	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.prof);
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("Conf.");
+	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
+
 	doc->cells[last_row][3].text = malloc(5);
 	sprintf(doc->cells[last_row][3].text, "%d", result.course.conf);
-	doc->cells[last_row][4].text = strdup("Conf.");
-	doc->cells[last_row][5].text = malloc(5);
-	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.conf);
+/*	doc->cells[last_row][4].text = strdup("Conf.");*/
+	doc->cells[last_row][4].text = malloc(5);
+	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.conf);
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("S.l.");
+	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
+
 	doc->cells[last_row][3].text = malloc(5);
 	sprintf(doc->cells[last_row][3].text, "%d", result.course.sl);
-	doc->cells[last_row][4].text = strdup("S.l.");
-	doc->cells[last_row][5].text = malloc(5);
-	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.sl);
+/*	doc->cells[last_row][4].text = strdup("S.l.");*/
+	doc->cells[last_row][4].text = malloc(5);
+	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.sl);
+	for (i = last_row - 2; i <= last_row; ++ i) {
+		spreadconv_set_cell_style(i, 3, ds->table_c[1], doc);
+		spreadconv_set_cell_style(i, 4, ds->table_c[1], doc);
+	}
 	last_row++;
 
+	spreadconv_set_cell_style(last_row, 3, ds->table_b[1], doc);
+	spreadconv_set_cell_style(last_row, 4, ds->table_b[1], doc);
+
 	doc->cells[last_row][2].text =	 strdup("As.");
+	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
+
 	doc->cells[last_row][3].text = malloc(5);
 	sprintf(doc->cells[last_row][3].text, "%d", result.course.as);
-	doc->cells[last_row][4].text = strdup("As.");
-	doc->cells[last_row][5].text = malloc(5);
-	sprintf(doc->cells[last_row][5].text, "%d", result.aplic.as);
+/*	doc->cells[last_row][4].text = strdup("As.");*/
+	doc->cells[last_row][4].text = malloc(5);
+	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.as);
 	last_row += 2;
 
 	doc->cells[last_row][0].text = strdup("Intocmit,");
@@ -566,6 +626,8 @@ cspay_convert_single_file(char *fname)
 	int tmp_sum_sl;
 	int tmp_sum_as;
 	int tmp_sum;
+
+	int i;
 
 	const char roles[4][14] = {
 			{"as"},
@@ -639,71 +701,61 @@ cspay_convert_single_file(char *fname)
 
 		tmp_sum_prof = tmp_sum_conf = tmp_sum_sl = tmp_sum_as = 0;
 		tmp_sum = 0;
+		#define TC	7	/*table content start row*/
 		for (/* no init */; index < month_end;
 				index += ci->class_parity * WEEK) {
 			if (!is_work(cfg, index))
 				continue;
-			/* row index in table */
-			if (table_crt == 0) {
-				ccs = ts->up_left_corner;
-			} else {
-				ccs = ts->left_table;
-			}
-			doc->cells[8 + table_crt][0].text = malloc(4);
-			sprintf(doc->cells[8 + table_crt][0].text, "%d", (int) table_crt + 1);
-			spreadconv_set_cell_style(8 + table_crt, 0, ccs, doc);
+			/* NR. crt */
+			ccs = ds->table_c[0];
+			doc->cells[TC + table_crt][0].text = malloc(4);
+			sprintf(doc->cells[TC + table_crt][0].text, "%d", (int) table_crt + 1);
+			spreadconv_set_cell_style(TC + table_crt, 0, ccs, doc);
 
-			/* role type and number */
-			if (table_crt == 0){
-				ccs = ts->up_table;
-			} else {
-				ccs = ts->ce_table;
-			}
-			doc->cells[8 + table_crt][1].text = malloc(10);
-			sprintf(doc->cells[8 + table_crt][1].text, "%s%d", roles[ci->class_role_type], ci->class_role_num);
-			spreadconv_set_cell_style(8 + table_crt, 1, ccs, doc);
+			/* Felul si nr. post*/
+			ccs = ds->table_c[1];
+			doc->cells[TC + table_crt][1].text = malloc(10);
+			sprintf(doc->cells[TC + table_crt][1].text, "%s%s", roles[ci->class_role_type], ci->class_role_num);
+			spreadconv_set_cell_style(TC + table_crt, 1, ccs, doc);
 
 
 			/* faculty */
-			doc->cells[8 + table_crt][2].text = strdup(ci->class_faculty);
-			spreadconv_set_cell_style(8 + table_crt, 2, ccs, doc);
+			doc->cells[TC + table_crt][2].text = strdup(ci->class_faculty);
+			spreadconv_set_cell_style(TC + table_crt, 2, ccs, doc);
 
 			/* course */
-			doc->cells[8 + table_crt][3].text = strdup(ci->class_course);
-			spreadconv_set_cell_style(8 + table_crt, 3, ccs, doc);
+			doc->cells[TC + table_crt][3].text = strdup(ci->class_course);
+			spreadconv_set_cell_style(TC + table_crt, 3, ccs, doc);
 
 			if (ci->class_type) {/* e aplicatie */
-				doc->cells[8 + table_crt][5].value_type = strdup("float");
-				doc->cells[8 + table_crt][5].text = malloc(4);
-				sprintf(doc->cells[8 + table_crt][5].text, "%d", ci->class_h_end - ci->class_h_start);
+				doc->cells[TC + table_crt][5].value_type = strdup("float");
+				doc->cells[TC + table_crt][5].text = malloc(4);
+				sprintf(doc->cells[TC + table_crt][5].text, "%d", ci->class_h_end - ci->class_h_start);
 			} else { /* e curs */
-				doc->cells[8 + table_crt][4].value_type = strdup("float");
-				doc->cells[8 + table_crt][4].text = malloc(4);
-				sprintf(doc->cells[8 + table_crt][4].text, "%d", ci->class_h_end - ci->class_h_start);
+				doc->cells[TC + table_crt][4].value_type = strdup("float");
+				doc->cells[TC + table_crt][4].text = malloc(4);
+				sprintf(doc->cells[TC + table_crt][4].text, "%d", ci->class_h_end - ci->class_h_start);
 			}
-			spreadconv_set_cell_style(8 + table_crt, 4, ccs, doc);
-			spreadconv_set_cell_style(8 + table_crt, 5, ccs, doc);
+			spreadconv_set_cell_style(TC + table_crt, 4, ccs, doc);
+			spreadconv_set_cell_style(TC + table_crt, 5, ccs, doc);
 
+			ccs = ds->table_c[2];
 			/* group */
-			doc->cells[8 + table_crt][6].text = strdup(ci->class_group);
-			spreadconv_set_cell_style(8 + table_crt, 6, ccs, doc);
+			doc->cells[TC + table_crt][6].text = strdup(ci->class_group);
+			spreadconv_set_cell_style(TC + table_crt, 6, ccs, doc);
 
 			/* date */
-			doc->cells[8 + table_crt][7].text = malloc(20);
-			strftime(doc->cells[8 + table_crt][7].text, 19, "%d-%b", localtime(&index));
-			spreadconv_set_cell_style(8 + table_crt, 7, ccs, doc);
+			doc->cells[TC + table_crt][7].text = malloc(20);
+			strftime(doc->cells[TC + table_crt][7].text, 19, "%d-%b", localtime(&index));
+			spreadconv_set_cell_style(TC + table_crt, 7, ccs, doc);
 				
 			/* FIXME: no validation on class timeline */
-			if (table_crt == 0) {
-				ccs = ts->up_right_corner;
-			} else {
-				ccs = ts->right_table;
-			}
+			/* Time */
 			tmp_str = malloc (10);
-			sprintf (tmp_str, "%d-%d", ci->class_h_start,
+			sprintf (tmp_str, "%02d-%02d", ci->class_h_start,
 					ci->class_h_end);
-			doc->cells[8 + table_crt][8].text = tmp_str;
-			spreadconv_set_cell_style(8 + table_crt, 8, ccs, doc);
+			doc->cells[TC + table_crt][8].text = tmp_str;
+			spreadconv_set_cell_style(TC + table_crt, 8, ccs, doc);
 
 			++ table_crt;
 			tmp_sum +=  ci->class_h_end - ci->class_h_start;
@@ -733,17 +785,19 @@ cspay_convert_single_file(char *fname)
 		free (ci);
 	}
 	Dprintf("End of all rules.\n");
-	spreadconv_set_cell_style(8 + table_crt - 1, 0, ts->down_left_corner, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 1, ts->down_table, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 2, ts->down_table, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 3, ts->down_table, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 4, ts->down_table, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 5, ts->down_table, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 6, ts->down_table, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 7, ts->down_table, doc);
-	spreadconv_set_cell_style(8 + table_crt - 1, 8, ts->down_right_corner, doc);
+	
+	spreadconv_set_cell_style(TC + table_crt - 1, 0, ds->table_b[0], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 1, ds->table_b[1], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 2, ds->table_b[1], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 3, ds->table_b[1], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 4, ds->table_b[1], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 5, ds->table_b[1], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 6, ds->table_b[2], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 7, ds->table_b[2], doc);
+	spreadconv_set_cell_style(TC + table_crt - 1, 8, ds->table_b[2], doc);
+	
 	/* create spreadsheet footer */
-	create_footer (table_crt + 8);
+	create_footer (TC + table_crt);
 
 	spreadconv_dir_name = strdup("./out/");
 
