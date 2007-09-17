@@ -1,0 +1,130 @@
+@charset "utf-8";
+/* CSS Document */
+/*****************
+*
+* CSpay Project
+* Start date: 17.04.2007
+* Copyright : students
+*
+******************/
+body {
+	margin: 0px;
+	padding: 0px;
+	background: url(bg.gif) repeat-y #411c1c;
+	font-family: Verdana;
+	font-size: 12px;
+	color: #fff;
+}
+a {
+	text-decoration: none;
+	color: #fff;
+}
+#content {
+	position: absolute; 
+	margin-left: 20%;
+	background:  #1f0f0f;
+	background: url(bg_l.gif) repeat-y #1f0f0f;
+	border-right: 1px solid #000;
+	width: 800px;
+	height: 100%;
+}
+#logo_cs {
+	float: left;
+	margin: 10px 0 0 10px;
+	width: 209px;
+	height: 78px;
+	background: url("cs.gif") no-repeat;
+}
+#logo_cspay {
+	float: right;
+	margin: 10px 15px 0 0;
+	width: 156px;
+	height: 61px;
+	background: url("logo.gif") no-repeat;
+}	
+#logo_firefox {
+	margin: 20px 0 0 30px;
+	background: url("logo-firefox.png") no-repeat;
+	width: 80px;
+	height: 15px;
+	border: 1px solid #000;
+}
+#logo_mediawiki {
+	margin: 10px 0 0 37px;
+	background: url("logo-mediawiki.png") no-repeat;
+	width: 64px;
+	height: 64px;
+	border: 1px solid #000;
+}
+#logo_xhtml {
+	margin: 10px 0 0 30px;
+	background: url("logo-xhtml.png") no-repeat;
+	width: 88px;
+	height: 31px;
+	border: 1px solid #000;
+}
+#logo_css {
+	margin: 10px 0 0 30px;
+	background: url("logo-css.png") no-repeat;
+	width: 88px;
+	height: 31px;
+	border: 1px solid #000;
+}
+#welcome {
+	padding-top: 25px;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+}
+#continut {
+	margin-top: 45px;	
+	padding: 0;
+}
+#meniu {
+	float: left;
+	margin-left: 20px;
+	padding: 0px;
+}
+#meniu ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+#meniu li {
+	background: #411c1c;
+	width: 140px;
+	height: 20px;
+	margin-top: 2px;
+	font-size: 12px;
+	font-weight: bold;
+	border: 1px solid #584d4d;
+	padding: 2px 0 0 10px;
+}
+#meniu li:hover {
+	color: #000;
+}
+#text {
+	float: right;
+	width: 580px;
+	margin-right: 20px;
+	background: #411c1c;
+	border: 1px solid #584d4d;
+}
+#text .title {
+	font-size: 15px;
+	font-style: oblique;
+	font-weight: bold;
+	padding: 5px 0 2px 5px;
+}
+#text .tcontent {
+	text-align: justify;
+	padding: 0 10px 0 20px;
+}
+#text a {
+	color: #999999; 
+	text-decoration: none;
+
+}
+.images { 
+	margin: 20px 0 20px 25px;
+}
