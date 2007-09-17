@@ -1,0 +1,8 @@
+CSpay front end
+
+Prerequisites: 	libxml-dev 	(http://xmlsoft.org/)
+		libspreadconv	
+		libcspay
+		libiniparser 	(http://ndevilla.free.fr/iniparser/)
+		wxwidgets	(http://www.wxwidgets.org/)
+
