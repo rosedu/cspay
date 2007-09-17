@@ -179,11 +179,6 @@ char *spreadconv_dir_name;
  */
 char * spreadconv_create_spreadsheet(struct spreadconv_data *, int);
 
-/**
- * Converts a number to its representation in letters; 1 is A, 2 is
- * B, 27 is AA, 28 is AB etc.
- */
-char * spreadconv_convert_column_number(int);
 
 /**
  * Creates a new \a spreadconv_data structure, with the specified

@@ -13,7 +13,7 @@ CFLAGS = -Wall -O0 -g
 LDFLAGS = -L.
 LDLIBS = -lspreadconv
 
-SRC = spreadconv.c
+SRC = spreadconv.c ods.c xls.c utils.c
 OBJ = $(SRC:.c=.o)
 
 all: libspreadconv.a
@@ -22,20 +22,8 @@ libspreadconv.a: $(OBJ)
 	ar rc libspreadconv.a $(OBJ)
 	ranlib libspreadconv.a
 
-tests: test col_test align_test
 
-test: test.o libspreadconv.a
-
-col_test: col_test.o libspreadconv.a
-
-align_test: align_test.o libspreadconv.a
-
-span_test: span_test.o libspreadconv.a
-
-.PHONY: clean clean_test
-
-clean_test:
-	-rm -rf test.o col_test.o test col_test
+.PHONY: clean
 
 clean:
 	-rm -rf $(OBJ) *~
