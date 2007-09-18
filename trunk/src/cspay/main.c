@@ -9,6 +9,7 @@
 #include<time.h>
 #include "../common/debug.h"
 #include "../libcspay/cspay.h"
+#include "../iniparser-2.17/src/iniparser.h"
 #if 0	/* win 32 ?*/
 #	include "E:\CSpay\trunk\src\libcspay"
 #endif
@@ -19,11 +20,10 @@ read_num()
 char *line;
 char *endp;
 long nr;
-     //fflush(stdin);
+     fflush(stdin);
      fflush(stdout);
      line=malloc(255);
      fgets(line,255,stdin);
-     printf("%s",line);
      	if (line[0] == '\n')
 		fgets(line,255,stdin);
   nr = strtol (line, &endp, 10);
@@ -38,8 +38,12 @@ void
 read_string(char ** str)
 {
 char *line;
+     fflush(stdin);
+     fflush(stdout);
      line=malloc(255);
      fgets(line,255,stdin);
+     if (line[0] == '\n')
+	     fgets(line,255,stdin);
      line[strlen(line)-1]='\0';
      * str = line;
 }
@@ -64,13 +68,13 @@ usage(void)
 int
 main( int argc, char **argv )
 {	
-    int i,luna,no,rol,nrp,tip_post,zi,oi,of,par,pari;
+    int i,no,rol,nrp,tip_post,zi,oi,of,par,pari;
     char *nume, intocmit[40],facultate[80],decan[40],sef[40],catedra[40];
-    char *inif,*xmlf,tip[4],next[3],fac[6],dis[7],grupa[8];
+    char *inif,*xmlf,tip[4],next[3],fac[6],dis[7],grupa[8],*luna;
     FILE *f;
     struct cspay_file_list *lista;
-	struct cspay_config *config;
-	
+    struct cspay_config *config;
+    dictionary *d;
 	if( argc < 4 ) {
 		usage();
 	}
@@ -101,7 +105,7 @@ main( int argc, char **argv )
 
 	         //mod interactiv
 	         if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-') {
-	            config = cspay_get_config(argv[1]);
+	            config = cspay_get_config(argv[333]);
 	         }
 	         else usage();
              f=fopen("personal.ini","wt");
@@ -125,8 +129,8 @@ main( int argc, char **argv )
              scanf("%s",catedra);
              fprintf(f,"\n catedra = %s",catedra);
              printf("\n Introduceti numarul lunii: ");
-             luna=read_num();
-             fprintf(f,"\n luna = %d",luna);
+             read_string(&luna);
+             fprintf(f,"\n luna = %s",luna);
              printf("\n Introduceti tipul fisierul ce urmeaza fi generat: ");
              scanf("%s",tip);
              fprintf(f,"\n tip_fisier = %s",tip);
@@ -169,11 +173,21 @@ main( int argc, char **argv )
              fprintf(f,"\n paritate_start = %d",pari);
              printf("\n Doriti sa mai introduceti inca un set de ore?(Da/Nu)");
              scanf("%s",next);
-             }    
+             }
+	     fclose(f);
 	     }
 	     else 
               usage();
 	}
-	free(nume);
+	if(strcmp(argv[1],"-n")==0)
+		d = iniparser_load(argv[3]);
+		else
+			d = iniparser_load("personal.ini");
+
+	luna = malloc(30);
+	luna = iniparser_getstr(d, "antet:luna");
+	iniparser_freedict(d);	
+	printf("%s",luna);
+	free(luna);
 	return 0;
 }
