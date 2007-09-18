@@ -496,13 +496,16 @@ static int create_header (void)
 static int create_footer (size_t last_row)
 {
 	
-	char formula[32];
+	char tot[12];
 	char *tmp_ini_val;
 	int i;
-	sprintf(formula, "=sum(E9:F%d)", (int) last_row);
+	sprintf(tot, "%d", result.course.prof + result.aplic.prof +
+			result.course.conf + result.aplic.conf +
+			result.course.sl + result.aplic.sl +
+			result.course.as + result.aplic.as);
 	doc->cells[last_row][7].text = strdup("Total:");
-	doc->cells[last_row][8].value_type = strdup("formula");
-	doc->cells[last_row][8].text= strdup(formula);
+	doc->cells[last_row][8].value_type = strdup("float");
+	doc->cells[last_row][8].text= strdup(tot);
 	last_row += 2;
 
 	/* doc->cells[last_row][1].text = strdup("TOTAL ore:");
@@ -615,11 +618,10 @@ static int create_footer (size_t last_row)
  * Asta este cea mai importanta din biblioteca
  */
 
-char *
-cspay_convert_single_file(char *fname)
+static int
+load_and_parse_options(char *fname)
 {
 	struct class_info *ci;
-	char *ods_fname = NULL;
 	size_t class_index;
 	time_t month_start;
 	time_t month_end;
@@ -633,8 +635,6 @@ cspay_convert_single_file(char *fname)
 	int tmp_sum_sl;
 	int tmp_sum_as;
 	int tmp_sum;
-
-	int i;
 
 	const char roles[4][14] = {
 			{"as"},
@@ -653,7 +653,7 @@ cspay_convert_single_file(char *fname)
 		ini = iniparser_load("personal.ini");
 		if (!ini){
 			fprintf(stderr, "personal.ini not found, bye!\n");
-			return NULL;
+			return -1;
 		}
 	}
 
@@ -664,14 +664,14 @@ cspay_convert_single_file(char *fname)
 	if (config_styles()){
 		iniparser_freedict(ini);
 		spreadconv_free_spreadconv_data(doc);
-		return NULL;
+		return -1;
 	}
 
 	/* use ini file to create spreadsheet header */
 	if (create_header()) {
 		iniparser_freedict(ini);
 		spreadconv_free_spreadconv_data(doc);
-		return NULL;
+		return -1;
 	}
 
 	month_start = mktime(month_date);
@@ -806,28 +806,33 @@ cspay_convert_single_file(char *fname)
 	/* create spreadsheet footer */
 	create_footer (TC + table_crt);
 
-	spreadconv_dir_name = strdup("./out/");
 
-	Dprintf("Begin output file\n");
-	/*
-	 * TODO
-	 * parse file, from ini
-	 */
-	ods_fname = spreadconv_create_spreadsheet(doc, LSC_FILE_XLS);
-	if (!ods_fname) {
-		fprintf(stderr, "Error creating .ods file\n");
-		return NULL;
-	} else {
-		Dprintf("Output: %s\n\n", ods_fname);
-	}
 
-	spreadconv_free_spreadconv_data(doc);
-	iniparser_freedict(ini);
-	free(spreadconv_dir_name);
 
-	return ods_fname;
+	return 0;
 }
 
+static char *
+save_document(int ft)
+{
+	char *ret;
+
+	Dprintf("Begin output file\n");
+	
+	spreadconv_dir_name = NULL;
+
+	ret = spreadconv_create_spreadsheet(doc, ft);
+	if (!ret)
+		return  NULL;
+	Dprintf("End output file\n");
+	return ret;
+}
+static void
+free_parsed_data()
+{
+	spreadconv_free_spreadconv_data(doc);
+	iniparser_freedict(ini);
+}
 int
 is_work(struct cspay_config *cfg, time_t t)
 {
@@ -853,14 +858,27 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 
 	struct cspay_file_list *ret;
 	char *temp;
-	cfg = config; /* FIXME ugly! cfg is global */
+	char *file_types;
+	cfg = config;  
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 0;
-	ret->names = malloc(12 * sizeof (char *));
-	if ((temp = cspay_convert_single_file(fname)) != NULL) {
+	ret->names = malloc(24 * sizeof (char *));
+	load_and_parse_options(fname);
+
+	file_types = iniparser_getstr(ini, "antet:tip_fisier");
+	if (strstr(file_types, "ods")) {
+		temp = save_document(LSC_FILE_ODS);
 		ret->names[ret->nr ++] = strdup(temp);
 		free(temp);
 	}
+	
+	if (strstr(file_types, "xls")) {
+		temp = save_document(LSC_FILE_XLS);
+		ret->names[ret->nr ++] = strdup(temp);
+		free(temp);
+	}
+	free_parsed_data();
+
 	return ret;
 }
 

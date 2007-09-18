@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "spreadconv.h"
 #include "xls.h"
@@ -19,8 +20,9 @@ static void print_sheet(struct spreadconv_data *);
 static void print_cell_styles(struct spreadconv_data *);
 static void print_rc_styles(struct spreadconv_data *);
 static void print_cell_data(struct spreadconv_data *);
-static void print_save();
+static void print_save(char *);
 static void close_script();
+static void run_script(char *);
 
 char *
 xls_create_spreadsheet(struct spreadconv_data *data)
@@ -28,16 +30,47 @@ xls_create_spreadsheet(struct spreadconv_data *data)
 	/*
 	 * TODO
 	 */
-	open_script("/tmp/out.py");
+	char *script_name;
+	char *doc_name;
+	script_name = malloc(512);
+	if (!spreadconv_dir_name)
+		spreadconv_dir_name = strdup("/tmp/");
+	snprintf(script_name, 512, "%sspreadconv_pyXXXXXX", spreadconv_dir_name);
+	if(!mktemp(script_name)) {
+		fprintf(stderr, "mktemp\n");
+		free(script_name);
+	/*	free(spreadconv_dir_name);
+		spreadconv_dir_name = NULL;*/
+		return NULL;
+	}
+	doc_name = malloc(512);
+	snprintf(doc_name, 512, "%sspreadconv_xlsXXXXXX", spreadconv_dir_name);
+	if (!mktemp(doc_name)) {
+		fprintf(stderr, "mktemp\n");
+		free(doc_name);
+		free(script_name);
+	/*	free(spreadconv_dir_name);
+		spreadconv_dir_name = NULL;*/
+		return NULL;
+	}
+	doc_name = realloc(doc_name, strlen(doc_name) + 5);
+	strcat(doc_name, ".xls");
+
+	open_script(script_name);
 	print_shabang();
 	print_import();
 	print_sheet(data);
 	print_cell_styles(data);
 	print_rc_styles(data);
 	print_cell_data(data);
-	print_save();
+	print_save(doc_name);
 	close_script();
-	return NULL;
+	run_script(script_name);
+
+	free(script_name);
+	/*free(spreadconv_dir_name);
+	spreadconv_dir_name = NULL;*/
+	return doc_name;
 }
 
 static void
@@ -117,6 +150,7 @@ print_cell_styles(struct spreadconv_data *data)
 					else fprintf(f, "HORZ_RIGHT");
 				fprintf(f, "\n");
 			}
+			fprintf(f, "cell_align%d.wrap = Alignment.WRAP_AT_RIGHT\n", i);
 			fprintf(f, "cell_style[%d].alignment = cell_align%d\n", i, i);
 			fprintf(f, "####end_align####\n");
 		}
@@ -154,7 +188,6 @@ print_rc_styles(struct spreadconv_data *data)
 {
 	fprintf(f, "###beg_rc_styles###\n");
 	int i, j;
-	struct spreadconv_rc_style *s;
 	for (j = 0; j < data->n_cols; ++ j) 
 		if (data->col_styles[j]) {
 			fprintf(f, "sheet.col(%d).width = 0x%06X\n", j,
@@ -198,7 +231,7 @@ print_cell_data(struct spreadconv_data *data)
 static void
 print_save(char *file_name)
 {
-	fprintf(f, "work_book.save(\'out.xls\')");
+	fprintf(f, "work_book.save(\'%s\')", file_name);
 }
 
 static void
@@ -207,3 +240,10 @@ close_script()
 	fclose(f);
 }
 
+static void
+run_script(char *sn)
+{
+	char command[512];
+	snprintf(command, 512, "python %s", sn);
+	system(command);
+}

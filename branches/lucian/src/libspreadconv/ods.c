@@ -509,6 +509,7 @@ char *
 ods_create_spreadsheet(struct spreadconv_data *data)
 {
 	char *dirname;
+	char *file_name;
 	char *prev_dir = 0;
 	char *buffer, *buffer2;
 
@@ -518,7 +519,7 @@ ods_create_spreadsheet(struct spreadconv_data *data)
 	prev_dir = getcwd(prev_dir, 0);
 	if (chdir(spreadconv_dir_name) == -1) {
 		free(spreadconv_dir_name);
-		spreadconv_dir_name = strdup("/tmp");
+		spreadconv_dir_name = strdup("/tmp/");
 		chdir(spreadconv_dir_name);
 	}
 
@@ -548,6 +549,10 @@ ods_create_spreadsheet(struct spreadconv_data *data)
 	 */
 	buffer2 = malloc(1000);
 	snprintf(buffer, 1000, "%s.ods", dirname);
+
+	file_name = malloc(512);
+	snprintf(file_name, 512, "%s%s", spreadconv_dir_name, buffer);
+
 	snprintf(buffer2, 1000, "../%s", buffer);
 	rename(buffer, buffer2);
 
@@ -555,15 +560,17 @@ ods_create_spreadsheet(struct spreadconv_data *data)
 	/* 
 	 * This doesn't work. Directory remains there. Dammit.
 	 */
+	/*
 	if (remove(dirname) != 0)
 		perror("libspreadconv: create_spreadsheet");
-	
+	*/
 	chdir(prev_dir);
 	free(buffer);
 	free(buffer2);
 	free(prev_dir);
-
-	return dirname;
+	free(dirname);
+	
+	return file_name;
 }
 
 
