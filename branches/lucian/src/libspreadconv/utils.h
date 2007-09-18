@@ -8,5 +8,8 @@ char *spreadconv_convert_column_number(int);
  * convert string "0.1cm solid #0000" to an id
  * for pyExcelerator
  */
-int bord_str2id(char *str);
+int bord_str2id(char *);
+int size_str2i(char *);
+void py_print_esc(FILE *, char *);
+
 #endif

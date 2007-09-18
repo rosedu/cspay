@@ -44,6 +44,7 @@ struct spreadconv_rc_style {
 	 * size information -- row height or column width. This is a
 	 * char* because the user can specify a measure unit right after
 	 * the value, such as "5cm".
+	 * WARNING for xls file, uso only cm.
 	 */
 	char *size;
 };
@@ -82,6 +83,7 @@ struct spreadconv_cell_style {
 	 * Borders are specified as strings with three space-separated
 	 * entities as follows:
 	 *  - width (e.g. 0.05in, might also be possible to use cm)
+	 *  	WARNING	for xls file uso *only* pt
 	 *  - line style (solid should be the only one needed)
 	 *  - color, in HTML code (#000000 for black)
 	 */

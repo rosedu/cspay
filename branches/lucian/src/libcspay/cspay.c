@@ -809,8 +809,11 @@ cspay_convert_single_file(char *fname)
 	spreadconv_dir_name = strdup("./out/");
 
 	Dprintf("Begin output file\n");
-
-	ods_fname = spreadconv_create_spreadsheet(doc, LSC_FILE_ODS);
+	/*
+	 * TODO
+	 * parse file, from ini
+	 */
+	ods_fname = spreadconv_create_spreadsheet(doc, LSC_FILE_XLS);
 	if (!ods_fname) {
 		fprintf(stderr, "Error creating .ods file\n");
 		return NULL;

@@ -59,3 +59,25 @@ bord_str2id(char *str)
 	return i_size;
 }
 
+void
+py_print_esc(FILE *f, char *str)
+{
+	while (*str) {
+		switch (*str) {
+			case '\n':
+				fprintf(f, "\\n"); break;
+			default:
+				fputc(*str, f);
+		}
+		++ str;
+	}
+}
+/*
+ * convert a size string to integer
+ * for pyExcelator
+ */
+int
+size_str2i(char *str)
+{
+	return atof(str) * (float) 1664;
+}
