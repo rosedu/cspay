@@ -41,3 +41,21 @@ spreadconv_convert_column_number(int n)
 	return result;
 }
 
+int
+bord_str2id(char *str)
+{
+	char colour[10], style[10], size[10];
+	int i_size;
+	if (!str)
+		return 0;
+	/*
+	 * FIXME str hazards
+	 */
+	/*
+	 * assume that the size is in pt
+	 */
+	sscanf(str, "%s %s %s", size, style, colour);
+	i_size = atoi(size);
+	return i_size;
+}
+
