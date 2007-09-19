@@ -7,8 +7,8 @@
 #include "load_cfg.h"
 #include "cspay.h"
 
-#include "../libspreadconv/spreadconv.h"
-#include "../iniparser-2.17/src/iniparser.h"
+#include <spreadconv.h>
+#include <iniparser.h>
 
 #define HOUR	3600
 #define DAY		(24 * HOUR)
@@ -207,7 +207,7 @@ static struct class_info *read_class_info (size_t index)
 
 /* verifica daca t este zi (perioada) de lucru*/
 /* daca este functia intoarce 1, 0 altfel*/
-int is_work(struct cspay_config *cfg, time_t t);
+static int is_work(struct cspay_config *cfg, time_t t);
 
 /* intoarce numele unui singur fisier creat */
 char *cspay_convert_single_file(char *fname);
