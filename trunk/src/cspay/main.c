@@ -211,8 +211,17 @@ main( int argc, char **argv )
 				fprintf(f,"\n facultate = %s",iniparser_getstr(d, "antet:facultate"));
 				fprintf(f,"\n decan = %s",iniparser_getstr(d, "antet:decan"));
 				fprintf(f,"\n sef_catedra = %s",iniparser_getstr(d, "antet:sef_catedra"));
+				fprintf(f,"\n catedra = %s",iniparser_getstr(d, "antet:catedra"));
 				fprintf(f,"\n luna = %s",m[i]);
+				fprintf(f,"\n tip_fisier = %s",iniparser_getstr(d, "antet:tip_fisier"));
 				fclose(f);
+        			config = cspay_get_config( argv[3] );
+            			lista = cspay_convert_options( config, inif);
+            			cspay_free_config(config);
+            			for( i = 0; i < lista->nr; i++)
+		        		printf( "%s.ods\n", lista->names[i] );
+                		exit(0);
+
 			}
 	}
 	iniparser_freedict(d);
