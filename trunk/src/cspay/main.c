@@ -116,7 +116,7 @@ main( int argc, char **argv )
              //se introduc datele pentru antet
              printf("\n Introduceti numele: ");
              read_string(&nume);
-	     fprintf(f,"[antet]\n nume = %s",nume);
+	         fprintf(f,"[antet]\n nume = %s",nume);
              printf("\n Intocmit de: ");
              scanf("%s",intocmit);
              fprintf(f,"\n intocmit = %s",intocmit);
@@ -205,6 +205,14 @@ main( int argc, char **argv )
 				strcat(tmpstr,".ini");
 				snprintf(buffer,512,"cp %s %s",inif,tmpstr);
 				system(buffer);
+				f=fopen(tmpstr,"r+");
+				fprintf(f,"[antet]\n nume = %s",iniparser_getstr(d, "antet:nume"));
+				fprintf(f,"\n intocmit = %s",iniparser_getstr(d, "antet:intocmit"));
+				fprintf(f,"\n facultate = %s",iniparser_getstr(d, "antet:facultate"));
+				fprintf(f,"\n decan = %s",iniparser_getstr(d, "antet:decan"));
+				fprintf(f,"\n sef_catedra = %s",iniparser_getstr(d, "antet:sef_catedra"));
+				fprintf(f,"\n luna = %s",m[i]);
+				fclose(f);
 			}
 	}
 	iniparser_freedict(d);
