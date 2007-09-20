@@ -13,7 +13,6 @@
 #if 0	/* win 32 ?*/
 #	include "E:\CSpay\trunk\src\libcspay"
 #endif
-
 int 
 read_num()
 {
@@ -68,9 +67,10 @@ usage(void)
 int
 main( int argc, char **argv )
 {	
-    int i,no,rol,nrp,tip_post,zi,oi,of,par,pari;
+    int i,no,nl,rol,nrp,tip_post,zi,oi,of,par,pari;
     char *nume, intocmit[40],facultate[80],decan[40],sef[40],catedra[40];
-    char *inif,*xmlf,tip[4],next[3],fac[6],dis[7],grupa[8],*luna;
+    char *inif,*xmlf,tip[4],next[3],fac[6],dis[7],grupa[8],*luna, *month;
+    char *s,m[12][3],tmpstr[80],buffer[512],bn[40];
     FILE *f;
     struct cspay_file_list *lista;
     struct cspay_config *config;
@@ -86,8 +86,11 @@ main( int argc, char **argv )
         {   
             xmlf = argv[3];
             inif = argv[5];
-            config = cspay_get_config( argv[3] );
-
+	    d = iniparser_load(argv[3]);
+	    month = malloc(30);
+	    month = iniparser_getstr(d, "antet:luna");
+	    if(strlen(month)<3)
+	            config = cspay_get_config( argv[3] );
             if (strcmp(argv[4],"-f")==0 && argv[5][0]!='-') {
             	lista = cspay_convert_options( config, inif);
             	cspay_free_config(config);
@@ -102,12 +105,13 @@ main( int argc, char **argv )
 	}
 	else {
          if(argc==4 && strcmp(argv[1],"-i")==0) {
-
 	         //mod interactiv
-	         if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-') {
-	            config = cspay_get_config(argv[333]);
+		if (strcmp(argv[2],"-x")==0 && argv[3][0]!='-') {
+			 config = cspay_get_config(argv[3]);
 	         }
 	         else usage();
+	     inif=malloc(20);
+	     strcpy(inif,"personal.ini");
              f=fopen("personal.ini","wt");
              //se introduc datele pentru antet
              printf("\n Introduceti numele: ");
@@ -130,6 +134,8 @@ main( int argc, char **argv )
              fprintf(f,"\n catedra = %s",catedra);
              printf("\n Introduceti numarul lunii: ");
              read_string(&luna);
+	     month=malloc(30);
+	     strcpy(month,luna);
              fprintf(f,"\n luna = %s",luna);
              printf("\n Introduceti tipul fisierul ce urmeaza fi generat: ");
              scanf("%s",tip);
@@ -175,19 +181,32 @@ main( int argc, char **argv )
              scanf("%s",next);
              }
 	     fclose(f);
+	     d = iniparser_load("personal.ini");
 	     }
 	     else 
-              usage();
+	    usage();
 	}
-	if(strcmp(argv[1],"-n")==0)
-		d = iniparser_load(argv[3]);
-		else
-			d = iniparser_load("personal.ini");
-
-	luna = malloc(30);
-	luna = iniparser_getstr(d, "antet:luna");
-	iniparser_freedict(d);	
-	printf("%s",luna);
-	free(luna);
+	if(strlen(month)>=3)
+	{
+		s = strtok(month," ,");
+		nl=1;
+		while(s!=NULL)
+			{
+			strcpy(m[nl-1],s);
+			nl++;
+			s = strtok(NULL, " ,");
+			}
+		nl--;
+		strncpy(bn,inif,strlen(inif)-4);
+		for(i=0;i<nl;i++)
+			{
+				strcpy(tmpstr,bn);
+				strcat(tmpstr,m[i]);
+				strcat(tmpstr,".ini");
+				snprintf(buffer,512,"cp %s %s",inif,tmpstr);
+				system(buffer);
+			}
+	}
+	iniparser_freedict(d);
 	return 0;
 }
