@@ -1022,14 +1022,23 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 	file_types = iniparser_getstr(ini, "antet:tip_fisier");
 	if (strstr(file_types, "ods")) {
 		temp = save_document(LSC_FILE_ODS);
-		ret->names[ret->nr ++] = strdup(temp);
-		free(temp);
+		if (!temp) {
+			fprintf(stderr, "ods err\n");
+		} else {
+			ret->names[ret->nr ++] = strdup(temp);
+			free(temp);
+		}
 	}
 	
 	if (strstr(file_types, "xls")) {
+
 		temp = save_document(LSC_FILE_XLS);
-		ret->names[ret->nr ++] = strdup(temp);
-		free(temp);
+		if (!temp) {
+			fprintf(stderr, "xls err\n");
+		} else {
+			ret->names[ret->nr ++] = strdup(temp);
+			free(temp);
+		}
 	}
 	free_parsed_data();
 
