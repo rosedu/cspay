@@ -124,8 +124,8 @@ cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 
 /**
  * parse a restriction node
- * \param node a <vacanta> node
- * \param loade where to write data
+ * \param node a \<vacanta\> node
+ * \param load where to write data
  */
 void
 cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
@@ -191,7 +191,7 @@ cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 
 /**
  * parse a faculty node
- * \param node <facultate> node
+ * \param node \<facultate\> node
  * \param load where to write data
  */
 void
@@ -250,7 +250,7 @@ cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 
 /**
  * parse a university node
- * \param nod <universitate> node
+ * \param node \<universitate\> node
  * \param load where to write data
  */
 void 
@@ -268,7 +268,7 @@ cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 
 /**
  * parse a semester element
- * \param nod <semestru> node
+ * \param node \<semestru\> node
  * \param load where to write data
  */
 void 

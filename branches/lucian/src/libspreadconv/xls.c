@@ -5,7 +5,6 @@
 /**
  * \ingroup libspreadconv
  * \file xls.c
- * \todo tweak conversions from odf units to xls
  * \author Cojocar Lucian
  * \brief xls file implementation
  */
