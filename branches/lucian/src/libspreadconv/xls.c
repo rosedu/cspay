@@ -1,3 +1,14 @@
+/*
+ * xls file implementation
+ */
+
+/**
+ * \ingroup libspreadconv
+ * \file xls.c
+ * \todo tweak conversions from odf units to xls
+ * \author Cojocar Lucian
+ * \brief xls file implementation
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -7,13 +18,12 @@
 #include "utils.h"
 #include "debug.h"
 
-/*
- * TODO
- * use row and column styles
+/**
+ * Script file descriptor
  */
 static FILE *f;
 
-static void open_script();
+static int  open_script();
 static void print_shabang();
 static void print_import();
 static void print_sheet(struct spreadconv_data *);
@@ -24,12 +34,15 @@ static void print_save(char *);
 static void close_script();
 static void run_script(char *);
 
+/**
+ * Save \a spreadconv_data to a xls file
+ * \param data data to convert
+ * \return full path of created file or NULL if
+ * an error occured
+ */
 char *
 xls_create_spreadsheet(struct spreadconv_data *data)
 {
-	/*
-	 * TODO
-	 */
 	char *script_name;
 	char *doc_name;
 	script_name = malloc(512);
@@ -39,8 +52,6 @@ xls_create_spreadsheet(struct spreadconv_data *data)
 	if(!mktemp(script_name)) {
 		fprintf(stderr, "mktemp\n");
 		free(script_name);
-	/*	free(spreadconv_dir_name);
-		spreadconv_dir_name = NULL;*/
 		return NULL;
 	}
 	doc_name = malloc(512);
@@ -49,14 +60,16 @@ xls_create_spreadsheet(struct spreadconv_data *data)
 		fprintf(stderr, "mktemp\n");
 		free(doc_name);
 		free(script_name);
-	/*	free(spreadconv_dir_name);
-		spreadconv_dir_name = NULL;*/
 		return NULL;
 	}
 	doc_name = realloc(doc_name, strlen(doc_name) + 5);
 	strcat(doc_name, ".xls");
 
-	open_script(script_name);
+	if(open_script(script_name)) {
+		free(doc_name);
+		free(script_name);
+		return NULL;
+	}
 	print_shabang();
 	print_import();
 	print_sheet(data);
@@ -68,20 +81,28 @@ xls_create_spreadsheet(struct spreadconv_data *data)
 	run_script(script_name);
 
 	free(script_name);
-	/*free(spreadconv_dir_name);
-	spreadconv_dir_name = NULL;*/
 	return doc_name;
 }
 
-static void
+/**
+ * Open a file and set file descriptor
+ * \param file_name script name
+ * \return 0 on succes, -1 on error
+ */
+static int
 open_script(char *file_name)
 {
 	f = fopen(file_name, "wt");
 	if (!f) {
 		fprintf(stderr, "fopen_error");
+		return -1;
 	}
+	return 0;
 }
 
+/**
+ * Print Sha-bang
+ */
 static void
 print_shabang()
 {
@@ -91,12 +112,18 @@ print_shabang()
 	fprintf(f, "\n");
 }
 
+/**
+ * Print imports
+ */
 static void
 print_import()
 {
 	fprintf(f, "from pyExcelerator import *\n\n");
 }
 
+/**
+ * Print sheet and workbook declarations
+ */
 static void
 print_sheet(struct spreadconv_data *data)
 {
@@ -104,6 +131,10 @@ print_sheet(struct spreadconv_data *data)
 	fprintf(f, "sheet = work_book.add_sheet(\'%s\')\n", data->name);
 }
 
+/**
+ * Print cell styles
+ * \param data \a spreadconv_data that contains cell styles
+ */
 static void
 print_cell_styles(struct spreadconv_data *data)
 {
@@ -112,6 +143,8 @@ print_cell_styles(struct spreadconv_data *data)
 	fprintf(f, "\n#####BEGIN_CELL_STYLES######\n");
 	fprintf(f, "default_style = XFStyle()\n");
 
+	if (!data->n_unique_cell_styles)
+		return;
 	fprintf(f, "cell_style_mappings = [");
 	for (i = 0; i < data->n_unique_cell_styles; ++ i) {
 		fprintf(f, "\'%s\', ", data->unique_cell_styles[i].name);
@@ -160,19 +193,19 @@ print_cell_styles(struct spreadconv_data *data)
 			fprintf(f, "####beg_border####\n");
 			fprintf(f, "cell_border%d = Borders()\n", i);
 			if (s[i].border) {
-				fprintf(f, "cell_border%d.left = 0x%02X\n", i, bord_str2id(s[i].border));
-				fprintf(f, "cell_border%d.right = 0x%02X\n", i, bord_str2id(s[i].border));
-				fprintf(f, "cell_border%d.top = 0x%02X\n", i, bord_str2id(s[i].border));
-				fprintf(f, "cell_border%d.bottom = 0x%02X\n", i, bord_str2id(s[i].border));
+				fprintf(f, "cell_border%d.left = 0x%02X\n", i, bord_str2i(s[i].border));
+				fprintf(f, "cell_border%d.right = 0x%02X\n", i, bord_str2i(s[i].border));
+				fprintf(f, "cell_border%d.top = 0x%02X\n", i, bord_str2i(s[i].border));
+				fprintf(f, "cell_border%d.bottom = 0x%02X\n", i, bord_str2i(s[i].border));
 			} else {
 				if (s[i].border_left) 
-					fprintf(f, "cell_border%d.left = 0x%02X\n", i, bord_str2id(s[i].border_left));
+					fprintf(f, "cell_border%d.left = 0x%02X\n", i, bord_str2i(s[i].border_left));
 				if (s[i].border_right) 
-					fprintf(f, "cell_border%d.right = 0x%02X\n", i, bord_str2id(s[i].border_right));
+					fprintf(f, "cell_border%d.right = 0x%02X\n", i, bord_str2i(s[i].border_right));
 				if (s[i].border_top) 
-					fprintf(f, "cell_border%d.top = 0x%02X\n", i, bord_str2id(s[i].border_top));
+					fprintf(f, "cell_border%d.top = 0x%02X\n", i, bord_str2i(s[i].border_top));
 				if (s[i].border_bottom) 
-					fprintf(f, "cell_border%d.bottom = 0x%02X\n", i, bord_str2id(s[i].border_bottom));
+					fprintf(f, "cell_border%d.bottom = 0x%02X\n", i, bord_str2i(s[i].border_bottom));
 
 			}
 			fprintf(f, "cell_style[%d].borders = cell_border%d\n", i, i);
@@ -183,6 +216,11 @@ print_cell_styles(struct spreadconv_data *data)
 	fprintf(f, "#####END_CELL_STYLES######\n");
 }
 
+/**
+ * Prin row and columns styles
+ * \param data \a spreadconv_data that contains row and column
+ * styles
+ */
 static void
 print_rc_styles(struct spreadconv_data *data)
 {
@@ -191,13 +229,13 @@ print_rc_styles(struct spreadconv_data *data)
 	for (j = 0; j < data->n_cols; ++ j) 
 		if (data->col_styles[j]) {
 			fprintf(f, "sheet.col(%d).width = 0x%06X\n", j,
-				(int)size_str2i(data->col_styles[j]->size));
+				(int)col_str2i(data->col_styles[j]->size));
 		}
 	for (i = 0; i < data->n_rows; ++ i)
 		if (data->row_styles[i]) {
 			fprintf(f, "row_font%d = Font()\n", i);
-			fprintf(f, "row_font%d.height = %d\n", i, /* ugly formula */
-				500 * size_str2i(data->row_styles[i]->size) / 1644);
+			fprintf(f, "row_font%d.height = %d\n", i, 
+				row_str2i(data->row_styles[i]->size));
 			fprintf(f, "row_style%d = XFStyle()\n", i);
 			fprintf(f, "row_style%d.font = row_font%d\n", i, i);
 			fprintf(f, "sheet.row(%d).set_style(row_style%d)\n", i, i);
@@ -205,6 +243,10 @@ print_rc_styles(struct spreadconv_data *data)
 	fprintf(f, "###end_rc_styles###\n");
 }
 
+/**
+ * Print cell data and text
+ * \param data \a spreadconv_data * that contains text
+ */
 static void
 print_cell_data(struct spreadconv_data *data)
 {
@@ -228,18 +270,29 @@ print_cell_data(struct spreadconv_data *data)
 				}
 		}
 }
+
+/**
+ * Print "save sheet"
+ */
 static void
 print_save(char *file_name)
 {
 	fprintf(f, "work_book.save(\'%s\')", file_name);
 }
 
+/**
+ * Close script
+ */
 static void
 close_script()
 {
 	fclose(f);
 }
 
+/**
+ * Run script
+ * \param sn script name
+ */
 static void
 run_script(char *sn)
 {

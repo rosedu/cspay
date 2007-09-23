@@ -41,8 +41,18 @@ spreadconv_convert_column_number(int n)
 	return result;
 }
 
+/**
+ * Convert ("2pt solid #000000") to 2 (int).
+ * convert a ods style format to an xls style 
+ * format.
+ * \remarks only the line size is used
+ * \remarks the line size must be in "pt"
+ * \todo support other units
+ * \param str contains "2pt solid #000000" like string
+ * \return atoi("2pt");
+ */
 int
-bord_str2id(char *str)
+bord_str2i(char *str)
 {
 	char colour[10], style[10], size[10];
 	int i_size;
@@ -59,25 +69,45 @@ bord_str2id(char *str)
 	return i_size;
 }
 
+/**
+ * print escaped string in a python script
+ * \param f script file descriptor 
+ * \param str string to print (it ends wiht '\\0')
+ */
 void
 py_print_esc(FILE *f, char *str)
 {
 	while (*str) {
 		switch (*str) {
 			case '\n':
-				fprintf(f, "\\n"); break;
+				fprintf(f, " "); break;
 			default:
 				fputc(*str, f);
 		}
 		++ str;
 	}
 }
-/*
- * convert a size string to integer
- * for pyExcelator
+
+/**
+ * Convert a column width from ods size 
+ * to xls size
+ * \remarks size must pe set in "cm"
+ * \return converted size
  */
 int
-size_str2i(char *str)
+col_str2i(char *str)
 {
-	return atof(str) * (float) 1664;
+	return atof(str) * (float) 1340;
+}
+
+/**
+ * Convert a row height from ods size 
+ * to xls size
+ * \remarks size must pe set in "cm"
+ * \return converted size
+ */
+int
+row_str2i(char *str)
+{
+	return atof(str) * (float) 470;
 }

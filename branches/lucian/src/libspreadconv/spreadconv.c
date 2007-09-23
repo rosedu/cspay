@@ -24,6 +24,13 @@
 #include "xls.h"
 #include "debug.h"
 
+/**
+ * Convert a \a spreadconv_data structure into specified file type
+ * \param data data to write
+ * \param file_type output file type
+ * \return full path of created file (includes extension) or NULL
+ * in case something went wrong
+ */
 char *
 spreadconv_create_spreadsheet(struct spreadconv_data *data, int file_type)
 { 

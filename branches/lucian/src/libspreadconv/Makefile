@@ -22,9 +22,12 @@ libspreadconv.a: $(OBJ)
 	ar rc libspreadconv.a $(OBJ)
 	ranlib libspreadconv.a
 
+doc:
+	doxygen
 
 .PHONY: clean
 
 clean:
 	-rm -rf $(OBJ) *~
 	-rm -rf libspreadconv.a
+	-rm -rf doc

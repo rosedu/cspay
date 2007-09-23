@@ -1,14 +1,12 @@
 /*
- * libspreadconv main file
+ * ods file implementation
  * First draft: 15.06.2007, Vlad Dogaru
  */
 
 /**
  * \ingroup libspreadconv
- * \file spreadconv.c
- * \todo Move the auxiliary functions (those at the top of the file --
- * the static ones) into a separate file.
- * \brief libspreadconv main implementation file
+ * \file ods.c
+ * \brief ods file implementation
  * \author Vlad Dogaru
  */
 
@@ -498,12 +496,10 @@ create_content_file(struct spreadconv_data *data)
 
 
 /**
- * Converts a generic \a spreadconv_data structure into the associated
- * file(s).
+ * Converts a generic \a spreadconv_data structure into an ods
+ * file.
  * \param data The data to covert to a spreadsheet
- * \param file_types A bit field indicating which file types to create
- * \remarks Only ods format is currently supported
- * \returns The created file's name, without extension
+ * \returns The created file's name, with extension and full path
  */
 char * 
 ods_create_spreadsheet(struct spreadconv_data *data)
@@ -512,9 +508,6 @@ ods_create_spreadsheet(struct spreadconv_data *data)
 	char *file_name;
 	char *prev_dir = 0;
 	char *buffer, *buffer2;
-
-	/* Only ODS files are currently supported. */
-	
 
 	prev_dir = getcwd(prev_dir, 0);
 	if (chdir(spreadconv_dir_name) == -1) {
@@ -530,12 +523,24 @@ ods_create_spreadsheet(struct spreadconv_data *data)
 	chdir(dirname);
 
 	/* create the files for the package*/
-	create_manifest_file(data);
-	create_mimetype_file();
-	create_settings_file(data);
-	create_style_file(data);
-	create_meta_file(data);
-	create_content_file(data);
+	if (create_manifest_file(data)) {
+		goto ERR;
+	}
+	if (create_mimetype_file()) {
+		goto ERR;
+	}
+	if (create_settings_file(data)) {
+		goto ERR;
+	}
+	if (create_style_file(data)) {
+		goto ERR;
+	}
+	if (create_meta_file(data)) {
+		goto ERR;
+	}
+	if (create_content_file(data)) {
+		goto ERR;
+	}
 
 	/* package the files according to the standard */
 	buffer = malloc(1000);
@@ -564,6 +569,16 @@ ods_create_spreadsheet(struct spreadconv_data *data)
 	if (remove(dirname) != 0)
 		perror("libspreadconv: create_spreadsheet");
 	*/
+#ifndef __DEBUG__
+	/*
+	 * portabilitate 0
+	 */
+	char *rm_command;
+	rm_command = malloc(512);
+	snprintf(rm_command, 512, "rm -rf %s", dirname);
+	system(rm_command);
+	free(rm_command);
+#endif 
 	chdir(prev_dir);
 	free(buffer);
 	free(buffer2);
@@ -571,6 +586,11 @@ ods_create_spreadsheet(struct spreadconv_data *data)
 	free(dirname);
 	
 	return file_name;
+
+	ERR:
+	free(prev_dir);
+	free(dirname);
+	return NULL;
 }
 
 

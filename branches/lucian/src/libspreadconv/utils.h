@@ -1,15 +1,16 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
-/*
- * utils for libspreadconv
+/**
+ * Utils for libspradcovn
+ * \ingroup libspreadconv
+ * \file utils.h
+ * \author Vlad Dogaru
+ * \author Cojocar Lucian
  */
 char *spreadconv_convert_column_number(int);
-/*
- * convert string "0.1cm solid #0000" to an id
- * for pyExcelerator
- */
-int bord_str2id(char *);
-int size_str2i(char *);
+int bord_str2i(char *);
+int col_str2i(char *);
+int row_str2i(char *);
 void py_print_esc(FILE *, char *);
 
 #endif

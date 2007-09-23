@@ -14,12 +14,7 @@
 #ifndef _SPREADCONV_H_
 #define _SPREADCONV_H_
 
-/**
- * ODF spreadsheet
- * \remarks Initially, only ODS will be implemented. Others will be 
- * included via external converters.
- */
-#define LSC_FILE_ODS		1
+#define LSC_FILE_ODS		1 /**< Open Office Calc spreadsheet */
 #define LSC_FILE_XLSX		2 /**< Office Open XML spreadsheet */
 #define LSC_FILE_XLS		4 /**< Classic MS Excel spreadsheet */
 
@@ -177,7 +172,7 @@ char *spreadconv_dir_name;
 
 /**
  * Converts a generic \a spreadconv_data structure into the associated
- * file(s).
+ * file.
  */
 char * spreadconv_create_spreadsheet(struct spreadconv_data *, int);
 
