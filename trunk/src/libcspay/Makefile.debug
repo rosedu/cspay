@@ -3,7 +3,7 @@ CFLAGS = -Wall `xml2-config --cflags` -D__DEBUG__ -g -ggdb
 LDFLAGS = `xml2-config --libs` -L. -L../libspreadconv -L../iniparser-2.17
 LDLIBS = -lspreadconv -liniparser
 
-SRC = getopt.c cspay.c
+SRC = load_cfg.c cspay.c
 OBJ = $(SRC:.c=.o)
 BIN = libcspay.a
 all: $(BIN)

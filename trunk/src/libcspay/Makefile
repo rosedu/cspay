@@ -1,4 +1,4 @@
-CPPFLAGS = -I../common
+CPPFLAGS = -I../common -I../libspreadconv -I../iniparser-2.17/src
 CFLAGS = -Wall `xml2-config --cflags`
 LDFLAGS = `xml2-config --libs` -L. -L../libspreadconv -L../iniparser-2.17
 LDLIBS = -lspreadconv -liniparser
@@ -11,10 +11,11 @@ all: $(BIN)
 $(BIN): $(OBJ)
 	ar rc $(BIN) $(OBJ)
 	ranlib $(BIN)
-test: $(BIN)
-	gcc test.c -lcspay  $(LDFLAGS) $(CFLAGS) $(LDLIBS) -g -ggdb -o cspay_test
+doc:
+	doxygen
 .PHONY: clean
 clean: 
-	-rm -f $(OBJ)
+	-rm -rf $(OBJ)
 	-rm -f *~
 	-rm -f $(BIN)
+	-rm -rf doc

@@ -1,3 +1,9 @@
+/**
+ * config load functions implementation
+ * \ingroup libcspay
+ * \author Cojocar Lucian
+ * \file load_cfg.c
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,20 +16,28 @@
 #include "load_cfg.h"
 
 /*extrage informatiile din arborle extras din fisierul xml*/
-void cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *ret);
+static void cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *ret);
 	
 /*adauga in load informatii depsre restrictiile din nodul node*/
-void cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load);
+static void cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load);
 	
 /*adauga in load informatii despre facultate din nodul node*/
-void cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load);
+static void cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load);
 	
 /*adauga in load informatii depsre universitate*/
-void cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load);
+static void cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load);
 	
 /*adauga in load informatii depsre semestru*/
-void cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load);
+static void cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load);
 	
+/**
+ * read xml file and load a \a cspay_config structure
+ * \param fname file name of xml
+ * \return cspay_config structure on succes
+ * \return NULL on error
+ * \remarks if fname = NULL or if fname is not found
+ * funtion try to read "cspay.xml"
+ */
 struct cspay_config *
 read_cspay_xml(char *fname)
 {
@@ -75,11 +89,12 @@ read_cspay_xml(char *fname)
 	return cfg;
 }
 
-/*
+/**
  * recursive XML info extraction
+ * \param element initial element
+ * \param load were to write data
  */
-
-void 
+static void 
 cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 {
 	xmlNode *node;
@@ -107,6 +122,11 @@ cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
 	}
 }
 
+/**
+ * parse a restriction node
+ * \param node a \<vacanta\> node
+ * \param load where to write data
+ */
 void
 cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 {
@@ -169,6 +189,11 @@ cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 	Dprintf("End <vacanta> node\n");
 }
 
+/**
+ * parse a faculty node
+ * \param node \<facultate\> node
+ * \param load where to write data
+ */
 void
 cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 {
@@ -223,6 +248,11 @@ cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 	}
 }
 
+/**
+ * parse a university node
+ * \param node \<universitate\> node
+ * \param load where to write data
+ */
 void 
 cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 {
@@ -236,6 +266,11 @@ cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 	Dprintf("End universitate :%s\n", load->univ_name);
 }
 
+/**
+ * parse a semester element
+ * \param node \<semestru\> node
+ * \param load where to write data
+ */
 void 
 cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
 {

@@ -4,4 +4,7 @@ all:
 	for dir in ${SUBDIRS}; do (cd $$dir; make); done
 .PHONY: clean
 clean:
+	rm -rf doc
 	for dir in ${SUBDIRS}; do (cd $$dir; make clean); done
+doc:
+	doxygen

@@ -8,7 +8,7 @@
 #		   $ info make "Catalogue of Rules" (with make-doc package))
 #		 - added tests rules for creating test and col_test
 
-CPPFLAGS = -I../common
+CPPFLAGS = -I../common -D__DEBUG__
 CFLAGS = -Wall -O0 -g
 LDFLAGS = -L.
 LDLIBS = -lspreadconv
@@ -22,12 +22,9 @@ libspreadconv.a: $(OBJ)
 	ar rc libspreadconv.a $(OBJ)
 	ranlib libspreadconv.a
 
-doc:
-	doxygen
 
 .PHONY: clean
 
 clean:
 	-rm -rf $(OBJ) *~
 	-rm -rf libspreadconv.a
-	-rm -rf doc

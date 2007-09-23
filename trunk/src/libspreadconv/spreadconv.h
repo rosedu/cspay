@@ -14,12 +14,7 @@
 #ifndef _SPREADCONV_H_
 #define _SPREADCONV_H_
 
-/**
- * ODF spreadsheet
- * \remarks Initially, only ODS will be implemented. Others will be 
- * included via external converters.
- */
-#define LSC_FILE_ODS		1
+#define LSC_FILE_ODS		1 /**< Open Office Calc spreadsheet */
 #define LSC_FILE_XLSX		2 /**< Office Open XML spreadsheet */
 #define LSC_FILE_XLS		4 /**< Classic MS Excel spreadsheet */
 
@@ -44,6 +39,7 @@ struct spreadconv_rc_style {
 	 * size information -- row height or column width. This is a
 	 * char* because the user can specify a measure unit right after
 	 * the value, such as "5cm".
+	 * WARNING for xls file, uso only cm.
 	 */
 	char *size;
 };
@@ -82,6 +78,7 @@ struct spreadconv_cell_style {
 	 * Borders are specified as strings with three space-separated
 	 * entities as follows:
 	 *  - width (e.g. 0.05in, might also be possible to use cm)
+	 *  	WARNING	for xls file uso *only* pt
 	 *  - line style (solid should be the only one needed)
 	 *  - color, in HTML code (#000000 for black)
 	 */
@@ -175,15 +172,10 @@ char *spreadconv_dir_name;
 
 /**
  * Converts a generic \a spreadconv_data structure into the associated
- * file(s).
+ * file.
  */
 char * spreadconv_create_spreadsheet(struct spreadconv_data *, int);
 
-/**
- * Converts a number to its representation in letters; 1 is A, 2 is
- * B, 27 is AA, 28 is AB etc.
- */
-char * spreadconv_convert_column_number(int);
 
 /**
  * Creates a new \a spreadconv_data structure, with the specified
