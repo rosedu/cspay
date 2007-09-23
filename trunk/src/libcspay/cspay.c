@@ -11,6 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#include <ctype.h>
 
 #include "debug.h"
 #include "load_cfg.h"
@@ -188,6 +189,7 @@ static struct total_hours result;
 
 static time_t get_first_work_day(struct interval t, struct class_info *ci);
 static int is_work(time_t t);
+static char *build_file_name(void);
 
 /**
  * Read from ini file "[ore/index]" class
@@ -810,7 +812,12 @@ load_and_parse_options(char *fname)
 		++ month->tm_year;
 	}
 	m.end = mktime(month) - 1;
-	free(month);
+	
+	-- month->tm_mon;
+	if (month->tm_mon == -1) {
+		month->tm_mon = 11;
+		-- month->tm_year;
+	}
 
 	/*
 	 * browse the classes and add data to spreadsheet
@@ -1013,6 +1020,9 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 	struct cspay_file_list *ret;
 	char *temp;
 	char *file_types;
+	char *mv_comm;
+	char *file_name;
+
 	cfg = config;  
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 0;
@@ -1020,13 +1030,20 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 	load_and_parse_options(fname);
 
 	file_types = iniparser_getstr(ini, "antet:tip_fisier");
+	mv_comm = calloc(1, 512);
+	file_name = build_file_name();
 	if (strstr(file_types, "ods")) {
 		temp = save_document(LSC_FILE_ODS);
 		if (!temp) {
 			fprintf(stderr, "ods err\n");
 		} else {
-			ret->names[ret->nr ++] = strdup(temp);
+			snprintf(mv_comm, 512, "mv %s %s/%s.ods", temp, 
+				spreadconv_dir_name, file_name);
+			system(mv_comm);
 			free(temp);
+			ret->names[ret->nr] = calloc(1, 512);
+			snprintf(ret->names[ret->nr ++], 512, "%s%s.ods",
+				spreadconv_dir_name, file_name);
 		}
 	}
 	
@@ -1036,12 +1053,18 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 		if (!temp) {
 			fprintf(stderr, "xls err\n");
 		} else {
-			ret->names[ret->nr ++] = strdup(temp);
+			snprintf(mv_comm, 512, "mv %s %s/%s.xls", temp, 
+				spreadconv_dir_name, file_name);
+			system(mv_comm);
 			free(temp);
+			ret->names[ret->nr] = calloc(1, 512);
+			snprintf(ret->names[ret->nr ++], 512, "%s%s.xls",
+				spreadconv_dir_name, file_name);
 		}
 	}
 	free_parsed_data();
-
+	free(mv_comm);
+	free(file_name);
 	return ret;
 }
 
@@ -1099,5 +1122,35 @@ get_first_work_day(struct interval t, struct class_info *ci)
 		fprintf(stderr, "Impossible error\n");
 		return -1;
 	}
+	return ret;
+}
+
+/**
+ * build file name string
+ * output file name should be:
+ * 2007_11_PO_Intocmit
+ * \return desired file name string
+ */
+static char *
+build_file_name(void)
+{
+	char *ret, *name;
+	char *disc;
+	int i;
+	ret = calloc(1, 512);
+	disc = strdup(iniparser_getstr(ini, "antet:nume_curs"));
+	for (i = 0; disc[i] != '\0'; ++ i)
+		if (!isalpha(disc[i])) {
+			disc[i] = '_';
+		}
+		
+	name = strdup(iniparser_getstr(ini, "antet:nume"));
+	for (i = 0; name[i] != '\0'; ++ i) {
+		if (!isalpha(name[i])) {
+			name[i] = '_';
+		}
+	}
+	snprintf(ret, 512, "%d_%d_%s_%s", month->tm_year + 1901, month->tm_mon + 1,
+			disc, name);
 	return ret;
 }
