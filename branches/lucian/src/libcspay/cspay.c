@@ -1,3 +1,12 @@
+/*
+ * libcspay main file
+ */
+/**
+ * \ingroup libcspay
+ * \file cspay.c
+ * \brief libcspay main file
+ * \author Cojocar Lucian
+ */
 #include <stdlib.h>	/* system headers go before user headers */
 #include <string.h>
 #include <stdio.h>
@@ -7,62 +16,146 @@
 #include "load_cfg.h"
 #include "cspay.h"
 
-#include <spreadconv.h>
-#include <iniparser.h>
+#include "spreadconv.h"
+#include "iniparser.h"
 
-#define HOUR	3600
-#define DAY		(24 * HOUR)
-#define WEEK	(7 * DAY)
+#define HOUR	3600		/**< 1 hour in seconds*/
+#define DAY	(24 * HOUR)	/**< 1 day in seconds*/
+#define WEEK	(7 * DAY)	/**< 1 week in seconds*/
 
-
-/*
- * record containing all the information about a specific class
+/**
+ * role types
  */
+#define LCSP_ROLE_ASS	0	/**< assinstant type :-) */
+#define LCSP_ROLE_CON	1	/**< "conferentiar" */
+#define LCSP_ROLE_SEL	2	/**< "sef lucrari" */
+#define LCSP_ROLE_TEA	3	/**< teacher */
 
+/**
+ * class types
+ */
+#define LCSP_CLASS_CRS	0	/**< course */
+#define LCSP_CLASS_APP	1	/**< application */
+/**
+ * \struct class_info
+ * contains all the information about a specific class
+ */
 struct class_info {
-	char section_name[8];
-	int section_len;
-	int class_day;
-	int class_parity;
-	int class_role_type;
-	char *class_role_num;
-	char *class_course;
-	char *class_faculty;
-	char *class_timeline;
-	char *class_group;
+	/** name length, see bellow*/
+	int name_len;
+	/** name of course, usefull in reading information from ini file
+	 * eg: "ore/1", "ore/2"
+	 */
+	char name[8];
+
+	/** day in week of class*/
+	int day;
+
+	/** class parity
+	 * 1 - every week
+	 * 2 - every two weeks
+	 * etc.
+	 */
+	int parity;
+	/** first week of class
+	 * 1 - the class begin in first *valid* week of the month
+	 * 2 - the class begin in second *valid* week of the month
+	 * etc.
+	 * \todo check if this is implemented corectly
+	 */
+	int first_week;
+
+	/** role type
+	 * 0 - assistant
+	 * 1 - "conferentiar"
+	 * 2 - "sef lucrari"
+	 * 3 - teacher
+	 */
+	int role_type;
+	/** role number/name*/
+	char *role_num;
+
+	/** name of class, a.k.a. disciplina*/
+	char *class;
+
+	/** short name of faculty*/
+	char *faculty;
+	
+	/** group name of class
+	 * eg: 312CC*/
+	char *group;
+
+	/** class type
+	 * 0 - course
+	 * 1 - application
+	 */
 	int class_type;
-	int class_h_start;
-	int class_h_end;
-	int class_first_week;
+
+	/**
+	 * time of class
+	 * \remarks interval is used as int
+	 */
+	struct interval timeline;
+	
 };
+
+/**
+ * \struct sum_hours 
+ * contains sums from final table
+ */
 struct sum_hours {
+	/** sum of hours as teacher*/
 	int prof;
+
+	/** sum of hours as "conferentiar"*/
 	int conf;
+
+	/** sum of hours as "sef lucrari"*/
 	int sl;
+
+	/** sum of hours as assistant*/
 	int as;
 };
+
+/**
+ * \struct total_hours
+ * contains sum hour
+ */
 struct total_hours {
+	/** for course*/
 	struct sum_hours course;
+	/** for applications*/
 	struct sum_hours aplic;
 };
+
+/**
+ * \struct defined_styles
+ * contains informations used for creating spreadsheets
+ */
 struct defined_styles {
-	/*
-	 * same style for all cell from header
+	/**
+	 * header table cell styles
+	 * \remark same style for all cell from header
 	 */
 	int table_h;
-	/* table content styles
+
+	/**
+	 * table content styles
 	 * table_c[0], first col
 	 * table_c[1], 1, 2, 3, 4, 5,  col
 	 * table_c[2], 6, 7, 8 col
 	 */
 	int table_c[3];
-	/* last row styles
+
+	/**
+	 * last row styles
 	 * table_b[0], 0 col
 	 * table_b[1], 1, 2, 3, 4, 5 col
 	 * table_b[2], 6, 7, 8 col
 	 */
 	int table_b[3];
-	/*
+
+	/**
 	 * row/columns styles
 	 * rc[0], wide col
 	 * rc[1], narrow col
@@ -71,31 +164,46 @@ struct defined_styles {
 	int rc[3];
 };
 
+/** ini file dictionary */
 static dictionary *ini;
+
+/** output document */
 static struct spreadconv_data *doc;
+
+/** config from xml file*/
 static struct cspay_config *cfg;
-static struct tm *month_date;
+
+/** month for wich we generate the output
+ * this also contains the year,
+ * day is, initially set to 1
+ */
+static struct tm *month;
+
+/** styles for spreasheets*/
 static struct defined_styles *ds;
+
+/** results*/
 static struct total_hours result;
 
 
-static size_t get_first_work_day(time_t start, time_t end, 
-							struct cspay_config *cfg, struct class_info *ci);
-/*
- * citeste configuratia unei ore.
- * In caz ca este gresita configuratia,
- * inexistenta, sau incompleta, este returnat NULL.
- * Altfel, este returnat un pointer catre o
- * structura de tipul class_info;
+static time_t get_first_work_day(struct interval t, struct class_info *ci);
+static int is_work(time_t t);
+
+/**
+ * Read from ini file "[ore/index]" class
+ * \param index class number
+ * \return NULL if an error ocured, else
+ * a class_info pointer
  */								
 static struct class_info *read_class_info (size_t index)
 {
-	struct class_info *ci;
-	char class_data[32];
-	char *timeline = NULL;	/* Nu trebuie eliberat! */
+	struct class_info *ret;
+	char read[32];
+	char *timeline;	/* Nu trebuie eliberat! */
+	int nl;
 
-	ci = malloc (sizeof (*ci));
-	if (ci == NULL) {
+	ret = malloc (sizeof (*ret));
+	if (ret == NULL) {
 		perror ("malloc");
 		return NULL;
 	}
@@ -107,17 +215,18 @@ static struct class_info *read_class_info (size_t index)
 	 */
 
 	#define STR_LEN_ORE_	4	/* lungimea lui "ore/" */
-	strcpy(class_data, "ore/");
-	ci->section_len = STR_LEN_ORE_;
-	ci->section_len += sprintf(class_data + STR_LEN_ORE_, "%d", (int) index);
-	strcpy (ci->section_name, class_data);
-	strcat(class_data + ci->section_len, ":");
-	++ ci->section_len;
+	strcpy(read, "ore/");
+	ret->name_len = STR_LEN_ORE_;
+	ret->name_len += snprintf(read + STR_LEN_ORE_, 8 - STR_LEN_ORE_, "%d", (int) index);
+	strncpy (ret->name, read, 8);
+	strcpy(read + ret->name_len, ":");
+
+	nl = ret->name_len + 1;	/* 1 = strlen(":")*/
 
 	/* get faculty name */
-	strcpy(class_data + ci->section_len, "facultate");
-	ci->class_faculty = iniparser_getstr(ini, class_data);
-	if (!ci->class_faculty) {
+	strcpy(read + nl, "facultate");
+	ret->faculty = iniparser_getstr(ini, read);
+	if (!ret->faculty) {
 	/*
 		fprintf(stderr, "Error reading \"facultate\" variable.\n");
 	*/
@@ -125,93 +234,92 @@ static struct class_info *read_class_info (size_t index)
 	}
 
 	/* get course name */
-	strcpy(class_data + ci->section_len, "disciplina");
-	ci->class_course = iniparser_getstr(ini, class_data);
-	if (!ci->class_course) {
+	strcpy(read + nl, "disciplina");
+	ret->class = iniparser_getstr(ini, read);
+	if (!ret->class) {
 		fprintf(stderr, "Error reading \"disciplina\" variable.\n");
 		goto READ_ERR;
 	}
 
 	/* get role for that class */
-	strcpy(class_data + ci->section_len, "rol");
-	ci->class_role_type = iniparser_getint(ini, class_data, -1);
-	if (ci->class_role_type < 0) {
-#if 0
+	strcpy(read + nl, "rol");
+	ret->role_type = iniparser_getint(ini, read, -1);
+	if (ret->role_type < 0) {
 		fprintf(stderr, "Error reading \"rol\" variable.\n");
-#endif
 		goto READ_ERR;
 	}
 
 	/* get role number for class */
-	strcpy(class_data + ci->section_len, "numar_post");
-	ci->class_role_num = iniparser_getstr(ini, class_data);
-	if (!ci->class_role_num) {
+	strcpy(read + nl, "numar_post");
+	ret->role_num = iniparser_getstr(ini, read);
+	if (!ret->role_num) {
 		fprintf(stderr, "Error reading \"numar_post\" variable.\n");
 		goto READ_ERR;
 	}
 
 	/* get class type (course/lab) */
-	strcpy(class_data + ci->section_len, "tip_post");
-	ci->class_type = iniparser_getint(ini, class_data, -1);
-	if (ci->class_type < 0) {
+	strcpy(read + nl, "tip_post");
+	ret->class_type = iniparser_getint(ini, read, -1);
+	if (ret->class_type < 0) {
 		fprintf(stderr, "Error reading \"tip_post\" variable.\n");
 		goto READ_ERR;
 	}
 
 	/* get group for that class */
-	strcpy(class_data + ci->section_len, "grupa");
-	ci->class_group = iniparser_getstr(ini, class_data);
-	if (!ci->class_group) {
+	strcpy(read + nl, "grupa");
+	ret->group = iniparser_getstr(ini, read);
+	if (!ret->group) {
 		fprintf(stderr, "Error reading \"grupa\" variable.\n");
 		goto READ_ERR;
 	}
 
 	/* get class day */
-	strcpy(class_data + ci->section_len, "zi");
-	ci->class_day = iniparser_getint(ini, class_data, -1);
-	if (ci->class_day < 0){
+	strcpy(read + nl, "zi");
+	ret->day = iniparser_getint(ini, read, -1);
+	if (ret->day < 0){
 		fprintf(stderr, "Error reading \"zi\" variable.\n");
 		goto READ_ERR;
 	}
 
 	/* get class timeline */
-	strcpy(class_data + ci->section_len, "ore");
-	timeline = iniparser_getstr(ini, class_data);
+	strcpy(read + nl, "ore");
+	timeline = iniparser_getstr(ini, read);
 	if (!timeline) {
 		fprintf(stderr, "Error reading \"ore\" variable.\n");
 		goto READ_ERR;
 	}
-	sscanf(timeline, "%d-%d", &ci->class_h_start, &ci->class_h_end);
+	if (2 != sscanf(timeline, "%d-%d", (int *)&ret->timeline.start, (int *) &ret->timeline.end)) {
+		fprintf(stderr, "Error *parsing* \"ore\" variable.\n");
+		goto READ_ERR;
+	}
 
 	/* get class parity */
-	strcpy(class_data + ci->section_len, "paritate");
-	ci->class_parity = iniparser_getint(ini, class_data, -1);
-	if (ci->class_parity < 0){
+	strcpy(read + nl, "paritate");
+	ret->parity = iniparser_getint(ini, read, -1);
+	if (ret->parity < 0){
 		fprintf(stderr, "Error reading \"paritate\" variable.\n");
 		goto READ_ERR;
 	}
 
 	/* first week */
-	strcpy(class_data + ci->section_len, "paritate_start");
-	ci->class_first_week = iniparser_getint(ini, class_data, -1);
-	if (ci->class_first_week < 0){
+	strcpy(read + nl, "paritate_start");
+	ret->first_week = iniparser_getint(ini, read, -1);
+	if (ret->first_week < 0){
 		fprintf(stderr, "Error reading \"paritate_start\" variable.\n");
 		goto READ_ERR;
 	}
-	return ci;
+	return ret;
 
 	READ_ERR:
-	free(ci);
+	free(ret);
 	return NULL;
 }
 
-/* verifica daca t este zi (perioada) de lucru*/
-/* daca este functia intoarce 1, 0 altfel*/
-static int is_work(struct cspay_config *cfg, time_t t);
 
-/* intoarce numele unui singur fisier creat */
-char *cspay_convert_single_file(char *fname);
-
+/**
+ * free a file list
+ * \param list list to be freed
+ */
 void
 cspay_free_file_list(struct cspay_file_list *list)
 {
@@ -226,6 +334,11 @@ cspay_free_file_list(struct cspay_file_list *list)
 	Dprintf("freed cspay_file_list\n");
 }		       
 
+/**
+ * read config from xml file
+ * \param xml_file_name xml file name
+ * \return a config structure from xml file
+ */
 struct cspay_config *
 cspay_get_config(char *xml_file_name)
 {
@@ -234,6 +347,11 @@ cspay_get_config(char *xml_file_name)
 	return read_cspay_xml(xml_file_name);
 }
 
+/**
+ * Config styles for tables, rows and columns
+ * \return 0 on succes
+ * \return -1 on error
+ */
 static int 
 config_styles (void)
 {
@@ -363,15 +481,17 @@ config_styles (void)
 
 }
 
-/*
+/**
  * create header data for spreadsheet
+ * \return 0, on succes
+ * \return -1 on error
+ * \remarks \a month is allocated here
  */
-
-static int create_header (void)
+static int
+create_header (void)
 {
 	char *val = NULL;		
-	/* TODO cred ca se poate si cu un singur char* */
-	/* universitatea si faculateatea  */
+
 	Dprintf("I look for university name\n");
 	val = iniparser_getstr(ini, "antet:universitate");
 	if (!val){
@@ -389,8 +509,8 @@ static int create_header (void)
 	doc->cells[1][0].text = strdup(val);
 
 	/* catedra */
-	#define DEPT_LIMIT	30	/* nr. max. de car. ptr catedra */
-	#define STR_DEPT_SIZE	8	/* strlen("Catedra ") */
+	#define DEPT_LIMIT	30	/**< nr. max. de car. ptr catedra */
+	#define STR_DEPT_SIZE	8	/**< strlen("Catedra ") */
 	Dprintf("I look for department\n");
 	val = iniparser_getstr(ini, "antet:catedra");
 	if (!val) {
@@ -403,7 +523,7 @@ static int create_header (void)
 	strncat(doc->cells[0][6].text, val, DEPT_LIMIT - STR_DEPT_SIZE - 1);
 
 	/* luna */
-	static char months[12][32] = {
+	static char str_months[12][32] = {
 		{"Ianuarie"},
 		{"Februarie"},
 		{"Martie"},
@@ -417,25 +537,26 @@ static int create_header (void)
 		{"Noiembrie"},
 		{"Decembrie"}
 	};
+
 	Dprintf("I look for month\n");
-	month_date = calloc(1, sizeof (struct tm));
-	month_date->tm_mon = iniparser_getint(ini, "antet:luna", -1);
-	if (month_date->tm_mon < 0) {
+	month = calloc(1, sizeof (struct tm));
+	month->tm_mon = iniparser_getint(ini, "antet:luna", -1);
+	if (month->tm_mon < 0) {
 		fprintf(stderr, "Error obtaining month\n");
 		goto ERR_;
 	}
 	doc->cells[1][6].text = strdup("Luna ");
-	doc->cells[1][7].text = strdup(months[month_date->tm_mon]);
+	doc->cells[1][7].text = strdup(str_months[month->tm_mon]);
 
 	Dprintf("I wrote the month\n");
 
-	/* Salvam in month_date data de start a perioadei*/ 
+	/* Salvam in month data de start a perioadei*/ 
 	if (!localtime(&cfg->sem->start)) {
 		fprintf(stderr, "Error converting date.\n");
 		goto ERR_;     
 	}
-	month_date->tm_year = localtime(&cfg->sem->start)->tm_year;
-	month_date->tm_mday = 1;
+	month->tm_year = localtime(&cfg->sem->start)->tm_year;
+	month->tm_mday = 1;
 
 	Dprintf("I have calculated the year from semester's limits\n");
 
@@ -489,10 +610,12 @@ static int create_header (void)
 	return -1;
 }
 
-/*
+/**
  * create footer data for spreadsheet
+ * \param last_row footer's first row
+ * \return 0 on succes
+ * \return 01 on error
  */
-
 static int create_footer (size_t last_row)
 {
 	
@@ -614,17 +737,19 @@ static int create_footer (size_t last_row)
 	return 0;
 }
 
-/*
- * Asta este cea mai importanta din biblioteca
+/**
+ * load and parse options
+ * \remarks this is the most important function from libcspay
+ * \param fname ini file name
+ * \return 0 on succes
+ * \return -1 on error
  */
-
 static int
 load_and_parse_options(char *fname)
 {
 	struct class_info *ci;
 	size_t class_index;
-	time_t month_start;
-	time_t month_end;
+	struct interval m;
 	time_t index;
 	size_t table_crt;	/* int vs. size_t ???*/
 	char *tmp_str;
@@ -674,14 +799,19 @@ load_and_parse_options(char *fname)
 		return -1;
 	}
 
-	month_start = mktime(month_date);
-	++ month_date->tm_mon;
-	if (month_date->tm_mon == 12){
-		month_date->tm_mon = 0;
-		++ month_date->tm_year;
+	/**
+	 * set month_start and month_end
+	 * this is absolute
+	 */
+	m.start = mktime(month);
+	++ month->tm_mon;
+	if (month->tm_mon == 12){
+		month->tm_mon = 0;
+		++ month->tm_year;
 	}
-	month_end = mktime(month_date) - 1;
-	
+	m.end = mktime(month) - 1;
+	free(month);
+
 	/*
 	 * browse the classes and add data to spreadsheet
 	 * FIXME str* hazards
@@ -697,7 +827,7 @@ load_and_parse_options(char *fname)
 		if (ci == NULL)
 			break;
 
-		index = get_first_work_day(month_start, month_end, cfg, ci);
+		index = get_first_work_day(m, ci);
 		
 		Dprintf("First working day is: %d\n",
 					localtime(&index)->tm_mday);
@@ -708,10 +838,10 @@ load_and_parse_options(char *fname)
 
 		tmp_sum_prof = tmp_sum_conf = tmp_sum_sl = tmp_sum_as = 0;
 		tmp_sum = 0;
-		#define TC	7	/*table content start row*/
-		for (/* no init */; index < month_end;
-				index += ci->class_parity * WEEK) {
-			if (!is_work(cfg, index))
+		#define TC	7	/**< table content start row*/
+		for (/* no init */; index < m.end;
+				index += ci->parity * WEEK) {
+			if (!is_work(index))
 				continue;
 			/* NR. crt */
 			ccs = ds->table_c[0];
@@ -722,33 +852,33 @@ load_and_parse_options(char *fname)
 			/* Felul si nr. post*/
 			ccs = ds->table_c[1];
 			doc->cells[TC + table_crt][1].text = malloc(10);
-			sprintf(doc->cells[TC + table_crt][1].text, "%s%s", roles[ci->class_role_type], ci->class_role_num);
+			sprintf(doc->cells[TC + table_crt][1].text, "%s%s", roles[ci->role_type], ci->role_num);
 			spreadconv_set_cell_style(TC + table_crt, 1, ccs, doc);
 
 
 			/* faculty */
-			doc->cells[TC + table_crt][2].text = strdup(ci->class_faculty);
+			doc->cells[TC + table_crt][2].text = strdup(ci->faculty);
 			spreadconv_set_cell_style(TC + table_crt, 2, ccs, doc);
 
 			/* course */
-			doc->cells[TC + table_crt][3].text = strdup(ci->class_course);
+			doc->cells[TC + table_crt][3].text = strdup(ci->class);
 			spreadconv_set_cell_style(TC + table_crt, 3, ccs, doc);
 
-			if (ci->class_type) {/* e aplicatie */
+			if (ci->class_type == LCSP_CLASS_APP) {/* e aplicatie */
 				doc->cells[TC + table_crt][5].value_type = strdup("float");
 				doc->cells[TC + table_crt][5].text = malloc(4);
-				sprintf(doc->cells[TC + table_crt][5].text, "%d", ci->class_h_end - ci->class_h_start);
+				sprintf(doc->cells[TC + table_crt][5].text, "%d", (int) (ci->timeline.end - ci->timeline.start));
 			} else { /* e curs */
 				doc->cells[TC + table_crt][4].value_type = strdup("float");
 				doc->cells[TC + table_crt][4].text = malloc(4);
-				sprintf(doc->cells[TC + table_crt][4].text, "%d", ci->class_h_end - ci->class_h_start);
+				sprintf(doc->cells[TC + table_crt][4].text, "%d", (int) (ci->timeline.end - ci->timeline.start));
 			}
 			spreadconv_set_cell_style(TC + table_crt, 4, ccs, doc);
 			spreadconv_set_cell_style(TC + table_crt, 5, ccs, doc);
 
 			ccs = ds->table_c[2];
 			/* group */
-			doc->cells[TC + table_crt][6].text = strdup(ci->class_group);
+			doc->cells[TC + table_crt][6].text = strdup(ci->group);
 			spreadconv_set_cell_style(TC + table_crt, 6, ccs, doc);
 
 			/* date */
@@ -759,33 +889,36 @@ load_and_parse_options(char *fname)
 			/* FIXME: no validation on class timeline */
 			/* Time */
 			tmp_str = malloc (10);
-			sprintf (tmp_str, "%02d-%02d", ci->class_h_start,
-					ci->class_h_end);
+			sprintf (tmp_str, "%02d-%02d", (int) ci->timeline.start,
+					(int) ci->timeline.end);
 			doc->cells[TC + table_crt][8].text = tmp_str;
 			spreadconv_set_cell_style(TC + table_crt, 8, ccs, doc);
 
 			++ table_crt;
-			tmp_sum +=  ci->class_h_end - ci->class_h_start;
+			tmp_sum +=  ci->timeline.end - ci->timeline.start;
 		}
 
 		Dprintf("End rule number: %d\n", class_index);
-		if (ci->class_type) {/* e aplicatie*/
-			if (ci->class_role_type == 0)
+		/**
+		 * \todo simplify this!
+		 */
+		if (ci->class_type == LCSP_CLASS_APP) {/* e aplicatie*/
+			if (ci->role_type == LCSP_ROLE_ASS)
 				result.aplic.as += tmp_sum;
-			if (ci->class_role_type == 1)
+			if (ci->role_type == LCSP_ROLE_CON)
 				result.aplic.conf += tmp_sum;
-			if (ci->class_role_type == 2)
+			if (ci->role_type == LCSP_ROLE_SEL)
 				result.aplic.sl += tmp_sum;
-			if (ci->class_role_type == 3)
+			if (ci->role_type == LCSP_ROLE_TEA)
 				result.aplic.prof += tmp_sum;
 		} else {	/* e curs */
-			if (ci->class_role_type == 0)
+			if (ci->role_type == LCSP_ROLE_ASS)
 				result.course.as += tmp_sum;
-			if (ci->class_role_type == 1)
+			if (ci->role_type == LCSP_ROLE_CON)
 				result.course.conf += tmp_sum;
-			if (ci->class_role_type == 2)
+			if (ci->role_type == LCSP_ROLE_SEL)
 				result.course.sl += tmp_sum;
-			if (ci->class_role_type == 3)
+			if (ci->role_type == LCSP_ROLE_TEA)
 				result.course.prof += tmp_sum;
 		}
 		++ class_index;
@@ -805,13 +938,15 @@ load_and_parse_options(char *fname)
 	
 	/* create spreadsheet footer */
 	create_footer (TC + table_crt);
-
-
-
-
 	return 0;
 }
 
+/**
+ * save a document in specified format
+ * \param ft file type, see libspreadconv
+ * \return NULL on error
+ * \return outputed complete file path
+ */
 static char *
 save_document(int ft)
 {
@@ -827,14 +962,26 @@ save_document(int ft)
 	Dprintf("End output file\n");
 	return ret;
 }
+
+/**
+ * free ini dictionary
+ * and spreadconv data
+ */
 static void
 free_parsed_data()
 {
 	spreadconv_free_spreadconv_data(doc);
 	iniparser_freedict(ini);
 }
+
+/**
+ * test if \a t is a work day (hour)
+ * \param t
+ * \return 0, t is in vacation
+ * \return 1, t is not in vacation
+ */
 int
-is_work(struct cspay_config *cfg, time_t t)
+is_work(time_t t)
 {
 	int i;
 	for (i = 0; i < cfg->vac_no; ++ i){
@@ -846,6 +993,13 @@ is_work(struct cspay_config *cfg, time_t t)
 	return 1;
 }
 
+/**
+ * convert an options ini file, and a config structure
+ * into desired files
+ * \param config config structure, returned by \a cspay_get_config
+ * \param fname ini file name
+ * \return a file list
+ */
 struct cspay_file_list *
 cspay_convert_options(struct cspay_config *config, char *fname)
 {
@@ -882,6 +1036,10 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 	return ret;
 }
 
+/**
+ * free config
+ * \param cfg config to be freed
+ */
 void 
 cspay_free_config(struct cspay_config *cfg)
 {
@@ -904,28 +1062,31 @@ cspay_free_config(struct cspay_config *cfg)
 	Dprintf("freed cspay_config\n");
 }
 
-/*
- * afla prima zi de lucru
+/**
+ * find the first work day
+ * \param t interval in wich we search
+ * \param ci class info
+ * \return first absolute day of class 
  */
-static size_t get_first_work_day(time_t start, time_t end, 
-							struct cspay_config *cfg, struct class_info *ci)
+static time_t 
+get_first_work_day(struct interval t, struct class_info *ci)
 {
 	struct tm *tmp_date;
 	time_t ret;
-	tmp_date = localtime(&start);
+	tmp_date = localtime(&t.start);
 	tmp_date->tm_mday = 1;
 	ret = mktime(tmp_date);
-	while (ret < end) {
-		if (localtime(&ret)->tm_wday == ci->class_day) {
-			-- ci->class_first_week;
-			if (is_work(cfg, ret)) {
-				if (ci->class_first_week <= 0)
+	while (ret < t.end) {
+		if (localtime(&ret)->tm_wday == ci->day) {
+			-- ci->first_week;
+			if (is_work(ret)) {
+				if (ci->first_week <= 0)
 					break;
 			}
 		}
 		ret += DAY;
 	}
-	if (ret >= end) {
+	if (ret >= t.end) {
 		fprintf(stderr, "Impossible error\n");
 		return -1;
 	}

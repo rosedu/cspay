@@ -8,7 +8,8 @@
  * \ingroup libspreadconv
  * \file utils.c
  * \brief libspreadconv utility functions file
- * \author Vlad Dogaru, Cojocar Lucian
+ * \author Vlad Dogaru
+ * \author Cojocar Lucian
  */
 
 /**

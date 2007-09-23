@@ -11,8 +11,11 @@ all: $(BIN)
 $(BIN): $(OBJ)
 	ar rc $(BIN) $(OBJ)
 	ranlib $(BIN)
+doc:
+	doxygen
 .PHONY: clean
 clean: 
 	-rm -rf $(OBJ)
 	-rm -f *~
 	-rm -f $(BIN)
+	-rm -rf doc
