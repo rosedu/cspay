@@ -11,10 +11,8 @@ all: $(BIN)
 $(BIN): $(OBJ)
 	ar rc $(BIN) $(OBJ)
 	ranlib $(BIN)
-test: $(BIN)
-	gcc test.c -lcspay  $(LDFLAGS) $(CFLAGS) $(LDLIBS) -g -ggdb -o cspay_test
 .PHONY: clean
 clean: 
-	-rm -f $(OBJ)
+	-rm -rf $(OBJ)
 	-rm -f *~
 	-rm -f $(BIN)
