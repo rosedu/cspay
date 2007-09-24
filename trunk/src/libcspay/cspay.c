@@ -158,11 +158,12 @@ struct defined_styles {
 
 	/**
 	 * row/columns styles
-	 * rc[0], wide col
-	 * rc[1], narrow col
-	 * rc[2], wide row
+	 * rc[0],  col 0.6cm (0)
+	 * rc[1],  col 1.5cm (4, 5, 6, 7, 8)
+	 * rc[2],  col 2.0cm (2, 3)
+	 * rc[3],  row 1cm
 	 */
-	int rc[3];
+	int rc[4];
 };
 
 /** ini file dictionary */
@@ -367,26 +368,37 @@ config_styles (void)
 
 	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
 	rcs->type = LSC_STYLE_COL;
-	rcs->name = strdup("wide_col");
-	rcs->size = strdup("5cm");
+	rcs->name = strdup("col_0_6_cm");
+	rcs->size = strdup("0.6cm");
 	ds->rc[0] = spreadconv_add_unique_rc_style(rcs, doc);
 
 	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
 	rcs->type = LSC_STYLE_COL;
-	rcs->name = strdup("narrow_col");
-	rcs->size = strdup("0.6cm");
+	rcs->name = strdup("col_1_5_cm");
+	rcs->size = strdup("1.5cm");
 	ds->rc[1] = spreadconv_add_unique_rc_style(rcs, doc);
 
 	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
-	rcs->type = LSC_STYLE_ROW;
-	rcs->name = strdup("wide_row");
-	rcs->size = strdup("1cm");
+	rcs->type = LSC_STYLE_COL;
+	rcs->name = strdup("col_2_0_cm");
+	rcs->size = strdup("2cm");
 	ds->rc[2] = spreadconv_add_unique_rc_style(rcs, doc);
 
+	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
+	rcs->type = LSC_STYLE_ROW;
+	rcs->name = strdup("row_1_0_cm");
+	rcs->size = strdup("1cm");
+	ds->rc[3] = spreadconv_add_unique_rc_style(rcs, doc);
 	
-	spreadconv_set_col_style(0, ds->rc[1], doc);
-	spreadconv_set_col_style(3, ds->rc[0], doc);
-	spreadconv_set_row_style(6, ds->rc[2], doc);
+	spreadconv_set_col_style(0, ds->rc[0], doc);
+	spreadconv_set_col_style(2, ds->rc[2], doc);
+	spreadconv_set_col_style(3, ds->rc[2], doc);
+	spreadconv_set_col_style(4, ds->rc[1], doc);
+	spreadconv_set_col_style(5, ds->rc[1], doc);
+	spreadconv_set_col_style(6, ds->rc[1], doc);
+	spreadconv_set_col_style(7, ds->rc[1], doc);
+	spreadconv_set_col_style(8, ds->rc[1], doc);
+	spreadconv_set_row_style(6, ds->rc[3], doc);
 	
 	/* cell styles */
 	Dprintf("Begin cells styles\n");
