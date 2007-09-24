@@ -991,6 +991,7 @@ free_parsed_data()
 {
 	spreadconv_free_spreadconv_data(doc);
 	iniparser_freedict(ini);
+	free(ds);
 }
 
 /**
@@ -1038,12 +1039,13 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 	cfg = config;  
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 0;
-	ret->names = malloc(24 * sizeof (char *));
+	ret->names = malloc(2 * sizeof (char *));
 	load_and_parse_options(fname);
 
 	file_types = iniparser_getstr(ini, "antet:tip_fisier");
 	mv_comm = calloc(1, 512);
 	file_name = build_file_name();
+	free(month);
 	if (strstr(file_types, "ods")) {
 		temp = save_document(LSC_FILE_ODS);
 		if (!temp) {
@@ -1162,7 +1164,9 @@ build_file_name(void)
 			name[i] = '_';
 		}
 	}
-	snprintf(ret, 512, "%d_%d_%s_%s", month->tm_year + 1901, month->tm_mon + 1,
+	snprintf(ret, 512, "%d_%d_%s_%s", month->tm_year + 1900, month->tm_mon + 1,
 			disc, name);
+	free(disc);
+	free(name);
 	return ret;
 }
