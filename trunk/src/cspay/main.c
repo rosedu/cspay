@@ -67,10 +67,11 @@ usage(void)
 int
 main( int argc, char **argv )
 {	
-    int i,no,nl,rol,nrp,tip_post,zi,oi,of,par,pari;
+    int i,no,nl,rol,nrp,tip_post,zi,oi,of,par,pari,j,l;
     char *nume, intocmit[40],facultate[80],decan[40],sef[40],catedra[40];
-    char *inif,*xmlf,tip[4],next[3],fac[6],dis[7],grupa[8],*luna, *month;
-    char *s,m[12][3],tmpstr[80],buffer[512],bn[40];
+    char *inif,*xmlf,*tip,next[3],fac[6],dis[7],grupa[8],*luna, *month;
+    char *s,m[12][3],tmpstr[80],buffer[512],bn[40],*universitate,*nc;
+    char *titular;
     FILE *f;
     struct cspay_file_list *lista;
     struct cspay_config *config;
@@ -86,22 +87,26 @@ main( int argc, char **argv )
         {   
             xmlf = argv[3];
             inif = argv[5];
-	    d = iniparser_load(argv[3]);
+	    d = iniparser_load(inif);
 	    month = malloc(30);
-	    month = iniparser_getstr(d, "antet:luna");
-	    if(strlen(month)<3)
-	            config = cspay_get_config( argv[3] );
-            if (strcmp(argv[4],"-f")==0 && argv[5][0]!='-') {
+	    strcpy(month, iniparser_getstr(d, "antet:luna"));
+	    l=strlen(month);
+	    if(l<3)
+	    {
+	    config = cspay_get_config( argv[3] );
+            if (strcmp(argv[4],"-f")==0 && argv[5][0]!='-') 
+	    	{
             	lista = cspay_convert_options( config, inif);
             	cspay_free_config(config);
             	for( i = 0; i < lista->nr; i++)
-		        	printf( "%s.ods\n", lista->names[i] );
+		        	printf( "%s\n", lista->names[i] );
 
                 exit(0);
+	    	}
             }
         }
         // orice fel de eroare, iese si arata detalii
-        usage();
+        if (l<3) usage();
 	}
 	else {
          if(argc==4 && strcmp(argv[1],"-i")==0) {
@@ -116,15 +121,24 @@ main( int argc, char **argv )
              //se introduc datele pentru antet
              printf("\n Introduceti numele: ");
              read_string(&nume);
-	         fprintf(f,"[antet]\n nume = %s",nume);
+	     fprintf(f,"[antet]\n nume = %s",nume);
              printf("\n Intocmit de: ");
              scanf("%s",intocmit);
              fprintf(f,"\n intocmit = %s",intocmit);
+	     printf("\n Introduceti universitatea: ");
+             read_string(&universitate);
+	     fprintf(f,"\n universitate = %s",universitate);
              printf("\n Introduceti facultatea: ");
              scanf("%s",facultate);
              fprintf(f,"\n facultate = %s",facultate);
+	     printf("\n Introduceti numele cursului: ");
+             scanf("%s",nc);
+             fprintf(f,"\n nume_curs = %s",nc);
              printf("\n Introduceti numele decanului facultatii: ");
              scanf("%s",decan);
+	     printf("\n Introduceti numele titularului cursului: ");
+             read_string(&titular);
+	     fprintf(f,"\n titular = %s",titular);
              fprintf(f,"\n decan = %s",decan);
              printf("\n Introduceti numele sefului de catedra: ");
              scanf("%s",sef);
@@ -134,11 +148,12 @@ main( int argc, char **argv )
              fprintf(f,"\n catedra = %s",catedra);
              printf("\n Introduceti numarul lunii: ");
              read_string(&luna);
+	     l=strlen(luna);
 	     month=malloc(30);
 	     strcpy(month,luna);
              fprintf(f,"\n luna = %s",luna);
              printf("\n Introduceti tipul fisierul ce urmeaza fi generat: ");
-             scanf("%s",tip);
+             read_string(&tip);
              fprintf(f,"\n tip_fisier = %s",tip);
              // se introduc datele pentru ore
              strcpy(next,"Da");
@@ -152,7 +167,7 @@ main( int argc, char **argv )
              fprintf(f,"\n facultate = %s",fac);
              printf("\n Introduceti disciplina(abreviat): ");
              scanf("%s",dis);
-             fprintf(f,"\n facultate = %s",dis);
+             fprintf(f,"\n disciplina = %s",dis);
              printf("\n Introduceti rolul(0=asistent,1=conferentiar,2=sef lucrari,3=profesor): ");
              scanf("%d",&rol);
              fprintf(f,"\n rol = %d",rol);
@@ -167,7 +182,7 @@ main( int argc, char **argv )
              fprintf(f,"\n grupa = %s",grupa);
              printf("\n Introduceti ziua saptamanii(1 = luni, 2 = marti, etc.): ");
              scanf("%d",&zi);
-             fprintf(f,"\n facultate = %d",zi);
+             fprintf(f,"\n zi = %d",zi);
              printf("\n Introduceti intervalul orar: ");
              scanf("%d-%d",&oi,&of);
              fprintf(f,"\n ore = %d-%d",oi,of);
@@ -193,11 +208,13 @@ main( int argc, char **argv )
 		while(s!=NULL)
 			{
 			strcpy(m[nl-1],s);
+			m[nl-1][strlen(s)]='\0';
 			nl++;
 			s = strtok(NULL, " ,");
 			}
 		nl--;
 		strncpy(bn,inif,strlen(inif)-4);
+		bn[strlen(inif)-4]='\0';
 		for(i=0;i<nl;i++)
 			{
 				strcpy(tmpstr,bn);
@@ -208,19 +225,21 @@ main( int argc, char **argv )
 				f=fopen(tmpstr,"r+");
 				fprintf(f,"[antet]\n nume = %s",iniparser_getstr(d, "antet:nume"));
 				fprintf(f,"\n intocmit = %s",iniparser_getstr(d, "antet:intocmit"));
+				fprintf(f,"\n universitate = %s",iniparser_getstr(d, "antet:universitate"));
 				fprintf(f,"\n facultate = %s",iniparser_getstr(d, "antet:facultate"));
+				fprintf(f,"\n nume_curs = %s",iniparser_getstr(d, "antet:nume_curs"));
+				fprintf(f,"\n titular = %s",iniparser_getstr(d, "antet:titular"));
 				fprintf(f,"\n decan = %s",iniparser_getstr(d, "antet:decan"));
 				fprintf(f,"\n sef_catedra = %s",iniparser_getstr(d, "antet:sef_catedra"));
 				fprintf(f,"\n catedra = %s",iniparser_getstr(d, "antet:catedra"));
-				fprintf(f,"\n luna = %s",m[i]);
+				fprintf(f,"\n luna = %s%*c",m[i],l-strlen(m[i]),' ');
 				fprintf(f,"\n tip_fisier = %s",iniparser_getstr(d, "antet:tip_fisier"));
 				fclose(f);
-        			config = cspay_get_config( argv[3] );
-            			lista = cspay_convert_options( config, inif);
+				config = cspay_get_config( argv[3] );
+            			//lista = cspay_convert_options( config, tmpstr);
             			cspay_free_config(config);
-            			for( i = 0; i < lista->nr; i++)
-		        		printf( "%s.ods\n", lista->names[i] );
-                		exit(0);
+            			//for( j = 0; j < lista->nr; j++)
+		        	//	printf( "%s\n", lista->names[j] );
 
 			}
 	}
