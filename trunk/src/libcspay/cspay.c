@@ -855,6 +855,8 @@ load_and_parse_options(char *fname)
 		 * iterate through the same day of different weeks
 		 */
 
+		memset(&result, 0, sizeof (result));
+
 		tmp_sum_prof = tmp_sum_conf = tmp_sum_sl = tmp_sum_as = 0;
 		tmp_sum = 0;
 		#define TC	7	/**< table content start row*/
