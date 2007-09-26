@@ -28,7 +28,7 @@ long nr;
   nr = strtol (line, &endp, 10);
   if (*endp != '\0' && *endp != '\n')
      {
-      printf("Nu ati introdus un numar!");
+      printf("Nu ati introdus un numar! Introduceti un numar:");
       return read_num();
      }
   return (int)nr;
@@ -68,8 +68,8 @@ int
 main( int argc, char **argv )
 {	
     int i,no,nl,rol,nrp,tip_post,zi,oi,of,par,pari,j,l;
-    char *nume, intocmit[40],facultate[80],decan[40],sef[40],catedra[40];
-    char *inif,*xmlf,*tip,next[3],fac[6],dis[7],grupa[8],*luna, *month;
+    char *nume, *intocmit,*facultate,*decan,*sef,*catedra;
+    char *inif,*xmlf,*tip,*next,*fac,*dis,*grupa,*luna, *month;
     char *s,m[12][3],tmpstr[80],buffer[512],bn[40],*universitate,*nc;
     char *titular;
     FILE *f;
@@ -156,6 +156,7 @@ main( int argc, char **argv )
              read_string(&tip);
              fprintf(f,"\n tip_fisier = %s",tip);
              // se introduc datele pentru ore
+	     next=malloc(3);
              strcpy(next,"Da");
              no=0;
              while(strcmp(next,"Da")==0)
@@ -201,7 +202,7 @@ main( int argc, char **argv )
 	     else 
 	    usage();
 	}
-	if(strlen(month)>=3)
+	if(l>=3)
 	{
 		s = strtok(month," ,");
 		nl=1;
@@ -236,10 +237,10 @@ main( int argc, char **argv )
 				fprintf(f,"\n tip_fisier = %s",iniparser_getstr(d, "antet:tip_fisier"));
 				fclose(f);
 				config = cspay_get_config( argv[3] );
-            			//lista = cspay_convert_options( config, tmpstr);
+            			lista = cspay_convert_options( config, tmpstr);
             			cspay_free_config(config);
-            			//for( j = 0; j < lista->nr; j++)
-		        	//	printf( "%s\n", lista->names[j] );
+            			for( j = 0; j < lista->nr; j++)
+		        		printf( "%s\n", lista->names[j] );
 
 			}
 	}
