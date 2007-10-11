@@ -24,9 +24,9 @@ if( md5($_POST['seccode']) != $_SESSION['security_code']) { #  !$_POST['debug']
 		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
 		'<link rel="stylesheet" type="text/css" href="stil.css" />'.		
 		"</head><body>";
-	echo "<h1>Cod de securitate gresit</h1>";
-	echo "<p>Codul introdus este gresit. Va rugam sa il introduceti din nou.</p>";
-	echo "<p>Se foloseste un cod imagine pentru a se asigura interactiunea cu un utilizator uman, nu robot</p>";
+	echo "<h1>Cod de securitate greşit</h1>";
+	echo "<p>Codul introdus este greşit. Vă rugăm să îl introduceţi din nou.</p>";
+	echo "<p>Se foloseşte un cod imagine pentru a se asigura interacţiunea cu un utilizator uman, nu robot</p>";
 	echo "\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
 	echo "</body>";
 
@@ -41,6 +41,8 @@ $file = fopen($tmpfname, "w");
 # Mica initializare si adjustementuri
 if( !is_array($_POST['tip_fisier']) )
 	$_POST['tip_fisier'] = array( $_POST['tip_fisier'] );
+if( !is_array($_POST['luna']) )
+	$_POST['luna'] = array( $_POST['luna'] );
 $_POST['catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate']).'_catedre'];
 $_POST['sef_catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate'].'_'.$_POST['catedra'])];
 $_POST['decan'] = $_POST['decan_'.str_replace(' ', '_', $_POST['facultate'])];
@@ -96,7 +98,7 @@ if( !empty($lista_fisiere) ) {
 	echo "<h1>Fişiere tabel de date obţinute:</h1><ul>";
 	
 	for($i = 0; $i<count($lista_fisiere); $i++) {
-		# CL: am modificat pe aici, test  
+		# CL: am modificat pe aici
 		$fn =  str_replace(array("/tmp/"), "", $lista_fisiere[$i]);
 		echo "<li><a href=\"download.php?f=$fn\">$fn</a></li>\n";
 	}
@@ -127,7 +129,8 @@ else {
 		'<link rel="stylesheet" type="text/css" href="stil.css" />'.
 		"</head><body>";
 	echo "<h1>Eroare</h1>";
-	echo "<p>O eroare necunoscuta s-a produs. Verificati datele introduse si incercati din nou</p>";
+	echo "<p>O eroare necunoscută s-a produs. Verificaţi datele introduse şi încercaţi din nou.</p>";
+	echo "<p>Puteţi raporta această eroare aici: <a href=http://www.rosedu.org/dev/cspay/newticket/>http://www.rosedu.org/dev/cspay/newticket/</a></p>";
 	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
 	echo "</body></html>";
 }
