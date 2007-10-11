@@ -56,8 +56,9 @@ fwrite($file, "[antet]\n".
 	"decan=$_POST[decan]\n".
 	"catedra=$_POST[catedra]\n".
 	"sef_catedra=$_POST[sef_catedra]\n".
-	"luna=$_POST[luna]\n".
-	"tip_fisier=".implode(',',$_POST['tip_fisier'])."\n\n");
+	"luna=".implode(',',$_POST['luna'])."\n".
+	"tip_fisier=".implode(',',$_POST['tip_fisier'])."\n\n"
+	);
 
 $i = 1;
 foreach( $_POST[orar] as $o) {

@@ -26,7 +26,7 @@
 			</div>
 			<br />
 			<label for="luna">Luna:</label>
-			<select name="luna" id="luna">
+			<select name="luna[]" id="luna" multiple="multiple" size="4">
 				<option value="9">octombrie</option>
 				<option value="10">noiembrie</option>
 				<option value="11">decembrie</option>
