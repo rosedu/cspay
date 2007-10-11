@@ -19,7 +19,7 @@ include('utils.php');
 session_start();
 
 # Captcha test (10x lucian)
-if( md5($_POST['seccode']) != $_SESSION['security_code'] and !$_POST['debug']) { #TODO: be carefull with debug!!!
+if( md5($_POST['seccode']) != $_SESSION['security_code']) { #  !$_POST['debug']
 	echo "<html><head><title>CSpay parser</title>".
 		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
 		"</head><body>";
@@ -93,12 +93,8 @@ if( !empty($lista_fisiere) ) {
 	echo "<h1>Fisiere spreadsheet obtinute:</h1><ul>";
 	
 	for($i = 0; $i<count($lista_fisiere); $i++) {
-		# TODO $name trebuie sa fie corect!
 		# CL:
-		# este corect :-)
-		# CL:
-		# am modificat pe aici, nu stiu daca mai e sigur
-		# strlen("/tmp/") = 5
+		# am modificat pe aici
 		$fn =  str_replace(array("/tmp/"), "", $lista_fisiere[$i]);
 		echo "<li><a href=\"download.php?f=$fn\">$fn</a></li>\n";
 	}
@@ -111,7 +107,7 @@ if( !empty($lista_fisiere) ) {
 			$fn =  str_replace(array("/tmp/"), "", $lista_fisiere[$i]);
 			$attachments[] = array(	'file' =>'/tmp/'.$fn, 
 								'content_type'=>'application/ods',
-								'name' => $name);#TODO change it
+								'name' => $fn);
 		}
 
 		send_mail( 'no-reply@anaconda.cs.pub.ro', $_POST['email'],
@@ -134,10 +130,10 @@ else {
 }
 
 ##debug:
-if($_POST['debug'] == 1) {
+/*if($_POST['debug'] == 1) {
 	# listez continutul personal.ini obtinut
 	exec("cat $tmpfname", $continut);
 	echo "<hr>$tmpfname :<br/>";
 	echo implode('<br />', $continut);
-}
+}*/
 ?>

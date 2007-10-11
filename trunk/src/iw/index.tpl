@@ -180,8 +180,9 @@
 			<input name="seccode" value="" id="seccode" size="5" maxlength="5" />
 			<img src="seccode.php" alt="security code" style="vertical-align:middle" />
 			<br />
-			<!-- TODO: not for final release -->
+			<!-- TODO: not for final release 
 			<i>debug: </i><input type="checkbox" name="debug" value="1" />
+			-->
 		</fieldset>
 		<p style="text-align:center">
 			<input type="submit" value="Trimite" name="submit" />
