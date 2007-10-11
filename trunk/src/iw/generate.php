@@ -22,11 +22,12 @@ session_start();
 if( md5($_POST['seccode']) != $_SESSION['security_code']) { #  !$_POST['debug']
 	echo "<html><head><title>CSpay parser</title>".
 		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
+		'<link rel="stylesheet" type="text/css" href="stil.css" />'.		
 		"</head><body>";
 	echo "<h1>Cod de securitate gresit</h1>";
 	echo "<p>Codul introdus este gresit. Va rugam sa il introduceti din nou.</p>";
 	echo "<p>Se foloseste un cod imagine pentru a se asigura interactiunea cu un utilizator uman, nu robot</p>";
-	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
+	echo "\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
 	echo "</body>";
 
 	die;
@@ -37,9 +38,9 @@ if( md5($_POST['seccode']) != $_SESSION['security_code']) { #  !$_POST['debug']
 $tmpfname = tempnam("/tmp", "personalini");
 $file = fopen($tmpfname, "w");
 
-# mica initializare si adjustementuri
+# Mica initializare si adjustementuri
 if( !is_array($_POST['tip_fisier']) )
-	$_POST['tip_fisier'] = array( 'ods' );
+	$_POST['tip_fisier'] = array( $_POST['tip_fisier'] );
 $_POST['catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate']).'_catedre'];
 $_POST['sef_catedra'] = $_POST[str_replace(' ', '_', $_POST['facultate'].'_'.$_POST['catedra'])];
 $_POST['decan'] = $_POST['decan_'.str_replace(' ', '_', $_POST['facultate'])];
@@ -57,7 +58,7 @@ fwrite($file, "[antet]\n".
 	"sef_catedra=$_POST[sef_catedra]\n".
 	"luna=$_POST[luna]\n".
 	"tip_fisier=".implode(',',$_POST['tip_fisier'])."\n\n");
-// fwrite($file, "[ore]\n"); # nu mai este necesar
+
 $i = 1;
 foreach( $_POST[orar] as $o) {
 	fwrite($file, "\n[ore/$i]\n".
@@ -89,12 +90,12 @@ exec("chmod g+r ".$tmpfname, $_output);
 if( !empty($lista_fisiere) ) {
 	echo "<html><head><title>CSpay download</title>".
 		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
+		'<link rel="stylesheet" type="text/css" href="stil.css" />'.
 		"</head><body>";
-	echo "<h1>Fisiere spreadsheet obtinute:</h1><ul>";
+	echo "<h1>Fişiere tabel de date obţinute:</h1><ul>";
 	
 	for($i = 0; $i<count($lista_fisiere); $i++) {
-		# CL:
-		# am modificat pe aici
+		# CL: am modificat pe aici
 		$fn =  str_replace(array("/tmp/"), "", $lista_fisiere[$i]);
 		echo "<li><a href=\"download.php?f=$fn\">$fn</a></li>\n";
 	}
@@ -110,23 +111,24 @@ if( !empty($lista_fisiere) ) {
 								'name' => $fn);
 		}
 
-		send_mail( 'no-reply@anaconda.cs.pub.ro', $_POST['email'],
-			'CSPay Download', '<p>Fisiere rezultate:</p>',
+		send_mail( 'CSPay <no-reply@anaconda.cs.pub.ro>', $_POST['email'],
+			'CSPay Download', '<p>Fişiere rezultate:</p>',
 			 $attachments );
 		echo "Un mail a fost trimis la: <i>".$_POST['email']."</i>.<br />";
 	} 
 	echo "<a href=index.php>&laquo;înapoi la formular</a>";
-	echo "</body>";
+	echo "</body></html>";
 }
 else {
-# Nu am output, o eroare s-a produs :-s
+	# Nu am output, o eroare s-a produs :-s
 	echo "<html><head><title>CSpay download</title>".
 		'<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'.
+		'<link rel="stylesheet" type="text/css" href="stil.css" />'.
 		"</head><body>";
 	echo "<h1>Eroare</h1>";
 	echo "<p>O eroare necunoscuta s-a produs. Verificati datele introduse si incercati din nou</p>";
 	echo "</ul>\n<br />\n<a href=index.php>&laquo;înapoi la formular</a>";
-	echo "</body>";
+	echo "</body></html>";
 }
 
 ##debug:

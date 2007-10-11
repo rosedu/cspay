@@ -16,7 +16,7 @@ function send_mail( $fromaddress, $emailaddress, $emailsubject, $body, $attachme
 	$mime_boundary=md5(time());
 
 	# Common Headers
-	$headers .= 'From: <'.$fromaddress.'>'.$eol;
+	$headers .= 'From: '.$fromaddress.$eol;
 	//$headers .= 'Return-Path: <'.$fromaddress.'>'.$eol;    // these two to set reply address
 	//$headers .= "Message-ID: <".$now." TheSystem@".$_SERVER['SERVER_NAME'].">".$eol;
 	//$headers .= "X-Mailer: PHP v".phpversion().$eol;          // These two to help avoid spam-filters
