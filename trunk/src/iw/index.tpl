@@ -165,7 +165,7 @@
 			<label for="tip_fisier">Tip fişier:</label>
 			<select name="tip_fisier[]" id="tip_fisier" multiple="multiple">
 				<option selected="selected">ods</option>
-				<option disabled="disabled">xls</option>				
+				<option>xls</option>				
 			</select>
 			<a id="b_more"
 			onclick="show_hide('email_div');switch_text('b_more','mai mult','mai puţin');">mai mult</a>

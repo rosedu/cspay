@@ -93,9 +93,14 @@ if( !empty($lista_fisiere) ) {
 	echo "<h1>Fisiere spreadsheet obtinute:</h1><ul>";
 	
 	for($i = 0; $i<count($lista_fisiere); $i++) {
-		$name = $_POST['anul'].'_'.($_POST['luna']<9?'0':'').($_POST['luna']+1). '_PO_' .str_replace(' ','_',$_POST['nume']).'.ods';
 		# TODO $name trebuie sa fie corect!
-		echo "<li><a href=\"download.php?f=$lista_fisiere[$i]&n=$name\">$name</a></li>\n";
+		# CL:
+		# este corect :-)
+		# CL:
+		# am modificat pe aici, nu stiu daca mai e sigur
+		# strlen("/tmp/") = 5
+		$fn =  str_replace(array("/tmp/"), "", $lista_fisiere[$i]);
+		echo "<li><a href=\"download.php?f=$fn\">$fn</a></li>\n";
 	}
 	echo "</ul>\n<br />\n";
 	
@@ -103,8 +108,8 @@ if( !empty($lista_fisiere) ) {
 	if( $_POST['send_mail'] == 1 ) {
 		$attachments = array();
 		for($i = 0; $i<count($lista_fisiere); $i++) {
-			$name = $_POST['anul'].'_'.($_POST['luna']<9?'0':'').($_POST['luna']+1). '_PO_' .str_replace(' ','_',$_POST['nume']).'.ods';
-			$attachments[] = array(	'file' =>'/tmp/'.$lista_fisiere[$i], 
+			$fn =  str_replace(array("/tmp/"), "", $lista_fisiere[$i]);
+			$attachments[] = array(	'file' =>'/tmp/'.$fn, 
 								'content_type'=>'application/ods',
 								'name' => $name);#TODO change it
 		}
