@@ -10,10 +10,12 @@
 #include <time.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <ctype.h>
 
 #include "debug.h"
 #include "cspay.h"
 #include "load_cfg.h"
+#include "iniparser.h"
 
 /*extrage informatiile din arborle extras din fisierul xml*/
 static void cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *ret);
@@ -29,7 +31,7 @@ static void cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *loa
 	
 /*adauga in load informatii depsre semestru*/
 static void cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load);
-	
+
 /**
  * read xml file and load a \a cspay_config structure
  * \param fname file name of xml
@@ -127,7 +129,7 @@ cspay_xml_extract_from_tree(xmlNode *element, struct cspay_config *load)
  * \param node a \<vacanta\> node
  * \param load where to write data
  */
-void
+static void
 cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
 {
 
@@ -194,7 +196,7 @@ cspay_xml_parse_rest_element(xmlNode *node, struct cspay_config *load)
  * \param node \<facultate\> node
  * \param load where to write data
  */
-void
+static void
 cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
 {
 	xmlAttr *prop;
@@ -253,7 +255,7 @@ cspay_xml_parse_fac_element(xmlNode *node, struct cspay_config *load)
  * \param node \<universitate\> node
  * \param load where to write data
  */
-void 
+static void 
 cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
 {
 	xmlAttr *prop;
@@ -271,7 +273,7 @@ cspay_xml_parse_univ_element(xmlNode *node, struct cspay_config *load)
  * \param node \<semestru\> node
  * \param load where to write data
  */
-void 
+static void 
 cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
 {
 	xmlAttr *prop;
@@ -301,4 +303,42 @@ cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
 	Dprintf("End semester\n");
 	Dprintf("Semester begin at %ld and ends at %ld\n",
 		load->sem->start, load->sem->end);
+}
+
+/**
+ * \param ini dictionary file (ini)
+ * \param months array wich will be filled
+ * \return number of months found in ini file
+ */
+int
+load_months(dictionary *ini, struct tm *months[])
+{
+	int ret;
+	int s;
+	char *temp;
+	ret = 0;
+	temp = iniparser_getstr(ini, "antet:luna");
+	if (!temp) {
+		fprintf(stderr, "Any month?\n");
+		return 0;
+	}
+	s = 0;
+	while (*temp) {
+		if (isdigit(*temp)) {
+			s = 10 * s + *temp - '0';
+		} else 
+			if (s)	{
+				months[ret] = calloc(1, sizeof (struct tm));
+				months[ret]->tm_mon = s;
+				ret ++;
+				s = 0;
+			}
+		++ temp;
+	}
+	if (s) {
+		months[ret] = calloc(1, sizeof (struct tm));
+		months[ret]->tm_mon = s;
+		ret ++;
+	}
+	return ret;
 }

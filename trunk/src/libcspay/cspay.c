@@ -179,7 +179,8 @@ static struct cspay_config *cfg;
  * this also contains the year,
  * day is, initially set to 1
  */
-static struct tm *month;
+static struct tm *curr_month;
+
 
 /** styles for spreasheets*/
 static struct defined_styles *ds;
@@ -191,6 +192,7 @@ static struct total_hours result;
 static time_t get_first_work_day(struct interval t, struct class_info *ci);
 static int is_work(time_t t);
 static char *build_file_name(void);
+static void free_class_info(struct class_info *ci);
 
 /**
  * Read from ini file "[ore/index]" class
@@ -552,6 +554,7 @@ create_header (void)
 		{"Decembrie"}
 	};
 
+	/*
 	Dprintf("I look for month\n");
 	month = calloc(1, sizeof (struct tm));
 	month->tm_mon = iniparser_getint(ini, "antet:luna", -1);
@@ -559,8 +562,9 @@ create_header (void)
 		fprintf(stderr, "Error obtaining month\n");
 		goto ERR_;
 	}
+	*/
 	doc->cells[1][6].text = strdup("Luna ");
-	doc->cells[1][7].text = strdup(str_months[month->tm_mon]);
+	doc->cells[1][7].text = strdup(str_months[curr_month->tm_mon]);
 
 	Dprintf("I wrote the month\n");
 
@@ -569,10 +573,7 @@ create_header (void)
 		fprintf(stderr, "Error converting date.\n");
 		goto ERR_;     
 	}
-	month->tm_year = localtime(&cfg->sem->start)->tm_year;
-	month->tm_mday = 1;
 
-	Dprintf("I have calculated the year from semester's limits\n");
 
 	/* some header data */
 	doc->cells[3][2].text = strdup("Situatia orelor efectuate de");
@@ -754,12 +755,11 @@ static int create_footer (size_t last_row)
 /**
  * load and parse options
  * \remarks this is the most important function from libcspay
- * \param fname ini file name
  * \return 0 on succes
  * \return -1 on error
  */
 static int
-load_and_parse_options(char *fname)
+load_and_parse_options()
 {
 	struct class_info *ci;
 	size_t class_index;
@@ -785,16 +785,6 @@ load_and_parse_options(char *fname)
 	Dprintf("Processing ini file\n");
 
 
-	/* init ini file parsing */
-	ini = iniparser_load(fname);
-	if (!ini) {
-		fprintf(stderr, ".ini file not found, try personal.ini\n");
-		ini = iniparser_load("personal.ini");
-		if (!ini){
-			fprintf(stderr, "personal.ini not found, bye!\n");
-			return -1;
-		}
-	}
 
 	/* create new spreadsheet */
 	doc = spreadconv_new_spreadconv_data("Date", 60, 9);
@@ -817,18 +807,18 @@ load_and_parse_options(char *fname)
 	 * set month_start and month_end
 	 * this is absolute
 	 */
-	m.start = mktime(month);
-	++ month->tm_mon;
-	if (month->tm_mon == 12){
-		month->tm_mon = 0;
-		++ month->tm_year;
+	m.start = mktime(curr_month);
+	++ curr_month->tm_mon;
+	if (curr_month->tm_mon == 12){
+		curr_month->tm_mon = 0;
+		++ curr_month->tm_year;
 	}
-	m.end = mktime(month) - 1;
+	m.end = mktime(curr_month) - 1;
 	
-	-- month->tm_mon;
-	if (month->tm_mon == -1) {
-		month->tm_mon = 11;
-		-- month->tm_year;
+	-- curr_month->tm_mon;
+	if (curr_month->tm_mon == -1) {
+		curr_month->tm_mon = 11;
+		-- curr_month->tm_year;
 	}
 
 	/*
@@ -838,6 +828,8 @@ load_and_parse_options(char *fname)
 
 	class_index = 1;
 	table_crt = 0;
+
+	memset(&result, 0, sizeof (result));
 
 	while (1) {
 		Dprintf("Begin rule number%d\n", class_index);
@@ -855,7 +847,6 @@ load_and_parse_options(char *fname)
 		 * iterate through the same day of different weeks
 		 */
 
-		memset(&result, 0, sizeof (result));
 
 		tmp_sum_prof = tmp_sum_conf = tmp_sum_sl = tmp_sum_as = 0;
 		tmp_sum = 0;
@@ -943,7 +934,7 @@ load_and_parse_options(char *fname)
 				result.course.prof += tmp_sum;
 		}
 		++ class_index;
-		free (ci);
+		free_class_info(ci);
 	}
 	Dprintf("End of all rules.\n");
 	
@@ -991,7 +982,6 @@ save_document(int ft)
 static void
 free_parsed_data()
 {
-	spreadconv_free_spreadconv_data(doc);
 	iniparser_freedict(ini);
 	free(ds);
 }
@@ -1025,62 +1015,98 @@ is_work(time_t t)
 struct cspay_file_list *
 cspay_convert_options(struct cspay_config *config, char *fname)
 {
-	/* tipul functiei cred ca e gresit */
-	/*
-	 * In ce caz se returneaza mai multe fisiere? 
-	 * RD: In cazul in care se realizeaza plata cu ora pe mai multe luni.
-	 * Se extrage un fisier .ods pentru fiecare luna.
-	 */
-
 	struct cspay_file_list *ret;
 	char *temp;
 	char *file_types;
 	char *mv_comm;
 	char *file_name;
 
+	int i;
+	int n_months;
+	struct tm *months[12];
+
+	/* init ini file parsing */
+	ini = iniparser_load(fname);
+	if (!ini) {
+		fprintf(stderr, ".ini file not found, try personal.ini\n");
+		ini = iniparser_load("personal.ini");
+		if (!ini){
+			fprintf(stderr, "personal.ini not found, bye!\n");
+			return NULL;
+		}
+	}
 	cfg = config;  
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 0;
-	ret->names = malloc(2 * sizeof (char *));
-	load_and_parse_options(fname);
+	ret->names = malloc(24 * sizeof (char *));
 
 	file_types = iniparser_getstr(ini, "antet:tip_fisier");
+	Dprintf("Am citit tipul fisierului %s\n", file_types);
 	mv_comm = calloc(1, 512);
-	file_name = build_file_name();
-	free(month);
-	if (strstr(file_types, "ods")) {
-		temp = save_document(LSC_FILE_ODS);
-		if (!temp) {
-			fprintf(stderr, "ods err\n");
-		} else {
-			snprintf(mv_comm, 512, "mv %s %s/%s.ods", temp, 
-				spreadconv_dir_name, file_name);
-			system(mv_comm);
-			free(temp);
-			ret->names[ret->nr] = calloc(1, 512);
-			snprintf(ret->names[ret->nr ++], 512, "%s%s.ods",
-				spreadconv_dir_name, file_name);
-		}
-	}
+	/** FIXME
+	 * UGLY CODE!!
+	 */
+	n_months = load_months(ini, months);
 	
-	if (strstr(file_types, "xls")) {
+	#ifdef __DEBUG__
+	printf("Am gsit %d luni\n", n_months);
+	for (i = 0; i < n_months; ++ i)
+		printf("%d ", months[i]->tm_mon);
+	printf("\n");
+	#endif /*__DEBUG__ */
 
-		temp = save_document(LSC_FILE_XLS);
-		if (!temp) {
-			fprintf(stderr, "xls err\n");
-		} else {
-			snprintf(mv_comm, 512, "mv %s %s/%s.xls", temp, 
-				spreadconv_dir_name, file_name);
-			system(mv_comm);
-			free(temp);
-			ret->names[ret->nr] = calloc(1, 512);
-			snprintf(ret->names[ret->nr ++], 512, "%s%s.xls",
-				spreadconv_dir_name, file_name);
+	for (i = 0; i < n_months; ++ i) {
+		
+		curr_month = months[i];
+		curr_month->tm_year = localtime(&cfg->sem->start)->tm_year;
+		curr_month->tm_mday = 1;
+		
+		Dprintf("I have calculated the year from semester's limits\n");
+
+		file_name = build_file_name();
+		load_and_parse_options();
+		/* free(month);*/
+		if (strstr(file_types, "ods")) {
+			temp = save_document(LSC_FILE_ODS);
+			if (!temp) {
+				fprintf(stderr, "ods err\n");
+			} else {
+				snprintf(mv_comm, 512, "mv %s %s/%s.ods", temp, 
+					spreadconv_dir_name, file_name);
+				system(mv_comm);
+				free(temp);
+				ret->names[ret->nr] = calloc(1, 512);
+				snprintf(ret->names[ret->nr ++], 512, "%s%s.ods",
+					spreadconv_dir_name, file_name);
+			}
 		}
+	
+		if (strstr(file_types, "xls")) {
+	
+			temp = save_document(LSC_FILE_XLS);
+			if (!temp) {
+				fprintf(stderr, "xls err\n");
+			} else {
+				snprintf(mv_comm, 512, "mv %s %s/%s.xls", temp, 
+					spreadconv_dir_name, file_name);
+				system(mv_comm);
+				free(temp);
+				ret->names[ret->nr] = calloc(1, 512);
+				snprintf(ret->names[ret->nr ++], 512, "%s%s.xls",
+					spreadconv_dir_name, file_name);
+			}
+		}
+		free(curr_month);
+		free(file_name);
+		spreadconv_free_spreadconv_data(doc);
+		
 	}
-	free_parsed_data();
 	free(mv_comm);
-	free(file_name);
+	free_parsed_data();
+	if (!ret->nr) {
+		free(ret);
+		return NULL;
+	}
 	return ret;
 }
 
@@ -1166,9 +1192,16 @@ build_file_name(void)
 			name[i] = '_';
 		}
 	}
-	snprintf(ret, 512, "%d_%d_%s_%s", month->tm_year + 1900, month->tm_mon + 1,
+	snprintf(ret, 512, "%d_%02d_%s_%s", curr_month->tm_year + 1900, curr_month->tm_mon + 1,
 			disc, name);
 	free(disc);
 	free(name);
 	return ret;
+}
+static void
+free_class_info(struct class_info *ci)
+{
+	if (!ci)
+		return;
+	free(ci);
 }
