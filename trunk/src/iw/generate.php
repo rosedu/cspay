@@ -96,7 +96,7 @@ if( !empty($lista_fisiere) ) {
 	echo "<h1>Fişiere tabel de date obţinute:</h1><ul>";
 	
 	for($i = 0; $i<count($lista_fisiere); $i++) {
-		# CL: am modificat pe aici, test
+		# CL: am modificat pe aici, test 
 		$fn =  str_replace(array("/tmp/"), "", $lista_fisiere[$i]);
 		echo "<li><a href=\"download.php?f=$fn\">$fn</a></li>\n";
 	}
