@@ -25,7 +25,7 @@
 				<input type="text" name="intocmit" id="intocmit" value="" />
 			</div>
 			<br />
-			<label for="luna">Luna:</label>
+			<label for="luna">Lunile:</label>
 			<select name="luna[]" id="luna" multiple="multiple" size="4">
 				<option value="9">octombrie</option>
 				<option value="10">noiembrie</option>
@@ -162,15 +162,15 @@
 		</fieldset>
 		<fieldset>
 			<legend>Diverse</legend>
-			<label for="tip_fisier">Tip fişier:</label>
+			<label for="tip_fisier">Format fişier ieşire:</label>
 			<select name="tip_fisier[]" id="tip_fisier" multiple="multiple">
-				<option selected="selected">ods</option>
-				<option>xls</option>				
+				<option selected="selected" value="xls">Microsoft Excel&reg; (.xls)</option>
+				<option value="ods">OpenDocument Spreadsheet (.ods)</option>				
 			</select>
 			<a id="b_more"
 			onclick="show_hide('email_div');switch_text('b_more','mai mult','mai puţin');">mai mult</a>
 			<div id="email_div" class="hidden">
-				<label for="send_mail">Trimite prin e-mail</label>
+				<label for="send_mail">Trimite fişierele prin e-mail</label>
 				<input name="send_mail" id="send_mail" type="checkbox" value="1">&nbsp;
 				<input name="email" id="email" value="" size=20>
 			<br />

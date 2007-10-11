@@ -180,6 +180,10 @@ function verify ( )
 		ok = ok &&
 			check_input( 'ore_stop_'+i, 'greatthan', ora_start );
 	}
+	
+	// Verific daca a bagat in CAPTCHA
+	ok = ok &&
+		check_input( 'seccode', 'notempty' );
 	return ok;
 }
 
