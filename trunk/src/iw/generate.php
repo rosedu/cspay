@@ -135,7 +135,7 @@ else {
 	echo "</body></html>";
 }
 
-##debug:
+###debug:
 /*if($_POST['debug'] == 1) {
 	# listez continutul personal.ini obtinut
 	exec("cat $tmpfname", $continut);
