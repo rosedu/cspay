@@ -165,7 +165,7 @@
 			<label for="tip_fisier">Format fişier ieşire:</label>
 			<select name="tip_fisier[]" id="tip_fisier" multiple="multiple">
 				<option selected="selected" value="xls">Microsoft Excel&reg; (.xls)</option>
-				<option value="ods">OpenDocument Spreadsheet (.ods)</option>				
+				<option value="ods">OpenDocumentSpreadsheet (.ods)</option>				
 			</select>
 			<a id="b_more"
 			onclick="show_hide('email_div');switch_text('b_more','mai mult','mai puţin');">mai mult</a>
