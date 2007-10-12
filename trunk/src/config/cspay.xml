@@ -7,7 +7,7 @@
             <vacanta data_start="22.12.2006" data_end="08.01.2007" />
         </vacante>
         <facultati>
-            <facultate nume="Automatica si Calculatoare" nume_scurt="A&amp;C" decan="Dumitru Popescu">
+            <facultate nume="Automatică şi Calculatoare" nume_scurt="A&amp;C" decan="Dumitru Popescu">
                 <catedra nume="Calculatoare" sef="Nicolae Tapus" />
                 <catedra nume="Automatică şi Informatica Industriala" sef="Traian Ionescu" />
                 <catedra nume="Automatică şi Ingineria Sistemelor" sef="Ioan Dumitrache" />
