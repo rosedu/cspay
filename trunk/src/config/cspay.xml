@@ -10,7 +10,7 @@
             <facultate nume="Automatica si Calculatoare" nume_scurt="A&amp;C" decan="Dumitru Popescu">
                 <catedra nume="Calculatoare" sef="Nicolae Tapus" />
                 <catedra nume="Automatica si Informatica Industriala" sef="Traian Ionescu" />
-                <catedra nume="Automatica_si Ingineria Sistemelor" sef="Ioan Dumitrache" />
+                <catedra nume="Automatică şi Ingineria Sistemelor" sef="Ioan Dumitrache" />
             </facultate>
             <facultate nume="Electronica, Telecomunicatii si Tehnologia Informatiei" nume_scurt="ETTI" decan="Teodor Petrescu">
                 <catedra nume="Telecomunicatii" sef="Silviu Ciochina" />
