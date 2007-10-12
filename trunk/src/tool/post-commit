@@ -1,0 +1,129 @@
+#!/usr/bin/python
+
+# post-commit emailing, take 2
+# started 11.05.2007
+# loving every bit of python :P
+#TODO use a cache repo
+
+import sys, os
+
+test_dirs = ['test', 'branches']
+
+repo_path = sys.argv[1]
+revision_number = sys.argv[2]
+
+os.chdir(repo_path + '/hooks')
+
+author = os.popen('svnlook author ' + repo_path).readlines()[0][:-1]
+changed = os.popen('svnlook dirs-changed ' + repo_path).readlines()
+date = os.popen('svnlook date ' + repo_path).readlines()[0][:-1]
+diff = os.popen('svnlook diff ' + repo_path).readlines()
+log = os.popen('svnlook log ' + repo_path).readlines()[0][:-1]
+
+def commit_inside(dirs):
+	for file in changed:
+		for dir in dirs:
+			if file.startswith(dir):
+				return True
+	return False
+
+def commit_outside(dirs):
+	return not commit_inside(dirs)
+
+def print_last_change(where, what):
+	f = open('%s/%s_last_change' %(where, what), 'w');
+	f.write('%s\n%s\n' %(author, date))
+	f.close()
+# param dest is 'trunk/src/libcspay/test' or 
+#		'trunk/src/cspay'
+def update_bin(dest, out_iw):
+	old_dir = os.getcwd()
+
+	tmp_target = '/tmp/We43bv3'
+	#os.rmdir('%s' %(tmp_target))
+	os.popen('rm -rf %s' %(tmp_target))
+	os.popen('svn co file://%s %s 1>/dev/null' %(repo_path, tmp_target))
+
+	#build library
+	os.chdir('%s/trunk/src/' %(tmp_target))
+	os.popen('make 1>/dev/null 2>/dev/null')
+
+	#build bin
+	os.chdir('%s/%s' %(tmp_target, dest))
+	os.popen('make clean 1>/dev/null')
+	os.popen('make 1>/dev/null 2>/dev/null')
+
+	os.popen('rm -f %s/cspay' %(out_iw))
+	os.popen('cp ./cspay %s/cspay' %(out_iw))
+	#os.rmdir(tmp_target)
+	os.popen('rm -rf %s' %(tmp_target))
+	os.chdir(old_dir)
+
+	print_last_change(out_iw, 'bin')
+
+def update_cfg(cfg_path, out_iw):
+	os.popen('rm -f %s/cspay.xml' %(out_iw))
+	os.popen('svn co file://%s/%s %s 1>/dev/null' %(repo_path, cfg_path, out_iw))
+	os.popen('rm -rf %s/.svn' %(out_iw))
+	print_last_change(out_iw, 'cfg')
+
+if commit_outside(test_dirs):
+	email_subject = '[cspay-commit] New commit to cspay by %s' % author;
+	email_text = '''Hello,
+
+This is to announce you that a new commit has been added to 
+%s by %s. Commit sumary follows:
+
+Date: %s
+Author: %s
+Message: %s
+Changed files: 
+%s
+Diff follows:
+
+%s
+
+-- 
+If you wish to remove yourself from this list, or otherwise change the
+format of this email, either go to %s/hooks or email
+ddvlad@anaconda.cs.pub.ro''' % (repo_path, author, date, author, log, ''.join(changed), 
+		''.join(diff), repo_path)
+	#send mail
+	emails = open('post-commit_emails').read().split()
+	email_command = 'mail -s "%s" ' % email_subject
+	email_command = email_command + ' '.join(emails)
+	os.popen(email_command, 'w').write(email_text)
+#Web Interface Update
+iw_path = 'trunk/src/iw'
+cfg_path = 'trunk/src/config'
+bin_path = 'trunk/src/libcspay/test'
+
+libs_path = ['trunk/src/libspreadconv', 'trunk/src/libcspay']
+
+base = '/home/cspay/public_html/'
+out_iw = base + 'iw'
+
+#f = open('/home/students/cojocar/out', 'w')
+#f.write('%s\n%s\n' %(out_iw, changed))
+#f.write('%s\n%s\n' %(commit_inside([cfg_path]), commit_inside([iw_path])))
+#f.close()
+
+if commit_inside([iw_path]):
+	os.popen('rm -rf %s' %(out_iw))
+	os.popen('svn co file://%s/%s %s 1>/dev/null' %(repo_path, iw_path, out_iw))
+	os.popen('rm -rf %s/.svn' %(out_iw))
+	print_last_change(out_iw, 'iw')
+
+	update_bin(bin_path, out_iw)
+	update_cfg(bin_path, out_iw)
+	sys.exit()
+
+#cfg Update
+if commit_inside([cfg_path]):
+	update_cfg(cfg_path, out_iw)
+	sys.exit()
+
+#bin update
+if commit_inside([bin_path, libs_path[0], libs_path[1]]):
+	update_bin(bin_path, out_iw)
+	sys.exit()
