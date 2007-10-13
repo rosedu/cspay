@@ -62,9 +62,11 @@ def update_bin(dest, out_iw):
 	print_last_change(out_iw, 'bin')
 
 def update_cfg(cfg_path, out_iw):
+	tmp_cfg = '/tmp/cfGw3DD_cspay'
 	os.popen('rm -f %s/cspay.xml' %(out_iw))
-	os.popen('svn co file://%s/%s %s 1>/dev/null' %(repo_path, cfg_path, out_iw))
-	os.popen('rm -rf %s/.svn' %(out_iw))
+	os.popen('svn co file://%s/%s %s 1>/dev/null' %(repo_path, cfg_path, tmp_cfg))
+	os.popen('cp %s/cspay.xml %s/cspay.xml' %(tmp_cfg, out_iw))
+	os.popen('rm -rf %s' %(tmp_cfg))
 	print_last_change(out_iw, 'cfg')
 
 if commit_outside(test_dirs):
@@ -121,9 +123,7 @@ if commit_inside([iw_path]):
 #cfg Update
 if commit_inside([cfg_path]):
 	update_cfg(cfg_path, out_iw)
-	sys.exit()
 
 #bin update
 if commit_inside([bin_path, libs_path[0], libs_path[1]]):
 	update_bin(bin_path, out_iw)
-	sys.exit()
