@@ -32,6 +32,7 @@
 				<option value="11">decembrie</option>
 				<option value="0">ianuarie</option>
 				<option value="1">februarie</option>
+				<!-- 
 				<option value="2">martie</option>
 				<option value="3">aprilie</option>
 				<option value="4">mai</option>
@@ -39,6 +40,7 @@
 				<option value="6">iulie</option>
 				<option value="7">august</option>
 				<option value="8">septembrie</option>
+				-->
 			</select>
 			<!-- anul de inceput pentru octombrie -->
 			<input type="hidden" name="anul" value="{ANUL}" />
