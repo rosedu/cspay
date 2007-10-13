@@ -1,5 +1,6 @@
 # CL: nu se poate si mai simplu de atat?
 #
+CPPFLAGS = -I../common -I../libspreadconv -I../iniparser-2.17/src -I../libcspay
 CFLAGS = -Wall `xml2-config --cflags`
 LDFLAGS = -L. -L../libcspay `xml2-config --libs` -L../libspreadconv -L../iniparser-2.17
 LDLIBS = -lcspay -lspreadconv -liniparser
