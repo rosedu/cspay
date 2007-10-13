@@ -525,7 +525,7 @@ create_header (void)
 	doc->cells[1][0].text = strdup(val);
 
 	/* catedra */
-	#define DEPT_LIMIT	30	/**< nr. max. de car. ptr catedra */
+	#define DEPT_LIMIT	512	/**< nr. max. de car. ptr catedra */
 	#define STR_DEPT_SIZE	8	/**< strlen("Catedra ") */
 	Dprintf("I look for department\n");
 	val = iniparser_getstr(ini, "antet:catedra");
