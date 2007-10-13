@@ -191,7 +191,7 @@
 		</p>
 		</form>
 	<hr />
-	<p>&copy; 2007 <a href="http://anaconda.cs.pub.ro/~cspay/">The CSpay Team</a>.
+	<p>&copy; 2007 <a href="http://www.rosedu.org/~cspay/">CSPay</a> | <a href="http://www.rosedu.org/">ROSEdu</a>.
 	</p>
 	</body>
 </html>
