@@ -1089,8 +1089,8 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 		Dprintf("I have calculated the year from semester's limits\n");
 		Dprintf("Year: %d\n", curr_month->tm_year);
 
-		file_name = build_file_name();
 		load_and_parse_options();
+		file_name = build_file_name();
 		/* free(month);*/
 		if (strstr(file_types, "ods")) {
 			temp = save_document(LSC_FILE_ODS);
