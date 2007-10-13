@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <cspay-config>
-    <universitate nume="Universitatea Politehnică Bucureşti">
-        <semestru nume="Semestrul 1" data_start="02.10.2006"
-            data_sfarsit="19.01.2007" />
-        <vacante>
-            <vacanta data_start="22.12.2006" data_end="08.01.2007" />
-        </vacante>
-        <facultati>
-            <facultate nume="Automatică şi Calculatoare" nume_scurt="A&amp;C" decan="Dumitru Popescu">
-                <catedra nume="Calculatoare" sef="Nicolae Tapus" />
-                <catedra nume="Automatică şi Informatica Industriala" sef="Traian Ionescu" />
-                <catedra nume="Automatică şi Ingineria Sistemelor" sef="Ioan Dumitrache" />
-            </facultate>
-            <facultate nume="Electronica, Telecomunicatii si Tehnologia Informatiei" nume_scurt="ETTI" decan="Teodor Petrescu">
-                <catedra nume="Telecomunicatii" sef="Silviu Ciochina" />
-                <catedra nume="Dispozitive, aparate si circuite electronice" sef="Adrian Rusu" />
-                <catedra nume="Tehnologie electronica si fiabilitate" sef="Ovidiu Iancu" />
-                <catedra nume="Electronica aplicata si ingineria informatiei" sef="Dan Stoichescu" />
-            </facultate>
-        </facultati>
-    </universitate>
+	<universitate nume="Universitatea Politehnică Bucureşti">
+		<!-- Atentie, fisierul este valabil doar un semestru-->
+		<semestru nume="Semestru 1" data_start="01.10.2007" data_sfarsit="19.01.2008" />
+		<vacante>
+			<!-- Vacanta de iarna -->
+			<vacanta data_start="22.12.2007" data_end="07.01.2008" />
+		</vacante>
+		<facultati>
+			<facultate nume="Automatică şi Calculatoare" nume_scurt="A&amp;C" decan="Dumitru Popescu">
+				<catedra nume="Calculatoare" sef="Nicolae Ţăpuş" />
+				<catedra nume="Automatică şi Informatică Industrială" sef="Traian Ionescu" />
+				<catedra nume="Automatică şi Ingineria Sistemelor" sef="Ioan Dumitrache" />
+			</facultate>
+			<facultate nume="Electronica, Telecomunicaţii şi Tehnologia Informaţiei" nume_scurt="ETTI" decan="Teodor Petrescu">
+				<catedra nume="Telecomunicaţii" sef="Silviu Ciochina" />
+				<catedra nume="Dispozitive, aparate şi circuite electronice" sef="Adrian Rusu" />
+				<catedra nume="Tehnologie electronică şi fiabilitate" sef="Ovidiu Iancu" />
+				<catedra nume="Electronică aplicată şi ingineria informaţiei" sef="Dan Stoichescu" />
+			</facultate>
+		</facultati>
+	</universitate>
 </cspay-config>

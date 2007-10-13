@@ -315,6 +315,7 @@ load_months(dictionary *ini, struct tm *months[])
 {
 	int ret;
 	int s;
+	int rest;
 	char *temp;
 	ret = 0;
 	temp = iniparser_getstr(ini, "antet:luna");
@@ -323,19 +324,22 @@ load_months(dictionary *ini, struct tm *months[])
 		return 0;
 	}
 	s = 0;
+	rest = 0;
 	while (*temp) {
 		if (isdigit(*temp)) {
 			s = 10 * s + *temp - '0';
+			rest = 1;
 		} else 
-			if (s)	{
+			if (rest)	{
 				months[ret] = calloc(1, sizeof (struct tm));
 				months[ret]->tm_mon = s;
 				ret ++;
 				s = 0;
+				rest = 0;
 			}
 		++ temp;
 	}
-	if (s) {
+	if (rest) {
 		months[ret] = calloc(1, sizeof (struct tm));
 		months[ret]->tm_mon = s;
 		ret ++;

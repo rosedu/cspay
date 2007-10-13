@@ -634,6 +634,7 @@ create_header (void)
 static int create_footer (size_t last_row)
 {
 	
+	Dprintf("Begin create footer\n");
 	char tot[12];
 	char *tmp_ini_val;
 	int i;
@@ -648,6 +649,7 @@ static int create_footer (size_t last_row)
 
 	/* doc->cells[last_row][1].text = strdup("TOTAL ore:");
 	 */
+	Dprintf("Begin print small table\n");
 	doc->cells[last_row][3].text = strdup("Curs");
 	spreadconv_set_cell_style(last_row, 3, ds->table_h, doc);
 
@@ -708,18 +710,24 @@ static int create_footer (size_t last_row)
 	doc->cells[last_row][4].text = malloc(5);
 	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.as);
 	last_row += 2;
-
+	Dprintf("End print small table\n");
+	
+	Dprintf("Begin print Intocmit, Tc, Sef catedra\n");
+	Dprintf("Printing on row : %d\n", last_row);
 	doc->cells[last_row][0].text = strdup("Intocmit,");
 	doc->cells[last_row][3].text = strdup("Titular curs,");
 	doc->cells[last_row][4].text = strdup("Sef catedra,");
 	doc->cells[last_row][6].text = strdup("Decan,");
 	last_row++;
-
+	Dprintf("End print Intocmit, Tc, Sef catedra\n");
+	
+	Dprintf("Begin search nume, titular\n");
 	doc->cells[last_row][0].text =
 		strdup(iniparser_getstr (ini, "antet:nume"));
 	tmp_ini_val = iniparser_getstr(ini, "antet:titular");
 	if (tmp_ini_val)
 	doc->cells[last_row][3].text = strdup(tmp_ini_val);
+	Dprintf("End search nume, titular\n");
 
 	/*
 	 * TODO: indexes for the faculty in the cfg->fac array
@@ -749,6 +757,7 @@ static int create_footer (size_t last_row)
 	} else {
 		doc->cells[last_row][4].text = strdup(tmp_ini_val);
 	}
+	Dprintf("End create footer\n");
 	return 0;
 }
 
@@ -787,7 +796,7 @@ load_and_parse_options()
 
 
 	/* create new spreadsheet */
-	doc = spreadconv_new_spreadconv_data("Date", 60, 9);
+	doc = spreadconv_new_spreadconv_data("Date", 100, 9);
 
 	/* configure spreadsheet column and cell styles */
 	if (config_styles()){
@@ -803,6 +812,16 @@ load_and_parse_options()
 		return -1;
 	}
 
+	int year_offset;
+	year_offset = 0;
+	/* FIXME Ugly hack
+	 */
+	switch (curr_month->tm_mon) {
+		case 0:
+		case 1:
+			year_offset = 1;
+	}
+	curr_month->tm_year += year_offset;
 	/**
 	 * set month_start and month_end
 	 * this is absolute
@@ -820,7 +839,9 @@ load_and_parse_options()
 		curr_month->tm_mon = 11;
 		-- curr_month->tm_year;
 	}
-
+	Dprintf("Caut intre %d:%d:%d si %d:%d:%d\n",
+		localtime(&m.start)->tm_mday, localtime(&m.start)->tm_mon, localtime(&m.start)->tm_year,
+		localtime(&m.end)->tm_mday, localtime(&m.end)->tm_mon, localtime(&m.end)->tm_year);
 	/*
 	 * browse the classes and add data to spreadsheet
 	 * FIXME str* hazards
@@ -937,7 +958,8 @@ load_and_parse_options()
 		free_class_info(ci);
 	}
 	Dprintf("End of all rules.\n");
-	
+
+	Dprintf("Begin set styles\n");
 	spreadconv_set_cell_style(TC + table_crt - 1, 0, ds->table_b[0], doc);
 	spreadconv_set_cell_style(TC + table_crt - 1, 1, ds->table_b[1], doc);
 	spreadconv_set_cell_style(TC + table_crt - 1, 2, ds->table_b[1], doc);
@@ -947,6 +969,7 @@ load_and_parse_options()
 	spreadconv_set_cell_style(TC + table_crt - 1, 6, ds->table_b[2], doc);
 	spreadconv_set_cell_style(TC + table_crt - 1, 7, ds->table_b[2], doc);
 	spreadconv_set_cell_style(TC + table_crt - 1, 8, ds->table_b[2], doc);
+	Dprintf("End set styles\n");
 	
 	/* create spreadsheet footer */
 	create_footer (TC + table_crt);
@@ -996,6 +1019,8 @@ int
 is_work(time_t t)
 {
 	int i;
+	if ((cfg->sem->start > t) || (cfg->sem->end <= t))
+		return 0;
 	for (i = 0; i < cfg->vac_no; ++ i){
 		if ((cfg->vac[i]->start <= t) &&
 			(t < cfg->vac[i]->end))
@@ -1062,6 +1087,7 @@ cspay_convert_options(struct cspay_config *config, char *fname)
 		curr_month->tm_mday = 1;
 		
 		Dprintf("I have calculated the year from semester's limits\n");
+		Dprintf("Year: %d\n", curr_month->tm_year);
 
 		file_name = build_file_name();
 		load_and_parse_options();
