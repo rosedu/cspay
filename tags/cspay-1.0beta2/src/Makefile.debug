@@ -1,0 +1,15 @@
+SUBDIRS = iniparser-2.17 libspreadconv libcspay cspay
+
+all:
+	for dir in ${SUBDIRS}; do\
+	(cd $$dir;\
+	if test -e Makefile.debug;\
+	then\
+		make -f Makefile.debug;\
+	else 	make;\
+	fi);\
+	done
+
+.PHONY: clean
+clean:
+	for dir in ${SUBDIRS}; do (cd $$dir; make clean); done

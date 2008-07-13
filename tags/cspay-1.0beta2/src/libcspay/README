@@ -1,0 +1,6 @@
+CSpay library
+
+Prerequisites: 	libxml-dev 	(http://xmlsoft.org/)
+		libspreadconv	
+		libiniparser 	(http://ndevilla.free.fr/iniparser/)
+

@@ -1,0 +1,308 @@
+/*
+--------------------------------------------
+Total Domination Template v4 Style
+Name:		v4
+Designer:	Work In Progress
+URL:		www.wip.ro
+Date:		28 Jul 2005
+-------------------------------------------- */
+
+body {
+	background: #000;
+	margin: 0;
+	padding: 0;
+	font: x-small/1.5em Courier New,Verdana,Arial;
+	color: #000;
+	font-size: 12px;
+	line-height: 120%;
+}
+form {
+	margin: 0;
+	padding: 0;
+}
+a {
+	color: #555;
+	text-decoration: underline;
+}
+a:hover {
+	text-decoration: none;;
+}
+dt {
+	margin: 10px 0;
+	font-weight: bold;
+}
+	
+/* Structura paginilor
+-------------------------------------------- */
+#content {
+	width: 760px;
+	background: #fff;
+	margin: 0 auto;
+	padding: 0;
+	text-align: left;
+}
+#main {
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/main.gif') repeat-y;
+	margin-top: 3px;
+	margin-left: 217px;
+	padding: 0 15px 15px;
+}
+#left {
+	float: left; 
+	margin: 0;
+	padding: 0;
+}
+#center {
+	width: 760px;
+	margin: 0;
+	padding: 0;
+}
+
+/* Header-ul paginii
+-------------------------------------------- */
+#head {
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/sus.jpg') no-repeat top center;
+	width: 760px;
+	height: 223px;
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	position: relative;
+}
+#banner {
+	position: absolute;
+	left: 17px;
+	top: 27px;
+}
+#head h1 {
+	margin: 0;
+	padding: 135px 0 0 38px;
+}
+#head h1 a {
+	display: block;
+	width: 145px;
+	height: 35px;
+	text-indent: -700em;
+	text-decoration: none;
+}
+
+/* Meniurile paginilor
+-------------------------------------------- */
+#menu {
+	position: absolute;
+	padding: 5px 0 0;
+	right: 15px;
+}
+#menu div {
+	margin: 0;
+	padding: 0;
+}
+#menu ul.menu_cat {
+	margin: 0 25px 0 0;
+	padding: 0;
+	list-style: none;
+}
+#menu ul.menu_cat li {
+	float: right;
+	border-left: 1p solid #adadad;
+	border-right: 1p solid #adadad;
+	margin: 0 5px;
+	display: inline;
+}
+#menu ul.menu_cat li a {
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/but_meniu1.gif') repeat-x;
+	padding: 2px 20px;
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+}
+#menu ul.sub_menu {
+	clear: right;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#menu ul.sub_menu li {
+	float: right;
+	border-left: 1p solid #888;
+	border-right: 1p solid #888;
+	margin: 0 1px;
+	display: inline;
+}
+#menu ul.sub_menu li a {
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/but_meniu2.gif') repeat-x;
+	padding: 1px 10px;
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+}
+	
+/* Casutele din stanga
+-------------------------------------------- */
+div.box {
+	width: 217px;
+	background: #fff url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/casuta_mijloc.gif') repeat-y;
+	margin: 0;
+	margin-bottom: 15px;
+	padding: 0;
+	color: #000;
+}
+div.box div.info_title {
+	width: 217px;
+	height: 60px;
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/casuta_info_sus.jpg') no-repeat;
+	padding: 20px 0 3px;
+	font-size: 22px;
+	font-weight: bolder;
+}
+div.box div.title {
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/casuta_sus.gif') no-repeat;
+	padding: 15px 0 3px;
+	font-weight: bold;
+}
+div.box div.title2 {
+	padding: 0 35px; 
+}
+div.box div.main {
+	width: 217px;
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/casuta_jos.gif') no-repeat;
+	background-position: bottom left;
+}
+div.box div.text {
+	padding: 0 10px 5px 22px;
+	line-height: 11px;
+}
+div.box div.text a {
+	color: #000;
+	text-decoration: none;
+}
+div.box div.text a:hover {
+	color: #c00;
+	text-decoration: none;
+}
+div.box div.red {
+	color: #c00;
+	text-decoration: none;
+	font-weight: bold;
+}
+div.box ul.menu {
+	width: 180px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+div.box ul.menu li {
+	margin: 1px 0;
+	padding: 0;
+}
+div.box ul.menu li a {
+	display: block;
+	width: 165px;
+	background: #e4e4e4;
+	padding: 2px 5px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+}
+div.box ul.menu a:hover {
+	background: #f0f0f0;
+}
+span.red {
+	color: #c00;
+	text-decoration: none;
+}
+div.spatiu {
+	margin-left: 30px;
+}
+/* Pentru paginile cu cumparaturi
+-------------------------------------------- */
+td.weapon {
+	width: 140px;
+	margin: 0;
+	padding: 2px 2px;
+	font-size: 12px;
+	text-align: center;
+	line-height: 90%;
+	display: table-cell;
+}
+td.weapon div.name {
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+	word-spacing: 1px;
+	line-height: 90%;
+}
+
+/* Susul paginii (partea principala)
+-------------------------------------------- */
+#top {
+	height: 80px;
+	background: url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/main_sus.jpg') no-repeat;
+	margin-left: -15px;
+}
+#top .text {
+	padding: 27px 0 30px 56px;
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+}
+div.title {
+	font-size: 16px;
+	font-weight: bold;
+	word-spacing: 2px;
+	text-align: center;
+}
+/* Erori si Mesaje
+-------------------------------------------- */
+div.error {
+	width: 400px;
+	background: #eee;
+	margin: 10px auto;
+	padding: 10px 5px;
+	border: 2px solid #555;
+	border-top: 10px solid #c00;
+	color: #c00;
+	font-size: 14px;
+}
+div.error:first-line {
+	font-size: 22px;
+	font-weight: bold;
+	line-height: 150%;
+}
+div.message {
+	width: 400px;
+	background: #eee;
+	margin: 10px auto;
+	padding: 10px 5px;
+	border: 2px solid #555;
+	border-top: 10px solid #039;
+	color: #039;
+	font-size: 14px;
+}
+div.message:first-line {
+	font-size: 22px;
+	font-weight: bold;
+	line-height: 150%;
+}
+
+/* Page Footer
+-------------------------------------------- */
+#footer {
+	background: #000 url('../../AppData/Local/Microsoft/Windows/Temporary Internet Files/Low/Content.IE5/images/jos.gif') no-repeat;
+	clear: both;
+	padding: 26px 4px 8px;
+	color: #fff;
+	text-align: right;
+	word-spacing: 120%;
+	line-height: 110%;
+}
+#footer a {
+	color: #fff;
+	font-weight: bold;
+	text-decoration: none;
+}	
+#footer a:hover {
+	text-decoration: underline;
+}
