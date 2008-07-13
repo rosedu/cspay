@@ -852,9 +852,14 @@ load_and_parse_options()
 
 	memset(&result, 0, sizeof (result));
 
+	/*
+	 * se face o interogare si se afla cate tipuri de ore tine respectiva persoana
+	 */
 	while (1) {
 		Dprintf("Begin rule number%d\n", class_index);
-
+		/*
+		 * se itereaza prin aceste ore (linii)
+		 */
 		ci = read_class_info (class_index);
 		if (ci == NULL)
 			break;
