@@ -20,154 +20,8 @@
 #include "spreadconv.h"
 #include "iniparser.h"
 
-#define HOUR	3600		/**< 1 hour in seconds*/
-#define DAY	(24 * HOUR)	/**< 1 day in seconds*/
-#define WEEK	(7 * DAY)	/**< 1 week in seconds*/
-
-/**
- * role types
- */
-#define LCSP_ROLE_ASS	0	/**< assinstant type :-) */
-#define LCSP_ROLE_CON	1	/**< "conferentiar" */
-#define LCSP_ROLE_SEL	2	/**< "sef lucrari" */
-#define LCSP_ROLE_TEA	3	/**< teacher */
-
-/**
- * class types
- */
-#define LCSP_CLASS_CRS	0	/**< course */
-#define LCSP_CLASS_APP	1	/**< application */
-/**
- * \struct class_info
- * contains all the information about a specific class
- */
-struct class_info {
-	/** name length, see bellow*/
-	int name_len;
-	/** name of course, usefull in reading information from ini file
-	 * eg: "ore/1", "ore/2"
-	 */
-	char name[8];
-
-	/** day in week of class*/
-	int day;
-
-	/** class parity
-	 * 1 - every week
-	 * 2 - every two weeks
-	 * etc.
-	 */
-	int parity;
-	/** first week of class
-	 * 1 - the class begin in first *valid* week of the month
-	 * 2 - the class begin in second *valid* week of the month
-	 * etc.
-	 * \todo check if this is implemented corectly
-	 */
-	int first_week;
-
-	/** role type
-	 * 0 - assistant
-	 * 1 - "conferentiar"
-	 * 2 - "sef lucrari"
-	 * 3 - teacher
-	 */
-	int role_type;
-	/** role number/name*/
-	char *role_num;
-
-	/** name of class, a.k.a. disciplina*/
-	char *class;
-
-	/** short name of faculty*/
-	char *faculty;
-	
-	/** group name of class
-	 * eg: 312CC*/
-	char *group;
-
-	/** class type
-	 * 0 - course
-	 * 1 - application
-	 */
-	int class_type;
-
-	/**
-	 * time of class
-	 * \remarks interval is used as int
-	 */
-	struct interval timeline;
-	
-};
-
-/**
- * \struct sum_hours 
- * contains sums from final table
- */
-struct sum_hours {
-	/** sum of hours as teacher*/
-	int prof;
-
-	/** sum of hours as "conferentiar"*/
-	int conf;
-
-	/** sum of hours as "sef lucrari"*/
-	int sl;
-
-	/** sum of hours as assistant*/
-	int as;
-};
-
-/**
- * \struct total_hours
- * contains sum hour
- */
-struct total_hours {
-	/** for course*/
-	struct sum_hours course;
-	/** for applications*/
-	struct sum_hours aplic;
-};
-
-/**
- * \struct defined_styles
- * contains informations used for creating spreadsheets
- */
-struct defined_styles {
-	/**
-	 * header table cell styles
-	 * \remark same style for all cell from header
-	 */
-	int table_h;
-
-	/**
-	 * table content styles
-	 * table_c[0], first col
-	 * table_c[1], 1, 2, 3, 4, 5,  col
-	 * table_c[2], 6, 7, 8 col
-	 */
-	int table_c[3];
-
-	/**
-	 * last row styles
-	 * table_b[0], 0 col
-	 * table_b[1], 1, 2, 3, 4, 5 col
-	 * table_b[2], 6, 7, 8 col
-	 */
-	int table_b[3];
-
-	/**
-	 * row/columns styles
-	 * rc[0],  col 0.6cm (0)
-	 * rc[1],  col 1.5cm (4, 5, 6, 7, 8)
-	 * rc[2],  col 2.0cm (2, 3)
-	 * rc[3],  row 1cm
-	 */
-	int rc[4];
-};
-
 /** ini file dictionary */
-static dictionary *ini;
+static MYSQL *conn;
 
 /** output document */
 static struct spreadconv_data *doc;
@@ -175,15 +29,7 @@ static struct spreadconv_data *doc;
 /** config from xml file*/
 static struct cspay_config *cfg;
 
-/** month for wich we generate the output
- * this also contains the year,
- * day is, initially set to 1
- */
-static struct tm *curr_month;
 
-
-/** styles for spreasheets*/
-static struct defined_styles *ds;
 
 /** results*/
 static struct total_hours result;
@@ -352,414 +198,9 @@ cspay_get_config(char *xml_file_name)
 	return read_cspay_xml(xml_file_name);
 }
 
-/**
- * Config styles for tables, rows and columns
- * \return 0 on succes
- * \return -1 on error
- */
-static int 
-config_styles (void)
-{
-	/* configure columns */
-	struct spreadconv_cell_style *ccs;
-	struct spreadconv_rc_style *rcs;
-
-	ds = calloc(1, sizeof (struct defined_styles));
-
-	Dprintf("Begin row/columns styles\n");
-
-	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
-	rcs->type = LSC_STYLE_COL;
-	rcs->name = strdup("col_0_6_cm");
-	rcs->size = strdup("0.6cm");
-	ds->rc[0] = spreadconv_add_unique_rc_style(rcs, doc);
-
-	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
-	rcs->type = LSC_STYLE_COL;
-	rcs->name = strdup("col_1_5_cm");
-	rcs->size = strdup("1.5cm");
-	ds->rc[1] = spreadconv_add_unique_rc_style(rcs, doc);
-
-	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
-	rcs->type = LSC_STYLE_COL;
-	rcs->name = strdup("col_2_0_cm");
-	rcs->size = strdup("2cm");
-	ds->rc[2] = spreadconv_add_unique_rc_style(rcs, doc);
-
-	rcs = calloc(1, sizeof (struct spreadconv_rc_style));
-	rcs->type = LSC_STYLE_ROW;
-	rcs->name = strdup("row_1_0_cm");
-	rcs->size = strdup("1cm");
-	ds->rc[3] = spreadconv_add_unique_rc_style(rcs, doc);
-	
-	spreadconv_set_col_style(0, ds->rc[0], doc);
-	spreadconv_set_col_style(2, ds->rc[2], doc);
-	spreadconv_set_col_style(3, ds->rc[2], doc);
-	spreadconv_set_col_style(4, ds->rc[1], doc);
-	spreadconv_set_col_style(5, ds->rc[1], doc);
-	spreadconv_set_col_style(6, ds->rc[1], doc);
-	spreadconv_set_col_style(7, ds->rc[1], doc);
-	spreadconv_set_col_style(8, ds->rc[1], doc);
-	spreadconv_set_row_style(6, ds->rc[3], doc);
-	
-	/* cell styles */
-	Dprintf("Begin cells styles\n");
-
-	/* Table Header */
-	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
-	ccs->name = strdup("table_header_1");
-	ccs->halign = strdup("center");
-	ccs->valign = strdup("middle");
-	ccs->border = strdup("2pt solid #000000");
-	ds->table_h = spreadconv_add_unique_cell_style(ccs, doc);
-	if (ds->table_h < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-
-	/* Table content */
-	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
-	ccs->name = strdup("table_content_1");
-	ccs->border_bottom = strdup("1pt solid #000000");
-	ccs->border_left = strdup("2pt solid #000000");
-	ccs->border_right = strdup("2pt solid #000000");
-	ccs->halign = strdup("end");
-	ds->table_c[0] = spreadconv_add_unique_cell_style(ccs, doc);
-	if (ds->table_c[0] < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-
-	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
-	ccs->name = strdup("table_content_2");
-	ccs->border_bottom = strdup("1pt solid #000000");
-	ccs->border_left = strdup("2pt solid #000000");
-	ccs->border_right = strdup("2pt solid #000000");
-	ccs->halign = strdup("center");
-	ds->table_c[1] = spreadconv_add_unique_cell_style(ccs, doc);
-	if (ds->table_c[1] < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-
-	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
-	ccs->name = strdup("table_content_3");
-	ccs->border_bottom = strdup("1pt solid #000000");
-	ccs->border_left = strdup("2pt solid #000000");
-	ccs->border_right = strdup("2pt solid #000000");
-	ccs->halign = strdup("start");
-	ds->table_c[2] = spreadconv_add_unique_cell_style(ccs, doc);
-	if (ds->table_c[2] < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-	/* Table bottom */
-	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
-	ccs->name = strdup("table_bottom_1");
-	ccs->border_bottom = strdup("2pt solid #000000");
-	ccs->border_left = strdup("2pt solid #000000");
-	ccs->border_right = strdup("2pt solid #000000");
-	ccs->halign = strdup("end");
-	ds->table_b[0] = spreadconv_add_unique_cell_style(ccs, doc);
-	if (ds->table_b[0] < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-
-	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
-	ccs->name = strdup("table_bottom_2");
-	ccs->border_bottom = strdup("2pt solid #000000");
-	ccs->border_left = strdup("2pt solid #000000");
-	ccs->border_right = strdup("2pt solid #000000");
-	ccs->halign = strdup("center");
-	ds->table_b[1] = spreadconv_add_unique_cell_style(ccs, doc);
-	if (ds->table_b[1] < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-
-	ccs = calloc(1, sizeof (struct spreadconv_cell_style));
-	ccs->name = strdup("table_bottom_3");
-	ccs->border_bottom = strdup("2pt solid #000000");
-	ccs->border_left = strdup("2pt solid #000000");
-	ccs->border_right = strdup("2pt solid #000000");
-	ccs->halign = strdup("start");
-	ds->table_b[2] = spreadconv_add_unique_cell_style(ccs, doc);
-	if (ds->table_b[2] < 0){
-		fprintf(stderr, "Error at cells styles\n");
-		goto ERR_TS;
-	}
-	return 0;
-
-	ERR_TS:
-	free(ds);
-	return -1;
-
-}
-
-/**
- * create header data for spreadsheet
- * \return 0, on succes
- * \return -1 on error
- * \remarks \a month is allocated here
- */
-static int
-create_header (void)
-{
-	char *val = NULL;		
-
-	Dprintf("I look for university name\n");
-	val = iniparser_getstr(ini, "antet:universitate");
-	if (!val){
-		fprintf(stderr, "Error obatining university name.\n");
-		goto ERR_;
-	}
-	doc->cells[0][0].text = strdup(val);
-
-	Dprintf("I look for faculty name\n");
-	val = iniparser_getstr(ini, "antet:facultate");
-	if (!val){
-		fprintf(stderr, "Error obatining university name.\n");
-		goto ERR_;
-	}
-	doc->cells[1][0].text = strdup(val);
-
-	/* catedra */
-	#define DEPT_LIMIT	512	/**< nr. max. de car. ptr catedra */
-	#define STR_DEPT_SIZE	8	/**< strlen("Catedra ") */
-	Dprintf("I look for department\n");
-	val = iniparser_getstr(ini, "antet:catedra");
-	if (!val) {
-		fprintf(stderr, "Error obatining department.\n");
-		goto ERR_;
-	}
-
-	doc->cells[0][6].text = malloc(DEPT_LIMIT);
-	strcpy(doc->cells[0][6].text, "Catedra ");
-	strncat(doc->cells[0][6].text, val, DEPT_LIMIT - STR_DEPT_SIZE - 1);
-
-	/* luna */
-	static char str_months[12][32] = {
-		{"Ianuarie"},
-		{"Februarie"},
-		{"Martie"},
-		{"Aprilie"},
-		{"Mai"},
-		{"Iunie"},
-		{"Iulie"},
-		{"August"},
-		{"Septembrie"},
-		{"Octombrie"},
-		{"Noiembrie"},
-		{"Decembrie"}
-	};
-
-	/*
-	Dprintf("I look for month\n");
-	month = calloc(1, sizeof (struct tm));
-	month->tm_mon = iniparser_getint(ini, "antet:luna", -1);
-	if (month->tm_mon < 0) {
-		fprintf(stderr, "Error obtaining month\n");
-		goto ERR_;
-	}
-	*/
-	doc->cells[1][6].text = strdup("Luna ");
-	doc->cells[1][7].text = strdup(str_months[curr_month->tm_mon]);
-
-	Dprintf("I wrote the month\n");
-
-	/* Salvam in month data de start a perioadei*/ 
-	if (!localtime(&cfg->sem->start)) {
-		fprintf(stderr, "Error converting date.\n");
-		goto ERR_;     
-	}
 
 
-	/* some header data */
-	doc->cells[3][2].text = strdup("Situatia orelor efectuate de");
-	doc->cells[4][2].text = strdup("cu functia de baza la");
-	val = iniparser_getstr(ini, "antet:nume");
-	if (!val) {
-		fprintf(stderr, "Error obtaining name.\n");
-		goto ERR_;
-	}
-	doc->cells[3][5].text = strdup(val);
-	val = iniparser_getstr(ini, "antet:nume_curs");
-	if (!val) {
-		fprintf(stderr, "Error obtaining course name.\n");
-		goto ERR_;
-	}
-	doc->cells[4][5].text = strdup(val);
 
-
-	/* table head */
-	doc->cells[6][0].text = strdup("Nr.\ncrt.");
-	spreadconv_set_cell_style(6, 0, ds->table_h, doc);
-
-	doc->cells[6][1].text = strdup("Felul si\nnr. post");
-	spreadconv_set_cell_style(6, 1, ds->table_h, doc);
-
-	doc->cells[6][2].text = strdup("Facultatea");
-	spreadconv_set_cell_style(6, 2, ds->table_h, doc);
-
-	doc->cells[6][3].text = strdup("Disciplina");
-	spreadconv_set_cell_style(6, 3, ds->table_h, doc);
-
-	doc->cells[6][4].text = strdup("Curs");
-	spreadconv_set_cell_style(6, 4, ds->table_h, doc);
-
-	doc->cells[6][5].text = strdup("Aplicatii");
-	spreadconv_set_cell_style(6, 5, ds->table_h, doc);
-
-	doc->cells[6][6].text = strdup("An/Gr");
-	spreadconv_set_cell_style(6, 6, ds->table_h, doc);
-
-	doc->cells[6][7].text = strdup("Data");
-	spreadconv_set_cell_style(6, 7, ds->table_h, doc);
-
-	doc->cells[6][8].text = strdup("Ore");
-	spreadconv_set_cell_style(6, 8, ds->table_h, doc);
-
-	return 0;
-	ERR_:
-	return -1;
-}
-
-/**
- * create footer data for spreadsheet
- * \param last_row footer's first row
- * \return 0 on succes
- * \return 01 on error
- */
-static int create_footer (size_t last_row)
-{
-	
-	Dprintf("Begin create footer\n");
-	char tot[12];
-	char *tmp_ini_val;
-	int i;
-	sprintf(tot, "%d", result.course.prof + result.aplic.prof +
-			result.course.conf + result.aplic.conf +
-			result.course.sl + result.aplic.sl +
-			result.course.as + result.aplic.as);
-	doc->cells[last_row][7].text = strdup("Total:");
-	doc->cells[last_row][8].value_type = strdup("float");
-	doc->cells[last_row][8].text= strdup(tot);
-	last_row += 2;
-
-	/* doc->cells[last_row][1].text = strdup("TOTAL ore:");
-	 */
-	Dprintf("Begin print small table\n");
-	doc->cells[last_row][3].text = strdup("Curs");
-	spreadconv_set_cell_style(last_row, 3, ds->table_h, doc);
-
-/*	doc->cells[last_row][3].text = strdup("Nr. ore");
-	spreadconv_set_cell_style(last_row, 3, ds->table_h, doc);*/
-
-	doc->cells[last_row][4].text = strdup("Aplicatii");
-	spreadconv_set_cell_style(last_row, 4, ds->table_h, doc);
-
-/*	doc->cells[last_row][5].text = strdup("Nr. ore");
-	spreadconv_set_cell_style(last_row, 5, ds->table_h, doc);*/
-
-	last_row++;
-
-	doc->cells[last_row][2].text = strdup("Prof.");
-	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
-	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.prof);
-	
-/*	doc->cells[last_row][4].text = strdup("Prof."); */
-	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.prof);
-	last_row++;
-
-	doc->cells[last_row][2].text = strdup("Conf.");
-	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
-
-	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.conf);
-/*	doc->cells[last_row][4].text = strdup("Conf.");*/
-	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.conf);
-	last_row++;
-
-	doc->cells[last_row][2].text = strdup("S.l.");
-	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
-
-	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.sl);
-/*	doc->cells[last_row][4].text = strdup("S.l.");*/
-	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.sl);
-	for (i = last_row - 2; i <= last_row; ++ i) {
-		spreadconv_set_cell_style(i, 3, ds->table_c[1], doc);
-		spreadconv_set_cell_style(i, 4, ds->table_c[1], doc);
-	}
-	last_row++;
-
-	spreadconv_set_cell_style(last_row, 3, ds->table_b[1], doc);
-	spreadconv_set_cell_style(last_row, 4, ds->table_b[1], doc);
-
-	doc->cells[last_row][2].text =	 strdup("As.");
-	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
-
-	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.as);
-/*	doc->cells[last_row][4].text = strdup("As.");*/
-	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.as);
-	last_row += 2;
-	Dprintf("End print small table\n");
-	
-	Dprintf("Begin print Intocmit, Tc, Sef catedra\n");
-	Dprintf("Printing on row : %d\n", last_row);
-	doc->cells[last_row][0].text = strdup("Intocmit,");
-	doc->cells[last_row][3].text = strdup("Titular curs,");
-	doc->cells[last_row][4].text = strdup("Sef catedra,");
-	doc->cells[last_row][6].text = strdup("Decan,");
-	last_row++;
-	Dprintf("End print Intocmit, Tc, Sef catedra\n");
-	
-	Dprintf("Begin search nume, titular\n");
-	doc->cells[last_row][0].text =
-		strdup(iniparser_getstr (ini, "antet:nume"));
-	tmp_ini_val = iniparser_getstr(ini, "antet:titular");
-	if (tmp_ini_val)
-	doc->cells[last_row][3].text = strdup(tmp_ini_val);
-	Dprintf("End search nume, titular\n");
-
-	/*
-	 * TODO: indexes for the faculty in the cfg->fac array
-	 * and for the department in the cfg->fac[i]->depts arraty
-	 *
-	 * De ce, informatia vine din personal.ini?
-	 */
-
-#if 0
-	doc->cells[last_row+7][4].text = strdup(cfg->fac[f_index]->dean);
-	doc->cells[last_row+7][6].text =
-		strdup(cfg->fac[f_index]->depts[d_index].chief);
-#endif
-/*
- * TODO titular curs? ce-i cu el?
- */
-	tmp_ini_val = iniparser_getstr(ini, "antet:decan");
-	if (!tmp_ini_val) {
-		fprintf(stderr, "Nu am gasit decanul.\n");
-	} else {
-		doc->cells[last_row][6].text = strdup(tmp_ini_val);
-	}
-
-	tmp_ini_val = iniparser_getstr(ini, "antet:sef_catedra");
-	if (!tmp_ini_val) {
-		fprintf(stderr, "Nu am gasit sefcatedra.\n");
-	} else {
-		doc->cells[last_row][4].text = strdup(tmp_ini_val);
-	}
-	Dprintf("End create footer\n");
-	return 0;
-}
 
 /**
  * load and parse options
@@ -799,7 +240,7 @@ load_and_parse_options()
 	doc = spreadconv_new_spreadconv_data("Date", 100, 9);
 
 	/* configure spreadsheet column and cell styles */
-	if (config_styles()){
+	if (config_styles(doc)){
 		iniparser_freedict(ini);
 		spreadconv_free_spreadconv_data(doc);
 		return -1;
@@ -1034,29 +475,30 @@ is_work(time_t t)
 	}
 	return 1;
 }
-
 /**
  * convert an options ini file, and a config structure
  * into desired files
+ * iterate through months
  * \param config config structure, returned by \a cspay_get_config
  * \param fname ini file name
  * \return a file list
  */
 struct cspay_file_list *
-cspay_convert_options(struct cspay_config *config, char *fname)
+cspay_convert_options(struct cspay_config *config, int argc, char *argv[])
 {
 	struct cspay_file_list *ret;
 	char *temp;
 	char *file_types;
 	char *mv_comm;
 	char *file_name;
+	
 
 	int i;
 	int n_months;
 	struct tm *months[12];
 
 	/* init ini file parsing */
-	ini = iniparser_load(fname);
+	conn = db_connect();
 	if (!ini) {
 		fprintf(stderr, ".ini file not found, try personal.ini\n");
 		ini = iniparser_load("personal.ini");
