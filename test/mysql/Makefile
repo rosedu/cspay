@@ -1,4 +1,4 @@
-CFLAGS = -Wall `mysql_config --cflags`
+CFLAGS = -Wall `mysql_config --cflags` -ggdb
 LDFLAGS = `mysql_config --libs`
 
 SRC = main.c
