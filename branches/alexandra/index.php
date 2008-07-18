@@ -103,7 +103,7 @@
 	</head>
 	<body>
 		
-		<form action="mine.php" method="POST">
+		<form action="index.php" method="POST">
 			<fieldset>
 				<legend>Selecteaza criterii afisare!</legend>
 				<table>
@@ -136,7 +136,7 @@
 			</fieldset>
 		</form>
 
-		<form action="mine.php" method="POST">
+		<form action="index.php" method="POST">
 			<fieldset>
 				<legend>Zona Editare</legend>
 				<?php 
@@ -151,7 +151,7 @@
 			</fieldset>
 		</form>
 
-		<form action="mine.php" method="POST">
+		<form action="index.php" method="POST">
 			<fieldset>
 				<legend>Legenda</legend>
 				<?php 	afiseaza_legenda();	?>
