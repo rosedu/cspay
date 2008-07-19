@@ -6,7 +6,7 @@ session_start();
 // Informatii baza de date 
 
 
-$AdresaBazaDate = "anaconda.cs.pub.ro";
+$AdresaBazaDate = "localhost";
 $NumeBazaDate = "cspay";
 $UtilizatorBazaDate = "cspay";
 $ParolaBazaDate = "C2p4yp422";
