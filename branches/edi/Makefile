@@ -6,9 +6,12 @@
 
 all: publish
 
-publish: clean
+publish: commit clean
 	svn export file:///home/projects/cspay/svn/branches/edi/cspay \
 		/home/projects/cspay/public_html/iw2/cspay
+
+commit:
+	cd /home/projects/cspay/checkout && svn add --force . && svn ci -m 'automatic commit'
 
 clean:
 	-rm -fr /home/projects/cspay/public_html/iw2/cspay/
