@@ -4,6 +4,7 @@ require_once '../excel/reader.php';
 include '../config/config.php';
 
 $xls_file = "test.xls";
+$table = "test";
 
 /* open MS Excel spreadsheet file */
 $data = new Spreadsheet_Excel_Reader();
