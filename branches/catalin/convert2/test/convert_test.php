@@ -3,10 +3,12 @@
 require_once '../excel/reader.php';
 include '../config/config.php';
 
+$xls_file = "test.xls";
+
 /* open MS Excel spreadsheet file */
 $data = new Spreadsheet_Excel_Reader();
 $data->setOutputEncoding('CP1251');
-$data->read('test.xls');
+$data->read($xls_file);
 error_reporting(E_ALL ^ E_NOTICE);
 
 /* connect to database */
