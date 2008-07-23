@@ -1,16 +1,16 @@
-CPPFLAGS = -I../common -I../libspreadconv -I../iniparser-2.17/src
-CFLAGS = -Wall `xml2-config --cflags`
-LDFLAGS = `xml2-config --libs` -L. -L../libspreadconv -L../iniparser-2.17
-LDLIBS = -lspreadconv -liniparser
+CPPFLAGS = -ggdb -I../libspreadconv
+CFLAGS = -Wall `mysql_config --cflags`
+LDFLAGS = 
+LDLIBS = `mysql_config --libs` -lpopt
 
-SRC = load_cfg.c cspay.c
+# SRC = header_footer.c cspay.c db_op.c sheet.c load_cfg.c
+SRC = main.c
 OBJ = $(SRC:.c=.o)
-BIN = libcspay.a
+BIN = cspay_bin
 all: $(BIN)
 
 $(BIN): $(OBJ)
-	ar rc $(BIN) $(OBJ)
-	ranlib $(BIN)
+	gcc $(OBJ) $(LDFLAGS) $(LDLIBS) -o $(BIN)
 doc:
 	doxygen
 .PHONY: clean
