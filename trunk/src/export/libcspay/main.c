@@ -10,6 +10,7 @@
 #include <ctype.h>
 
 #include "spreadconv.h"
+#include "cspay.h"
 
 /**
  * extern variables
@@ -27,12 +28,25 @@ static int parse_cmd(int, char **);
 int
 main(int argc, char *argv[])
 {
+	struct cspay_file_list *ret;
+	int i;
+
+	ret = NULL;
+
 	if (parse_cmd(argc, argv)) {
 		return EXIT_FAILURE;
 	}
 	if (db_connect()) {
 		printf("Error connecting to db!\n");
 		goto ERR_CONNECT;
+	}
+
+	ret = cspay_convert_options();	/**< in cspay.h */
+	if (ret) {
+		for (i = 0; i < ret->nr; ++ i)
+			printf("%s\n", ret->names[i]);
+		cspay_free_file_list(ret);
+		ret = NULL;
 	}
 	return EXIT_SUCCESS;
 	ERR_CONNECT:

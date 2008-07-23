@@ -484,7 +484,7 @@ is_work(time_t t)
  * \return a file list
  */
 struct cspay_file_list *
-cspay_convert_options(struct cspay_config *config, int argc, char *argv[])
+cspay_convert_options()
 {
 	struct cspay_file_list *ret;
 	char *temp;
@@ -497,35 +497,20 @@ cspay_convert_options(struct cspay_config *config, int argc, char *argv[])
 	int n_months;
 	struct tm *months[12];
 
-	/* init ini file parsing */
-	conn = db_connect();
-	if (!ini) {
-		fprintf(stderr, ".ini file not found, try personal.ini\n");
-		ini = iniparser_load("personal.ini");
-		if (!ini){
-			fprintf(stderr, "personal.ini not found, bye!\n");
-			return NULL;
-		}
-	}
-	cfg = config;  
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 0;
 	ret->names = malloc(24 * sizeof (char *));
 
-	file_types = iniparser_getstr(ini, "antet:tip_fisier");
-	Dprintf("Am citit tipul fisierului %s\n", file_types);
-	mv_comm = calloc(1, 512);
-	/** FIXME
-	 * UGLY CODE!!
-	 */
-	n_months = load_months(ini, months);
-	
 	#ifdef __DEBUG__
 	printf("Am gsit %d luni\n", n_months);
 	for (i = 0; i < n_months; ++ i)
 		printf("%d ", months[i]->tm_mon);
 	printf("\n");
 	#endif /*__DEBUG__ */
+
+	static char *extension[LSC_FILE_XLS | LSC_FILE_ODS];
+	extension[LSC_FILE_XLS] = ".xls";
+	extension[LSC_FILE_ODS] = ".ods";
 
 	for (i = 0; i < n_months; ++ i) {
 		
@@ -539,40 +524,21 @@ cspay_convert_options(struct cspay_config *config, int argc, char *argv[])
 		load_and_parse_options();
 		file_name = build_file_name();
 		/* free(month);*/
-		if (strstr(file_types, "ods")) {
-			temp = save_document(LSC_FILE_ODS);
-			if (!temp) {
-				fprintf(stderr, "ods err\n");
-			} else {
-				snprintf(mv_comm, 512, "mv %s %s/%s.ods", temp, 
-					spreadconv_dir_name, file_name);
-				system(mv_comm);
-				free(temp);
-				ret->names[ret->nr] = calloc(1, 512);
-				snprintf(ret->names[ret->nr ++], 512, "%s%s.ods",
-					spreadconv_dir_name, file_name);
-			}
-		}
-	
-		if (strstr(file_types, "xls")) {
-	
-			temp = save_document(LSC_FILE_XLS);
-			if (!temp) {
-				fprintf(stderr, "xls err\n");
-			} else {
-				snprintf(mv_comm, 512, "mv %s %s/%s.xls", temp, 
-					spreadconv_dir_name, file_name);
-				system(mv_comm);
-				free(temp);
-				ret->names[ret->nr] = calloc(1, 512);
-				snprintf(ret->names[ret->nr ++], 512, "%s%s.xls",
-					spreadconv_dir_name, file_name);
-			}
+		temp = save_document(Format);
+		if (!temp) {
+			fprintf(stderr, "%d err\n", Format);
+		} else {
+			snprintf(mv_comm, 512, "mv %s %s/%s%s", temp, 
+				spreadconv_dir_name, file_name, extension[Format]);
+			system(mv_comm);
+			free(temp);
+			ret->names[ret->nr] = calloc(1, 512);
+			snprintf(ret->names[ret->nr ++], 512, "%s%s%s",
+				spreadconv_dir_name, file_name, extension[Format]);
 		}
 		free(curr_month);
 		free(file_name);
 		spreadconv_free_spreadconv_data(doc);
-		
 	}
 	free(mv_comm);
 	free_parsed_data();

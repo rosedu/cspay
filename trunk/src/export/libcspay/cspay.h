@@ -99,7 +99,7 @@ struct cspay_config *cspay_get_config(char *);
 /**
  * Convert a \a cspay_config and a MySQL db to a ods|xls file
  */
-struct cspay_file_list *cspay_convert_options(struct cspay_config *, int argc, char **argv);
+struct cspay_file_list *cspay_convert_options();
 
 /**
  * free \a cspay_file_list structure
