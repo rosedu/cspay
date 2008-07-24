@@ -13,11 +13,15 @@
 #ifndef __LOAD_CFG_H__
 #define __LOAD_CFG_H__ 
 
-#include "iniparser.h"
+#include <mysql.h>
 
 /** read data from cspay.xml, or from char * */
 struct cspay_config *read_cspay_xml(char *);
 
 /** read months from ini file */
-int load_months(dictionary *, struct tm **);
+int load_months(struct tm **);
+
+/** read information of a class */
+struct class_info read_class_info(MYSQL_ROW *);
+
 #endif /* __LOAD_CFG_H__ */

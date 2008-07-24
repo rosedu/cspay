@@ -36,16 +36,17 @@ main(int argc, char *argv[])
 	if (parse_cmd(argc, argv)) {
 		return EXIT_FAILURE;
 	}
+	printf("name:%s\n", Name);
 	if (db_connect()) {
 		printf("Error connecting to db!\n");
 		goto ERR_CONNECT;
 	}
 
-	ret = cspay_convert_options();	/**< in cspay.h */
+	//ret = cspay_convert_options();	/**< in cspay.h */
 	if (ret) {
 		for (i = 0; i < ret->nr; ++ i)
 			printf("%s\n", ret->names[i]);
-		cspay_free_file_list(ret);
+	//	cspay_free_file_list(ret);
 		ret = NULL;
 	}
 	return EXIT_SUCCESS;
@@ -102,26 +103,30 @@ parse_cmd(int argc, char *argv[])
 			"Cursul de baza", "COURSE"},
 		{"save", 's', POPT_ARG_STRING, &tmp_format, 0,
 			"Formatul in care se scoate fisierul (ods|xls)", "FMT"},
-		{"luna", 'l', POPT_ARG_INT, &Month, 'l',
+		{"luna", 'l', POPT_ARG_INT, &Month, 0,
 			"O masca ce desemneaza lunile pe care se generaza", "MASK"},
 		POPT_AUTOHELP
-		{NULL, 0, 0, NULL, 0}
+		POPT_TABLEEND
 	};
 	poptContext opt_con;
 
 	tmp_format = NULL;
 	
-	opt_con = poptGetContext(NULL, argc, (const char**) argv, options_table, 0);
+	opt_con = poptGetContext("cspay", argc, (const char**) argv, options_table, 0);
 	op = poptGetNextOpt(opt_con);
-	if (op < 0 || !Month || !FacultyName || !tmp_format || !Name || !BaseCourse) {
-		poptStrerror(op);
+	if (op != -1 || !Month || !FacultyName || !tmp_format || !Name || !BaseCourse) {
+		if (op != -1)
+			fprintf(stderr, "%s\n", poptStrerror(op));
 		poptPrintUsage(opt_con, stderr, 0);
 		return 1;
 	}
+
 	Format = LSC_FILE_XLS;
 	if (_tolower(tmp_format[0]) == 'o')
 		Format = LSC_FILE_ODS;
+	
 	poptFreeContext(opt_con);
 	free(tmp_format);
+
 	return 0;
 }

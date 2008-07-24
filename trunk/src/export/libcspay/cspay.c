@@ -40,132 +40,6 @@ static int is_work(time_t t);
 static char *build_file_name(void);
 static void free_class_info(struct class_info *ci);
 
-/**
- * Read from ini file "[ore/index]" class
- * \param index class number
- * \return NULL if an error ocured, else
- * a class_info pointer
- */								
-static struct class_info *read_class_info (size_t index)
-{
-	struct class_info *ret;
-	char read[32];
-	char *timeline;	/* Nu trebuie eliberat! */
-	int nl;
-
-	ret = malloc (sizeof (*ret));
-	if (ret == NULL) {
-		perror ("malloc");
-		return NULL;
-	}
-
-	/*
-	 * class data contains the section name (ore/[number]),
-	 * followed by a colon sign and the variable name;
-	 * this is how iniparser works
-	 */
-
-	#define STR_LEN_ORE_	4	/* lungimea lui "ore/" */
-	strcpy(read, "ore/");
-	ret->name_len = STR_LEN_ORE_;
-	ret->name_len += snprintf(read + STR_LEN_ORE_, 8 - STR_LEN_ORE_, "%d", (int) index);
-	strncpy (ret->name, read, 8);
-	strcpy(read + ret->name_len, ":");
-
-	nl = ret->name_len + 1;	/* 1 = strlen(":")*/
-
-	/* get faculty name */
-	strcpy(read + nl, "facultate");
-	ret->faculty = iniparser_getstr(ini, read);
-	if (!ret->faculty) {
-	/*
-		fprintf(stderr, "Error reading \"facultate\" variable.\n");
-	*/
-		goto READ_ERR;
-	}
-
-	/* get course name */
-	strcpy(read + nl, "disciplina");
-	ret->class = iniparser_getstr(ini, read);
-	if (!ret->class) {
-		fprintf(stderr, "Error reading \"disciplina\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* get role for that class */
-	strcpy(read + nl, "rol");
-	ret->role_type = iniparser_getint(ini, read, -1);
-	if (ret->role_type < 0) {
-		fprintf(stderr, "Error reading \"rol\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* get role number for class */
-	strcpy(read + nl, "numar_post");
-	ret->role_num = iniparser_getstr(ini, read);
-	if (!ret->role_num) {
-		fprintf(stderr, "Error reading \"numar_post\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* get class type (course/lab) */
-	strcpy(read + nl, "tip_post");
-	ret->class_type = iniparser_getint(ini, read, -1);
-	if (ret->class_type < 0) {
-		fprintf(stderr, "Error reading \"tip_post\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* get group for that class */
-	strcpy(read + nl, "grupa");
-	ret->group = iniparser_getstr(ini, read);
-	if (!ret->group) {
-		fprintf(stderr, "Error reading \"grupa\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* get class day */
-	strcpy(read + nl, "zi");
-	ret->day = iniparser_getint(ini, read, -1);
-	if (ret->day < 0){
-		fprintf(stderr, "Error reading \"zi\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* get class timeline */
-	strcpy(read + nl, "ore");
-	timeline = iniparser_getstr(ini, read);
-	if (!timeline) {
-		fprintf(stderr, "Error reading \"ore\" variable.\n");
-		goto READ_ERR;
-	}
-	if (2 != sscanf(timeline, "%d-%d", (int *)&ret->timeline.start, (int *) &ret->timeline.end)) {
-		fprintf(stderr, "Error *parsing* \"ore\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* get class parity */
-	strcpy(read + nl, "paritate");
-	ret->parity = iniparser_getint(ini, read, -1);
-	if (ret->parity < 0){
-		fprintf(stderr, "Error reading \"paritate\" variable.\n");
-		goto READ_ERR;
-	}
-
-	/* first week */
-	strcpy(read + nl, "paritate_start");
-	ret->first_week = iniparser_getint(ini, read, -1);
-	if (ret->first_week < 0){
-		fprintf(stderr, "Error reading \"paritate_start\" variable.\n");
-		goto READ_ERR;
-	}
-	return ret;
-
-	READ_ERR:
-	free(ret);
-	return NULL;
-}
-
 
 /**
  * free a file list
@@ -296,12 +170,32 @@ load_and_parse_options()
 	/*
 	 * se face o interogare si se afla cate tipuri de ore tine respectiva persoana
 	 */
+	MYSQL_RES *res = NULL;
+	MYSQL_ROW row;
+	int i;
+	unsigned int fields_n;
+	query[128];
+	snprintf(query, 128, "SLECT\
+		facultate,\
+		materie,\
+		cod,\
+		post,\
+		tip_curs2,\
+		an_grupa,\
+		zi,\
+		ora,\
+		paritate,\
+		paritate_start\
+		FROM orar WHERE acoperit_efect=\'%s\'", Name);
+
+	res = mysql_use_result(conn);
+	
 	while (1) {
 		Dprintf("Begin rule number%d\n", class_index);
 		/*
 		 * se itereaza prin aceste ore (linii)
 		 */
-		ci = read_class_info (class_index);
+		ci = read_class_info (mysql_fetch_row(res));
 		if (ci == NULL)
 			break;
 
@@ -496,19 +390,13 @@ cspay_convert_options()
 	int i;
 	int n_months;
 	struct tm *months[12];
+	static char *extension[LSC_FILE_XLS | LSC_FILE_ODS];
 
 	ret = malloc(sizeof (struct cspay_file_list));
 	ret->nr = 0;
 	ret->names = malloc(24 * sizeof (char *));
 
-	#ifdef __DEBUG__
-	printf("Am gsit %d luni\n", n_months);
-	for (i = 0; i < n_months; ++ i)
-		printf("%d ", months[i]->tm_mon);
-	printf("\n");
-	#endif /*__DEBUG__ */
-
-	static char *extension[LSC_FILE_XLS | LSC_FILE_ODS];
+	n_months = load_months(months);
 	extension[LSC_FILE_XLS] = ".xls";
 	extension[LSC_FILE_ODS] = ".ods";
 
@@ -521,7 +409,7 @@ cspay_convert_options()
 		Dprintf("I have calculated the year from semester's limits\n");
 		Dprintf("Year: %d\n", curr_month->tm_year);
 
-		load_and_parse_options();
+		//load_and_parse_options();
 		file_name = build_file_name();
 		/* free(month);*/
 		temp = save_document(Format);
@@ -619,13 +507,13 @@ build_file_name(void)
 	char *disc;
 	int i;
 	ret = calloc(1, 512);
-	disc = strdup(iniparser_getstr(ini, "antet:nume_curs"));
+	disc = strdup(Course);
 	for (i = 0; disc[i] != '\0'; ++ i)
 		if (!isalpha(disc[i])) {
 			disc[i] = '_';
 		}
 		
-	name = strdup(iniparser_getstr(ini, "antet:nume"));
+	name = strdup(Name);
 	for (i = 0; name[i] != '\0'; ++ i) {
 		if (!isalpha(name[i])) {
 			name[i] = '_';

@@ -306,43 +306,158 @@ cspay_xml_parse_sem_element(xmlNode *node, struct cspay_config *load)
 }
 
 /**
- * \param ini dictionary file (ini)
+ *
  * \param months array wich will be filled
- * \return number of months found in ini file
+ * \return number of monts from Months variable
  */
 int
-load_months(dictionary *ini, struct tm *months[])
+load_months(struct tm *months[])
 {
-	int ret;
-	int s;
-	int rest;
-	char *temp;
+	int ret, month_mask;
+
 	ret = 0;
-	temp = iniparser_getstr(ini, "antet:luna");
-	if (!temp) {
-		fprintf(stderr, "Any month?\n");
-		return 0;
+	month_mask = Month;
+
+	for (i = 0; month_mask; ++ i, month_mask >> = 1) {
+		if (month_mask & 0x1) {
+			months[ret] = calloc(1, sizeof (struct tm));
+			months[ret]->tm_mon = i;
+			++ ret;
+		}
 	}
-	s = 0;
-	rest = 0;
-	while (*temp) {
-		if (isdigit(*temp)) {
-			s = 10 * s + *temp - '0';
-			rest = 1;
-		} else 
-			if (rest)	{
-				months[ret] = calloc(1, sizeof (struct tm));
-				months[ret]->tm_mon = s;
-				ret ++;
-				s = 0;
-				rest = 0;
-			}
-		++ temp;
-	}
-	if (rest) {
-		months[ret] = calloc(1, sizeof (struct tm));
-		months[ret]->tm_mon = s;
-		ret ++;
-	}
+	#ifdef __DEBUG__
+	printf("Am gsit %d luni\n", n_months);
+	for (i = 0; i < n_months; ++ i)
+		printf("%d ", months[i]->tm_mon);
+	printf("\n");
+	#endif /*__DEBUG__ */
 	return ret;
 }
+/**
+ * Read from ini file "[ore/index]" class
+ * \param index class number
+ * \return NULL if an error ocured, else
+ * a class_info pointer
+ */								
+static struct class_info *
+read_class_info (MYSQL_ROW *row)
+{
+	struct class_info *ret;
+	char read[32];
+	char *timeline;	/* Nu trebuie eliberat! */
+	int nl;
+
+	ret = malloc (sizeof (*ret));
+	if (ret == NULL) {
+		perror ("malloc");
+		return NULL;
+	}
+
+	/*
+	 * class data contains the section name (ore/[number]),
+	 * followed by a colon sign and the variable name;
+	 * this is how iniparser works
+	 */
+
+	#define STR_LEN_ORE_	4	/* lungimea lui "ore/" */
+	strcpy(read, "ore/");
+	ret->name_len = STR_LEN_ORE_;
+	ret->name_len += snprintf(read + STR_LEN_ORE_, 8 - STR_LEN_ORE_, "%d", (int) index);
+	strncpy (ret->name, read, 8);
+	strcpy(read + ret->name_len, ":");
+
+	nl = ret->name_len + 1;	/* 1 = strlen(":")*/
+
+	/* get faculty name */
+	strcpy(read + nl, "facultate");
+	ret->faculty = iniparser_getstr(ini, read);
+	if (!ret->faculty) {
+	/*
+		fprintf(stderr, "Error reading \"facultate\" variable.\n");
+	*/
+		goto READ_ERR;
+	}
+
+	/* get course name */
+	strcpy(read + nl, "disciplina");
+	ret->class = iniparser_getstr(ini, read);
+	if (!ret->class) {
+		fprintf(stderr, "Error reading \"disciplina\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* get role for that class */
+	strcpy(read + nl, "rol");
+	ret->role_type = iniparser_getint(ini, read, -1);
+	if (ret->role_type < 0) {
+		fprintf(stderr, "Error reading \"rol\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* get role number for class */
+	strcpy(read + nl, "numar_post");
+	ret->role_num = iniparser_getstr(ini, read);
+	if (!ret->role_num) {
+		fprintf(stderr, "Error reading \"numar_post\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* get class type (course/lab) */
+	strcpy(read + nl, "tip_post");
+	ret->class_type = iniparser_getint(ini, read, -1);
+	if (ret->class_type < 0) {
+		fprintf(stderr, "Error reading \"tip_post\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* get group for that class */
+	strcpy(read + nl, "grupa");
+	ret->group = iniparser_getstr(ini, read);
+	if (!ret->group) {
+		fprintf(stderr, "Error reading \"grupa\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* get class day */
+	strcpy(read + nl, "zi");
+	ret->day = iniparser_getint(ini, read, -1);
+	if (ret->day < 0){
+		fprintf(stderr, "Error reading \"zi\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* get class timeline */
+	strcpy(read + nl, "ore");
+	timeline = iniparser_getstr(ini, read);
+	if (!timeline) {
+		fprintf(stderr, "Error reading \"ore\" variable.\n");
+		goto READ_ERR;
+	}
+	if (2 != sscanf(timeline, "%d-%d", (int *)&ret->timeline.start, (int *) &ret->timeline.end)) {
+		fprintf(stderr, "Error *parsing* \"ore\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* get class parity */
+	strcpy(read + nl, "paritate");
+	ret->parity = iniparser_getint(ini, read, -1);
+	if (ret->parity < 0){
+		fprintf(stderr, "Error reading \"paritate\" variable.\n");
+		goto READ_ERR;
+	}
+
+	/* first week */
+	strcpy(read + nl, "paritate_start");
+	ret->first_week = iniparser_getint(ini, read, -1);
+	if (ret->first_week < 0){
+		fprintf(stderr, "Error reading \"paritate_start\" variable.\n");
+		goto READ_ERR;
+	}
+	return ret;
+
+	READ_ERR:
+	free(ret);
+	return NULL;
+}
+
+
