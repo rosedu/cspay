@@ -17,28 +17,6 @@ extern "C" {
 #endif
 
 /**
- * \struct cspay_config
- * all informations from xml file
- */
-struct cspay_config {
-	/** university name*/
-	char *univ_name;
-
-	/** semester interval*/
-	struct interval *sem;
-
-	/** number of vacations*/
-	int vac_no;		
-	/** vacation intervals*/
-	struct interval *vac[MAXR];
-
-	/** number of faculties*/
-	int fac_no;
-	/** faculties*/
-	struct faculty *fac[MAXF];
-};
-
-/**
  * \struct faculty
  * informations about a faculty
  */
@@ -57,16 +35,6 @@ struct faculty {
 	struct department *depts[MAXD];
 };
 
-/**
- * \struct interval
- * defines a time interval
- */
-struct interval {
-	/** start*/
-	time_t start;
-	/** end*/
-	time_t end;
-};
 
 /**
  * \struct department

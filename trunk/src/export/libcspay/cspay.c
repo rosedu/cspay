@@ -173,12 +173,12 @@ load_and_parse_options()
 	MYSQL_RES *res = NULL;
 	MYSQL_ROW row;
 	int i;
-	unsigned int fields_n;
+	unsigned int row_n;
 	query[128];
-	snprintf(query, 128, "SLECT\
+	snprintf(query, 128, "SELECT\
 		facultate,\
 		materie,\
-		cod,\
+		grad,\
 		post,\
 		tip_curs2,\
 		an_grupa,\
@@ -187,11 +187,13 @@ load_and_parse_options()
 		paritate,\
 		paritate_start\
 		FROM orar WHERE acoperit_efect=\'%s\'", Name);
-
+	/* XXX Name should be sanitized! */
 	res = mysql_use_result(conn);
-	
-	while (1) {
-		Dprintf("Begin rule number%d\n", class_index);
+	row_n = mysql_num_rows(res);
+	Dprintf("Interogarea a intors %d linii\n", row_n);
+
+	while (row_n --) {
+		Dprintf("Begin row number%d\n", row_n);
 		/*
 		 * se itereaza prin aceste ore (linii)
 		 */
