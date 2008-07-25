@@ -1,3 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "debug.h"
+#include "spreadconv.h"
+#include "sheet.h"
+
 /** styles for spreasheets*/
 struct defined_styles *ds;
 
@@ -6,7 +14,7 @@ struct defined_styles *ds;
  * \return 0 on succes
  * \return -1 on error
  */
-static int 
+int 
 config_styles (struct spreadconv_data *doc)
 {
 	/* configure columns */

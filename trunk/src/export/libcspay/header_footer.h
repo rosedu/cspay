@@ -1,3 +1,6 @@
+#ifndef _HEADER_FOOTER_H
+#define _HEADER_FOOTER_H 1
+
 /**
  * \struct sum_hours 
  * contains sums from final table
@@ -28,5 +31,7 @@ struct total_hours {
 };
 
 
-static int create_header (struct defined_styles *ds);
-static int create_footer (size_t last_row, struct defined_styles *ds);
+int create_header(void);
+int create_footer(int last_row, struct total_hours *);
+
+#endif /* _HEADER_FOOTER_H */

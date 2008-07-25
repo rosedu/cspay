@@ -16,24 +16,30 @@
 #include "debug.h"
 #include "load_cfg.h"
 #include "cspay.h"
-
+#include "sheet.h"
 #include "spreadconv.h"
-#include "iniparser.h"
+#include "header_footer.h"
+#include "main.h"
+#include "data.h"
 
-/** ini file dictionary */
 static MYSQL *conn;
 
 /** output document */
 static struct spreadconv_data *doc;
 
 /** config from xml file*/
-static struct cspay_config *cfg;
-
-
+static struct time_config *cfg;
 
 /** results*/
 static struct total_hours result;
 
+/** month for wich we generate the output
+ * this also contains the year,
+ * day is, initially set to 1
+ *
+ * XXX extern :-(
+ */
+struct tm *curr_month;
 
 static time_t get_first_work_day(struct interval t, struct class_info *ci);
 static int is_work(time_t t);
@@ -58,22 +64,6 @@ cspay_free_file_list(struct cspay_file_list *list)
 	
 	Dprintf("freed cspay_file_list\n");
 }		       
-
-/**
- * read config from xml file
- * \param xml_file_name xml file name
- * \return a config structure from xml file
- */
-struct cspay_config *
-cspay_get_config(char *xml_file_name)
-{
-	if (xml_file_name == NULL)
-		xml_file_name = strdup("cspay.xml");
-	return read_cspay_xml(xml_file_name);
-}
-
-
-
 
 
 /**
@@ -115,14 +105,12 @@ load_and_parse_options()
 
 	/* configure spreadsheet column and cell styles */
 	if (config_styles(doc)){
-		iniparser_freedict(ini);
 		spreadconv_free_spreadconv_data(doc);
 		return -1;
 	}
 
 	/* use ini file to create spreadsheet header */
 	if (create_header()) {
-		iniparser_freedict(ini);
 		spreadconv_free_spreadconv_data(doc);
 		return -1;
 	}
@@ -172,9 +160,8 @@ load_and_parse_options()
 	 */
 	MYSQL_RES *res = NULL;
 	MYSQL_ROW row;
-	int i;
 	unsigned int row_n;
-	query[128];
+	char query[128];
 	snprintf(query, 128, "SELECT\
 		facultate,\
 		materie,\
@@ -197,7 +184,8 @@ load_and_parse_options()
 		/*
 		 * se itereaza prin aceste ore (linii)
 		 */
-		ci = read_class_info (mysql_fetch_row(res));
+		row = mysql_fetch_row(res);
+		ci = read_class_info(row);
 		if (ci == NULL)
 			break;
 
@@ -314,7 +302,7 @@ load_and_parse_options()
 	Dprintf("End set styles\n");
 	
 	/* create spreadsheet footer */
-	create_footer (TC + table_crt);
+	create_footer (TC + table_crt, &result);
 	return 0;
 }
 
@@ -347,7 +335,6 @@ save_document(int ft)
 static void
 free_parsed_data()
 {
-	iniparser_freedict(ini);
 	free(ds);
 }
 
@@ -384,7 +371,6 @@ cspay_convert_options()
 {
 	struct cspay_file_list *ret;
 	char *temp;
-	char *file_types;
 	char *mv_comm;
 	char *file_name;
 	
@@ -411,7 +397,7 @@ cspay_convert_options()
 		Dprintf("I have calculated the year from semester's limits\n");
 		Dprintf("Year: %d\n", curr_month->tm_year);
 
-		//load_and_parse_options();
+		load_and_parse_options();
 		file_name = build_file_name();
 		/* free(month);*/
 		temp = save_document(Format);
@@ -444,22 +430,12 @@ cspay_convert_options()
  * \param cfg config to be freed
  */
 void 
-cspay_free_config(struct cspay_config *cfg)
+cspay_free_config(struct time_config *cfg)
 {
-	int i, j;
+	int i;
 	free(cfg->sem);
 	for (i = 0; i < cfg->vac_no; ++ i)
 		free(cfg->vac[i]);
-	for (i = 0; i < cfg->fac_no; ++ i) {
-		for (j = 0; j < cfg->fac[i]->dept_no; ++ j) {
-			free(cfg->fac[i]->depts[j]->name);
-			free(cfg->fac[i]->depts[j]->chief);
-		}
-		free(cfg->fac[i]->name);
-		free(cfg->fac[i]->short_name);
-		free(cfg->fac[i]->dean);
-	}
-	free(cfg->univ_name);				
 	free(cfg);
 	
 	Dprintf("freed cspay_config\n");
@@ -509,7 +485,7 @@ build_file_name(void)
 	char *disc;
 	int i;
 	ret = calloc(1, 512);
-	disc = strdup(Course);
+	disc = strdup(BaseCourse);
 	for (i = 0; disc[i] != '\0'; ++ i)
 		if (!isalpha(disc[i])) {
 			disc[i] = '_';

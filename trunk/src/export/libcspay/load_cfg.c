@@ -13,6 +13,8 @@
 #include "debug.h"
 #include "cspay.h"
 #include "load_cfg.h"
+#include "main.h"
+#include "data.h"
 
 struct time_config *
 read_time_config(void)
@@ -54,11 +56,12 @@ int
 load_months(struct tm *months[])
 {
 	int ret, month_mask;
+	int i;
 
 	ret = 0;
 	month_mask = Month;
 
-	for (i = 0; month_mask; ++ i, month_mask >> = 1) {
+	for (i = 0; month_mask; ++ i, month_mask >>= 1) {
 		if (month_mask & 0x1) {
 			months[ret] = calloc(1, sizeof (struct tm));
 			months[ret]->tm_mon = i;
@@ -79,12 +82,10 @@ load_months(struct tm *months[])
  * \return NULL if an error ocured, else
  * a class_info pointer
  */								
-static struct class_info *
-read_class_info (MYSQL_ROW *row)
+struct class_info *
+read_class_info (MYSQL_ROW row)
 {
 	struct class_info *ret;
-	char read[32];
-	char t;
 	int i;
 
 	ret = malloc (sizeof (*ret));
@@ -102,7 +103,7 @@ read_class_info (MYSQL_ROW *row)
 
 	/* get role for that class */
 	ret->role_type = row[i++][0] - '0' - 1; /**< LSCP_ROLE_TEA */
-	if (ret->role_type < 0 || ret->role_type > 3)
+	if (ret->role_type < 0 || ret->role_type > 3) {
 		fprintf(stderr, "Error reading \"grad\" variable.\n");
 		goto READ_ERR;
 	}
@@ -117,8 +118,8 @@ read_class_info (MYSQL_ROW *row)
 		case 'l': ret->class_type = LCSP_CLASS_APP; break;
 		case 'c': ret->class_type = LCSP_CLASS_CRS; break;
 		default:
-		fprintf(stderr, "Error reading \"tip_curs\" variable.\n");
-		goto READ_ERR;
+			fprintf(stderr, "Error reading \"tip_curs\" variable.\n");
+			goto READ_ERR;
 	}
 
 	/* get group for that class */

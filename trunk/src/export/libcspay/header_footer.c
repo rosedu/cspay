@@ -1,11 +1,24 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include <mysql.h>
+
+#include "header_footer.h"
+#include "sheet.h"
+#include "debug.h"
+#include "spreadconv.h"
+#include "cspay.h"
+
 /**
  * create header data for spreadsheet
+ * ds is extern
  * \return 0, on succes
  * \return -1 on error
  * \remarks \a month is allocated here
  */
-static int
-create_header (struct defined_styles *ds)
+int
+create_header (void)
 {
 	char *val = NULL;		
 	struct spreadconv_data *doc;
@@ -13,7 +26,7 @@ create_header (struct defined_styles *ds)
 	doc = ds->doc;
 
 	Dprintf("I look for university name\n");
-	val = iniparser_getstr(ini, "antet:universitate");
+	val = "antet:universitate";
 	if (!val){
 		fprintf(stderr, "Error obatining university name.\n");
 		goto ERR_;
@@ -21,7 +34,7 @@ create_header (struct defined_styles *ds)
 	doc->cells[0][0].text = strdup(val);
 
 	Dprintf("I look for faculty name\n");
-	val = iniparser_getstr(ini, "antet:facultate");
+	val = "antet:facultate";
 	if (!val){
 		fprintf(stderr, "Error obatining university name.\n");
 		goto ERR_;
@@ -32,7 +45,7 @@ create_header (struct defined_styles *ds)
 	#define DEPT_LIMIT	512	/**< nr. max. de car. ptr catedra */
 	#define STR_DEPT_SIZE	8	/**< strlen("Catedra ") */
 	Dprintf("I look for department\n");
-	val = iniparser_getstr(ini, "antet:catedra");
+	val = "antet:catedra";
 	if (!val) {
 		fprintf(stderr, "Error obatining department.\n");
 		goto ERR_;
@@ -72,23 +85,17 @@ create_header (struct defined_styles *ds)
 
 	Dprintf("I wrote the month\n");
 
-	/* Salvam in month data de start a perioadei*/ 
-	if (!localtime(&cfg->sem->start)) {
-		fprintf(stderr, "Error converting date.\n");
-		goto ERR_;     
-	}
-
 
 	/* some header data */
 	doc->cells[3][2].text = strdup("Situatia orelor efectuate de");
 	doc->cells[4][2].text = strdup("cu functia de baza la");
-	val = iniparser_getstr(ini, "antet:nume");
+	val = "antet:nume";
 	if (!val) {
 		fprintf(stderr, "Error obtaining name.\n");
 		goto ERR_;
 	}
 	doc->cells[3][5].text = strdup(val);
-	val = iniparser_getstr(ini, "antet:nume_curs");
+	val = "antet:nume_curs";
 	if (!val) {
 		fprintf(stderr, "Error obtaining course name.\n");
 		goto ERR_;
@@ -135,7 +142,8 @@ create_header (struct defined_styles *ds)
  * \return 0 on succes
  * \return 01 on error
  */
-static int create_footer (size_t last_row, struct defined_styles *ds)
+int 
+create_footer(int last_row, struct total_hours *result)
 {
 	
 	Dprintf("Begin create footer\n");
@@ -144,10 +152,10 @@ static int create_footer (size_t last_row, struct defined_styles *ds)
 	struct spreadconv_data *doc;
 	int i;
 	doc = ds->doc;
-	sprintf(tot, "%d", result.course.prof + result.aplic.prof +
-			result.course.conf + result.aplic.conf +
-			result.course.sl + result.aplic.sl +
-			result.course.as + result.aplic.as);
+	sprintf(tot, "%d", result->course.prof + result->aplic.prof +
+			result->course.conf + result->aplic.conf +
+			result->course.sl + result->aplic.sl +
+			result->course.as + result->aplic.as);
 	doc->cells[last_row][7].text = strdup("Total:");
 	doc->cells[last_row][8].value_type = strdup("float");
 	doc->cells[last_row][8].text= strdup(tot);
@@ -173,31 +181,31 @@ static int create_footer (size_t last_row, struct defined_styles *ds)
 	doc->cells[last_row][2].text = strdup("Prof.");
 	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
 	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.prof);
+	sprintf(doc->cells[last_row][3].text, "%d", result->course.prof);
 	
 /*	doc->cells[last_row][4].text = strdup("Prof."); */
 	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.prof);
+	sprintf(doc->cells[last_row][4].text, "%d", result->aplic.prof);
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("Conf.");
 	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
 
 	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.conf);
+	sprintf(doc->cells[last_row][3].text, "%d", result->course.conf);
 /*	doc->cells[last_row][4].text = strdup("Conf.");*/
 	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.conf);
+	sprintf(doc->cells[last_row][4].text, "%d", result->aplic.conf);
 	last_row++;
 
 	doc->cells[last_row][2].text = strdup("S.l.");
 	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
 
 	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.sl);
+	sprintf(doc->cells[last_row][3].text, "%d", result->course.sl);
 /*	doc->cells[last_row][4].text = strdup("S.l.");*/
 	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.sl);
+	sprintf(doc->cells[last_row][4].text, "%d", result->aplic.sl);
 	for (i = last_row - 2; i <= last_row; ++ i) {
 		spreadconv_set_cell_style(i, 3, ds->table_c[1], doc);
 		spreadconv_set_cell_style(i, 4, ds->table_c[1], doc);
@@ -211,10 +219,10 @@ static int create_footer (size_t last_row, struct defined_styles *ds)
 	spreadconv_set_cell_style(last_row, 2, ds->table_h, doc);
 
 	doc->cells[last_row][3].text = malloc(5);
-	sprintf(doc->cells[last_row][3].text, "%d", result.course.as);
+	sprintf(doc->cells[last_row][3].text, "%d", result->course.as);
 /*	doc->cells[last_row][4].text = strdup("As.");*/
 	doc->cells[last_row][4].text = malloc(5);
-	sprintf(doc->cells[last_row][4].text, "%d", result.aplic.as);
+	sprintf(doc->cells[last_row][4].text, "%d", result->aplic.as);
 	last_row += 2;
 	Dprintf("End print small table\n");
 	
@@ -229,10 +237,10 @@ static int create_footer (size_t last_row, struct defined_styles *ds)
 	
 	Dprintf("Begin search nume, titular\n");
 	doc->cells[last_row][0].text =
-		strdup(iniparser_getstr (ini, "antet:nume"));
-	tmp_ini_val = iniparser_getstr(ini, "antet:titular");
+		strdup("antet:nume");
+	tmp_ini_val = "antet:titular";
 	if (tmp_ini_val)
-	doc->cells[last_row][3].text = strdup(tmp_ini_val);
+		doc->cells[last_row][3].text = strdup(tmp_ini_val);
 	Dprintf("End search nume, titular\n");
 
 	/*
@@ -250,14 +258,14 @@ static int create_footer (size_t last_row, struct defined_styles *ds)
 /*
  * TODO titular curs? ce-i cu el?
  */
-	tmp_ini_val = iniparser_getstr(ini, "antet:decan");
+	tmp_ini_val = "antet:decan";
 	if (!tmp_ini_val) {
 		fprintf(stderr, "Nu am gasit decanul.\n");
 	} else {
 		doc->cells[last_row][6].text = strdup(tmp_ini_val);
 	}
 
-	tmp_ini_val = iniparser_getstr(ini, "antet:sef_catedra");
+	tmp_ini_val = "antet:sef_catedra";
 	if (!tmp_ini_val) {
 		fprintf(stderr, "Nu am gasit sefcatedra.\n");
 	} else {

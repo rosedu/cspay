@@ -15,6 +15,10 @@
 
 #include <mysql.h>
 
+#define MAXR	20	/**< maximum number of restrictions*/
+#define MAXF	13	/**< maximum number of faculties*/
+#define MAXD	10	/**< maximum number of departments*/
+
 /**
  * \struct cspay_config
  * all informations from xml file
@@ -112,6 +116,6 @@ struct time_config *read_time_config(void);
 int load_months(struct tm **);
 
 /** read information of a class */
-struct class_info read_class_info(MYSQL_ROW *);
+struct class_info *read_class_info(MYSQL_ROW);
 
 #endif /* __LOAD_CFG_H__ */

@@ -8,14 +8,11 @@
 #ifndef _CSPAY_H_
 #define _CSPAY_H_
 
-#define MAXR	20	/**< maximum number of restrictions*/
-#define MAXF	13	/**< maximum number of faculties*/
-#define MAXD	10	/**< maximum number of departments*/
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#if 0
 /**
  * \struct faculty
  * informations about a faculty
@@ -47,6 +44,7 @@ struct department {
 	/** chief's name*/
 	char *chief;
 };
+#endif 
 
 /**
  * \struct cspay_file_list
@@ -77,7 +75,11 @@ void cspay_free_file_list(struct cspay_file_list *);
 /**
  * free \a cspay_config structure
  */
-void cspay_free_config(struct cspay_config *);
+struct time_config;
+void cspay_free_config(struct time_config *);
+
+struct tm;
+extern struct tm *curr_month;
 
 #ifdef __cplusplus
 }

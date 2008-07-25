@@ -47,7 +47,7 @@ struct defined_styles {
  * \return 0 on succes
  * \return -1 on error
  */
-static int config_styles (struct spreadconv_data *doc);
+int config_styles (struct spreadconv_data *doc);
 
 /** styles for spreasheets*/
 extern struct defined_styles *ds;
