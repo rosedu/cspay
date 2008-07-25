@@ -24,10 +24,13 @@ read_time_config(void)
 	 */
 	struct time_config *ret;
 	struct tm conv;
+	int cit;
 	/*aaaa.ll.zz*/
 	char *sem_start = "2008-01-01";	/* XXX obtained from database */
 	char *sem_end = "2008-06-01";
 
+	ret = malloc(sizeof *ret);
+	memset(ret, 0, sizeof *ret);
 	ret->sem = malloc(sizeof *ret->sem);
 
 	sscanf(sem_start, "%d-%d-%d", &conv.tm_year, &conv.tm_mon, &conv.tm_mday);
@@ -43,7 +46,7 @@ read_time_config(void)
 	ret->sem->end = mktime(&conv);
 
 	ret->vac_no = 0;
-
+	Dprintf("sem interval: %d -- %d\n", ret->sem->start, ret->sem->end);
 	return ret;
 }
 
@@ -65,12 +68,13 @@ load_months(struct tm *months[])
 		if (month_mask & 0x1) {
 			months[ret] = calloc(1, sizeof (struct tm));
 			months[ret]->tm_mon = i;
+			months[ret]->tm_year = 0;
 			++ ret;
 		}
 	}
 	#ifdef __DEBUG__
-	printf("Am gsit %d luni\n", n_months);
-	for (i = 0; i < n_months; ++ i)
+	Dprintf("Am gasit %d luni: ", ret);
+	for (i = 0; i < ret; ++ i)
 		printf("%d ", months[i]->tm_mon);
 	printf("\n");
 	#endif /*__DEBUG__ */
@@ -126,11 +130,12 @@ read_class_info (MYSQL_ROW row)
 	ret->group = strdup(row[i++]); /**< an_grupa field */
 
 	/* get class day */
+	Dprintf("class_day:%s\n", row[i]);
 	switch (tolower(row[i][0])) {
 		case 'l': ret->day = 1; break;
 		case 'm': ret->day = (row[i][1] == 'a') ? 2 : 3; break;
-		case 'j': ret->day = 4;
-		case 'v': ret->day = 5;
+		case 'j': ret->day = 4; break;
+		case 'v': ret->day = 5; break;
 		default:
 			fprintf(stderr, "Error reading \"zi\" variable.\n");
 			goto READ_ERR;

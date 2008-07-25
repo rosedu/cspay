@@ -22,7 +22,6 @@
 #include "main.h"
 #include "data.h"
 
-static MYSQL *conn;
 
 /** output document */
 static struct spreadconv_data *doc;
@@ -100,6 +99,7 @@ load_and_parse_options()
 
 
 
+
 	/* create new spreadsheet */
 	doc = spreadconv_new_spreadconv_data("Date", 100, 9);
 
@@ -135,7 +135,7 @@ load_and_parse_options()
 		curr_month->tm_mon = 0;
 		++ curr_month->tm_year;
 	}
-	m.end = mktime(curr_month) - 1;
+	m.end = mktime(curr_month) - 10;
 	
 	-- curr_month->tm_mon;
 	if (curr_month->tm_mon == -1) {
@@ -161,8 +161,8 @@ load_and_parse_options()
 	MYSQL_RES *res = NULL;
 	MYSQL_ROW row;
 	unsigned int row_n;
-	char query[128];
-	snprintf(query, 128, "SELECT\
+	char query[256];
+	snprintf(query, 256, "SELECT\
 		facultate,\
 		materie,\
 		grad,\
@@ -173,21 +173,32 @@ load_and_parse_options()
 		ora,\
 		paritate,\
 		paritate_start\
-		FROM orar WHERE acoperit_efect=\'%s\'", Name);
+		FROM `orar` WHERE `acoperit_efect`=\'%s\'", Name);
 	/* XXX Name should be sanitized! */
-	res = mysql_use_result(conn);
-	row_n = mysql_num_rows(res);
+	if (mysql_query(Conn, query)) {
+		printf("Eroare la interogare: %s\n", mysql_error(Conn));
+		return 1;
+	} else {
+		Dprintf("Interogare cu succes\n");
+		Dprintf("%s\n", query);
+	}
+	res = mysql_use_result(Conn);
+	
+	//row_n = mysql_num_rows(res);
 	Dprintf("Interogarea a intors %d linii\n", row_n);
 
-	while (row_n --) {
-		Dprintf("Begin row number%d\n", row_n);
+	row_n = 0;
+	while ((row = mysql_fetch_row(res)) != NULL) {
+		Dprintf("Begin row number%d\n", row_n ++);
 		/*
 		 * se itereaza prin aceste ore (linii)
 		 */
-		row = mysql_fetch_row(res);
+		
 		ci = read_class_info(row);
+		/*
 		if (ci == NULL)
 			break;
+		*/
 
 		index = get_first_work_day(m, ci);
 		
@@ -384,9 +395,12 @@ cspay_convert_options()
 	ret->nr = 0;
 	ret->names = malloc(24 * sizeof (char *));
 
+	cfg = read_time_config();
+
 	n_months = load_months(months);
 	extension[LSC_FILE_XLS] = ".xls";
 	extension[LSC_FILE_ODS] = ".ods";
+
 
 	for (i = 0; i < n_months; ++ i) {
 		
@@ -467,7 +481,7 @@ get_first_work_day(struct interval t, struct class_info *ci)
 	}
 	if (ret >= t.end) {
 		fprintf(stderr, "Impossible error\n");
-		return -1;
+		return ret;
 	}
 	return ret;
 }

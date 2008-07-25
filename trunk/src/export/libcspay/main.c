@@ -11,6 +11,7 @@
 
 #include "spreadconv.h"
 #include "cspay.h"
+#include "debug.h"
 
 /**
  * extern variables
@@ -36,17 +37,19 @@ main(int argc, char *argv[])
 	if (parse_cmd(argc, argv)) {
 		return EXIT_FAILURE;
 	}
-	printf("name:%s\n", Name);
+	Dprintf("name:%s\n", Name);
+
 	if (db_connect()) {
 		printf("Error connecting to db!\n");
 		goto ERR_CONNECT;
 	}
+	Dprintf("m-am conectat la baza de date!\n");
 
-	//ret = cspay_convert_options();	/**< in cspay.h */
+	ret = cspay_convert_options();	/**< in cspay.h */
 	if (ret) {
 		for (i = 0; i < ret->nr; ++ i)
 			printf("%s\n", ret->names[i]);
-	//	cspay_free_file_list(ret);
+		cspay_free_file_list(ret);
 		ret = NULL;
 	}
 	return EXIT_SUCCESS;
@@ -71,7 +74,7 @@ db_connect()
 	Conn = mysql_init(NULL);
 	ret = mysql_real_connect(
 		Conn,
-		"localhost", "cspay", "cspay_passwd",
+		"127.0.0.1", "cspay", "C2p4yp422",
 		"cspay",
 		0, NULL, 0);
 	if (!ret) {
