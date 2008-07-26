@@ -18,3 +18,4 @@ clean:
 	-rm -f *~
 	-rm -f $(BIN)
 	-rm -rf doc
+clena: clean

@@ -301,7 +301,9 @@ load_and_parse_options()
 		}
 		++ class_index;
 		free_class_info(ci);
-	}
+	} /* while ((res = mysql_fetch_row(*/
+	mysql_free_result(res);
+
 	Dprintf("End of all rules.\n");
 
 	Dprintf("Begin set styles\n");
@@ -524,5 +526,13 @@ free_class_info(struct class_info *ci)
 {
 	if (!ci)
 		return;
+	if (ci->role_num)
+		free(ci->role_num);
+	if (ci->class)
+		free(ci->class);
+	if (ci->faculty)
+		free(ci->faculty);
+	if (ci->group)
+		free(ci->group);
 	free(ci);
 }
