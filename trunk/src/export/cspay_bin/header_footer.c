@@ -9,6 +9,7 @@
 #include "debug.h"
 #include "spreadconv.h"
 #include "cspay.h"
+#include "main.h"
 
 /**
  * create header data for spreadsheet
@@ -26,7 +27,7 @@ create_header (void)
 	doc = ds->doc;
 
 	Dprintf("I look for university name\n");
-	val = "antet:universitate";
+	val = "UPB";
 	if (!val){
 		fprintf(stderr, "Error obatining university name.\n");
 		goto ERR_;
@@ -34,7 +35,7 @@ create_header (void)
 	doc->cells[0][0].text = strdup(val);
 
 	Dprintf("I look for faculty name\n");
-	val = "antet:facultate";
+	val = FacultyName;
 	if (!val){
 		fprintf(stderr, "Error obatining university name.\n");
 		goto ERR_;
@@ -89,13 +90,13 @@ create_header (void)
 	/* some header data */
 	doc->cells[3][2].text = strdup("Situatia orelor efectuate de");
 	doc->cells[4][2].text = strdup("cu functia de baza la");
-	val = "antet:nume";
+	val = Name;
 	if (!val) {
 		fprintf(stderr, "Error obtaining name.\n");
 		goto ERR_;
 	}
 	doc->cells[3][5].text = strdup(val);
-	val = "antet:nume_curs";
+	val = BaseCourse;
 	if (!val) {
 		fprintf(stderr, "Error obtaining course name.\n");
 		goto ERR_;
@@ -237,8 +238,8 @@ create_footer(int last_row, struct total_hours *result)
 	
 	Dprintf("Begin search nume, titular\n");
 	doc->cells[last_row][0].text =
-		strdup("antet:nume");
-	tmp_ini_val = "antet:titular";
+		strdup(Name);
+	tmp_ini_val = "antet:titular";	/* XXX SELECT */
 	if (tmp_ini_val)
 		doc->cells[last_row][3].text = strdup(tmp_ini_val);
 	Dprintf("End search nume, titular\n");

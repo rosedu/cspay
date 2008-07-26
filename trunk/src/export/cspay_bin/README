@@ -1,6 +1,6 @@
 CSpay library
 
 Prerequisites: 	
-		libspreadconv
+		libspreadconv (+ pyExcellerator http://pypi.python.org/pypi/pyExcelerator)
 		libpopt
 		libmysql

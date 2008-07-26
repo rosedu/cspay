@@ -9,6 +9,7 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+#include <mysql.h>
 
 #include "debug.h"
 #include "cspay.h"
@@ -16,6 +17,20 @@
 #include "main.h"
 #include "data.h"
 
+/*aaaa.ll.zz*/
+#define SCAN_DATA(str, time_var) ({\
+	memset(&(time_var), 0, sizeof (struct tm));\
+	sscanf((str), "%u-%u-%u",\
+		&(time_var).tm_year, &(time_var).tm_mon, &(time_var).tm_mday);\
+	})
+#define FIX_DATA(time_var)	({\
+	-- (time_var).tm_mon;\
+	(time_var).tm_year -= 1900;\
+	})
+/**
+ * \return a pointer to a structure containing information about
+ * 	vacations and semester
+ */
 struct time_config *
 read_time_config(void)
 {
@@ -24,36 +39,64 @@ read_time_config(void)
 	 */
 	struct time_config *ret;
 	struct tm conv;
-	/*aaaa.ll.zz*/
-	char *sem_start = "2008-01-01";	/* XXX obtained from database */
-	char *sem_end = "2008-06-01";
+	int row_n;
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	if (mysql_query(Conn, "SELECT data_start,data_stop FROM `universitate`\
+				WHERE `univ_id`=1")) {
+		fprintf(stderr, "Eroare la interogare universitate: %s",
+			mysql_error(Conn));
+		return NULL;
+	}
+	res = mysql_store_result(Conn);
+	row = mysql_fetch_row(res);
+	Dprintf("start:%s -- end:%s\n", row[0], row[1]);
 
 	ret = malloc(sizeof *ret);
 	memset(ret, 0, sizeof *ret);
 	ret->sem = malloc(sizeof *ret->sem);
 
-	memset(&conv, 0, sizeof (struct tm));
-	sscanf(sem_start, "%u-%u-%u", &conv.tm_year, &conv.tm_mon, &conv.tm_mday);
+	SCAN_DATA(row[0], conv);
 	Dprintf("scanned start: %u-%u-%u\n", conv.tm_year, conv.tm_mon, conv.tm_mday);
-	/*fix data*/
-	-- conv.tm_mon;	/* january is 0*/
-	conv.tm_year -= 1900;	/* 1900 is 0*/
-	Dprintf("adjusted year: %u\n", conv.tm_year);
+	FIX_DATA(conv);
 	ret->sem->start = mktime(&conv);
 
-	memset(&conv, 0, sizeof (struct tm));
-	sscanf(sem_end, "%u-%u-%u", &conv.tm_year, &conv.tm_mon, &conv.tm_mday);
+	SCAN_DATA(row[1], conv);
 	Dprintf("scanned end: %u-%u-%u\n", conv.tm_year, conv.tm_mon, conv.tm_mday);
-	/*fix data*/
-	-- conv.tm_mon;	/* january is 0*/
-	conv.tm_year -= 1900;	/* 1900 is 0*/
-
+	FIX_DATA(conv);
 	ret->sem->end = mktime(&conv);
-	Dprintf("recalculated year: %u\n", localtime(&ret->sem->end)->tm_year);
 
-	ret->vac_no = 0;
+	Dprintf("recalculated year: %u\n", localtime(&ret->sem->end)->tm_year);
 	Dprintf("sem interval: %u -- %u\n", ret->sem->start, ret->sem->end);
 	Dprintf("diff: %u\n", ret->sem->end - ret->sem->start);
+
+	mysql_free_result(res);
+
+	if (mysql_query(Conn, "SELECT data_start,data_stop FROM `vacanta`\
+				WHERE `link_univ`=1")) {
+		fprintf(stderr, "Eroare la interogare vacanta: %s",
+			mysql_error(Conn));
+		return NULL;
+	}
+	res = mysql_store_result(Conn);
+	row_n = mysql_num_rows(res);
+
+	Dprintf("%d vacations\n", row_n);
+	ret->vac_no = 0;
+	while ((row = mysql_fetch_row(res)) != NULL) {
+		ret->vac[ret->vac_no] = malloc(sizeof *ret->vac[0]);
+
+		SCAN_DATA(row[0], conv);
+		FIX_DATA(conv);
+		ret->vac[ret->vac_no]->start = mktime(&conv);
+			
+		SCAN_DATA(row[1], conv);
+		FIX_DATA(conv);
+		ret->vac[ret->vac_no]->end = mktime(&conv);
+
+		++ ret->vac_no;
+	}
+	mysql_free_result(res);
 	return ret;
 }
 

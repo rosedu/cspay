@@ -482,8 +482,8 @@ get_first_work_day(struct interval t, struct class_info *ci)
 		ret += DAY;
 	}
 	if (ret >= t.end) {
-		fprintf(stderr, "Impossible error\n");
-		return ret;
+		fprintf(stderr, "Month outside of semester\n");
+		return -1;
 	}
 	return ret;
 }
