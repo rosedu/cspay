@@ -1,4 +1,4 @@
-CPPFLAGS = -ggdb -I../libspreadconv -I../common  -D__DEBUG__
+CPPFLAGS = -ggdb -I../libspreadconv -I../common
 CFLAGS = -Wall `mysql_config --cflags`
 LDFLAGS = -L../libspreadconv
 LDLIBS = `mysql_config --libs` -lpopt -lspreadconv

@@ -24,7 +24,6 @@ read_time_config(void)
 	 */
 	struct time_config *ret;
 	struct tm conv;
-	int cit;
 	/*aaaa.ll.zz*/
 	char *sem_start = "2008-01-01";	/* XXX obtained from database */
 	char *sem_end = "2008-06-01";
@@ -33,20 +32,28 @@ read_time_config(void)
 	memset(ret, 0, sizeof *ret);
 	ret->sem = malloc(sizeof *ret->sem);
 
-	sscanf(sem_start, "%d-%d-%d", &conv.tm_year, &conv.tm_mon, &conv.tm_mday);
+	memset(&conv, 0, sizeof (struct tm));
+	sscanf(sem_start, "%u-%u-%u", &conv.tm_year, &conv.tm_mon, &conv.tm_mday);
+	Dprintf("scanned start: %u-%u-%u\n", conv.tm_year, conv.tm_mon, conv.tm_mday);
 	/*fix data*/
 	-- conv.tm_mon;	/* january is 0*/
 	conv.tm_year -= 1900;	/* 1900 is 0*/
+	Dprintf("adjusted year: %u\n", conv.tm_year);
 	ret->sem->start = mktime(&conv);
 
-	sscanf(sem_end, "%d-%d-%d", &conv.tm_year, &conv.tm_mon, &conv.tm_mday);
+	memset(&conv, 0, sizeof (struct tm));
+	sscanf(sem_end, "%u-%u-%u", &conv.tm_year, &conv.tm_mon, &conv.tm_mday);
+	Dprintf("scanned end: %u-%u-%u\n", conv.tm_year, conv.tm_mon, conv.tm_mday);
 	/*fix data*/
 	-- conv.tm_mon;	/* january is 0*/
 	conv.tm_year -= 1900;	/* 1900 is 0*/
+
 	ret->sem->end = mktime(&conv);
+	Dprintf("recalculated year: %u\n", localtime(&ret->sem->end)->tm_year);
 
 	ret->vac_no = 0;
-	Dprintf("sem interval: %d -- %d\n", ret->sem->start, ret->sem->end);
+	Dprintf("sem interval: %u -- %u\n", ret->sem->start, ret->sem->end);
+	Dprintf("diff: %u\n", ret->sem->end - ret->sem->start);
 	return ret;
 }
 

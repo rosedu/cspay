@@ -95,7 +95,7 @@ load_and_parse_options()
 			{"prof"}
 	};
 
-	Dprintf("Processing ini file\n");
+	Dprintf("Processing options\n");
 
 
 
@@ -123,8 +123,12 @@ load_and_parse_options()
 		case 0:
 		case 1:
 			year_offset = 1;
+		default:
+			year_offset = 0;
 	}
+	Dprintf("year offset: %d\n", year_offset);
 	curr_month->tm_year += year_offset;
+
 	/**
 	 * set month_start and month_end
 	 * this is absolute
@@ -135,7 +139,7 @@ load_and_parse_options()
 		curr_month->tm_mon = 0;
 		++ curr_month->tm_year;
 	}
-	m.end = mktime(curr_month) - 10;
+	m.end = mktime(curr_month) - 1;
 	
 	-- curr_month->tm_mon;
 	if (curr_month->tm_mon == -1) {
@@ -185,11 +189,11 @@ load_and_parse_options()
 	res = mysql_use_result(Conn);
 	
 	//row_n = mysql_num_rows(res);
-	Dprintf("Interogarea a intors %d linii\n", row_n);
+	//Dprintf("Interogarea a intors %d linii\n", row_n);
 
 	row_n = 0;
 	while ((row = mysql_fetch_row(res)) != NULL) {
-		Dprintf("Begin row number%d\n", row_n ++);
+		Dprintf("Begin row number: %d\n", row_n ++);
 		/*
 		 * se itereaza prin aceste ore (linii)
 		 */
@@ -382,7 +386,7 @@ cspay_convert_options()
 {
 	struct cspay_file_list *ret;
 	char *temp;
-	char *mv_comm;
+	char mv_comm[512];
 	char *file_name;
 	
 
@@ -403,13 +407,12 @@ cspay_convert_options()
 
 
 	for (i = 0; i < n_months; ++ i) {
-		
 		curr_month = months[i];
 		curr_month->tm_year = localtime(&cfg->sem->start)->tm_year;
 		curr_month->tm_mday = 1;
 		
 		Dprintf("I have calculated the year from semester's limits\n");
-		Dprintf("Year: %d\n", curr_month->tm_year);
+		Dprintf("Year: %u\n", curr_month->tm_year);
 
 		load_and_parse_options();
 		file_name = build_file_name();
@@ -430,7 +433,6 @@ cspay_convert_options()
 		free(file_name);
 		spreadconv_free_spreadconv_data(doc);
 	}
-	free(mv_comm);
 	free_parsed_data();
 	if (!ret->nr) {
 		free(ret);
