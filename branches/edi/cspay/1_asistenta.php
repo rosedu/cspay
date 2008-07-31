@@ -4,6 +4,8 @@ include("include/config.php");
 include("include/header.php");
 include("include/check_login.php");
 
+check_auth(PROFESOR);//verifica daca este cont de profesor
+
 $layout->get_template('include/template.html');
 $layout->replace('TITLE','prima pagina');
 
@@ -19,8 +21,7 @@ add($content,'<br>Tipul Contului : '.$_SESSION['tip_cont']);
 
 $layout->replace('CONTENT',$content);
 
-$query = "INSERT INTO `admin` (`materie`,`utilizator`) VALUES('uso','')";
-mysql_query($query);
+
 
 $layout->print_template();
 ?>
