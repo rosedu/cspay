@@ -73,28 +73,28 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 //meniu pentru fiecare tip de cont 
 	$menu[0] = 	'
 		<ul>
-			<li'.equal(9,$select,' class="active"').'><a href="index.php">Acasa</a></li>
+			<li'.equal(9,$select,' class="active"').'><a href="index.php">Acas&#259;</a></li>
 			<li'.equal(0,$select,' class="active"').'><a href="0_calendar.php">Calendar</a></li>
 			<li'.equal(1,$select,' class="active"').'><a href="0_orar.php">Orar</a></li>
-			<li'.equal(2,$select,' class="active"').'><a href="0_asistenta.php">Asistenta</a></li>
+			<li'.equal(2,$select,' class="active"').'><a href="0_asistenta.php">Asisten&#x21B;&#259;</a></li>
 			<li'.equal(3,$select,' class="active"').'><a href="logout.php">Deconectare</a></li>
 		</ul>
 		';
 	$menu[1] = 	'
 		<ul>
-			<li'.equal(9,$select,' class="active"').'><a href="index.php">Acasa</a></li>		
-			<li'.equal(0,$select,' class="active"').'><a href="1_vacanta.php">Vacante</a></li>
-			<li'.equal(1,$select,' class="active"').'><a href="1_orar_viz.php">Orar</a></li>
-			<li'.equal(2,$select,' class="active"').'><a href="1_asistenta.php">Asistenta</a></li>
+			<li'.equal(9,$select,' class="active"').'><a href="index.php">Acas&#259;</a></li>		
+			<li'.equal(0,$select,' class="active"').'><a href="1_vacanta.php">Vacan&#x21B;e</a></li>
+			<li'.equal(1,$select,' class="active"').'><a href="1_orar.php">Orar</a></li>
+			<li'.equal(2,$select,' class="active"').'><a href="1_asistenta.php">Asisten&#x21B;&#259;</a></li>
 			<li'.equal(3,$select,' class="active"').'><a href="logout.php">Deconectare</a></li>
 		</ul>
 		';
 	$menu[2] = 	'
 		<ul>
-			<li'.equal(9,$select,' class="active"').'><a href="index.php">Acasa</a></li>		
+			<li'.equal(9,$select,' class="active"').'><a href="index.php">Acas&#259;</a></li>		
 			<li'.equal(0,$select,' class="active"').'><a href="2_conturi.php">Conturi</a></li>
 			<li'.equal(1,$select,' class="active"').'><a href="2_import.php">Import</a></li>
-			<li'.equal(2,$select,' class="active"').'><a href="2_asistenta.php">Asistenta</a></li>
+			<li'.equal(2,$select,' class="active"').'><a href="2_asistenta.php">Asisten&#x21B;&#259;</a></li>
 			<li'.equal(3,$select,' class="active"').'><a href="logout.php">Deconectare</a></li>
 		</ul>
 		';
@@ -103,16 +103,17 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 		<ul>
 			<li'.equal(0,$select,' class="subactive"').'><a href="0_universitate.php">Universitate</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="0_facultate.php">Facultate</a></li>
-			<li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacante</a></li>
-			<!--li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedra</a></li-->
+			<li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacan&#x21B;e</a></li>
+			<!--li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedr&#259;</a></li-->
 		</ul>';
 	$submenu[0][1] = '
 		<ul>
 			<li'.equal(0,$select,' class="subactive"').'><a href="0_orar_viz.php">Vizualizare</a></li>
+			<li'.equal(5,$select,' class="subactive"').'><a href="0_orar_mod.php">Editare</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="0_salvare_xls.php">Salvare</a></li>
-			<!--li'.equal(2,$select,' class="subactive"').'><a href="#">Modifica</a></li>
-			<li'.equal(3,$select,' class="subactive"').'><a href="#">printeaza</a></li>
-			<li'.equal(4,$select,' class="subactive"').'><a href="#">cauta </a></li-->
+			<!--li'.equal(2,$select,' class="subactive"').'><a href="#">Modific&#259;</a></li>
+			<li'.equal(3,$select,' class="subactive"').'><a href="#">printeaz&#259;</a></li>
+			<li'.equal(4,$select,' class="subactive"').'><a href="#">caut&#259; </a></li-->
 		</ul>';
 	$submenu[0][2] = '
 		<ul>
@@ -130,17 +131,18 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 		<!--ul>
 			<li'.equal(0,$select,' class="subactive"').'><a href="0_universitate.php">Universitate</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="0_facultate.php">Facultate</a></li>
-			<li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacanta</a></li>
-			<li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedra</a></li>
+			<li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacan&#x21B;&#259;</a></li>
+			<li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedr&#259;</a></li>
 		</ul-->';
 	$submenu[1][1] = '
-		<!--ul>
-			<li'.equal(0,$select,' class="subactive"').'><a href="0_orar_viz.php">Vizualizare</a></li>
-			<li'.equal(1,$select,' class="subactive"').'><a href="0_salvare_xls.php">Salvare XLS</a></li>
-			<!--li'.equal(2,$select,' class="subactive"').'><a href="#">Modifica</a></li>
-			<li'.equal(3,$select,' class="subactive"').'><a href="#">printeaza</a></li>
-			<li'.equal(4,$select,' class="subactive"').'><a href="#">cauta </a></li-->
-		</ul-->';
+		<ul>
+			<li'.equal(0,$select,' class="subactive"').'><a href="1_orar_viz.php">Vizualizare</a></li>
+			<li'.equal(5,$select,' class="subactive"').'><a href="1_orar_mod.php">Editare</a></li>
+			<!--li'.equal(1,$select,' class="subactive"').'><a href="0_salvare_xls.php">Salvare XLS</a></li>
+			<li'.equal(2,$select,' class="subactive"').'><a href="#">Modific&#259;</a></li>
+			<li'.equal(3,$select,' class="subactive"').'><a href="#">printeaz&#259;</a></li>
+			<li'.equal(4,$select,' class="subactive"').'><a href="#">caut&#259; </a></li-->
+		</ul>';
 	$submenu[1][2] = '
 		<ul>
 			<li'.equal(0,$select,' class="subactive"').'><a href="#">Ajutor</a></li>
@@ -157,16 +159,16 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 		<ul>
 			<li'.equal(0,$select,' class="subactive"').'><a href="2_utilizatori.php">Utilizatori</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="2_asociere.php">Asociere materie</a></li>
-			<!--li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacanta</a></li>
-			<li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedra</a></li-->
+			<!--li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacan&#x21B;&#259;</a></li>
+			<li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedr&#259;</a></li-->
 		</ul>';
 	$submenu[2][1] = '
 		<ul>
 			<li'.equal(0,$select,' class="subactive"').'><a href="2_import_orar.php">Orar XLS</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="2_import_asoc.php">Asociere XLS</a></li>
-			<!--li'.equal(2,$select,' class="subactive"').'><a href="#">Modifica</a></li>
-			<li'.equal(3,$select,' class="subactive"').'><a href="#">printeaza</a></li>
-			<li'.equal(4,$select,' class="subactive"').'><a href="#">cauta </a></li-->
+			<!--li'.equal(2,$select,' class="subactive"').'><a href="#">Modific&#259;</a></li>
+			<li'.equal(3,$select,' class="subactive"').'><a href="#">printeaz&#259;</a></li>
+			<li'.equal(4,$select,' class="subactive"').'><a href="#">caut&#259; </a></li-->
 		</ul>';
 	$submenu[2][2] = '
 		<!--ul>

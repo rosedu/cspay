@@ -61,7 +61,7 @@ $data->read('temp/file.xls');
 $query = "TRUNCATE TABLE `orar`";
 $result = mysql_query($query);
 add($mesaj,'Tabela orar a fost stearsa.<br>');
-$query = "TRUNCATE TABLE `asociatie`";
+$query = "UPDATE `asociatie` SET `link_admin`='-1'";
 $result = mysql_query($query);
 add($mesaj,'Tabela asociatie a fost stearsa.<br>');
 $query = "DELETE FROM `admin` WHERE `tip_cont`='".PROFESOR."'";

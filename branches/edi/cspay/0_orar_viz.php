@@ -6,9 +6,20 @@ include("include/check_login.php");
 include("include/display.php");//functii pentru aratat materiile
 
 //selecteaza inregistrarile din tabela orar
-$query = "SELECT * FROM `orar`";
+//selecteaza inregistrarile din tabela orar
+$opt_selectie = formular_criterii_selectie();
+
+if($opt_selectie != -1)
+	{
+	$_SESSION['opt_selectie'] = $opt_selectie;
+	}
+else 
+	$_SESSION['opt_selectie'] = '';
+
+$query = "SELECT  `orar_id` , `link_univ` , `facultate` , `tip_curs1` , `materie` , `forma` , `cod` , `an` , `serie` , `nr_stud` , `nr_grupa` , `tip_grupa` , `modul_c` , `modul_a` , `tip_curs2` , `post` , `grad` , `norma` , `ocupat` , `acoperit` , `acoperit_efect` , `an_grupa` , `zi` , `ora` , `sala` FROM `orar` ".$_SESSION['opt_selectie']."";
+
 $result_orar = mysql_query($query);
-$nr = mysql_num_rows($result_orar);//numarul de intrari
+$nr = mysql_num_rows($result_orar);
 
 check_auth(SECRETARA);//verifica daca este cont de secretara
 
@@ -24,9 +35,9 @@ $layout->replace('SUBMENU',$submeniu);
 $content = '';
 $mesaj   = '';
 
-if(!isset($_SESSION['nr_afisari']))//seteaza numarul de afisari pe pagina
+if(!isset($_SESSION['nr_afisari_viz']))//seteaza numarul de afisari pe pagina
 {
-	$_SESSION['nr_afisari'] = 10;
+	$_SESSION['nr_afisari_viz'] = 10;
 }
 
 if(isset($_POST['salveaza']))//formularul tabelului
@@ -79,9 +90,9 @@ if(isset($_POST['pagina']))//redirectare la pagina
 if(isset($_POST['nr_pe_pag']))//modificare afisari pe pagina
 {
 		if($_POST['nr_pe_pag'] == "tot")
-			$_SESSION['nr_afisari'] = $nr;
+			$_SESSION['nr_afisari_viz'] = $nr;
 		else
-			$_SESSION['nr_afisari'] = $_POST['nr_pe_pag'];
+			$_SESSION['nr_afisari_viz'] = $_POST['nr_pe_pag'];
 		$start = 0;
 }
 
@@ -89,51 +100,61 @@ if(isset($_POST['nr_pe_pag']))//modificare afisari pe pagina
 if(isset($_GET['start']) && !isset($_POST['nr_pe_pag']))
 {
 	$start = $_GET['start'];
-	$stop = $start + $_SESSION['nr_afisari'];
+	$stop = $start + $_SESSION['nr_afisari_viz'];
 	if($stop>$nr)
 		$stop = $nr;
 }
 else
 {
 	$start = 0;
-	$stop = $_SESSION['nr_afisari'];
+	$stop = $_SESSION['nr_afisari_viz'];
 	if($stop>$nr)
 		$stop = $nr;
 }	
-$nr_afisari = $_SESSION['nr_afisari'];
+$nr_afisari = $_SESSION['nr_afisari_viz'];
 
 add($content,'<div class="title" align="center">Formular detalii plata cu ora</div>');
 add($content,$mesaj);
 
-//selecteaza inregistrarile din tabela orar
-$query = "SELECT  `orar_id` , `link_univ` , `facultate` , `tip_curs1` , `materie` , `forma` , `cod` , `an` , `serie` , `nr_stud` , `nr_grupa` , `tip_grupa` , `modul_c` , `modul_a` , `tip_curs2` , `post` , `grad` , `norma` , `ocupat` , `acoperit` , `acoperit_efect` , `an_grupa` , `zi` , `ora` , `sala` FROM `orar`";
-$result_orar = mysql_query($query);
+if($opt_selectie)
+{
+$start = 0;
+	$stop = $_SESSION['nr_afisari_viz'];
+	if($stop>$nr)
+		$stop = $nr;
+}
 		
+
 if($nr != 0)//daca exista inregistrari in tabela `orar`
 {
-	add($content,display_page_nav_secr($start,$nr_afisari,$nr));//butoanele inainte si inapoi
+	add($content,display_page_nav_secr($start,$nr_afisari,$nr,"0_orar_viz.php"));//butoanele inainte si inapoi
 	
-	add($content,'<form action="" method="post">');
-//	add($content,'<div align="center"><input type="submit" name="salveaza" value="Salveaza"></div>');
-	add($content,display_thead_orar_secr());//scrie capul de tabel
+	add($content,display_thead_orar_secr($thead_secr_ro));//scrie capul de tabel
 
 	for($i=$start;$i<$stop;$i++)//pentru  fiecare intrare
 	{
-		$output = display_result_secr($result_orar,$i);//scrie linia respectiva sub forma de tabel
+		$output = display_result_read_only($result_orar,$i,$i-$start);//scrie linia respectiva sub forma de tabel
 		add($content,$output);
-	}
+	}	
+	
 	add($content,'</table>');
+	add($content,'<input type="hidden" id="nr_inreg" value="'.($stop-$start).'">');
 	add($content,'<input type="submit" name="salveaza" value="Salveaza">');
 	add($content,'</form>');
-	add($content,display_page_nav_secr($start,$nr_afisari,$nr));
+	add($content,display_page_nav_secr($start,$nr_afisari,$nr,"0_orar_viz.php"));
+	add($content,criterii_selectie());
 	
-	add($content,'* Coloanele marcate cu acest simbol nu sunt editabile.<br>');
-}
+	add($content,'* Coloanele marcate cu acest simbol nu sunt editabile.<br>
+		      ** Pentru vizulizarea intregului tabel folositi scroll-ul orizontal sau ascundeti<br>
+		      &nbsp;&nbsp;colonele dorite prin efectuarea unui click pe capul de tabel.');
+	}
 else
 	{
+	if($opt_selectie != -1)//daca s-au marcat criterii de selectie
+		add($content,'Nu s-au gasit inregistrari.');
+	else
 	add($content,"Fisierul XlS nu a fost importat.");	
 	}
-	
 
 	
 $layout->replace('CONTENT',$content);

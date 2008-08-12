@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>{TITLE}</title>
-<link href="stil.css" rel="stylesheet" type="text/css" />
+<link href="stil1.css" rel="stylesheet" type="text/css" id="stylesheet"/>
 <script type="text/javascript" src="include/form.js"></script>
 </head>
-<body>
+<body onload="schimba_font();ascunde_coloane();">
 
 <!--start header-->
 <div id="wrap_header">
@@ -28,12 +28,17 @@
 	<div id="submenu">
 	{SUBMENU}
 	</div>
+
 </div>
 </div>
 <!--end subheader-->
 
 <!-- start page -->
 <div id="wrap_page">
+	<div id="toggle_text">
+<a href="javascript:schimba_stil(-1);" alt="Micsoreaza textul"><small>A</small></a><sup>-</sup>&nbsp;&nbsp;
+<a href="javascript:schimba_stil(1);" alt="Mareste textul"><big>A</big></a><sup>+</sup>
+</div>
 	<div id="content_page">
 		<!-- start content -->
 		<div id="content">
@@ -47,11 +52,14 @@
 <!-- start footer -->
 <div id="wrap_footer">
 	<div id="content_footer">
-		© 2007-2008 <a href="">CSpay</a> | <a href="">ROSEdu</a>
+		© 2007-2008 <a href="index.php">CSpay</a> | <a href="http://www.rosedu.org">ROSEdu</a> | <a href="http://www.cs.pub.ro">CS</a>
 	</div>	
 </div>
 <!-- end footer -->
-
+<div id="sub_logo">
+<br>Powered by: <br>
+	<img src="images/rosedu.gif" alt="rosedu_logo" width="220px"> 
+</div>
 
 </body>
 </html>

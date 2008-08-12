@@ -3,10 +3,9 @@
   <session usePreviewPrefix="0" previewPrefix="" >
     <itemcursorpositions/>
     <treestatus>
-      <openfolder url="convert" />
-      <openfolder url="convert/excel" />
       <openfolder url="images" />
       <openfolder url="include" />
+      <openfolder url="temp" />
     </treestatus>
   </session>
 </webprojectsession>

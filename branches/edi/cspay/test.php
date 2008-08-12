@@ -69,8 +69,32 @@ $x = stripslashes($x);
 $x = htmlspecialchars($x,ENT_QUOTES);
 add($content,'<br><br><br>'.$x);
 
+$i=10;
 
 $tabel = '<table class="special">';
+add($tabel,'<tr class="tr_head">
+					<td id="td_a_'.$i.'"><div class="over" id="ta_'.$i.'">c<br>o<br>l<br>1</div><div id="a_'.$i.'">col 1</td>
+					<td id="td_b_'.$i.'"><div  class="over"  id="tb_'.$i.'">c<br>o<br>l<br>2</div><div  id="b_'.$i.'">col 2</td>
+					<td id="td_c_'.$i.'"><div  class="over"  id="tc_'.$i.'">c<br>o<br>l<br>3</div><div id="c_'.$i.'">col 3</td>
+					<td id="td_d_'.$i.'"><div  class="over"  id="td_'.$i.'">c<br>o<br>l<br>4</div><div  id="d_'.$i.'">col 4</td>
+					<td id="td_e_'.$i.'"><div  class="over"   id="te_'.$i.'">c<br>o<br>l<br>5</div><div  id="e_'.$i.'">col 5</td>
+					<td id="td_f_'.$i.'"><div  class="over"  id="tf_'.$i.'">c<br>o<br>l<br>6</div><div  id="f_'.$i.'">col 6</td>
+					<td id="td_g_'.$i.'"><div  class="over"  id="tg_'.$i.'">c<br>o<br>l<br>7</div><div  id="g_'.$i.'">col 7</td>
+					<td id="td_h_'.$i.'"><div  class="over"  id="th_'.$i.'">c<br>o<br>l<br>8</div><div  id="h_'.$i.'">col 8</td>
+					<td id="td_i_'.$i.'"><div  class="over"  id="ti_'.$i.'">c<br>o<br>l<br>9</div><div  id="i_'.$i.'">col 9</td>
+					<td id="td_j_'.$i.'"><div  class="over"  id="tj_'.$i.'">c<br>o<br>l<br>10</div><div  id="j_'.$i.'">col 10</td>
+					<td id="td_k_'.$i.'"><div  class="over"  id="tk_'.$i.'">c<br>o<br>l<br>11</div><div id="k_'.$i.'">col 11</td>
+					<td id="td_l_'.$i.'"><div  class="over"  id="tl_'.$i.'">c<br>o<br>l<br>12</div><div  id="l_'.$i.'">col 12</td>
+					<td id="td_m_'.$i.'"><div  class="over"  id="tm_'.$i.'">c<br>o<br>l<br>13</div><div id="m_'.$i.'">col 13</td>
+					<td id="td_n_'.$i.'"><div  class="over"  id="tn_'.$i.'">c<br>o<br>l<br>14</div><div  id="n_'.$i.'">col 14</td>
+					<td id="td_o_'.$i.'"><div class="over"   id="to_'.$i.'">c<br>o<br>l<br>15</div><div  id="o_'.$i.'">col 15</td>
+					<td id="td_p_'.$i.'"><div  class="over"  id="tp_'.$i.'">c<br>o<br>l<br>16</div><div  id="p_'.$i.'">col 16</td>
+					<td id="td_q_'.$i.'"><div  class="over"  id="tq_'.$i.'">c<br>o<br>l<br>17</div><div  id="q_'.$i.'">col 17</td>
+					<td id="td_r_'.$i.'"><div  class="over"  id="tr_'.$i.'">c<br>o<br>l<br>18</div><div  id="r_'.$i.'">col 18</td>
+					<td id="td_s_'.$i.'"><div  class="over"  id="ts_'.$i.'">c<br>o<br>l<br>19</div><div  id="s_'.$i.'">col 19</td>
+					<td id="td_t_'.$i.'"><div  class="over"  id="tt_'.$i.'">c<br>o<br>l<br>20</div><div  id="t_'.$i.'">col 20</td>
+					</tr>');
+
 for($i=0;$i<10;$i++)
 	{
 		add($tabel,'<tr class="'.$class_select[$i%2].'">
@@ -100,34 +124,64 @@ for($i=0;$i<10;$i++)
 add($tabel,'<tr align="center">');
 
 $buton = '';
-add($buton,'<td><a id="but_a"  onclick="less(\'a\');">--</a></td>');
-add($buton,'<td><a id="but_b"  onclick="less(\'b\');">--</a></td>');
-add($buton,'<td><a id="but_c"  onclick="less(\'c\');">--</a></td>');
-add($buton,'<td><a id="but_d"  onclick="less(\'d\');">--</a></td>');
-add($buton,'<td><a id="but_e"  onclick="less(\'e\');">--</a></td>');
-add($buton,'<td><a id="but_f"  onclick="less(\'f\');">--</a></td>');
-add($buton,'<td><a id="but_g"  onclick="less(\'g\');">--</a></td>');
-add($buton,'<td><a id="but_h"  onclick="less(\'h\');">--</a></td>');
-add($buton,'<td><a id="but_i"  onclick="less(\'i\');">--</a></td>');
-add($buton,'<td><a id="but_j"  onclick="less(\'j\');">--</a></td>');
+add($buton,'<td><a class="resize"  id="but_a"  onclick="less(\'a\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_b"  onclick="less(\'b\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_c"  onclick="less(\'c\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_d"  onclick="less(\'d\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_e"  onclick="less(\'e\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_f"  onclick="less(\'f\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_g"  onclick="less(\'g\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_h"  onclick="less(\'h\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_i"  onclick="less(\'i\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_j"  onclick="less(\'j\');">&gt;-&lt;</a></td>');
 
-add($buton,'<td><a id="but_k"  onclick="less(\'k\');">--</a></td>');
-add($buton,'<td><a id="but_l"  onclick="less(\'l\');">--</a></td>');
-add($buton,'<td><a id="but_m"  onclick="less(\'m\');">--</a></td>');
-add($buton,'<td><a id="but_n"  onclick="less(\'n\');">--</a></td>');
-add($buton,'<td><a id="but_o"  onclick="less(\'o\');">--</a></td>');
-add($buton,'<td><a id="but_p"  onclick="less(\'p\');">--</a></td>');
-add($buton,'<td><a id="but_q"  onclick="less(\'q\');">--</a></td>');
-add($buton,'<td><a id="but_r"  onclick="less(\'r\');">--</a></td>');
-add($buton,'<td><a id="but_s"  onclick="less(\'s\');">--</a></td>');
-add($buton,'<td><a id="but_t"  onclick="less(\'t\');">--</a></td>');
+add($buton,'<td><a class="resize"  id="but_k"  onclick="less(\'k\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_l"  onclick="less(\'l\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_m"  onclick="less(\'m\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_n"  onclick="less(\'n\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_o"  onclick="less(\'o\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_p"  onclick="less(\'p\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_q"  onclick="less(\'q\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_r"  onclick="less(\'r\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_s"  onclick="less(\'s\');">&gt;-&lt;</a></td>');
+add($buton,'<td><a class="resize"  id="but_t"  onclick="less(\'t\');">&gt;-&lt;</a></td>');
 
 add($tabel,$buton);
 
 add($tabel,'</tr></table>');
 
-add($content,$tabel);
+//add($content,$tabel);
 
+$new = '<table border="0">';
+
+$i='head';
+add($new,'<tr class="tr_head">
+	<td><div id="test_0_but" onclick="hide(\'test_0\')" class="resize">++</div>
+	    <div id="test_0_'.$i.'" onclick="hide(\'test_0\')">test</div></td>
+<td><div id="test_1_but" onclick="hide(\'test_1\')" class="resize">++</div>
+	    <div id="test_1_'.$i.'" onclick="hide(\'test_1\')">test</div></td>
+	    <td><div id="test_2_but" onclick="hide(\'test_2\')" class="resize">++</div>
+	    <div id="test_2_'.$i.'" onclick="hide(\'test_2\')">test</div></td>
+	    <td><div id="test_3_but" onclick="hide(\'test_3\')" class="resize">++</div>
+	    <div id="test_3_'.$i.'" onclick="hide(\'test_3\')">test</div></td>
+	    <td><div id="test_4_but" onclick="hide(\'test_4\')" class="resize">++</div>
+	    <div id="test_4_'.$i.'" onclick="hide(\'test_4\')">test</div></td>	
+		    </tr>');
+
+for($i=0;$i<10;$i++)
+{
+	add($new,'<tr class="'.$class_select[$i%2].'">
+	<td><div id="test_0_'.$i.'">test</div></td>
+	<td><div id="test_1_'.$i.'">test</div></td>
+	<td><div id="test_2_'.$i.'">test</div></td>
+	<td><div id="test_3_'.$i.'">test</div></td>
+	<td><div id="test_4_'.$i.'">test</div></td>
+			
+		    </tr>');
+}
+add($new,'</table>');
+
+add($content,$new);
 
 $layout->replace('CONTENT',$content);
 

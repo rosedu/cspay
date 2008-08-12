@@ -29,12 +29,13 @@ if(isset($_POST['adauga_cont']))
 	$query = "INSERT INTO `asociatie` (`nume`,`email`,`link_admin`) 
 			  VALUES('".$nume."','".$email."','".$materie."')";
 	$result = mysql_query($query);
+	
 	if($result)
 	{
 		add($mesaj,'Utilizatorul a fost adaugat in baza de date.<br><br>');
 	}
 		else
-			dd($mesaj,'<div class="eroare">Eroare : Utilizatorul nu a putut fi adaugat in baza de date.');
+			add($mesaj,'<div class="eroare">Eroare : Utilizatorul nu a putut fi adaugat in baza de date.');
 	@mysql_free_result($result);
 }
 else
@@ -43,8 +44,9 @@ if(isset($_POST['modifica_cont']))
 	foreach($_POST as $index=>$val)
 	{
 		$$index = addslashes(html_entity_decode($val));
+		//echo $index.' = '.$val.'<br>';
 	}
-	$query = "UPDATE `asociatie` SET `nume`='".$nume."',`email`='".$email."'
+	$query = "UPDATE `asociatie` SET `nume`='".$nume."',`email`='".$email."',`link_admin`='.$materie.'
 		  WHERE `asoc_id`='".$utilizator_id."' LIMIT 1";
 	$result = mysql_query($query);
 	@mysql_free_result($result);	
@@ -164,8 +166,15 @@ for($i=0;$i<$nr;$i++)
 	
 	$query = "SELECT * FROM `admin` WHERE `admin_id`='".$link_admin."' LIMIT 1";
 	$res_cont = mysql_query($query);
+	$nr_admin = mysql_num_rows($res_cont);
+	
+	if($nr_admin == 0)
+		$materie = "nedefinit";
+	else
+	{
 	$cont = mysql_result($res_cont,0,'tip_cont');
 	$materie = html_entity_decode(mysql_result($res_cont,0,'materie'));
+	}
 	
 	$vector_cont = array("Secretara","Profesor","Administrator");
 	

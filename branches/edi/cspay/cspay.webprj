@@ -29,12 +29,10 @@
     <item url="0_calendar.php" uploadstatus="1" />
     <item url="0_facultate.php" uploadstatus="1" />
     <item url="0_orar.php" uploadstatus="1" />
-    <item url="0_orar_viz.php" uploadstatus="1" />
     <item url="0_salvare_xls.php" uploadstatus="1" />
     <item url="0_universitate.php" uploadstatus="1" />
     <item url="0_vacanta.php" uploadstatus="1" />
     <item url="1_asistenta.php" uploadstatus="1" />
-    <item url="1_orar_viz.php" uploadstatus="1" />
     <item url="1_vacanta.php" uploadstatus="1" />
     <item url="2_asistenta.php" uploadstatus="1" />
     <item url="2_asociere.php" uploadstatus="1" />
@@ -44,14 +42,12 @@
     <item url="2_import.php" uploadstatus="1" />
     <item url="2_utilizatori.php" uploadstatus="1" />
     <item url="Copy of 1_orar.php" uploadstatus="1" />
-    <item url="cspay.zip" uploadstatus="1" />
     <item url="data.php" uploadstatus="1" />
     <item url="eroare.php" uploadstatus="1" />
     <item url="index.php" uploadstatus="1" />
     <item url="login.php" uploadstatus="1" />
     <item url="logout.php" uploadstatus="1" />
     <item url="pass_recovery.php" uploadstatus="1" />
-    <item url="stil.css" uploadstatus="1" />
     <item url="test.php" uploadstatus="1" />
     <item url="test.xls" uploadstatus="1" />
     <item url="xxx.php" uploadstatus="1" />
@@ -59,93 +55,109 @@
     <templates>templates/</templates>
     <toolbars>toolbars/</toolbars>
     <annotations/>
-    <item url="convert/" />
-    <item url="convert/config/" />
-    <item url="convert/config/.svn/" />
-    <item url="convert/config/.svn/prop-base/" />
-    <item url="convert/config/.svn/props/" />
-    <item url="convert/config/.svn/text-base/" />
-    <item url="convert/config/.svn/text-base/config.php.svn-base" />
-    <item url="convert/config/.svn/tmp/" />
-    <item url="convert/config/.svn/tmp/prop-base/" />
-    <item url="convert/config/.svn/tmp/props/" />
-    <item url="convert/config/.svn/tmp/text-base/" />
-    <item url="convert/config/.svn/entries" />
-    <item url="convert/config/.svn/format" />
-    <item url="convert/config/config.php" />
-    <item url="convert/excel/" />
-    <item url="convert/excel/.svn/" />
-    <item url="convert/excel/.svn/prop-base/" />
-    <item url="convert/excel/.svn/prop-base/oleread.inc.svn-base" />
-    <item url="convert/excel/.svn/prop-base/OLERead.php.inc.svn-base" />
-    <item url="convert/excel/.svn/prop-base/reader.php.svn-base" />
-    <item url="convert/excel/.svn/props/" />
-    <item url="convert/excel/.svn/text-base/" />
-    <item url="convert/excel/.svn/text-base/oleread.inc.svn-base" />
-    <item url="convert/excel/.svn/text-base/OLERead.php.inc.svn-base" />
-    <item url="convert/excel/.svn/text-base/reader.php.svn-base" />
-    <item url="convert/excel/.svn/tmp/" />
-    <item url="convert/excel/.svn/tmp/prop-base/" />
-    <item url="convert/excel/.svn/tmp/props/" />
-    <item url="convert/excel/.svn/tmp/text-base/" />
-    <item url="convert/excel/.svn/entries" />
-    <item url="convert/excel/.svn/format" />
-    <item url="convert/excel/oleread.inc" />
-    <item url="convert/excel/OLERead.php.inc" />
-    <item url="convert/excel/reader.php" />
-    <item url="convert/.svn/" />
-    <item url="convert/.svn/prop-base/" />
-    <item url="convert/.svn/prop-base/convert2.php.svn-base" />
-    <item url="convert/.svn/prop-base/convert.php.svn-base" />
-    <item url="convert/.svn/props/" />
-    <item url="convert/.svn/text-base/" />
-    <item url="convert/.svn/text-base/convert2.php.svn-base" />
-    <item url="convert/.svn/text-base/convert.php.svn-base" />
-    <item url="convert/.svn/tmp/" />
-    <item url="convert/.svn/tmp/prop-base/" />
-    <item url="convert/.svn/tmp/props/" />
-    <item url="convert/.svn/tmp/text-base/" />
-    <item url="convert/.svn/entries" />
-    <item url="convert/.svn/format" />
-    <item url="convert/test/" />
-    <item url="convert/test/.svn/" />
-    <item url="convert/test/.svn/prop-base/" />
-    <item url="convert/test/.svn/prop-base/convert_test.php.svn-base" />
-    <item url="convert/test/.svn/prop-base/test.xls.svn-base" />
-    <item url="convert/test/.svn/props/" />
-    <item url="convert/test/.svn/text-base/" />
-    <item url="convert/test/.svn/text-base/convert_test.php.svn-base" />
-    <item url="convert/test/.svn/text-base/create_test_db.sql.svn-base" />
-    <item url="convert/test/.svn/text-base/test.xls.svn-base" />
-    <item url="convert/test/.svn/tmp/" />
-    <item url="convert/test/.svn/tmp/prop-base/" />
-    <item url="convert/test/.svn/tmp/props/" />
-    <item url="convert/test/.svn/tmp/text-base/" />
-    <item url="convert/test/.svn/entries" />
-    <item url="convert/test/.svn/format" />
-    <item url="convert/test/convert_test.php" />
-    <item url="convert/test/create_test_db.sql" />
-    <item url="convert/test/test.xls" />
-    <item url="convert/convert2.php" />
-    <item url="convert/convert.php" />
-    <item url="include/config.php~" />
-    <item url="include/debug.php~" />
-    <item url="include/display.php~" />
-    <item url="0_facultate.php~" />
+    <item url="convert/" uploadstatus="1" />
+    <item url="convert/config/" uploadstatus="1" />
+    <item url="convert/config/.svn/" uploadstatus="1" />
+    <item url="convert/config/.svn/prop-base/" uploadstatus="1" />
+    <item url="convert/config/.svn/props/" uploadstatus="1" />
+    <item url="convert/config/.svn/text-base/" uploadstatus="1" />
+    <item url="convert/config/.svn/text-base/config.php.svn-base" uploadstatus="1" />
+    <item url="convert/config/.svn/tmp/" uploadstatus="1" />
+    <item url="convert/config/.svn/tmp/prop-base/" uploadstatus="1" />
+    <item url="convert/config/.svn/tmp/props/" uploadstatus="1" />
+    <item url="convert/config/.svn/tmp/text-base/" uploadstatus="1" />
+    <item url="convert/config/.svn/entries" uploadstatus="1" />
+    <item url="convert/config/.svn/format" uploadstatus="1" />
+    <item url="convert/config/config.php" uploadstatus="1" />
+    <item url="convert/excel/" uploadstatus="1" />
+    <item url="convert/excel/.svn/" uploadstatus="1" />
+    <item url="convert/excel/.svn/prop-base/" uploadstatus="1" />
+    <item url="convert/excel/.svn/prop-base/oleread.inc.svn-base" uploadstatus="1" />
+    <item url="convert/excel/.svn/prop-base/OLERead.php.inc.svn-base" uploadstatus="1" />
+    <item url="convert/excel/.svn/prop-base/reader.php.svn-base" uploadstatus="1" />
+    <item url="convert/excel/.svn/props/" uploadstatus="1" />
+    <item url="convert/excel/.svn/text-base/" uploadstatus="1" />
+    <item url="convert/excel/.svn/text-base/oleread.inc.svn-base" uploadstatus="1" />
+    <item url="convert/excel/.svn/text-base/OLERead.php.inc.svn-base" uploadstatus="1" />
+    <item url="convert/excel/.svn/text-base/reader.php.svn-base" uploadstatus="1" />
+    <item url="convert/excel/.svn/tmp/" uploadstatus="1" />
+    <item url="convert/excel/.svn/tmp/prop-base/" uploadstatus="1" />
+    <item url="convert/excel/.svn/tmp/props/" uploadstatus="1" />
+    <item url="convert/excel/.svn/tmp/text-base/" uploadstatus="1" />
+    <item url="convert/excel/.svn/entries" uploadstatus="1" />
+    <item url="convert/excel/.svn/format" uploadstatus="1" />
+    <item url="convert/excel/oleread.inc" uploadstatus="1" />
+    <item url="convert/excel/OLERead.php.inc" uploadstatus="1" />
+    <item url="convert/excel/reader.php" uploadstatus="1" />
+    <item url="convert/.svn/" uploadstatus="1" />
+    <item url="convert/.svn/prop-base/" uploadstatus="1" />
+    <item url="convert/.svn/prop-base/convert2.php.svn-base" uploadstatus="1" />
+    <item url="convert/.svn/prop-base/convert.php.svn-base" uploadstatus="1" />
+    <item url="convert/.svn/props/" uploadstatus="1" />
+    <item url="convert/.svn/text-base/" uploadstatus="1" />
+    <item url="convert/.svn/text-base/convert2.php.svn-base" uploadstatus="1" />
+    <item url="convert/.svn/text-base/convert.php.svn-base" uploadstatus="1" />
+    <item url="convert/.svn/tmp/" uploadstatus="1" />
+    <item url="convert/.svn/tmp/prop-base/" uploadstatus="1" />
+    <item url="convert/.svn/tmp/props/" uploadstatus="1" />
+    <item url="convert/.svn/tmp/text-base/" uploadstatus="1" />
+    <item url="convert/.svn/entries" uploadstatus="1" />
+    <item url="convert/.svn/format" uploadstatus="1" />
+    <item url="convert/test/" uploadstatus="1" />
+    <item url="convert/test/.svn/" uploadstatus="1" />
+    <item url="convert/test/.svn/prop-base/" uploadstatus="1" />
+    <item url="convert/test/.svn/prop-base/convert_test.php.svn-base" uploadstatus="1" />
+    <item url="convert/test/.svn/prop-base/test.xls.svn-base" uploadstatus="1" />
+    <item url="convert/test/.svn/props/" uploadstatus="1" />
+    <item url="convert/test/.svn/text-base/" uploadstatus="1" />
+    <item url="convert/test/.svn/text-base/convert_test.php.svn-base" uploadstatus="1" />
+    <item url="convert/test/.svn/text-base/create_test_db.sql.svn-base" uploadstatus="1" />
+    <item url="convert/test/.svn/text-base/test.xls.svn-base" uploadstatus="1" />
+    <item url="convert/test/.svn/tmp/" uploadstatus="1" />
+    <item url="convert/test/.svn/tmp/prop-base/" uploadstatus="1" />
+    <item url="convert/test/.svn/tmp/props/" uploadstatus="1" />
+    <item url="convert/test/.svn/tmp/text-base/" uploadstatus="1" />
+    <item url="convert/test/.svn/entries" uploadstatus="1" />
+    <item url="convert/test/.svn/format" uploadstatus="1" />
+    <item url="convert/test/convert_test.php" uploadstatus="1" />
+    <item url="convert/test/create_test_db.sql" uploadstatus="1" />
+    <item url="convert/test/test.xls" uploadstatus="1" />
+    <item url="convert/convert2.php" uploadstatus="1" />
+    <item url="convert/convert.php" uploadstatus="1" />
+    <item url="cspay.session" uploadstatus="1" />
+    <item url="cspay.webprj" uploadstatus="1" />
+    <item url="load_xls.php" uploadstatus="1" />
+    <item url="convert/test.xls" uploadstatus="1" />
+    <item url="convert/excel/reader.php~" uploadstatus="1" />
+    <item url="temp/" uploadstatus="1" />
+    <item url="temp/file.xls" uploadstatus="1" />
+    <item url="include/conf_select.php" uploadstatus="1" />
+    <item url="0_orar_mod.php" uploadstatus="1" />
+    <item url="1_orar_mod.php" uploadstatus="1" />
+    <item url="0_orar_viz.php" uploadstatus="1" />
+    <item url="include/display.php~" uploadstatus="1" />
+    <item url="include/form.js~" uploadstatus="1" />
+    <item url="include/header.php~" uploadstatus="1" />
+    <item url="include/template.html~" uploadstatus="1" />
+    <item url="temp/fisier.xls" uploadstatus="1" />
+    <item url="0_orar_mod.php~" uploadstatus="1" />
+    <item url="0_universitate.php~" uploadstatus="1" />
+    <item url="1_orar_mod.php~" uploadstatus="1" />
+    <item url="stil.css~" uploadstatus="1" />
+    <item url="test.php.6663.backup" uploadstatus="1" />
+    <item url="1_orar_viz.php" uploadstatus="1" />
+    <item url="stil1.css" />
+    <item url="stil2.css" />
+    <item url="stil3.css" />
+    <item url="stil4.css" />
+    <item url="test.html" />
     <item url="0_orar_viz.php~" />
-    <item url="0_universitate.php~" />
-    <item url="2_asociere.php~" />
-    <item url="2_import_orar.php~" />
-    <item url="2_utilizatori.php~" />
-    <item url="cspay.session" />
-    <item url="cspay.webprj" />
-    <item url="login.php~" />
-    <item url="stil.css~" />
-    <item url="test.php~" />
-    <item url="load_xls.php" />
-    <item url="convert/test.xls" />
-    <item url="convert/excel/reader.php~" />
-    <item url="temp/" />
-    <item url="temp/file.xls" />
+    <item url="1_orar_viz.php~" />
+    <item url="stil2.css~" />
+    <item url="stil3.css~" />
+    <item url="stil4.css~" />
+    <item url="test.html~" />
+    <item url="do.php" />
+    <item url="1_orar.php" />
   </project>
 </webproject>
