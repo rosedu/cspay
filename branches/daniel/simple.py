@@ -1,70 +1,9 @@
 #! /usr/bin/env python
-#import pyExcelerator as pycel
+#uses xlwt module
+
 import xlwt as pycel
-import datetime
-# Excel has issues when creating too many styles/fonts, hence use
-# a factory to reuse instances (see FAQ#13 http://poi.apache.org/fa.qhtml )
 STYLE_FACTORY = {}
 FONT_FACTORY = {}
-def create_spreadsheet():
-	print "ia pula"
-	# Create a workbook
-	wb = pycel.Workbook()
-	# Add a sheet
-	ws = wb.add_sheet("Example Sheet")
-	# Tweak printer settings
-	# following makes a landscape layout on Letter paper
-	# the width of the columns
-	ws.fit_num_pages = 1
-	ws.fit_height_to_pages = 0
-	ws.fit_width_to_pages = 1
-	# Set to Letter paper
-	# See BiffRecords.SetupPageRecord for paper types/orientation
-	ws.paper_size_code = 1
-	# Set to landscape
-	ws.portrait = 0
-	# Write some stuff using our helper function
-	# Formatting - hint, look at Format code in OOo
-	# format cells... Numbers tab
-	# Write a percent
-	write(ws, 0, 0, .495, {"format":"0%"})
-	# Write a percent with negatives red
-	write(ws, 1, 0, -.495, {"format":"0%;[RED]-0%"})
-	# Dollar amounts
-	write(ws, 2, 0, 10.99, {"format":'$#,##0'})
-	# Font
-	# Size
-	d=datetime.date(2008,10,1)
-	print d
-	write(ws, 0, 1, d, {"format":'D-MMM'} )
-	write(ws, 1, 1, "Size 200(10pt)", {"font": (("height", 200),)})
-	# Bold
-	write(ws, 2, 1, "Bold text", {"font": (("bold", True),)})
-	# Background color
-	# See http://groups.google.com.au/group/python-excel/attach/9362140b0dddf464/palette_trial.xls?part=2
-	# for colour indices
-	YELLOW = 5
-	write(ws, 3, 1, "Yellow (5) Background",
-		{"background": (("pattern", pycel.Pattern.SOLID_PATTERN),
-						("pattern_fore_colour", YELLOW) )})
-	# Border
-	write(ws, 0, 2, "Border",
-		{"border": (("bottom",4),("top",2),("left",2),("right",2))})
-	# Wrapping
-	write(ws, 0, 3, "A bunch of long text to wrap",
-		{"alignment":(("wrap", pycel.Alignment.WRAP_AT_RIGHT),)})
-	write(ws, 4, 2, "fdsfd cbvfijgfdjs na fdsfnsdhfas asjfsnadjasf")
-	# Set column width
-	# (see pycel.BIFFRecords.ColInfoRecord for details, width in
-	# 1/256th of zero character)
-	write(ws, 0, 4, "A bunch of longer text not wrapped")	
-	ws.col(4).width = len("A bunch of longer text not wrapped")*256
-	# Freeze/split headers when scrolling
-	for row in range(1, 200):
-		write(ws, row, 5, row)
-	write(ws,201, 5,pycel.Formula("SUM(F2:F200)"))
-	# Save the workbook
-	wb.save("C:/Users/daniel/Desktop/rezult.xls")
 	
 def write(ws, row, col, data, style=None):
 	"""
@@ -87,7 +26,7 @@ def get_style(style):
 	The values for keys are lists of tuples containing (attribute,
 	value) pairs to set on model instances...
 	"""
-	print "KEY", style
+	#print "KEY", style
 	style_key = tuple(style.items())
 	s = STYLE_FACTORY.get(style_key, None)
 	if s is None:
@@ -148,6 +87,4 @@ def formula(str):
 def boxed(i):
 	return {"border": (("bottom",i),("top",i),("left",i),("right",i))}
 	
-	
-if __name__ == "__main__":
-	create_spreadsheet()
+
