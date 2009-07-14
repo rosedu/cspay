@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-import simple as qq
+import dummy_writer as dw
 
 C_col="E"
 A_col="F"
@@ -9,7 +9,7 @@ def output_table(input, excluded):
 	apps_count = {'prof': [], 'conf': [], 'sl': [], 'as': [] }
 	i = 0
 	
-	F, S = qq.initialize()
+	F, S = dw.initialize()
 	write_header(S, input.get_where(), input.get_bcourse(),
                      input.get_teacher_name(), input.get_teacher_position(),
                      input.get_month())
@@ -24,7 +24,7 @@ def output_table(input, excluded):
                                apps_count)
 	write_totals(S, i, input.get_C_post(), get_A_post(), course_count, apps_count)
 	write_footer(S, input.get_teacher(), input.get_where())
-	qq.finish(F, title)
+	dw.finish(F, title)
 	
 def ro_month(i):
 	"""Get the Romanian name for a certain month"""
@@ -41,31 +41,31 @@ def writeheader(ws, location, basecourse, teacher, position, month):
 	ws.col(0).width = 4*256
 	for i in range(4,8):
 		ws.col(i).width = 9*256
-	qq.write(ws, 0, 0, "Universitatea  Politehnica  Bucuresti")
-	qq.write(ws, 0, 6, "Catedra " + location)
-	qq.write(ws, 1, 0, "Facultatea Automatica si Calculatoare")
-	qq.write(ws, 1, 6, "Luna " + ro_month(month))
-	qq.write(ws, 3, 2, "Situatia orelor efectuate de")
-	qq.write(ws, 3, 5, position + ' ' + teacher)
-	qq.write(ws, 4, 2, "    cu functia de baza")
-	qq.write(ws, 4, 5, "la")
-	qq.write(ws, 4, 6, basecourse)
-	qq.write(ws, 6, 0, "Nr. crt.", qq.boxed(2))
-	qq.write(ws, 6, 1, "Felul si nr. postului", qq.boxed(2))
-	qq.write(ws, 6, 2, "Facultatea", qq.boxed(2))
-	qq.write(ws, 6, 3, "Disciplina", qq.boxed(2))
-	qq.write(ws, 6, 4, "Curs", qq.boxed(2))
-	qq.write(ws, 6, 5, "Aplicatii", qq.boxed(2))
-	qq.write(ws, 6, 6, "An/Grupa", qq.boxed(2))
-	qq.write(ws, 6, 7, "Data", qq.boxed(2))
-	qq.write(ws, 6, 8, "Orele", qq.boxed(2))
+	dw.write(ws, 0, 0, "Universitatea  Politehnica  Bucuresti")
+	dw.write(ws, 0, 6, "Catedra " + location)
+	dw.write(ws, 1, 0, "Facultatea Automatica si Calculatoare")
+	dw.write(ws, 1, 6, "Luna " + ro_month(month))
+	dw.write(ws, 3, 2, "Situatia orelor efectuate de")
+	dw.write(ws, 3, 5, position + ' ' + teacher)
+	dw.write(ws, 4, 2, "    cu functia de baza")
+	dw.write(ws, 4, 5, "la")
+	dw.write(ws, 4, 6, basecourse)
+	dw.write(ws, 6, 0, "Nr. crt.", dw.boxed(2))
+	dw.write(ws, 6, 1, "Felul si nr. postului", dw.boxed(2))
+	dw.write(ws, 6, 2, "Facultatea", dw.boxed(2))
+	dw.write(ws, 6, 3, "Disciplina", dw.boxed(2))
+	dw.write(ws, 6, 4, "Curs", dw.boxed(2))
+	dw.write(ws, 6, 5, "Aplicatii", dw.boxed(2))
+	dw.write(ws, 6, 6, "An/Grupa", dw.boxed(2))
+	dw.write(ws, 6, 7, "Data", dw.boxed(2))
+	dw.write(ws, 6, 8, "Orele", dw.boxed(2))
 
 	
 def insert_course(ws, i, curs, year, month, excluded):
 	"""Insert a line for every application for a given month"""
 	d = date(year, month, 1)
 	format = dateform()
-	format.update(qq.boxed(1))
+	format.update(dw.boxed(1))
 
 	if d.weekday() > curs.day():
 		d = d + timedelta(days=(7 + curs.day() - d.weekday()))
@@ -77,13 +77,13 @@ def insert_course(ws, i, curs, year, month, excluded):
 		
 	while d.month() == month:
 		if d not in excluded:
-			qq.write(ws, 7 + i, 0, i + 1)
-			qq.write(ws, 7 + i, 1, curs.code())
-			qq.write(ws, 7 + i, 2, curs.fac())
-			qq.write(ws, 7 + i, 3, curs.duration())
-			qq.write(ws, 7 + i, 5, curs.group())
-			qq.write(ws, 7 + i, 6, d, {"format":'D-MMM'})
-			qq.write(ws, 7 + i, 7, curs.hours())
+			dw.write(ws, 7 + i, 0, i + 1)
+			dw.write(ws, 7 + i, 1, curs.code())
+			dw.write(ws, 7 + i, 2, curs.fac())
+			dw.write(ws, 7 + i, 3, curs.duration())
+			dw.write(ws, 7 + i, 5, curs.group())
+			dw.write(ws, 7 + i, 6, d, {"format":'D-MMM'})
+			dw.write(ws, 7 + i, 7, curs.hours())
 			i = i + 1
 		d=d+timedelta(days=7)
 	return i
@@ -92,7 +92,7 @@ def insert_lab(ws, i, curs, year, month, excluded, count):
 	"""Insert a line for every application for a given month"""
 	d = date(year, month, 1)
 	format = dateform()
-	format.update(qq.boxed(1))
+	format.update(dw.boxed(1))
 	interval = str(curs['hour']) + "-" + str(curs['hour'] + curs['duration'])	
 	j = i
 
@@ -107,15 +107,15 @@ def insert_lab(ws, i, curs, year, month, excluded, count):
 
 	while d.month == month:
 		if d not in excluded:
-			qq.write(ws, 7 + i, 0, i + 1, qq.boxed(1))
-			qq.write(ws, 7 + i, 1, curs['poz'] + str(curs['no']), qq.boxed(1))
-			qq.write(ws, 7 + i, 2, curs['fac'], qq.boxed(1))
-			qq.write(ws, 7 + i, 3, curs['name'], qq.boxed(1))
-			qq.write(ws, 7 + i, 5, curs['duration'], qq.boxed(1))
-			qq.write(ws, 7 + i, 4, "", qq.boxed(1))
-			qq.write(ws, 7 + i, 6, curs['group'], qq.boxed(1))
-			qq.write(ws, 7 + i, 7, d, format)
-			qq.write(ws, 7 + i, 8, interval, qq.boxed(1))
+			dw.write(ws, 7 + i, 0, i + 1, dw.boxed(1))
+			dw.write(ws, 7 + i, 1, curs['poz'] + str(curs['no']), dw.boxed(1))
+			dw.write(ws, 7 + i, 2, curs['fac'], dw.boxed(1))
+			dw.write(ws, 7 + i, 3, curs['name'], dw.boxed(1))
+			dw.write(ws, 7 + i, 5, curs['duration'], dw.boxed(1))
+			dw.write(ws, 7 + i, 4, "", dw.boxed(1))
+			dw.write(ws, 7 + i, 6, curs['group'], dw.boxed(1))
+			dw.write(ws, 7 + i, 7, d, format)
+			dw.write(ws, 7 + i, 8, interval, dw.boxed(1))
 			i= i + 1
 		d=d + timedelta(days=7)
 	
@@ -124,25 +124,25 @@ def insert_lab(ws, i, curs, year, month, excluded, count):
 
 def write_totals(S, i, C, A):
 	"""Write the totals for a table"""
-	qq.write(ws, i + 2, 1, "TOTAL ore:", qq.boxed(2))
-	qq.write(ws, i + 2, 2, "Curs:", qq.boxed(2))
-	qq.write(ws, i + 2, 3, "Nr. ore:", qq.boxed(2))
-	qq.write(ws, i + 2, 4, "Aplicatii:", qq.boxed(2))
-	qq.write(ws, i + 2, 5,"Nr. ore:", qq.boxed(2))
+	dw.write(ws, i + 2, 1, "TOTAL ore:", dw.boxed(2))
+	dw.write(ws, i + 2, 2, "Curs:", dw.boxed(2))
+	dw.write(ws, i + 2, 3, "Nr. ore:", dw.boxed(2))
+	dw.write(ws, i + 2, 4, "Aplicatii:", dw.boxed(2))
+	dw.write(ws, i + 2, 5,"Nr. ore:", dw.boxed(2))
 	posts=["Prof", "Conf", "S.L.", "AS"]
 	internal=["prof", "conf", "sl", "as"]
 
 	for j in [2, 4]:
 		for post in posts:
-			qq.write(ws, i + 3 + posts.index(post), j, post, qq.boxed(1))
+			dw.write(ws, i + 3 + posts.index(post), j, post, dw.boxed(1))
 
 	for j in range(0, 4):
-		qq.write(ws, i+ 3 + j, 3,
-                         qq.formula(form_sum(course_count[internal[j]], C_col)),
-                         qq.boxed(1))
-		qq.write(ws, i + 3+ j, 5,
-                         qq.formula(form_sum(apps_count[internal[j]], A_col)),
-                         qq.boxed(1))
+		dw.write(ws, i+ 3 + j, 3,
+                         dw.formula(form_sum(course_count[internal[j]], C_col)),
+                         dw.boxed(1))
+		dw.write(ws, i + 3+ j, 5,
+                         dw.formula(form_sum(apps_count[internal[j]], A_col)),
+                         dw.boxed(1))
 
 def dateform():
 	"""Return desired date format."""
@@ -184,15 +184,15 @@ if __name__ == "__main__":
         lab2= {'poz': 'sl', 'no': 67, 'fac': 'A & C', 'day': 4,
                'name': 'Utiliz Sist Operare', 'duration': 3, 'group': '321CA',
                'hour': 10}
-        lab3={ 'poz': 'as', 'no':5 7, 'fac': 'A & C', 'day': 1,
+        lab3={ 'poz': 'as', 'no': 57, 'fac': 'A & C', 'day': 1,
                'name': 'Utiliz Sist Operare', 'duration': 2, 'group': '322CA',
                'hour': 11}
 
-        wb, ws = qq.initialize()
+        wb, ws = dw.initialize()
         writeheader(ws, "Calculatoare", "Utilizarea Sitemelor de Operare",
 			"Deaconescu Razvan", "ing.", 10)
         i=insert_lab(ws, 0, lab1, 2009, 10, exclusion, apps_count)
         i=insert_lab(ws, i, lab2, 2009, 10, exclusion, apps_count)
         i=insert_lab(ws, i, lab3, 2009, 10, exclusion, apps_count)
         write_totals(ws, i+7, 2, 3)
-        qq.finish(wb, "ceva")
+        dw.finish(wb, "ceva")
