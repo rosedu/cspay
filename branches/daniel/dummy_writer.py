@@ -68,23 +68,43 @@ def get_font(values):
 		FONT_FACTORY[font_key] = f
 	return f
 	
-def initialize():
-	wb = pycel.Workbook()
-	ws = wb.add_sheet("Foaie1")
+def initializeWB(coding):
+	"""Initialize a WorkBook with a certain encoding"""
+	wb = pycel.Workbook(encoding=coding)
+	return wb
+	
+def initializeWS(wb,name):
+	"""Initialize a WorkSheet with a certain name"""
+	ws = wb.add_sheet(name)
 	ws.fit_num_pages = 1
 	ws.fit_height_to_pages = 0
 	ws.fit_width_to_pages = 1
 	ws.paper_size_code = 1
 	ws.portrait = 0
-	return (wb,ws)
+	return ws
 	
 def finish(wb, title):
+	"""Export the WorkBook"""
 	wb.save(title+".xls")
 	
 def formula(str):
+	"""Conver formula from string to internal format"""
 	return pycel.Formula(str)
 	
-def boxed(i):
-	return {"border": (("bottom",i),("top",i),("left",i),("right",i))}
-	
-
+def boxed(i, v_center=0, wrap=0, h_center=1):
+	"""Set borders: 
+	    i=1 for thin border
+		i=2 for thick border
+		Set other values to 1 to enable
+	"""
+	result = {"border": (("bottom",i),("top",i),("left",i),("right",i))}
+	lista=[]
+	if wrap:
+		lista.append(("wrap", pycel.Alignment.WRAP_AT_RIGHT))
+	if v_center:
+		lista.append(("vert", pycel.Alignment.VERT_CENTER))
+	if h_center:
+		lista.append(("horz", pycel.Alignment.HORZ_CENTER))
+	if list:
+		result.update({"alignment":tuple(lista)})
+	return result
