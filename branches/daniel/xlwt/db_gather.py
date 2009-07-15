@@ -1,6 +1,7 @@
 import MySQLdb
 import sys
 import datetime
+from logic_proto import output_table
 
 days = ["lu","ma","mi","jo","vi","sa","du"]
 levels = {'4a':"as",'3s':"sl",'2c':"conf",'1p':"prof"}
@@ -34,7 +35,6 @@ def gather_data(name, year, months):
 			cursor.execute ("""SELECT link_cat, nume
 								FROM discipline WHERE disc_id=%s""",row['link_disc'])
 			temp1=cursor.fetchone()
-			print str(temp1)
 			input['functie_baza'] = temp1['nume']
 			cursor.execute ("""SELECT nume FROM titulari
 								WHERE link_disc=%s AND an=%s AND serie=%s""",
@@ -56,25 +56,22 @@ def gather_data(name, year, months):
 		cursor.execute ("""SELECT link_cat, nume_scurt
 						FROM discipline WHERE disc_id=%s""",row['link_disc'])
 		temp1=cursor.fetchone()
-		cursor.execute ("""SELECT link_fac
-								WHERE cat_id=%s""", temp1['link_cat'])
+		print "###", temp1['link_cat'], "###"
+		cursor.execute ("""SELECT link_fac FROM catedre WHERE cat_id=%s""", temp1['link_cat'])
 		temp2=cursor.fetchone()
 		cursor.execute ("""SELECT nume_scurt FROM facultati
 								WHERE fac_id=%s""", temp2['link_fac'])
 		temp2=cursor.fetchone()
-		input['ore'].append(build_course(row),temp1['nume_scurt'],temp2['nume_scurt'])
+		input['ore'].append(build_course(row,temp1['nume_scurt'],temp2['nume_scurt']))
 	
 	vacante=[]
 	cursor.execute(""" SELECT data_start, data_stop FROM vacante""")
 	result_set = cursor.fetchall ()
 	for row in result_set:
-		vacante.append(row['data_start'],row['data_stop'])
+		vacante.append((row['data_start'],row['data_stop']))
 	cursor.close ()
-	conn.close ()
-	
-	print str(input)
-	print "-"*30
-	print str(vacante)
+	conn.close()
+	output_table(input,vacante)
 	
 	
 	
@@ -102,7 +99,4 @@ def conv_grade(string):
 	
 
 if __name__ == "__main__":
-        gather_data('Mihai Capota',2000,11)
-
-        
-        
+        gather_data('Mihai Capota',2000,[11])
