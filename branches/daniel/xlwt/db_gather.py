@@ -7,7 +7,7 @@ levels = {'4a':"as",'3s':"sl",'2c':"conf",'1p':"prof"}
 
 def gather_data(name, year, months):
 	try:
-		conn = MySQLdb.connect (host = "anaconda.cs.pub.ro", user = "rsoc_cspay",
+		conn = MySQLdb.connect (host = "localhost", user = "cspay",
                                         passwd = "Chote3at", db = "rsoc_cspay")
 	except MySQLdb.Error, e:
 		print "Error %d: %s" % (e.args[0], e.args[1])
@@ -38,7 +38,11 @@ def gather_data(name, year, months):
 			input['functie_baza'] = temp1['nume']
 			cursor.execute ("""SELECT nume FROM titulari
 								WHERE link_disc=%s AND an=%s AND serie=%s""",
+<<<<<<< .mine
+								(row['link_disc'],row['an'],row['serie']))
+=======
 								(temp1['link_disc'],row['an'],row['serie']))
+>>>>>>> .r278
 			temp2=cursor.fetchone()
 			input['titular_curs'] = temp2['nume']
 			cursor.execute ("""SELECT nume, link_fac, sef FROM catedre
