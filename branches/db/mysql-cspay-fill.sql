@@ -62,7 +62,19 @@ INSERT INTO `discipline` (`link_cat`, `nume`, `nume_scurt`) VALUES
 (3, 'Proiectarea cu Microprocesoare', 'PM'),
 (3, 'Baze de Date', 'BD'),
 (3, 'Ingineria Programarii', 'IP'),
-(3, 'Ingineria Calculatoarelor', 'IC');
+(3, 'Ingineria Calculatoarelor', 'IC'),
+(3, 'Arhitecturi de Prelucrare Paralela', 'APP'),
+(3, 'Proiectarea Retelelor', 'PR'),
+(3, 'Sisteme Multiprocesor', 'SMP'),
+(3, 'Proiectarea VLSI', 'PVLSI'),
+(3, 'Sisteme cu Microprocesoare', 'SM'),
+(3, 'Sisteme Incorporate', 'SI'),
+(3, 'Procesarea Semnalelor', 'PS'),
+(3, 'Testarea Sistemelor de Calcul', 'TSC'),
+(3, 'Sisteme de Programe pentru Retele de Calculatoare', 'SPRC'),
+(3, 'Compilatoare', 'CPL'),
+(3, 'Baze de Date 2', 'BD2'),
+(3, 'Sisteme de Operare 2', 'SO2');
 
 -- 
 -- Dumping data for table `titulari`
@@ -146,4 +158,5 @@ INSERT INTO `titulari` (`link_disc`, `nume`, `an`, `serie`) VALUES
 (25, 'Alin Moldoveanu', 3, 'CC'),
 (26, 'Costin Stefanescu', 3, 'CA'),
 (26, 'Costin Stefanescu', 3, 'CB'),
-(26, 'Costin Stefanescu', 3, 'CC');
+(26, 'Costin Stefanescu', 3, 'CC'),
+(38, 'Octavian Purdila', 4, 'C3');
