@@ -1,3 +1,17 @@
+--
+-- Drop tables for cleanup
+--
+
+DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `asocieri`;
+DROP TABLE IF EXISTS `universitati`;
+DROP TABLE IF EXISTS `vacante`;
+DROP TABLE IF EXISTS `facultati`;
+DROP TABLE IF EXISTS `catedre`;
+DROP TABLE IF EXISTS `discipline`;
+DROP TABLE IF EXISTS `titulari`;
+DROP TABLE IF EXISTS `ore`;
+
 -- 
 -- Table structure for table `admin`
 -- 
@@ -10,7 +24,7 @@ CREATE TABLE `admin` (
   `tip_cont` smallint(6) NOT NULL default '0',
   `link_univ` int(11) NOT NULL default '0',
   PRIMARY KEY  (`admin_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=581 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- 
 -- Table structure for table `asocieri`
@@ -22,7 +36,7 @@ CREATE TABLE `asocieri` (
   `nume` varchar(40) NOT NULL default '',
   `email` varchar(45) NOT NULL default '',
   PRIMARY KEY  (`asoc_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- 
 -- Table structure for table `universitati`
@@ -34,7 +48,7 @@ CREATE TABLE `universitati` (
   `data_start` date NOT NULL default '0000-00-00',
   `data_stop` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`univ_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- 
 -- Table structure for table `vacante`
@@ -46,7 +60,7 @@ CREATE TABLE `vacante` (
   `data_start` date NOT NULL default '0000-00-00',
   `data_stop` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`vac_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- 
 -- Table structure for table `facultati`
@@ -59,7 +73,7 @@ CREATE TABLE `facultati` (
   `nume_scurt` varchar(50) NOT NULL default '',
   `decan` varchar(30) NOT NULL default '',
   PRIMARY KEY  (`fac_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- 
 -- Table structure for table `catedre`
@@ -71,7 +85,7 @@ CREATE TABLE `catedre` (
   `nume` varchar(50) NOT NULL default '',
   `sef` varchar(35) NOT NULL default '',
   PRIMARY KEY  (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `discipline`
@@ -83,7 +97,7 @@ CREATE TABLE `discipline` (
 	`nume` varchar(50) NOT NULL default '',
 	`nume_scurt` varchar(10) NOT NULL default '',
 	PRIMARY KEY (`disc_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `titulari`
@@ -96,14 +110,14 @@ CREATE TABLE `titulari` (
 	`an` tinyint(4) NOT NULL default '0',
 	`serie` varchar(5) NOT NULL default '',
 	PRIMARY KEY (`tit_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 
 -- Table structure for table `ore`
 -- 
 
 CREATE TABLE `ore` (
-  `orar_id` int(11) NOT NULL auto_increment,
+  `ora_id` int(11) NOT NULL auto_increment,
   `link_disc` int(11) NOT NULL default '0',
   `tip_ora` varchar(10) NOT NULL default '',
   `forma` varchar(5) NOT NULL default '',
@@ -128,4 +142,4 @@ CREATE TABLE `ore` (
   `paritate` tinyint(1) NOT NULL default '1',
   `paritate_start` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`orar_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;

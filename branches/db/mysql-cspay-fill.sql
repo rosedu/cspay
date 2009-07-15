@@ -8,6 +8,10 @@ INSERT INTO `universitati` (`univ_id`, `nume`, `data_start`, `data_stop`) VALUES
 -- Dumping data for table `vacante`
 -- 
 
+-- 
+-- Dumping data for table `vacante`
+-- 
+
 INSERT INTO `vacante` (`vac_id`, `link_univ`, `data_start`, `data_stop`) VALUES 
 (8, 1, '2008-04-28', '2008-05-04');
 
