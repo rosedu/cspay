@@ -38,11 +38,7 @@ def gather_data(name, year, months):
 			input['functie_baza'] = temp1['nume']
 			cursor.execute ("""SELECT nume FROM titulari
 								WHERE link_disc=%s AND an=%s AND serie=%s""",
-<<<<<<< .mine
 								(row['link_disc'],row['an'],row['serie']))
-=======
-								(temp1['link_disc'],row['an'],row['serie']))
->>>>>>> .r278
 			temp2=cursor.fetchone()
 			input['titular_curs'] = temp2['nume']
 			cursor.execute ("""SELECT nume, link_fac, sef FROM catedre
