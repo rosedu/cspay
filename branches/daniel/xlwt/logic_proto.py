@@ -117,6 +117,7 @@ def write_totals(ws, i, C, A):
 						 
 						 
 def write_footer(ws, i, teacher, titular, dept_head, dean):
+        """Write the footer for the table"""
 	dw.write(ws, i , 0, "Întocmit,")
 	dw.write(ws, i , 3, "Titular curs,")
 	dw.write(ws, i , 4, "ªef catedrã,")
