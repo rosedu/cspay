@@ -141,5 +141,5 @@ CREATE TABLE `ore` (
   `sala` varchar(10) NOT NULL default '',
   `paritate` tinyint(1) NOT NULL default '1',
   `paritate_start` tinyint(1) NOT NULL default '1',
-  PRIMARY KEY  (`orar_id`)
+  PRIMARY KEY  (`ora_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
