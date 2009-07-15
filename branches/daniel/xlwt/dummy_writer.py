@@ -77,10 +77,10 @@ def initializeWS(wb,name):
 	"""Initialize a WorkSheet with a certain name"""
 	ws = wb.add_sheet(name)
 	ws.fit_num_pages = 1
-	ws.fit_height_to_pages = 0
+	ws.fit_height_to_pages = 1
 	ws.fit_width_to_pages = 1
-	ws.paper_size_code = 1
-	ws.portrait = 0
+	ws.paper_size_code = 9
+	ws.portrait = 1
 	return ws
 	
 def finish(wb, title):
