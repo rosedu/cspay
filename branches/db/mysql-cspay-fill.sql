@@ -3,7 +3,7 @@
 -- 
 
 INSERT INTO `universitati` (`nume`, `data_start`, `data_stop`) VALUES
-('Universitatea Politehnica Bucuresti', '2009-02-23', '2008-06-05');
+('Universitatea Politehnica Bucuresti', '2009-02-23', '2009-06-05');
 
 -- 
 -- Dumping data for table `vacante`
@@ -14,7 +14,7 @@ INSERT INTO `universitati` (`nume`, `data_start`, `data_stop`) VALUES
 -- 
 
 INSERT INTO `vacante` (`link_univ`, `data_start`, `data_stop`) VALUES 
-(1, '2008-04-20', '2008-04-26');
+(1, '2009-04-20', '2009-04-26');
 
 --
 -- Dumping data for table `facultati`
