@@ -13,7 +13,7 @@ def gather_data(name, year, months):
 		print "Error %d: %s" % (e.args[0], e.args[1])
 		sys.exit (1)
 	
-	iput = {'an':year, 'profesor':name, 'luni':months,
+	input = {'an':year, 'profesor':name, 'luni':months,
                    'facultate':"",
                    'catedra':"",
                    'functie_baza':"",
@@ -34,10 +34,11 @@ def gather_data(name, year, months):
 			cursor.execute ("""SELECT link_cat, nume
 								FROM discipline WHERE disc_id=%s""",row['link_disc'])
 			temp1=cursor.fetchone()
+			print str(temp1)
 			input['functie_baza'] = temp1['nume']
 			cursor.execute ("""SELECT nume FROM titulari
 								WHERE link_disc=%s AND an=%s AND serie=%s""",
-								temp1['link_disc'],row['an'],row['serie'])
+								(temp1['link_disc'],row['an'],row['serie']))
 			temp2=cursor.fetchone()
 			input['titular_curs'] = temp2['nume']
 			cursor.execute ("""SELECT nume, link_fac, sef FROM catedre
