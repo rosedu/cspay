@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from db_gather import gather_data
 	
 if __name__ == "__main__":

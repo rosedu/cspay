@@ -1,4 +1,4 @@
-# -*- coding: cp1250 -*-
+# -*- coding: utf8 -*-
 from datetime import date, timedelta
 import dummy_writer as dw
 
@@ -10,7 +10,7 @@ luni_ro = [ "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
 
 def output_table(input, holidays, parities):
 
-	F= dw.initializeWB("cp1250")
+	F= dw.initializeWB("utf8")
 	months = input['luni']
 	year1, year2 = input['an'].split('/')
 	title = year1 + "-" + year2 + " " + input['functie_baza'] + " "
@@ -52,16 +52,16 @@ def write_header(ws, univ, faculty, department, basecourse, teacher, position,
 	dw.write(ws, 0, 6, "Catedra " + department)
 	dw.write(ws, 1, 0, faculty)
 	dw.write(ws, 1, 6, "Luna " + ro_month(month))
-	dw.write(ws, 3, 3, "Situaþia orelor efectuate de")
+	dw.write(ws, 3, 3, "SituaÅ£ia orelor efectuate de")
 	dw.write(ws, 3, 5, position + " " + teacher)
-	dw.write(ws, 4, 3, "cu funcþia de bazã")
+	dw.write(ws, 4, 3, "cu funcÅ£ia de bazÄƒ")
 	dw.write(ws, 4, 5, "la " + basecourse)
 	dw.write(ws, 6, 0, "Nr. crt.", dw.boxed(2,1,1))
-	dw.write(ws, 6, 1, "Felul ºi nr. postului", dw.boxed(2,1,1))
+	dw.write(ws, 6, 1, "Felul ÅŸi nr. postului", dw.boxed(2,1,1))
 	dw.write(ws, 6, 2, "Facultatea", dw.boxed(2,1))
 	dw.write(ws, 6, 3, "Disciplina", dw.boxed(2,1))
 	dw.write(ws, 6, 4, "Curs", dw.boxed(2,1))
-	dw.write(ws, 6, 5, "Aplicaþii", dw.boxed(2,1))
+	dw.write(ws, 6, 5, "AplicaÅ£ii", dw.boxed(2,1))
 	dw.write(ws, 6, 6, "An/Grupa", dw.boxed(2,1))
 	dw.write(ws, 6, 7, "Data", dw.boxed(2,1))
 	dw.write(ws, 6, 8, "Orele", dw.boxed(2,1))
@@ -123,7 +123,7 @@ def write_totals(ws, i, C, A):
 	dw.write(ws, i, 8, dw.formula("SUM(E8:F" + str(i) + ")"))
 	dw.write(ws, i + 2, 3, "TOTAL ore:", dw.boxed(2))
 	dw.write(ws, i + 2, 4, "Curs:", dw.boxed(2))
-	dw.write(ws, i + 2, 5, "Aplicaþii:", dw.boxed(2))
+	dw.write(ws, i + 2, 5, "AplicaÅ£ii:", dw.boxed(2))
 	posts=["Prof", "Conf", "S.l.", "As"]
 	internal=["prof", "conf", "sl", "as"]
 
@@ -141,9 +141,9 @@ def write_totals(ws, i, C, A):
 						 
 def write_footer(ws, i, teacher, titular, dept_head, dean):
 	"""Write the footer for the table"""
-	dw.write(ws, i , 0, "Întocmit,")
+	dw.write(ws, i , 0, "ÃŽntocmit,")
 	dw.write(ws, i , 3, "Titular curs,")
-	dw.write(ws, i , 5, "ªef catedrã,")
+	dw.write(ws, i , 5, "Åžef catedrÄƒ,")
 	dw.write(ws, i , 7, "Decan,")
 	dw.write(ws, i + 1, 0, teacher)
 	if ws.col(3).width < (len(titular) * 256):
