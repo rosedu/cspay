@@ -80,6 +80,8 @@ def initializeWS(wb,name):
 	ws.fit_height_to_pages = 1
 	ws.fit_width_to_pages = 1
 	ws.paper_size_code = 9
+	ws.footer_str= ""
+	ws.header_str='&F'
 	ws.portrait = 1
 	return ws
 	
