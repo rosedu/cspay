@@ -18,7 +18,8 @@ def db_write_line(line_data):
                         line_data[0])
         
     link_fac = cursor.fetchone ()
-        
+    print "---->_------------"
+    print link_fac['fac_id']    
     cursor.execute ("""SELECT disc_id
                            FROM discipline
                            WHERE link_fac=%s AND nume=%s""",
