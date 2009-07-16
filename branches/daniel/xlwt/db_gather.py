@@ -7,7 +7,7 @@ from logic_proto import output_table
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
 levels = {'4a': "as", '3s': "sl", '2c': "conf", '1p': "prof"}
 
-def gather_data(name, year, univ, facl, catd, months = 0):
+def gather_data(name, year, univ, facl, desk, months = 0):
         """ Gather data from a mySQL database for a certain name,
             and then write an Excel WorkBook for the given months,
             for the given universitary year
@@ -62,9 +62,9 @@ def gather_data(name, year, univ, facl, catd, months = 0):
         cursor.execute ("""SELECT sef
                            FROM catedre
                            WHERE nume=%s AND link_fac=%s""",
-                        (catd, temp2['fac_id']))
+                        (desk, temp2['fac_id']))
         temp2 = cursor.fetchone()
-        input['catedra'] = catd
+        input['catedra'] = desk
         input['sef_catedra'] = temp2['sef']
 
                 
@@ -78,7 +78,7 @@ def gather_data(name, year, univ, facl, catd, months = 0):
         i = 1
         for row in result_set:
                 if i :
-                        cursor.execute ("""SELECT link_cat, nume
+                        cursor.execute ("""SELECT nume
                                            FROM discipline
                                            WHERE disc_id=%s""",
                                         row['link_disc'])
@@ -96,22 +96,22 @@ def gather_data(name, year, univ, facl, catd, months = 0):
 
                         i = 0
 
-                cursor.execute ("""SELECT link_cat, nume_scurt
+                cursor.execute ("""SELECT link_fac, nume_scurt
 				   FROM discipline
 				   WHERE disc_id=%s""",
                                 row['link_disc'])
                 temp1 = cursor.fetchone()
-
-                cursor.execute ("""SELECT link_fac
+                """
+                cursor.execute ("SELECT link_fac
                                    FROM catedre
-                                   WHERE cat_id=%s""",
+                                   WHERE cat_id=%s",
                                 temp1['link_cat'])
                 temp2 = cursor.fetchone()
-
+                """
                 cursor.execute ("""SELECT nume_scurt
                                    FROM facultati
                                    WHERE fac_id=%s""",
-                                temp2['link_fac'])
+                                temp1['link_fac'])
                 temp2 = cursor.fetchone()
 
                 input['ore'].append(build_course(row,

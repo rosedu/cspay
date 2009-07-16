@@ -2,9 +2,11 @@ import sys
 from db_gather import gather_data
 
 #calling example:
-# call.py <name> <year> <month1> <month2> ...
-# where year is in format YYYY1/YYYY2, and monthN is an ordinal number 
+# call.py <year> <univ> <fac> <desk> <name1> [ name2 ... ]
+
 
 if __name__ == "__main__":
-    gather_data(sys.argv[1],sys.argv[2],map(int,sys.argv[3:]))
+    users = sys.argv[5:]
+    for user in users:
+        gather_data(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],user)
 
