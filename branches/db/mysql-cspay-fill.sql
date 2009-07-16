@@ -21,7 +21,8 @@ INSERT INTO `vacante` (`link_univ`, `data_start`, `data_stop`) VALUES
 --
 
 INSERT INTO `facultati` (`link_univ`, `nume`, `nume_scurt`, `decan`) VALUES
-(1, 'Facultatea de Automatica si Calculatoare', 'A & C', 'Dumitru Popescu');
+(1, 'Facultatea de Automatica si Calculatoare', 'AC', 'Dumitru Popescu'),
+(1, 'Facultatea de Inginerie cu Predare in Limbi Straine', 'FILS', 'Adrian Volceanov');
 
 -- 
 -- Dumping data for table `catedre`
@@ -36,45 +37,45 @@ INSERT INTO `catedre` (`link_fac`, `nume`, `sef`) VALUES
 -- Dumping data for table `discipline`
 --
 
-INSERT INTO `discipline` (`link_cat`, `nume`, `nume_scurt`) VALUES
-(3, 'Utilizarea Sistemelor de Operare', 'USO'),
-(3, 'Programarea Calculatoarelor', 'Prog'),
-(3, 'Introducere in Informatica', 'II'),
-(3, 'Programare Logica', 'PL'),
-(3, 'Structuri de Date', 'SD'),
-(3, 'Metode Numerice', 'MN'),
-(3, 'Programarea in Limbaj de Asamblare', 'PLAS'),
-(3, 'Analiza Algoritmilor', 'AA'),
-(3, 'Elemente de Electronica Analogica', 'EEA'),
-(3, 'Programarea Orientata Obiect', 'POO'),
-(3, 'Protocoale de Comunicatii', 'PC'),
-(3, 'Proiectarea Algoritmilor', 'PA'),
-(3, 'Paradigme de Programare', 'PP'),
-(3, 'Electronica Digitala', 'ED'),
-(3, 'Calculatoare Numerice 1', 'CN1'),
-(3, 'Algoritmi de Prelucrare Distribuita', 'APD'),
-(3, 'Retele Locale', 'RL'),
-(3, 'Calculatoare Numerice 2', 'CN2'),
-(3, 'Limbaje Formale si Automate', 'LFA'),
-(3, 'Elemente de Grafica pe Calculator', 'EGC'),
-(3, 'Sisteme de Operare', 'SO'),
-(3, 'Arhitectura Sistemelor de Calcul', 'ASC'),
-(3, 'Proiectarea cu Microprocesoare', 'PM'),
-(3, 'Baze de Date', 'BD'),
-(3, 'Ingineria Programarii', 'IP'),
-(3, 'Ingineria Calculatoarelor', 'IC'),
-(3, 'Arhitecturi de Prelucrare Paralela', 'APP'),
-(3, 'Proiectarea Retelelor', 'PR'),
-(3, 'Sisteme Multiprocesor', 'SMP'),
-(3, 'Proiectarea VLSI', 'PVLSI'),
-(3, 'Sisteme cu Microprocesoare', 'SM'),
-(3, 'Sisteme Incorporate', 'SI'),
-(3, 'Procesarea Semnalelor', 'PS'),
-(3, 'Testarea Sistemelor de Calcul', 'TSC'),
-(3, 'Sisteme de Programe pentru Retele de Calculatoare', 'SPRC'),
-(3, 'Compilatoare', 'CPL'),
-(3, 'Baze de Date 2', 'BD2'),
-(3, 'Sisteme de Operare 2', 'SO2');
+INSERT INTO `discipline` (`link_fac`, `link_cat`, `nume`, `nume_scurt`) VALUES
+(1, 3, 'Utilizarea Sistemelor de Operare', 'USO'),
+(1, 3, 'Programarea Calculatoarelor', 'Prog'),
+(1, 3, 'Introducere in Informatica', 'II'),
+(1, 3, 'Programare Logica', 'PL'),
+(1, 3, 'Structuri de Date', 'SD'),
+(1, 3, 'Metode Numerice', 'MN'),
+(1, 3, 'Programarea in Limbaj de Asamblare', 'PLAS'),
+(1, 3, 'Analiza Algoritmilor', 'AA'),
+(1, 3, 'Elemente de Electronica Analogica', 'EEA'),
+(1, 3, 'Programarea Orientata Obiect', 'POO'),
+(1, 3, 'Protocoale de Comunicatii', 'PC'),
+(1, 3, 'Proiectarea Algoritmilor', 'PA'),
+(1, 3, 'Paradigme de Programare', 'PP'),
+(1, 3, 'Electronica Digitala', 'ED'),
+(1, 3, 'Calculatoare Numerice 1', 'CN1'),
+(1, 3, 'Algoritmi de Prelucrare Distribuita', 'APD'),
+(1, 3, 'Retele Locale', 'RL'),
+(1, 3, 'Calculatoare Numerice 2', 'CN2'),
+(1, 3, 'Limbaje Formale si Automate', 'LFA'),
+(1, 3, 'Elemente de Grafica pe Calculator', 'EGC'),
+(1, 3, 'Sisteme de Operare', 'SO'),
+(1, 3, 'Arhitectura Sistemelor de Calcul', 'ASC'),
+(1, 3, 'Proiectarea cu Microprocesoare', 'PM'),
+(1, 3, 'Baze de Date', 'BD'),
+(1, 3, 'Ingineria Programarii', 'IP'),
+(1, 3, 'Ingineria Calculatoarelor', 'IC'),
+(1, 3, 'Arhitecturi de Prelucrare Paralela', 'APP'),
+(1, 3, 'Proiectarea Retelelor', 'PR'),
+(1, 3, 'Sisteme Multiprocesor', 'SMP'),
+(1, 3, 'Proiectarea VLSI', 'PVLSI'),
+(1, 3, 'Sisteme cu Microprocesoare', 'SM'),
+(1, 3, 'Sisteme Incorporate', 'SI'),
+(1, 3, 'Procesarea Semnalelor', 'PS'),
+(1, 3, 'Testarea Sistemelor de Calcul', 'TSC'),
+(1, 3, 'Sisteme de Programe pentru Retele de Calculatoare', 'SPRC'),
+(1, 3, 'Compilatoare', 'CPL'),
+(1, 3, 'Baze de Date 2', 'BD2'),
+(1, 3, 'Sisteme de Operare 2', 'SO2');
 
 -- 
 -- Dumping data for table `titulari`

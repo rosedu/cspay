@@ -69,8 +69,8 @@ CREATE TABLE `vacante` (
 CREATE TABLE `facultati` (
   `fac_id` int(11) NOT NULL auto_increment,
   `link_univ` int(11) NOT NULL default '0',
-  `nume` varchar(50) NOT NULL default '',
-  `nume_scurt` varchar(50) NOT NULL default '',
+  `nume` varchar(80) NOT NULL default '',
+  `nume_scurt` varchar(10) NOT NULL default '',
   `decan` varchar(30) NOT NULL default '',
   PRIMARY KEY  (`fac_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
@@ -93,6 +93,7 @@ CREATE TABLE `catedre` (
 
 CREATE TABLE `discipline` (
 	`disc_id` int(11) NOT NULL auto_increment,
+	`link_fac` int(11) NOT NULL default '0',
 	`link_cat` int(11) NOT NULL default '0',
 	`nume` varchar(50) NOT NULL default '',
 	`nume_scurt` varchar(10) NOT NULL default '',
