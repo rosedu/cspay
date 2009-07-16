@@ -7,7 +7,7 @@ from logic_proto import output_table
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
 levels = {'4a': "as", '3s': "sl", '2c': "conf", '1p': "prof"}
 
-def gather_data(name, year, months):
+def gather_data(name, year, univ, facl, catd, months = 0):
         """ Gather data from a mySQL database for a certain name,
             and then write an Excel WorkBook for the given months,
             for the given universitary year
@@ -23,25 +23,59 @@ def gather_data(name, year, months):
                 print "Error %d: %s" % (e.args[0], e.args[1])
                 sys.exit (1)
 
-        input = {'an': year, 'profesor': name, 'luni': months,
+        input = {'an': year, 'profesor': name, 'luni': [],
                  'facultate': "", 'catedra': "", 'functie_baza': "",
                  'ore': [], 'statut': "", 'titular_curs': "",
                  'sef_catedra': "", 'decan': "", 'universitate':"",
                  'semestru':()}
 
         cursor = conn.cursor (MySQLdb.cursors.DictCursor)
+
+        config = open('parity.pkl', 'rb')
+        parities = pickle.load(config)
+        config.close()
+        user_par={}
+        
+        cursor.execute ("""SELECT univ_id, data_start, data_stop
+                           FROM universitati WHERE nume=%s""",
+                        univ)
+        temp2 = cursor.fetchone()
+        input['universitate'] = univ
+        input['semestru'] = (temp2['data_start'], temp2['data_stop'])
+        if temp2['data_start'].month < temp2['data_stop'].month :
+                input['luni'] = range(temp2['data_start'].month,
+                                      temp2['data_stop'].month + 1)
+        else:
+                input['luni'] = ( range(temp2['data_start'].month, 13) +
+                                  range(1, temp2['data_stop'].month + 1) )
+        used_par = parities[temp2['univ_id']]
+
+                
+        cursor.execute ("""SELECT fac_id, decan
+                           FROM facultati
+                           WHERE nume=%s AND link_univ=%s """,
+                        (facl, temp2['univ_id']))
+        temp2 = cursor.fetchone()
+        input['facultate'] = facl
+        input['decan'] = temp2['decan']
+
+        cursor.execute ("""SELECT sef
+                           FROM catedre
+                           WHERE nume=%s AND link_fac=%s""",
+                        (catd, temp2['fac_id']))
+        temp2 = cursor.fetchone()
+        input['catedra'] = catd
+        input['sef_catedra'] = temp2['sef']
+
+                
         cursor.execute ("""SELECT link_disc, tip_ora, nr_post, an, serie,
                            grad_post, an_grupa, zi, ora, paritate,paritate_start
                            FROM ore
                            WHERE pers_acoperit=%s AND tip_ocupare='po'""",
                         name)
         result_set = cursor.fetchall ()
-        i = 1
-        config = open('parity.pkl', 'rb')
-        parities = pickle.load(config)
-        config.close()
-        user_par={}
 
+        i = 1
         for row in result_set:
                 if i :
                         cursor.execute ("""SELECT link_cat, nume
@@ -60,31 +94,6 @@ def gather_data(name, year, months):
                         temp2 = cursor.fetchone()
                         input['titular_curs'] = temp2['nume']
 
-                        cursor.execute ("""SELECT nume, link_fac, sef
-                                           FROM catedre
-                                           WHERE cat_id=%s""",
-                                        temp1['link_cat'])
-                        temp2 = cursor.fetchone()
-                        input['catedra'] = temp2['nume']
-                        input['sef_catedra'] = temp2['sef']
-
-                        cursor.execute ("""SELECT nume, decan, link_univ
-                                           FROM facultati
-                                           WHERE fac_id=%s""",
-                                        temp2['link_fac'])
-                        temp2 = cursor.fetchone()
-                        input['facultate'] = temp2['nume']
-                        input['decan'] = temp2 ['decan']
-                        used_par = parities[temp2['link_univ']]
-
-                        cursor.execute ("""SELECT nume, data_start, data_stop
-                                           FROM universitati
-                                           WHERE univ_id=%s""",
-                                        temp2['link_univ'])
-                        temp2 = cursor.fetchone()
-                        input['universitate'] = temp2['nume']
-                        input['semestru'] = (temp2['data_start'],
-                                             temp2['data_stop'])
                         i = 0
 
                 cursor.execute ("""SELECT link_cat, nume_scurt
@@ -108,9 +117,8 @@ def gather_data(name, year, months):
                 input['ore'].append(build_course(row,
                                                  temp1['nume_scurt'],
                                                  temp2['nume_scurt']))
-
+                                  
         vacante=[]
-
         cursor.execute(""" SELECT data_start, data_stop FROM vacante""")
         result_set = cursor.fetchall()
         for row in result_set:
@@ -119,9 +127,9 @@ def gather_data(name, year, months):
         cursor.close ()
         conn.close()
         if i:
-                print "No pay-per-hour found for",name
+                print "No pay-per-hour found for", name
         else:
-                output_table(input,vacante,used_par)
+                output_table(input, vacante, used_par)
 	
 
 def build_course(row, clas, fac):

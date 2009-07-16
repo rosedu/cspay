@@ -6,6 +6,9 @@ if __name__ == "__main__":
         profi = [ "Rughinis Razvan", "Octavian Purdila", "Razvan Deaconescu",
                   "Mihai Capota", "Iulian Moraru", "Mihaela Dumitrache",
                   "Marius Zaharia"]
+        univ="Universitatea Politehnica Bucuresti"
+        facl="Facultatea de Automatica si Calculatoare"
+        catd="Calculatoare"
         for prof in profi:
-                gather_data(prof,an,luni)
+                gather_data(prof, an, univ, facl, catd)
         
