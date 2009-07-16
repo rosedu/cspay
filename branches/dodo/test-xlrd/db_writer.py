@@ -5,7 +5,7 @@ import sys
 def db_write_line(line_data):
     try:
         conn = MySQLdb.connect (host = "localhost", user = "root",
-                                        passwd = "myraki", db = "cspay")
+                                        passwd = "teest", db = "cspay")
     except MySQLdb.Error, e:
             print "Error %d: %s" % (e.args[0], e.args[1])
             sys.exit (1)
