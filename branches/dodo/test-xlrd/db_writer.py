@@ -17,19 +17,19 @@ def db_write_line(line_data):
                            WHERE nume_scurt=%s""",
                         line_data[0])
         
-    link_fac = cursor.fetchall ()
+    link_fac = cursor.fetchone ()
         
     cursor.execute ("""SELECT disc_id
                            FROM discipline
                            WHERE link_fac=%s AND nume=%s""",
-                        link_fac,line_data[2])
-    id_ora = cursor.fetchall ()
+                        link_fac['fac_id'],line_data[2])
+    id_ora = cursor.fetchone ()
 
         
     cursor.execute ("""INSERT INTO ore VALUES(%s,%s,%s,
                         %s,%s,%s,%s,%s,%s,%s,%s,
                         %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",#id
-                        id_ora, #ora
+                        id_ora['disc_id'], #ora
                         line_data[2], #link_disc
                         line_data[1], #tip
                         line_data[3], #forma
