@@ -8,13 +8,13 @@ luni_ro = [ "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
          "iulie", "august", "septembrie", "octombrie", "noiembrie",
          "decembrie" ]
 
-def output_table(input, holidays):
-	title = input['an'] + " " + input['functie_baza'] + " " + input['profesor']
+def output_table(input, holidays, parities):
 
 	F= dw.initializeWB("cp1250")
 	months = input['luni']
 	year1, year2 = input['an'].split('/')
-	title = year1 + "-" + year2 + " " + input['functie_baza'] + " " + input['profesor']
+	title = year1 + "-" + year2 + " " + input['functie_baza'] + " "
+	title += input['profesor']
 	for month in months:
 		if month < 8:
 			year = int(year2)
@@ -24,21 +24,24 @@ def output_table(input, holidays):
 		C_count = {'prof': [], 'conf': [], 'sl': [], 'as': [] }
 		A_count = {'prof': [], 'conf': [], 'sl': [], 'as': [] }
 		S = dw.initializeWS(F, ro_month(month).capitalize())
-		write_header(S, input['universitate'], input['facultate'], input['catedra'],
-							 input['functie_baza'], input['profesor'], 
-							 input['statut'], month)
+		write_header(S, input['universitate'], input['facultate'],
+                             input['catedra'], input['functie_baza'],
+                             input['profesor'], input['statut'], month)
 		
 		courses = input['ore']
 		for curs in courses:
-			i = insert_course(S, i, curs, year, month, input['semestru'], holidays, 
-										  C_count, A_count)
+			i = insert_course(S, i, curs, year, month,
+                                          input['semestru'], holidays, 
+										  parities, C_count, A_count)
 		write_totals(S, i + 7, C_count, A_count)
-		write_footer(S, i + 16, input['profesor'], input['titular_curs'],
-                             input['sef_catedra'], input['decan'])
+		write_footer(S, i + 16, input['profesor'],
+                             input['titular_curs'], input['sef_catedra'],
+                             input['decan'])
 	dw.finish(F, title)
 
 	
-def write_header(ws, univ, faculty, department, basecourse, teacher, position, month):
+def write_header(ws, univ, faculty, department, basecourse, teacher, position,
+                 month):
 	"""Insert the header of the table""" 
 	ws.col(0).width = 4*256
 	for i in [1,2,3,6,7,8]:
@@ -64,7 +67,8 @@ def write_header(ws, univ, faculty, department, basecourse, teacher, position, m
 	dw.write(ws, 6, 8, "Orele", dw.boxed(2,1))
 
 
-def insert_course(ws, i, curs, year, month, semester, holidays, C_count, A_count):
+def insert_course(ws, i, curs, year, month, semester, holidays, parit,
+                  C_count, A_count):
 	"""Insert a line for every application for a given month"""
 	d = date(year, month, 1)
 	format = dateform()
@@ -82,9 +86,15 @@ def insert_course(ws, i, curs, year, month, semester, holidays, C_count, A_count
 		ws.col(3).width = len(curs['disciplina']) * 256
 
 	while d.month == month:
-		if inside(d, semester) and outside(d, holidays) :
+		if (inside(d, semester) and
+                    parit[d.isocalendar()[1]] and
+                    ( curs['parit'] == 1 or
+                      ( parit[d.isocalendar()[1]] % curs['parit']
+                        == curs['pari_st']))
+                    and outside(d, holidays)) :
 			dw.write(ws, 7 + i, 0, i + 1, dw.boxed(1,0,0,0))
-			dw.write(ws, 7 + i, 1, curs['functie'] + str(curs['nr_post']),
+			dw.write(ws, 7 + i, 1,
+                                 curs['functie'] + str(curs['nr_post']),
                                  dw.boxed(1))
 			dw.write(ws, 7 + i, 2, curs['facultate'], dw.boxed(1))
 			dw.write(ws, 7 + i, 3, curs['disciplina'], dw.boxed(1))

@@ -1,6 +1,7 @@
 import MySQLdb
 import sys
 import datetime
+import pickle
 from logic_proto import output_table
 
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
@@ -36,6 +37,10 @@ def gather_data(name, year, months):
                         name)
         result_set = cursor.fetchall ()
         i = 1
+        config = open('parity.pkl', 'rb')
+        parities = pickle.load(config)
+        config.close()
+        user_par={}
 
         for row in result_set:
                 if i :
@@ -70,6 +75,7 @@ def gather_data(name, year, months):
                         temp2 = cursor.fetchone()
                         input['facultate'] = temp2['nume']
                         input['decan'] = temp2 ['decan']
+                        used_par = parities[temp2['link_univ']]
 
                         cursor.execute ("""SELECT nume, data_start, data_stop
                                            FROM universitati
@@ -115,7 +121,7 @@ def gather_data(name, year, months):
         if i:
                 print "No pay-per-hour found for",name
         else:
-                output_table(input,vacante)
+                output_table(input,vacante,used_par)
 	
 
 def build_course(row, clas, fac):
@@ -123,7 +129,8 @@ def build_course(row, clas, fac):
            of the course, and the name of the faculty
         """
         course = {'functie': "", 'nr_post': 0, 'facultate': "", 'zi': 0,
-                  'tip': "", 'disciplina': "", 'grupa': "", 'ore': ""}
+                  'tip': "", 'disciplina': "", 'grupa': "", 'ore': "",
+                  'parit': 0, 'pari_st': 0}
         course['functie'] = conv_grade(row['grad_post'])
         course['nr_post'] = row['nr_post']
         course['zi'] = conv_day(row['zi'])
@@ -132,6 +139,11 @@ def build_course(row, clas, fac):
         course['ore'] = row['ora']
         course['disciplina'] = clas
         course['facultate'] = fac
+        course['parit'] = row['paritate']
+        if row['paritate_start'] == course['parit']:
+                course['pari_st'] = 0
+        else:
+                course['pari_st'] = row['paritate_start']
         return course
 
 def conv_day(string):
