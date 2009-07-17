@@ -46,6 +46,7 @@ def db_write_line(line_data,line_index):
                         line_data[12], #nr_post
                         line_data[13], #grad_post
                         line_data[14], #pers_norma
+                        line_data[15],
                         line_data[16], #pers_acoperit
                         line_data[17], #pers_acoperit_efect
                         line_data[18], #an_grupa
@@ -80,7 +81,10 @@ def db_write_line(line_data,line_index):
                             ora, 
                             sala, 
                             paritate, 
-                            paritate_start) VALUES (%s)""",[tuple_db])
+                            paritate_start) VALUES (%s)""",
+                                [
+                                    tuple_db
+                                ])
     cursor.close ()
     conn.close()                        
                         
