@@ -54,7 +54,7 @@ def db_write_line(line_data,line_index):
                         line_data[21], #sala
                         1,#paritate, #
                         1)#,paritate_start) #)#,paritate_start) #
-                tuple_ore=("ora_id"
+            tuple_ore=("ora_id"
                            "link_disc",
                            "tip_ora", 
                            "forma",
