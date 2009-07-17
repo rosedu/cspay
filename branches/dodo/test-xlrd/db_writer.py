@@ -18,7 +18,7 @@ def db_write_line(line_data,line_index):
                         (line_data[0]))
         
     link_fac = cursor.fetchone ()
-    if not link_fac['fac_id']:
+    if not link_fac:
         print "Error -> Line NR ",line_index,"data did not have a coresponding faculty id "
         print "Possible causses : "
     else :   
@@ -27,7 +27,7 @@ def db_write_line(line_data,line_index):
                            WHERE link_fac=%s AND nume=%s""",
                         (link_fac['fac_id'],line_data[2]))
         id_ora = cursor.fetchone ()
-        if not ora['disc_id']:
+        if not id_ora:
             print "Error -> Line NR ",line_index,"data did not have a coresponding course/lect id"
             print "Possible causses : "
         else:
