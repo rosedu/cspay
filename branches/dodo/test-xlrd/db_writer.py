@@ -19,16 +19,16 @@ def db_write_line(line_data):
         
     link_fac = cursor.fetchone ()
     print "---->_------------"
-    print link_fac[0]    
+    print link_fac['fac_id']    
     cursor.execute ("""SELECT disc_id
                            FROM discipline
                            WHERE link_fac=%s AND nume=%s""",
-                        (link_fac[0],line_data[2]))
+                        (link_fac['fac_id'],line_data[2]))
     id_ora = cursor.fetchone ()
 
         
     cursor.execute ("""INSERT INTO ore VALUES (%s)""",#id
-                        [(id_ora[0],list_data,1,1)])
+                        [(id_ora['disc_id'],list_data,1,1)])
     cursor.close ()
     conn.close()                        
                         
