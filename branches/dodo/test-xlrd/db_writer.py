@@ -20,15 +20,14 @@ def db_write_line(line_data):
     link_fac = cursor.fetchone ()
     if not link_fac:
         print "Warning -> Data did not have a coresponding faculty"
-    else :
-        print "Data ok -> ",
-        print link_fac['fac_id']    
+    else :   
         cursor.execute ("""SELECT disc_id
                            FROM discipline
                            WHERE link_fac=%s AND nume=%s""",
                         (link_fac['fac_id'],line_data[2]))
         id_ora = cursor.fetchone ()
-
+        print "Data ok2----> ",
+        print id_ora['disc_id']
         
    # cursor.execute ("""INSERT INTO ore VALUES (%s)""",#id
          #               [(id_ora['disc_id'],line_data,1,1)])
