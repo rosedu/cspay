@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 #script for xls to database insertion
 import xlrd
 import line_parser
@@ -5,8 +8,6 @@ import line_reader
 import db_writer
 import sys
 #pointer to the xls file
-
-sys.setdefaultencoding('iso-8859-1')
 
 ################################################
 #
