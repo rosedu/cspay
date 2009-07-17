@@ -13,7 +13,9 @@ def read_line(sheet,line_nr):
     i_col=0
     while i_col<sheet.ncols:
         if type(i_col)==type('string'):
+            print i_col," -->"
             i_col.encode('ASCII',ignore)
+            print i_col
         list_el.append(sheet.cell_value(line_nr,i_col)) #appending data read to the list
         i_col=i_col+1
     return list_el
