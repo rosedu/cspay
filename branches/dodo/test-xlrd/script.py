@@ -5,6 +5,8 @@ import line_reader
 import db_writer
 #pointer to the xls file
 
+sys.setdefaultencoding('iso-8859-1')
+
 ################################################
 #
 # Verify if file exists and open it
