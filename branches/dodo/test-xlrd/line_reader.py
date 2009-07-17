@@ -15,7 +15,7 @@ def read_line(sheet,line_nr):
         cell_value=sheet.cell_value(line_nr,i_col)
         if type(cell_value)==type('string'):
             print cell_value," -->"
-            cell_value.encode('ASCII',ignore)
+            cell_value.encode('ASCII','ignore')
             print cell_value
         list_el.append(cell_value) #appending data read to the list
         i_col=i_col+1
