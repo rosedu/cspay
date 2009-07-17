@@ -43,7 +43,7 @@ while index_line<sheet.nrows:
         db_writer.db_write_line(line)
     elif error_check=="Ignore":
         print "Line ",index_line," has been ignored >>> "
-    else
+    else:
         print "Data missing on line :",
         print error_check+1," Sheet :",sheet.name
         print "Please correct XLS file"
