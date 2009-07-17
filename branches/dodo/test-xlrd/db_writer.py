@@ -57,7 +57,7 @@ def db_write_line(line_data,line_index):
            
 
             print tuple_db
-            cursor.execute ("""INSERT INTO ore(ora_id
+            cursor.executemany ("""INSERT INTO ore(ora_id
                             link_disc,
                             tip_ora, 
                             forma,
