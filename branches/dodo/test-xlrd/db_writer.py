@@ -2,7 +2,7 @@ import MySQLdb
 import sys
 
 
-def db_write_line(line_data):
+def db_write_line(line_data,line_index):
     try:
         conn = MySQLdb.connect (host = "localhost", user = "cspay",
                                         passwd = "Chote3at", db = "rsoc_cspay")
@@ -19,15 +19,20 @@ def db_write_line(line_data):
         
     link_fac = cursor.fetchone ()
     if not link_fac:
-        print "Warning -> Data did not have a coresponding faculty"
+        print "Error -> Line NR ",line_index,"data did not have a coresponding faculty id "
+        print "Possible causses : "
     else :   
         cursor.execute ("""SELECT disc_id
                            FROM discipline
                            WHERE link_fac=%s AND nume=%s""",
                         (link_fac['fac_id'],line_data[2]))
         id_ora = cursor.fetchone ()
-        print "Data ok2----> ",
-        print id_ora['disc_id']
+        if not ora:
+            print "Error -> Line NR ",line_index,"data did not have a coresponding course/lect id"
+            print "Possible causses : "
+        else:
+            print "Data ok2----> ",
+            print id_ora['disc_id']
         
    # cursor.execute ("""INSERT INTO ore VALUES (%s)""",#id
          #               [(id_ora['disc_id'],line_data,1,1)])
