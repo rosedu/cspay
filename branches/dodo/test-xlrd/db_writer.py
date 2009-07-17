@@ -15,7 +15,7 @@ def db_write_line(line_data):
     cursor.execute ("""SELECT fac_id
                            FROM facultati
                            WHERE nume_scurt=%s""",
-                        line_data[0])
+                        (line_data[0]))
         
     link_fac = cursor.fetchone ()
     print "---->_------------"
@@ -23,14 +23,12 @@ def db_write_line(line_data):
     cursor.execute ("""SELECT disc_id
                            FROM discipline
                            WHERE link_fac=%s AND nume=%s""",
-                        link_fac['fac_id'],line_data[2])
+                        (link_fac['fac_id'],line_data[2]))
     id_ora = cursor.fetchone ()
 
         
-    cursor.execute ("""INSERT INTO ore VALUES(%s,%s,%s,
-                        %s,%s,%s,%s,%s,%s,%s,%s,
-                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",#id
-                        id_ora['disc_id'], #ora
+    cursor.execute ("""INSERT INTO ore VALUES %s""",#id
+                        (id_ora['disc_id'], #ora
                         line_data[2], #link_disc
                         line_data[1], #tip
                         line_data[3], #forma
@@ -52,7 +50,7 @@ def db_write_line(line_data):
                         line_data[20], #ora
                         line_data[21], #sala
                         1,#paritate, #
-                        1)#,paritate_start) #
+                        1))#,paritate_start) #
     cursor.close ()
     conn.close()                        
                         
