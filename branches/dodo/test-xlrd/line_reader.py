@@ -12,10 +12,11 @@ def read_line(sheet,line_nr):
     #reading each column in that specific line
     i_col=0
     while i_col<sheet.ncols:
-        if type(i_col)==type('string'):
-            print i_col," -->"
+        cell_value=sheet.cell_value(line_nr,i_col)
+        if type(cell_value)==type('string'):
+            print cell_value," -->"
             i_col.encode('ASCII',ignore)
-            print i_col
-        list_el.append(sheet.cell_value(line_nr,i_col)) #appending data read to the list
+            print cell_value
+        list_el.append(cell_value) #appending data read to the list
         i_col=i_col+1
     return list_el
