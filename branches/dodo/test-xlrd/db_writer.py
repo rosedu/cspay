@@ -55,7 +55,7 @@ def db_write_line(line_data,line_index):
                         1,#paritate, #
                         1)#,paritate_start) #)#,paritate_start) #
             
-            cursor.execute ("""INSERT INTO ore VALUES(%s)""",[tuple_db])
+            cursor.execute ("""INSERT INTO ore VALUES(%s,%s)""",[tuple_db,tuple_db])
     cursor.close ()
     conn.close()                        
                         
