@@ -81,7 +81,7 @@ def db_write_line(line_data,line_index):
                             ora, 
                             sala, 
                             paritate, 
-                            paritate_start) VALUES (%s)""",tuple_db)
+                            paritate_start) VALUES (%s)""",[tuple_db])
     cursor.close ()
     conn.close()                        
                         
