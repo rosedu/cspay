@@ -81,7 +81,7 @@ def db_write_line(line_data,line_index):
 
             print tuple_db
             cursor.execute ("""INSERT INTO ore(%s)
-                            VALUES (%s)""",tuple_ore,tuple_db)
+                            VALUES (%s)""",[tuple_ore,tuple_db])
     cursor.close ()
     conn.close()                        
                         
