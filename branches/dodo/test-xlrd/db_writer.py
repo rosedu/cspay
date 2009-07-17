@@ -27,8 +27,8 @@ def db_write_line(line_data):
     id_ora = cursor.fetchone ()
 
         
-    cursor.execute ("""INSERT INTO ore VALUES (%s)""",#id
-                        [(id_ora['disc_id'],line_data,1,1)])
+   # cursor.execute ("""INSERT INTO ore VALUES (%s)""",#id
+         #               [(id_ora['disc_id'],line_data,1,1)])
     cursor.close ()
     conn.close()                        
                         
