@@ -20,7 +20,8 @@ def parse(list_data,line_number):
             empty=0
             
     if ii>21:
-        return "Ok"
+        return "Ignore"     # more than 21 lines that count
+                            # should make the line be ignored
     
     #common mandatory data 1(C+L, index 0->6)
     i=0

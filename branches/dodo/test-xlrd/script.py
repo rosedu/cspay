@@ -39,14 +39,16 @@ while index_line<sheet.nrows:
     line=line_reader.read_line(sheet,index_line)
         
     error_check=line_parser.parse(line,index_line) #if "OK" data is consistent
-    if error_check!="Ok":
+    if error_check=="Ok":
+        db_writer.db_write_line(line)
+    elif error_check=="Ignore":
+        print "Line ",index_line," has been ignored >>> "
+    else
         print "Data missing on line :",
         print error_check+1," Sheet :",sheet.name
         print "Please correct XLS file"
         #index_sheet=file_xls.nsheets
         #break
-    else :
-        db_writer.db_write_line(line)
     index_line=index_line+1
     
 #test read first line in xls file -> uncomment next line to test

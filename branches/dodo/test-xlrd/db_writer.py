@@ -21,7 +21,7 @@ def db_write_line(line_data):
     if not link_fac:
         print "Warning -> Data did not have a coresponding faculty"
     else :
-        print "---->_------------"
+        print "Data ok -> ",
         print link_fac['fac_id']    
         cursor.execute ("""SELECT disc_id
                            FROM discipline
