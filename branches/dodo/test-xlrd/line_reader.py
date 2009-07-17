@@ -11,7 +11,9 @@ def read_line(sheet,line_nr):
     list_el=[]
     #reading each column in that specific line
     i_col=0
-    while i_col<sheet.ncols:           
+    while i_col<sheet.ncols:
+        if type(i_col)==type('string'):
+            i_col.encode('ASCII',ignore)
         list_el.append(sheet.cell_value(line_nr,i_col)) #appending data read to the list
         i_col=i_col+1
     return list_el
