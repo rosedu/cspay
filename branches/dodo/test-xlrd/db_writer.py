@@ -49,7 +49,7 @@ def db_write_line(line_data,line_index):
             db+=str(line_data[14])+',' #pers_norma
             db+=str(line_data[15])+','
             db+=str(line_data[16])+',' #pers_acoperit
-            db+=str(line_data[17])+',' #pers_acoperit_efect
+            db+=str(line_data[17].encode("latin-1"))+',' #pers_acoperit_efect 
             db+=str(line_data[18])+',' #an_grupa
             db+=str(line_data[19])+',' #zi
             db+=str(line_data[20])+',' #ora
