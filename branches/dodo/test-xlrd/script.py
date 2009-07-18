@@ -9,6 +9,7 @@ import db_writer
 import sys
 #pointer to the xls file
 
+print sys.getdefaultencoding()
 ################################################
 #
 # Verify if file exists and open it
