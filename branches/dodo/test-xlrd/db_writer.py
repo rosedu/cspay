@@ -33,7 +33,8 @@ def db_write_line(line_data,line_index):
         else:
             db='('
             db+=str(id_ora['disc_id'])+',' #ora
-            db+=str(line_data[1])+',' #link_disc
+            db+=str(id_ora['disc_id'])+',' #link_disc
+            #db+=str(line_data[1])+',' #link_disc                      <----------------------------------------- Problema
             db+='\''+str(line_data[2])+'\',' #tip
             db+='\''+str(line_data[3])+'\',' #forma
             db+='\''+str(line_data[4])+'\',' #cod
