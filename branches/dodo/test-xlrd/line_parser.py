@@ -74,9 +74,10 @@ def parse(list_data,line_number):
         #remove spacesa
     for value in list_data:
         if isinstance(value, str): #check data type
+            print value
             value.strip() #removes leading and trailing spaces from string types
-        else:
-            value=int(value)
+      #  else:
+       #     value=int(value)
            
         #to remove only leading (lstrip) and only trailing (rstrip)
 
