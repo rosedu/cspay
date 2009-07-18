@@ -16,7 +16,7 @@ def parse(list_data,line_number):
             ii=ii+1
         elif isinstance(empty, str):
             empty=""
-        elif isinstance(item, int):
+        elif isinstance(empty, int):
             empty=0
             
     if ii>21:
