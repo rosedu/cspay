@@ -31,7 +31,7 @@ def db_write_line(line_data,line_index):
             print "Error -> Line NR ",line_index,"data did not have a coresponding course/lect id"
             print "Possible causses : course/lecture name changed, table 'discipline' was altered"
         else:
-            db_data='('
+            db='('
             db+=str(id_ora)+',' #ora
             db+=line_data[2]+',' #link_disc
             db+=line_data[1]+',' #tip
