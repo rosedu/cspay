@@ -14,9 +14,9 @@ def parse(list_data,line_number):
     for empty in list_data:
         if not empty:
             ii=ii+1
-        elif type(empty)==type('string'):
+        elif isinstance(empty, str):
             empty=""
-        elif type(empty)==type('int'):
+        elif isinstance(item, int):
             empty=0
             
     if ii>21:
@@ -73,8 +73,11 @@ def parse(list_data,line_number):
         return line_number
         #remove spacesa
     for value in list_data:
-        if type(value)==type('string'): #check data type
+        if isinstance(value, str): #check data type
             value.strip() #removes leading and trailing spaces from string types
+        if isinstance(value, float):
+            value=int(value)
+           
         #to remove only leading (lstrip) and only trailing (rstrip)
 
     return "Ok"
