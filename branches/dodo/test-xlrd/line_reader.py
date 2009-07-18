@@ -12,6 +12,11 @@ def read_line(sheet,line_nr):
     #reading each column in that specific line
     i_col=0
     while i_col<sheet.ncols:
-        list_el.append(sheet.cell_value(line_nr,i_col)) #appending data read to the list
+        item=sheet.cell_value(line_nr,i_col)
+        if isinstance(item, str):
+            print item
+            list_el.append(item.encode("latin-1")) #appending data read to the list
+        else :
+            list_el.append(item) #appending data read to the list
         i_col=i_col+1
     return list_el
