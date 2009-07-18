@@ -80,11 +80,11 @@ def parse(list_data,line_number):
             value.strip() #removes leading and trailing spaces from string types
             
         elif isinstance(value, float):
-            value=int(value)
+            print int(value)
         else:
             value=str(value)
             value.strip()
-           
+    print list_data       
         #to remove only leading (lstrip) and only trailing (rstrip)
 
     return "Ok"
