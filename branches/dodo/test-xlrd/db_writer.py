@@ -32,7 +32,7 @@ def db_write_line(line_data,line_index):
             print "Possible causses : course/lecture name changed, table 'discipline' was altered"
         else:
             db='('
-            db+=str(id_ora['disc_id'])+',' #ora
+            #db+=str(id_ora['disc_id'])+',' #ora
             db+=str(id_ora['disc_id'])+',' #link_disc
             #db+=str(line_data[1])+',' #link_disc                      <----------------------------------------- Problema
             db+='\''+str(line_data[2])+'\',' #tip
@@ -84,7 +84,11 @@ def db_write_line(line_data,line_index):
            
             #print str(tuple_db)
             #print tuple_db
-            cursor.executemany ("""INSERT INTO ore VALUES %s""",db)
+
+            cursor.executemany ("""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
+	  `nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
+	  `grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
+	  `sala,paritate,paritate_start) VALUES %s""",db)
     cursor.close ()
     conn.close()                        
                         
