@@ -56,13 +56,11 @@ def db_write_line(line_data,line_index):
             db+='\''+str(line_data[21])+'\',' #sala
             db+='1,'#paritate, #
             db+='1)'#,paritate_start)
-            print "clear \n\n\n\n\n"
+            print "\n\n\n\n\n\n\n"
             print " SQL final statement ----------------------> "
-            print """INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
-	  nr_stud,nr_grupa,tip_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
-	  grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
-	  sala,paritate,paritate_start) VALUES """,db
+            print """INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,nr_stud,nr_grupa,tip_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,sala,paritate,paritate_start) VALUES """,db
             print " ------------------------------------------> "
+            print "\n\n\n\n\n\n\n"
             cursor.execute("""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
 	  nr_stud,nr_grupa,tip_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
 	  grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
