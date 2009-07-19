@@ -24,7 +24,7 @@ CREATE TABLE `admin` (
   `tip_cont` smallint(6) NOT NULL default '0',
   `link_univ` int(11) NOT NULL default '0',
   PRIMARY KEY  (`admin_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `asocieri`
@@ -36,7 +36,7 @@ CREATE TABLE `asocieri` (
   `nume` varchar(40) NOT NULL default '',
   `email` varchar(45) NOT NULL default '',
   PRIMARY KEY  (`asoc_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `universitati`
@@ -48,7 +48,7 @@ CREATE TABLE `universitati` (
   `data_start` date NOT NULL default '0000-00-00',
   `data_stop` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`univ_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `vacante`
@@ -60,7 +60,7 @@ CREATE TABLE `vacante` (
   `data_start` date NOT NULL default '0000-00-00',
   `data_stop` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`vac_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `facultati`
@@ -73,7 +73,7 @@ CREATE TABLE `facultati` (
   `nume_scurt` varchar(10) NOT NULL default '',
   `decan` varchar(30) NOT NULL default '',
   PRIMARY KEY  (`fac_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `catedre`
@@ -85,7 +85,7 @@ CREATE TABLE `catedre` (
   `nume` varchar(50) NOT NULL default '',
   `sef` varchar(35) NOT NULL default '',
   PRIMARY KEY  (`cat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `discipline`
@@ -98,7 +98,7 @@ CREATE TABLE `discipline` (
 	`nume` varchar(50) NOT NULL default '',
 	`nume_scurt` varchar(10) NOT NULL default '',
 	PRIMARY KEY (`disc_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `titulari`
@@ -111,7 +111,7 @@ CREATE TABLE `titulari` (
 	`an` tinyint(4) NOT NULL default '0',
 	`serie` varchar(5) NOT NULL default '',
 	PRIMARY KEY (`tit_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `ore`
@@ -143,4 +143,4 @@ CREATE TABLE `ore` (
   `paritate` tinyint(1) NOT NULL default '1',
   `paritate_start` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`ora_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
