@@ -7,6 +7,7 @@ import line_parser
 import line_reader
 import db_writer
 import sys
+import MySQLdb
 #pointer to the xls file
 
 print sys.getdefaultencoding()
