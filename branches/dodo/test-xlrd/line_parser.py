@@ -24,7 +24,7 @@ def parse(list_data,line_number):
                 list_data[i]=0
             else:
                 list_data[i]=""
-    i=i+1        
+        i=i+1        
     if ii>21:
         return "Ignore"     # more than 21 lines that count
                             # should make the line be ignored
