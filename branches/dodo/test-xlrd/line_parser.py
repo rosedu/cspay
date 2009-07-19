@@ -80,9 +80,9 @@ def parse(list_data,line_number):
     for value in list_data:
         
         if isinstance(value, unicode): #check data type
-            print value
+            print "->>>"
              #removes leading and trailing spaces from string types
-            print value
+            #print value
         elif isinstance(value, str): #check data type
             print value
             value=value.strip()
