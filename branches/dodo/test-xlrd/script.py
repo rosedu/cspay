@@ -79,6 +79,13 @@ while index_line<sheet.nrows:
     
 #test read first line in xls file -> uncomment next line to test
 #print "Line 0 : ",reader.read_line(xls_file,0,0)
+print " \n\n\n\n\n\n"
+print " ------------------------------------------> "
+print " Database ore "
+print " ------------------------------------------> "
+print "\n\n"
 
+cursor.execute("Select * FROM ore")
+print cursor.fetchall()
 cursor.close ()
 conn.close()

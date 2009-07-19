@@ -56,7 +56,7 @@ def db_write_line(cursor,line_data,line_index):
             print db
             print " ------------------------------------------> "
             print "\n\n\n\n\n\n\n"
-            
+
             cursor.execute(db)
                         
                         
