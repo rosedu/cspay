@@ -75,6 +75,7 @@ def parse(list_data,line_number):
         return line_number
         #remove spacesa
     print "Parsing ---------------------------------------->"
+    print line_number
     for value in list_data:
         
         if isinstance(value, unicode): #check data type
