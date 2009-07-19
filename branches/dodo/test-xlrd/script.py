@@ -55,11 +55,12 @@ cursor = conn.cursor (MySQLdb.cursors.DictCursor)
 #
 ################################################
 
-index_line=2
+index_line=1
 #get sheet and pass it to read line
 
 sheet = file_xls.sheet_by_index(0)
 while index_line<sheet.nrows:
+    index_line=index_line+1
     line=line_reader.read_line(sheet,index_line)
     error_check=line_parser.parse(line,index_line) #if "OK" data is consistent
     if error_check=="Ok":
@@ -73,7 +74,7 @@ while index_line<sheet.nrows:
         print "Please correct XLS file"
         #index_sheet=file_xls.nsheets
         #break
-    index_line=index_line+1
+    
     
 #test read first line in xls file -> uncomment next line to test
 #print "Line 0 : ",reader.read_line(xls_file,0,0)
