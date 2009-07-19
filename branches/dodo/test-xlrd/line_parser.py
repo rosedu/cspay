@@ -12,16 +12,19 @@ def parse(list_data,line_number):
     print "Parser called at line number :",line_number
     #all cells in a line are empty=>ignore the line, return Ok
     ii=0
+    i=0
     for empty in list_data:
         if not empty:
             ii=ii+1
-        elif isinstance(empty, unicode):
-            empty=""
-        elif isinstance(empty, str):
-            empty=""
-        elif isinstance(empty, int):
-            empty=0
-            
+            if isinstance(empty, unicode):
+                list_data[i]=""
+            elif isinstance(empty, str):
+                list_data[i]=""
+            elif isinstance(empty, int):
+                list_data[i]=0
+            else:
+                list_data[i]=""
+    i=i+1        
     if ii>21:
         return "Ignore"     # more than 21 lines that count
                             # should make the line be ignored
