@@ -1,4 +1,4 @@
-/* 16.05.2007 - Vlad: created */
+/* 16.05.2007 - Vlad: created. */
 
 #include <stdio.h>
 #include <stdlib.h>
