@@ -75,9 +75,6 @@ def parse(list_data,line_number):
     else:
         return line_number
         #remove spacesa
-    print "Parsing ---------------------------------------->"
-    print line_number
-
     index=0
     for value in list_data:
         
@@ -90,9 +87,6 @@ def parse(list_data,line_number):
         elif isinstance(value, float):
             list_data[index]=int(value)
         index=index+1
-    print list_data      
-        #to remove only leading (lstrip) and only trailing (rstrip)
-    print " Done Parsing ---------------------------------------->"
     
     return "Ok"
         
