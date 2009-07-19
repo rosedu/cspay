@@ -14,6 +14,8 @@ def parse(list_data,line_number):
     for empty in list_data:
         if not empty:
             ii=ii+1
+        elif isinstance(empty, unicode):
+            empty=""
         elif isinstance(empty, str):
             empty=""
         elif isinstance(empty, int):
@@ -75,15 +77,12 @@ def parse(list_data,line_number):
     for value in list_data:
         print type(value)
         if isinstance(value, unicode): #check data type
-            value=value.encode('latin-1','ignore')
-            value=str(value)
-            value.strip() #removes leading and trailing spaces from string types
-            
+            value=value.strip() #removes leading and trailing spaces from string types
+        elif isinstance(value, str): #check data type
+            value=value.strip()    
         elif isinstance(value, float):
-            print int(value)
-        else:
-            value=str(value)
-            value.strip()
+            value=int(value)
+        
     print list_data       
         #to remove only leading (lstrip) and only trailing (rstrip)
 
