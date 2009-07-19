@@ -80,7 +80,7 @@ def parse(list_data,line_number):
     for value in list_data:
         
         if isinstance(value, unicode): #check data type
-            print "->>>"
+            print value.encode('ascii','ignore')
              #removes leading and trailing spaces from string types
             #print value
         elif isinstance(value, str): #check data type
