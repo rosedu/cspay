@@ -60,7 +60,7 @@ index_line=1
 
 sheet = file_xls.sheet_by_index(0)
 while index_line<sheet.nrows:
-    index_line=index_line+1
+    index_line+=1
     print index_line," -------------->"
     line=line_reader.read_line(sheet,index_line)
     error_check=line_parser.parse(line,index_line) #if "OK" data is consistent
