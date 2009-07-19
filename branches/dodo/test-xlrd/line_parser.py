@@ -16,7 +16,14 @@ def parse(list_data,line_number):
     for empty in list_data:
         if not empty:
             ii=ii+1
-            list_data[i]=""
+            if isinstance(empty, unicode):
+                list_data[i]='>>>'
+            elif isinstance(empty, str):
+                list_data[i]='>>>'
+            elif isinstance(empty, int):
+                list_data[i]='0'
+            else:
+                list_data[i]=''
         i=i+1        
     if ii>21:
         return "Ignore"     # more than 21 lines that count
