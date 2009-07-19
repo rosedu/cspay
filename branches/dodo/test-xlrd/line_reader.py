@@ -13,9 +13,6 @@ def read_line(sheet,line_nr):
     i_col=0
     while i_col<sheet.ncols:
         item=sheet.cell_value(line_nr,i_col)
-        if not item:
-            list_el.append(">>>") #appending data read to the list
-        else:
-            list_el.append(item)
+        list_el.append(item)
         i_col=i_col+1
     return list_el
