@@ -4,7 +4,10 @@ import sys
 
 def db_write_line(cursor,line_data,line_index):
 
-        
+    cursor.execute ("""SELECT fac_id
+                           FROM facultati
+                           WHERE nume_scurt=%s""",
+                        (line_data[0]))
     link_fac = cursor.fetchone ()
     if not link_fac:
         print "Error -> Line NR ",line_index,"data did not have a coresponding faculty id "
