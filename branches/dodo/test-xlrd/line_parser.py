@@ -91,7 +91,7 @@ def parse(list_data,line_number):
             value=int(value)
             print int(value)
             print value
-    print list_data       
+          
         #to remove only leading (lstrip) and only trailing (rstrip)
     print " Done Parsing ---------------------------------------->"
     return "Ok"
