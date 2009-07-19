@@ -77,21 +77,19 @@ def parse(list_data,line_number):
         #remove spacesa
     print "Parsing ---------------------------------------->"
     print line_number
+
+    index=0
     for value in list_data:
         
         if isinstance(value, unicode): #check data type
-            print value.encode('ascii','ignore')
+            list_data[index]=value.encode('ascii','ignore')
              #removes leading and trailing spaces from string types
             #print value
         elif isinstance(value, str): #check data type
-            print value
-            value=value.strip()
-            print value
+            list_data[index]=value.strip()
         elif isinstance(value, float):
-            print value
-            value=int(value)
-            print int(value)
-            print value
+            list_data[index]=int(value)
+        index=index+1
     print list_data      
         #to remove only leading (lstrip) and only trailing (rstrip)
     print " Done Parsing ---------------------------------------->"
