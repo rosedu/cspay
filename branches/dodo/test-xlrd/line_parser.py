@@ -95,6 +95,8 @@ def parse(list_data,line_number):
           
         #to remove only leading (lstrip) and only trailing (rstrip)
     print " Done Parsing ---------------------------------------->"
+    print list_data
+    input "press any key",dodo
     return "Ok"
         
 
