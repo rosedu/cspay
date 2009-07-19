@@ -88,7 +88,7 @@ cursor.execute("Select * FROM ore")
 ore_print=cursor.fetchall()
 iii=0
 for value in ore_print:
-    if(iii=24):
+    if(iii==24):
         print "\n"
         iii=0
     print value
