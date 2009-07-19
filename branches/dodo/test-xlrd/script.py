@@ -87,9 +87,10 @@ print "\n\n"
 cursor.execute("Select * FROM ore")
 ore_print=cursor.fetchall()
 iii=0
+#comment if no need to pring ore table contents
 for value in ore_print:
     if(iii==24):
-        print "\n"
+        print "\n\n"
         iii=0
     print value
     iii+=1
