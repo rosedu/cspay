@@ -30,6 +30,24 @@ while file_exists==0:
         file_exists=0
 
 
+
+################################################
+#
+# Connection database
+#
+################################################
+
+try:
+    conn = MySQLdb.connect (host = "localhost", user = "cspay",
+                                    passwd = "Chote3at", db = "rsoc_cspay")
+except MySQLdb.Error, e:
+    print "Error %d: %s" % (e.args[0], e.args[1])
+    sys.exit (1)
+cursor = conn.cursor (MySQLdb.cursors.DictCursor)
+
+##################################################
+
+
 ################################################
 #
 # for each sheet ot the file get all line
@@ -38,7 +56,7 @@ while file_exists==0:
 
 index_line=2
 #get sheet and pass it to read line
-   
+
 sheet = file_xls.sheet_by_index(0)
 while index_line<sheet.nrows:
     line=line_reader.read_line(sheet,index_line)
@@ -59,4 +77,5 @@ while index_line<sheet.nrows:
 #test read first line in xls file -> uncomment next line to test
 #print "Line 0 : ",reader.read_line(xls_file,0,0)
 
-
+cursor.close ()
+conn.close()

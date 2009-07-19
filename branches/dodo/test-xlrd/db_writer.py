@@ -2,20 +2,8 @@ import MySQLdb
 import sys
 
 
-def db_write_line(line_data,line_index):
-    try:
-        conn = MySQLdb.connect (host = "localhost", user = "cspay",
-                                        passwd = "Chote3at", db = "rsoc_cspay")
-    except MySQLdb.Error, e:
-            print "Error %d: %s" % (e.args[0], e.args[1])
-            sys.exit (1)
-    cursor = conn.cursor (MySQLdb.cursors.DictCursor)
+def db_write_line(cursor,line_data,line_index):
 
-
-    cursor.execute ("""SELECT fac_id
-                           FROM facultati
-                           WHERE nume_scurt=%s""",
-                        (line_data[0]))
         
     link_fac = cursor.fetchone ()
     if not link_fac:
@@ -71,8 +59,7 @@ def db_write_line(line_data,line_index):
 	  nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
 	  grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
 	  sala,paritate,paritate_start) VALUES%s""",db)
-    cursor.close ()
-    conn.close()                        
+                        
                         
                             
         
