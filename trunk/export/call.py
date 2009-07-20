@@ -15,21 +15,15 @@ if __name__ == "__main__":
     letters=['a','b','c','d','e','f','g','h','1','2','3']
     random.shuffle(letters)
     path=basepath+"".join(letters)
-    print commands.getstatusoutput('rm -fr '+basepath+"/*")
-    print commands.getstatusoutput("mkdir "+path)
-    print commands.getstatusoutput('ls -l')
+    commands.getstatusoutput("mkdir "+path)
     path += "/"
-    for pic in sys.argv:
-        print pic
+
     users = sys.argv[5:]
     for user in users:
         gather_data(user,sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],path)
-    tik=strftime("%d_%b_%Y", gmtime())
-    print tik
 
+    tik=strftime("%d_%b_%Y", gmtime())
     zipname = basepath+tik+".zip"
-    print zipname
-    
 
     print commands.getstatusoutput("zip -r -j "+zipname+" "+path)
     print commands.getstatusoutput("rm -r "+path)
