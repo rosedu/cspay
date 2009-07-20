@@ -7,7 +7,7 @@ from db_gather import gather_data
 
 if __name__ == "__main__":
 
-    path="/home/cspay/public_html/out"
+    path="/home/cspay/public_html/out/"
     for pic in sys.argv:
         print pic
     users = sys.argv[5:]
