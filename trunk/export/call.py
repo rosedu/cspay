@@ -14,7 +14,7 @@ if __name__ == "__main__":
     letters=['a','b','c','d','e','f','g','h','1','2','3']
     random.shuffle(letters)
     path=basepath+"".join(letters)+"/"
-    commands.getstatusoutput("mkdir path")
+    print commands.getstatusoutput("mkdir path")
     for pic in sys.argv:
         print pic
     users = sys.argv[5:]
