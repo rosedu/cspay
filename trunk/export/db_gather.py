@@ -14,8 +14,8 @@ def gather_data(name, year, univ, facl, desk, months = 0):
             for the given universitary year
         """
         try:
-                conn = MySQLdb.connect (host = "localhost", user = "root",
-                                        passwd = "myraki", db = "cspay", charset = "utf8",
+                conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rosedu_cspay",
+                                        passwd = "huashaquou", db = "rosedu_cspay", charset = "utf8",
                                         use_unicode = True )
         except MySQLdb.Error, e:
                 print "Error %d: %s" % (e.args[0], e.args[1])
