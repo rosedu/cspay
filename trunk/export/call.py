@@ -15,6 +15,7 @@ if __name__ == "__main__":
     random.shuffle(letters)
     path=basepath+"".join(letters)
     print commands.getstatusoutput("mkdir path")
+    path += "/"
     for pic in sys.argv:
         print pic
     users = sys.argv[5:]
@@ -22,7 +23,9 @@ if __name__ == "__main__":
         gather_data(user,sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],path)
     zipname = basepath+str(time.localtime())+".zip"
     print zipname
+    
 
     commands.getstatusoutput("zip -r path zipname")
+    commands.getstatusoutput("rm -r path")
 
 
