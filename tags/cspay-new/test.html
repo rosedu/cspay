@@ -1,0 +1,79 @@
+<html>
+<head><TITLE></TITLE>
+<body>
+
+<script type="text/javascript">
+
+x = 'cspay_td_10';
+
+var poz = x.indexOf('_',6);
+
+document.writeln('poz = '+poz+'<br>x = '+x);
+
+function ascunde_coloane()
+{
+	var min = 1, max = 2;
+	
+	//parcurg toate coloanele
+	for(i=min;i<=max;i++)
+	{
+		var elem = readCookie('cspay_td_'+i);
+		alert('cspay_td_'+i+'\nelem : '+elem);
+		if(elem != null)//este setat
+		{
+			if(elem == 0)//ascund coloana
+			{
+				var col = 'td_'+i+'_';
+				var but = document.getElementById(col+'but');
+				var head = document.getElementById(col+'head');
+				
+				head.style.display = 'none';
+				but.style.display = 'block';
+			}//altfel nu fac nimic
+		}
+	}
+}
+
+createCookie('cspay_td_1',0,100);
+
+ascunde_coloane();
+
+
+
+
+/*functii pentru lucrul cu cookie-uri
+http://www.quirksmode.org/js/cookies.html
+*/
+function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+function eraseCookie(name) {
+	createCookie(name,"",-1);
+}
+
+
+
+/*************************************************************************/
+</script>
+
+</body>
+</head>
+</html>
