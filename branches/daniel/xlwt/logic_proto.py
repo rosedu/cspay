@@ -13,8 +13,17 @@ def output_table(input, holidays, parities):
 	F= dw.initializeWB("utf8")
 	months = input['luni']
 	year1, year2 = input['an'].split('/')
-	title = year1 + "-" + year2 + " " + input['functie_baza'] + " "
-	title += input['profesor']
+	when = str(year1) + "-" + str (year2) 
+	try:
+		where = unicode(input['functie_baza'], "utf8")
+	except TypeError:
+		where = input['functie_baza']
+	try:
+		who = unicode(input['profesor'], "utf8")
+	except TypeError:
+		who = input['profesor']
+	title = when + ' ' + where + ' ' + who
+	
 	for month in months:
 		if month < 8:
 			year = int(year2)
