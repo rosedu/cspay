@@ -26,7 +26,7 @@ if __name__ == "__main__":
     print zipname
     
 
-    commands.getstatusoutput("zip -r "+path+" "+zipname)
-    commands.getstatusoutput("rm -r "+path)
+    print commands.getstatusoutput("zip -r "+path+" "+zipname)
+    print commands.getstatusoutput("rm -r "+path)
 
 
