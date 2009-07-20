@@ -123,10 +123,10 @@ function display_result_secr($result,$index,$count)
 $thead_secr = array('Nr*','Disciplina*','Tip','Forma','Cod','An','Serie','Nr Stud',
 		    'Nr Grupe','Tip Grupa','C1','A1','Post','Grad','Norma','Ocupat','Acoperit',
 		    'Efectiv','Grupa','Zi','Ora Start','Ora Stop','Sala');
-$thead_secr_ro = array('Nr*','Facultate*','Tip*','Disciplina*','Forma*','Cod*','An*','Serie*','Nr Stud*',
+$thead_secr_ro = array('Nr*','Disciplina*','Tip','Forma*','Cod*','An*','Serie*','Nr Stud*',
 		    'Nr Grupe*','Tip Grupa*','C1*','A1*','Post*','Grad*','Norma*','Ocupat*','Acoperit*',
 		    'Efectiv*','Grupa*','Zi*','Ora Start*','Ora Stop*','Sala*');
-$thead_prof = array('Nr*','Facultate*','Tip*','Disciplina*','Forma*','Cod*','An*','Serie*','Nr Stud',
+$thead_prof = array('Nr*','Disciplina*','Tip*','Forma*','Cod*','An*','Serie*','Nr Stud',
 		    'Nr Grupe*','Tip Grupa*','C1*','A1*','Post*','Grad*','Norma','Ocupat','Acoperit',
 		    'Efectiv','Grupa','Zi','Ora Start','Ora Stop','Sala');
 function write_vert($text)
