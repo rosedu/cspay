@@ -6,7 +6,10 @@ from db_gather import gather_data
 
 
 if __name__ == "__main__":
+    
+    for pic in sys.argv:
+        print pic
     users = sys.argv[5:]
     for user in users:
-        gather_data(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],user)
+        gather_data(user,sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
 
