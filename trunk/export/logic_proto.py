@@ -8,7 +8,7 @@ luni_ro = [ "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
          "iulie", "august", "septembrie", "octombrie", "noiembrie",
          "decembrie" ]
 
-def output_table(input, holidays, parities):
+def output_table(input, holidays, parities, path):
 
 	F= dw.initializeWB("utf8")
 	months = input['luni']
@@ -23,7 +23,8 @@ def output_table(input, holidays, parities):
 	except TypeError:
 		who = input['profesor']
 	title = when + ' ' + where + ' ' + who
-	title=title.replace(" ","_")
+	title=path+title.replace(" ","_")
+	print title
 	print title
 	
 	for month in months:

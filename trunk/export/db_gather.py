@@ -8,7 +8,7 @@ from logic_proto import output_table
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
 levels = {'4a': "as", '3s': "sl", '2c': "conf", '1p': "prof"}
 
-def gather_data(name, year, univ, facl, desk, months = 0):
+def gather_data(name, year, univ, facl, desk, path, months = 0):
         """ Gather data from a mySQL database for a certain name,
             and then write an Excel WorkBook for the given months,
             for the given universitary year
@@ -126,7 +126,7 @@ def gather_data(name, year, univ, facl, desk, months = 0):
         if i:
                 print "No pay-per-hour found for", name
         else:
-                output_table(input, vacante, used_par)
+                output_table(input, vacante, used_par, path)
         print "okey"
 	
 

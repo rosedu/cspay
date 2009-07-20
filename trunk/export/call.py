@@ -6,10 +6,11 @@ from db_gather import gather_data
 
 
 if __name__ == "__main__":
-    
+
+    path="/home/cspay/public_html/out"
     for pic in sys.argv:
         print pic
     users = sys.argv[5:]
     for user in users:
-        gather_data(user,sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
+        gather_data(user,sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],path)
 
