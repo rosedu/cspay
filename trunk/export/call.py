@@ -22,7 +22,7 @@ if __name__ == "__main__":
     users = sys.argv[5:]
     for user in users:
         gather_data(user,sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],path)
-    tik=strftime("%d_%b_%Y", gmtime())
+    tik=strftime("%d %b %Y", gmtime())
     print tik
 
     zipname = basepath+".zip"
