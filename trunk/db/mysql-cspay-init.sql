@@ -12,31 +12,6 @@ DROP TABLE IF EXISTS `discipline`;
 DROP TABLE IF EXISTS `titulari`;
 DROP TABLE IF EXISTS `ore`;
 
--- 
--- Table structure for table `admin`
--- 
-
-CREATE TABLE `utilizatori` (
-  `utilizator_id` int(11) NOT NULL auto_increment,
-  `materie` varchar(40) NOT NULL default '',
-  `utilizator` varchar(40) NOT NULL default '',
-  `parola` varchar(40) NOT NULL default '',
-  `tip_cont` smallint(6) NOT NULL default '0',
-  `link_univ` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`utilizator_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- 
--- Table structure for table `asocieri`
--- 
-
-CREATE TABLE `asocieri` (
-  `asoc_id` int(11) NOT NULL auto_increment,
-  `link_admin` int(11) NOT NULL default '0',
-  `nume` varchar(40) NOT NULL default '',
-  `email` varchar(45) NOT NULL default '',
-  PRIMARY KEY  (`asoc_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `universitati`
@@ -92,12 +67,12 @@ CREATE TABLE `catedre` (
 --
 
 CREATE TABLE `discipline` (
-	`disc_id` int(11) NOT NULL auto_increment,
-	`link_fac` int(11) NOT NULL default '0',
-	`link_cat` int(11) NOT NULL default '0',
-	`nume` varchar(50) NOT NULL default '',
-	`nume_scurt` varchar(10) NOT NULL default '',
-	PRIMARY KEY (`disc_id`)
+  `disc_id` int(11) NOT NULL auto_increment,
+  `link_fac` int(11) NOT NULL default '0',
+  `link_cat` int(11) NOT NULL default '0',
+  `nume` varchar(50) NOT NULL default '',
+  `nume_scurt` varchar(10) NOT NULL default '',
+  PRIMARY KEY (`disc_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -105,13 +80,41 @@ CREATE TABLE `discipline` (
 --
 
 CREATE TABLE `titulari` (
-	`tit_id` int(11) NOT NULL auto_increment,
-	`link_disc` int(11) NOT NULL default '0',
-	`nume` varchar(50) NOT NULL default '',
-	`an` tinyint(4) NOT NULL default '0',
-	`serie` varchar(5) NOT NULL default '',
-	PRIMARY KEY (`tit_id`)
+  `tit_id` int(11) NOT NULL auto_increment,
+  `link_disc` int(11) NOT NULL default '0',
+  `nume` varchar(50) NOT NULL default '',
+  `an` tinyint(4) NOT NULL default '0',
+  `serie` varchar(5) NOT NULL default '',
+  PRIMARY KEY (`tit_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- 
+-- Table structure for table `utilizatori`
+--
+-- tip_cont: 'S' for secretary, 'P' for professor, 'A' for administrator
+-- 
+
+CREATE TABLE `utilizatori` (
+  `utilizator_id` int(11) NOT NULL auto_increment,
+  `utilizator` varchar(40) NOT NULL default '',
+  `parola` varchar(40) NOT NULL default '',
+  `tip_cont` varchar(5) NOT NULL default '',
+  `link_cat` int(11) NOT NULL default '0',
+  `link_disc` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`utilizator`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- 
+-- Table structure for table `asocieri`
+-- 
+
+CREATE TABLE `asocieri` (
+  `asoc_id` int(11) NOT NULL auto_increment,
+  `link_utilizator` int(11) NOT NULL default '0',
+  `nume` varchar(40) NOT NULL default '',
+  `email` varchar(45) NOT NULL default '',
+  PRIMARY KEY  (`asoc_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
 -- Table structure for table `ore`

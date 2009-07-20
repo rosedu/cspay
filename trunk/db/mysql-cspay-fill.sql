@@ -1,10 +1,3 @@
---
--- Dumping data for table `utilizatori`
---
-
-INSERT INTO `utilizatori` (`materie`, `utilizator`, `parola`, `tip_cont`, `link_univ`) VALUES
-('Sisteme de Operare', 'admin', 'admin', 1, 1);
-
 -- 
 -- Dumping data for table `universitati`
 -- 
@@ -164,3 +157,10 @@ INSERT INTO `titulari` (`link_disc`, `nume`, `an`, `serie`) VALUES
 (26, 'Costin Stefanescu', 3, 'CB'),
 (26, 'Costin Stefanescu', 3, 'CC'),
 (38, 'Octavian Purdila', 4, 'C3');
+
+--
+-- Dumping data for table `utilizatori`
+--
+
+INSERT INTO `utilizatori` (`utilizator`, `parola`, `tip_cont`, `link_cat`, `link_disc`) VALUES
+('secretara', 'secretara', 'S', 3, 0);
