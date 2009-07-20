@@ -70,10 +70,11 @@ function display_result_secr($result,$index,$count)
 	$output = '';
 	
 	mysql_data_seek($result,$index);//trec la intrarea cu numarul $index
-	$valori = list($orar_id,$link_univ, $facultate, $tip_curs1, $materie, $forma, $cod, $an, $serie, 
-	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $tip_curs2, $post,
-	  $grad, $norma, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
+	$valori = list(	  $orar_id, $link_disc, $tip_ora, $forma, $cod, $an, $serie, 
+	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $post,
+	  $grad, $norma, $tip_ocup, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
 	  $ora, $sala) = mysql_fetch_array($result); 
+
 	foreach($valori as $i=>$val)
 		$valori[$i] = htmlspecialchars(stripslashes($val),ENT_QUOTES);
 
@@ -89,7 +90,7 @@ function display_result_secr($result,$index,$count)
 	add($output,'<td class="read_only"><div id="td_1_'.$count.'">'.$facultate.'</div></td>');//scriu facultatea din care face parte - needitabil
 	add($output,'<td ><div id="td_2_'.$count.'">'.display_select('orar_tip_ora[]',$tip_curs1,$hidden_id,$index,$select_tip_ora).
 				'</div></td>');//tipul cursului : C sau L
-	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$materie.'</div></td>');//materia - needitabil
+	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$link_disc.'</div></td>');//materia - needitabil
 	add($output,'<td ><div id="td_4_'.$count.'">'.display_select('orar_forma[]',$forma,$hidden_id,$index,$select_forma).'</div></td>');//tipul orei 
 	add($output,'<td ><div id="td_5_'.$count.'">'.display_select('orar_cod[]',$cod,$hidden_id,$index,$select_cod).'</div></td>');//codul asociat
 	
@@ -244,9 +245,9 @@ function display_result_prof($result,$index,$count)
 	$output = '';
 	
 	mysql_data_seek($result,$index);//trec la intrarea cu numarul $index
-	list($orar_id,$link_univ,  $facultate, $tip_curs1, $materie, $forma, $cod, $an, $serie, 
-	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $tip_curs2, $post,
-	  $grad, $norma, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
+	list(	  $orar_id, $link_disc, $tip_ora, $forma, $cod, $an, $serie, 
+	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $post,
+	  $grad, $norma, $tip_ocup, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
 	  $ora, $sala) = mysql_fetch_array($result); 
 	  
 	 $aux = strstr($ora,"-");
@@ -261,7 +262,7 @@ function display_result_prof($result,$index,$count)
 	add($output,'<input type="hidden" name="orar_id[]" value="'.$orar_id.'">');
 	add($output,'<tr bgcolor="'.$color[$index%2].'">');//deschid un nou rand 
 	add($output,'<td class="read_only"><div id="td_0_'.$count.'">'.($index+1).'</div></td>');//scriu numarul liniei curente - needitabil
-	add($output,'<td class="read_only"><div id="td_1_'.$count.'">'.$facultate.'</div></td>');//scriu facultatea din care face parte - needitabil
+	add($output,'<td class="read_only"><div id="td_1_'.$count.'">'.$link_disc.'</div></td>');//scriu facultatea din care face parte - needitabil
 	add($output,'<td class="read_only"><div id="td_2_'.$count.'">'.$tip_curs1.'</div></td>');//tipul cursului : C sau L
 	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$materie.'</div></td>');//materia - needitabil
 	add($output,'<td class="read_only"><div id="td_4_'.$count.'">'.$forma.'</div></td>');//tipul orei 
