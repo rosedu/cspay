@@ -15,6 +15,7 @@ if __name__ == "__main__":
     random.shuffle(letters)
     path=basepath+"".join(letters)
     print commands.getstatusoutput("mkdir path")
+    print commands.getstatusoutput('ls -l')
     path += "/"
     for pic in sys.argv:
         print pic
