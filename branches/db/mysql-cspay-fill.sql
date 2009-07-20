@@ -1,3 +1,10 @@
+--
+-- Dumping data for table `utilizatori`
+--
+
+INSERT INTO `utilizatori` (`materie`, `utilizator`, `parola`, `tip_cont`, `link_univ`) VALUES
+('Sisteme de Operare', 'admin', 'admin', 1, 1);
+
 -- 
 -- Dumping data for table `universitati`
 -- 
@@ -5,11 +12,7 @@
 INSERT INTO `universitati` (`nume`, `data_start`, `data_stop`) VALUES
 ('Universitatea Politehnica Bucuresti', '2009-02-23', '2009-06-05');
 
--- 
--- Dumping data for table `vacante`
--- 
-
--- 
+--
 -- Dumping data for table `vacante`
 -- 
 

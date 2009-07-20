@@ -2,7 +2,7 @@
 -- Drop tables for cleanup
 --
 
-DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `utilizatori`;
 DROP TABLE IF EXISTS `asocieri`;
 DROP TABLE IF EXISTS `universitati`;
 DROP TABLE IF EXISTS `vacante`;
@@ -16,14 +16,14 @@ DROP TABLE IF EXISTS `ore`;
 -- Table structure for table `admin`
 -- 
 
-CREATE TABLE `admin` (
-  `admin_id` int(11) NOT NULL auto_increment,
+CREATE TABLE `utilizatori` (
+  `utilizator_id` int(11) NOT NULL auto_increment,
   `materie` varchar(40) NOT NULL default '',
   `utilizator` varchar(40) NOT NULL default '',
   `parola` varchar(40) NOT NULL default '',
   `tip_cont` smallint(6) NOT NULL default '0',
   `link_univ` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`admin_id`)
+  PRIMARY KEY  (`utilizator_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
