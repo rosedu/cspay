@@ -316,7 +316,7 @@ function criterii_norma()
 {
 	$content = '';
 	
-	$query = "SELECT * FROM `ore` GROUP BY `norma` ASC";
+	$query = "SELECT * FROM `ore` GROUP BY `pers_norma` ASC";
 	$result = mysql_query($query);
 
 	$nr = mysql_num_rows($result);
