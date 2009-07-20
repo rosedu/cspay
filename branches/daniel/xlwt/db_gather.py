@@ -22,23 +22,23 @@ def gather_data(name, year, univ, facl, desk, months = 0):
                 sys.exit (1)
 
         input = {'an': year, 'profesor': name, 'luni': [],
-                 'facultate': "", 'catedra': "", 'functie_baza': "",
+                 'facultate': facl, 'catedra': desk, 'functie_baza': "",
                  'ore': [], 'statut': "", 'titular_curs': "",
-                 'sef_catedra': "", 'decan': "", 'universitate':"",
+                 'sef_catedra': "", 'decan': "", 'universitate': univ,
                  'semestru':()}
-
-        cursor = conn.cursor (MySQLdb.cursors.DictCursor)
-
+				 
+#load configuration file for parities
         config = open('parity.pkl', 'rb')
         parities = pickle.load(config)
         config.close()
         user_par={}
         
+#fill the rest of the structure with datafrom  db
+        cursor = conn.cursor (MySQLdb.cursors.DictCursor)        
         cursor.execute ("""SELECT univ_id, data_start, data_stop
                            FROM universitati WHERE nume=%s""",
                         univ)
         temp2 = cursor.fetchone()
-        input['universitate'] = univ
         input['semestru'] = (temp2['data_start'], temp2['data_stop'])
         if temp2['data_start'].month < temp2['data_stop'].month :
                 input['luni'] = range(temp2['data_start'].month,
@@ -54,7 +54,6 @@ def gather_data(name, year, univ, facl, desk, months = 0):
                            WHERE nume=%s AND link_univ=%s """,
                         (facl, temp2['univ_id']))
         temp2 = cursor.fetchone()
-        input['facultate'] = facl
         input['decan'] = temp2['decan']
 
         cursor.execute ("""SELECT sef
@@ -62,7 +61,6 @@ def gather_data(name, year, univ, facl, desk, months = 0):
                            WHERE nume=%s AND link_fac=%s""",
                         (desk, temp2['fac_id']))
         temp2 = cursor.fetchone()
-        input['catedra'] = desk
         input['sef_catedra'] = temp2['sef']
 
                 
