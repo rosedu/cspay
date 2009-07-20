@@ -97,9 +97,12 @@ $layout->print_template();
 					
 <table width="100%" border="0" cellpadding="1" cellspacing="1" style="border:1px solid #CCCCCC;">
   <tr align="center" bgcolor="#ece9d8">
-    <td>Facultate</td>
-    <td>Tip</td>
+  `ora_id` , `link_disc` , `tip_ora` , `forma` , `cod` , `an` , `serie` , `nr_stud` , `nr_grupa` , 
+					`tip_grupa_aplicatii` , `nr_ore_curs` , `nr_ore_aplicatii`, `nr_post`, `grad_post`,
+					`pers_norma` , `tip_ocupare` , `pers_acoperit` , `pers_acoperit_efect` , `an_grupa` ,
+					`zi` , `ora` , `sala`, `paritate`, `paritate_start`
     <td>Disciplina</td>
+	<td>Tip</td>
     <td>Forma</td>
     <td>Cod</td>
     <td>An</td>
@@ -107,9 +110,8 @@ $layout->print_template();
     <td>Nr Studenti  </td>
     <td>Nr Grupe </td>
     <td>Tip Grupa  </td>
-    <td>C1</td>
-    <td>A1</td>
-    <td>Tip</td>
+    <td>Nr ore curs</td>
+    <td>Nr ore aplicatii</td>
     <td>Post</td>
     <td>Grad</td>
     <td>Norma</td>
