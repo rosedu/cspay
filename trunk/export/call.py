@@ -1,4 +1,5 @@
 import sys
+import random
 from db_gather import gather_data
 
 #calling example:
@@ -7,7 +8,10 @@ from db_gather import gather_data
 
 if __name__ == "__main__":
 
-    path="/home/cspay/public_html/out/"
+    basepath="/home/cspay/public_html/out/"
+    letters=['a','b','c','d','e','f','g','h','1','2','3']
+    random.shuffle(letters)
+    path=basepath+"".join(letters)+"/"
     for pic in sys.argv:
         print pic
     users = sys.argv[5:]
