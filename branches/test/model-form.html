@@ -1,0 +1,122 @@
+<!-- 14.05.2007		Razvan Deaconescu, indentare -->
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+			  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Formular</title>
+		<!-- RD: nu ar putea sa fie un " />" la sfasit in loc de "</script>"-->
+		<!-- AE: din pacate, nu merge, tag-ul script cerand inchidere deschidere... -->
+		<script type="text/javascript" src="form.js"></script>
+		<link rel="stylesheet" type="text/css" href="stil.css" />
+	</head>
+
+	<body>
+		<h1>Formular detalii plata cu ora</h1>
+		<form action="generate.php" method="post">
+		<fieldset>
+			<legend>Date personale</legend>
+			<label for="nume">Nume:</label>
+			<input type="text" name="nume" id="nume"/>
+			<a href="#" onclick="input_copy('nume','intocmit');show_hide('intocmit_div');">mai mult</a>
+			<div class="hidden" id="intocmit_div">
+				<label for="intocmit">Intocmit:</label>
+				<input type="text" name="intocmit" id="intocmit" value="">
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Detalii curs</legend>
+			<label for="universitate">Universitatea:</label>
+			<select id="universitate" disabled="true">
+				<option value="upb">Politehnica Bucuresti</option>
+			</select>
+			<input type="hidden" name="universitate" value="upb">
+			<br />
+			<label for="facultate">Facultatea:</label>
+			<select name="facultate" id="facultate" onchange="select_catedra( this )" onfocus="select_catedra( this )">
+				{FACULTATI}
+			</select>
+			<br />
+			<label for="catedra">Catedra:</label>
+			<select disabled="true" id="catedradisabled">
+				<option>selectati mai intai facultatea</option>
+			</select>
+			<!-- urmeaza select-uri ascunse, catedre pentru fiecare facultate -->
+				{CATEDRE}
+			<br/>
+			<label for="curs">Nume curs:</label>
+			<input type="text" name="curs" id="curs"/> <i>la care aveti functia de baza</i><br/>
+			<label for="titular">Titular:</label>
+			<input type="text" name="titular" id="titular"/><br/>
+		</fieldset>
+		<fieldset>
+			<legend>Orar</legend>
+			<div id="orar">
+			<div id="orar_1">
+			<!-- ziua, fel si nr. post, an/grupa, ora start-ora stop, MORE-->
+				ziua: 
+				<select name="orar[1][zi]" id="zi_1">
+					<option value="luni">luni</option>
+					<option value="marti">marti</option>
+					<option value="miercuri">miercuri</option>
+					<option value="joi">joi</option>
+					<option value="vineri">vineri</option>
+				</select>
+				post:<input name="orar[1][numarpost]" id="numarpost_1" type="text" size="2" value=""/>
+				fel:
+				<select name="orar[1][felpost]" id="felpost_1">
+					<option value="p">profesor</option>
+					<option value="a">asistent</option>
+					<option value="c">conferentiar</option>
+					<option value="s">sef lucrari</option>
+				</select>
+				fac.:
+				<select name="orar[1][facultatea]" id="facultatea_1">
+					{FACULTATI}
+				</select>
+				disc.:<input name="orar[1][disciplina]" id="disciplina_1" type="text" size="4">
+				curs:
+				<select name="orar[1][tipora]" id="tipora_1">
+					<option value="c">curs</option>
+					<option value="a">aplicatii</option>
+				</select>
+				seria:<input name="orar[1][grupa]" id="grupa_1" type="text" size="5" value=""/>
+				orele: <input name="orar[1][ore]" id="orele_1" type="text" size="5" value=""/>
+				
+				<a href="#" onclick="show_hide('complex_1')">complex</a>
+				<button id="more_1" onclick="more(); return false;">more</button>
+				<button id="less_1" onclick="less('orar_1'); return false;" class="hidden">less</button>
+				<!-- setari complexe ascunse implicit -->
+				<div id="complex_1" class="complex_div">
+					paritate: 
+					<select name="orar[1][paritate]">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+					</select>
+					prima saptamana: 
+					<select name="orar[1][paritate_prima]">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+					</select>
+				</div>
+			</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Diverse</legend>
+			<label for="tip_fisier">Tip fisier:</label>
+			<select name="tip_fisier[]" id="tip_fisier" multiple="true">
+				<option>xls</option>
+				<option>odt</option>
+			</select>		
+		</fieldset>
+		<p align="center">
+			<input type="submit" value="Trimite" name="submit"/>
+		</p>
+		</form>
+	</body>
+</html>

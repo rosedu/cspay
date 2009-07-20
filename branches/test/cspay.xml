@@ -1,0 +1,20 @@
+<cspay-config>
+    <universitate nume="UPB">
+        <semestru nume="Semestrul 1" data_start="01.10.2006"
+            data_sfarsit="01.02.2007" />
+        <vacante>
+            <vacanta data_start="22.12.2006" data_sfarsit="05.01.2007" />
+            <vacanta data="01.12.2006" />
+        </vacante>
+        <facultati>
+            <facultate nume="Automatica si Calculatoare" nume_scurt="A&amp;C" decan="lipsum">
+                <catedra nume="Calculatoare" sef="lipsum" />
+                <catedra nume="Automatica si Informatica Industriala" sef="lipsum" />
+            </facultate>
+            <facultate nume="Electronica" nume_scurt="ELEC" decan="lipsuminium">
+                <catedra nume="Fizica" sef="lipsum-george" />
+            </facultate>
+        </facultati>
+    </universitate>
+</cspay-config>
+
