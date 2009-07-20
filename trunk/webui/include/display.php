@@ -325,8 +325,8 @@ function criterii_norma()
 
 	for($i=0;$i<$nr;$i++)
 	{
-		$id = mysql_result($result,$i,'norma');//tre verificat
-				$val =  mysql_result($result,$i,'norma');
+		$id = mysql_result($result,$i,'pers_norma');//tre verificat
+				$val =  mysql_result($result,$i,'pers_norma');
 				$select_an .= '<option value="'.$val.'">'.$val.'</option>';	
 	}
 	$select_an .= '</select>';
@@ -473,11 +473,11 @@ function display_result_read_only($result,$index,$count)
 		   $select_sala,$select_tip_ora;
 	
 	$output = '';
-	
+					
 	mysql_data_seek($result,$index);//trec la intrarea cu numarul $index
-	list($orar_id,$link_univ,  $facultate, $tip_curs1, $materie, $forma, $cod, $an, $serie, 
-	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $tip_curs2, $post,
-	  $grad, $norma, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
+	list($orar_id, $link_disc, $tip_ora, $forma, $cod, $an, $serie, 
+	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $post,
+	  $grad, $norma, $tip_ocup, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
 	  $ora, $sala) = mysql_fetch_array($result); 
 	  
 	 $aux = strstr($ora,"-");
@@ -486,9 +486,8 @@ function display_result_read_only($result,$index,$count)
 	
 	add($output,'<tr bgcolor="'.$color[$index%2].'">');//deschid un nou rand 
 	add($output,'<td class="read_only">'.($index+1).'</td>');//scriu numarul liniei curente - needitabil
-	add($output,'<td class="read_only"><div id="td_1_'.$count.'">'.$facultate.'</div></td>');//scriu facultatea din care face parte - needitabil
 	add($output,'<td class="read_only"><div id="td_2_'.$count.'">'.$tip_curs1.'</div></td>');//tipul cursului : C sau L
-	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$materie.'</div></td>');//materia - needitabil
+	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$link_disc.'</div></td>');//materia - needitabil
 	add($output,'<td class="read_only"><div id="td_4_'.$count.'">'.$forma.'</div></td>');//tipul orei 
 	add($output,'<td class="read_only"><div id="td_5_'.$count.'">'.$cod.'</div></td>');//codul asociat
 	add($output,'<td class="read_only"><div id="td_6_'.$count.'">'.$an.'</div></td>');//anul
