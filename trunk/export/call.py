@@ -13,7 +13,7 @@ if __name__ == "__main__":
     basepath="/home/cspay/public_html/out/"
     letters=['a','b','c','d','e','f','g','h','1','2','3']
     random.shuffle(letters)
-    path=basepath+"".join(letters)+"/"
+    path=basepath+"".join(letters)
     print commands.getstatusoutput("mkdir path")
     for pic in sys.argv:
         print pic
