@@ -127,6 +127,7 @@ def gather_data(name, year, univ, facl, desk, months = 0):
                 print "No pay-per-hour found for", name
         else:
                 output_table(input, vacante, used_par)
+        print "okey"
 	
 
 def build_course(row, clas, fac):
