@@ -43,7 +43,7 @@ if(isset($_POST['login']))
 		$_SESSION['tip_cont'] = mysql_result($result,0,'tip_cont');
 		
 		$link_univ = mysql_result($result,0,'link_univ');
-		$query = "SELECT * FROM `universitate` WHERE `univ_id` = '$link_univ'";
+		$query = "SELECT * FROM `universitati` WHERE `univ_id` = '$link_univ'";
 		$univ_result = mysql_query($query);
 		$_SESSION['univ_id'] = mysql_result($univ_result,0,'univ_id');
 		$_SESSION['univ_nume'] = stripslashes(mysql_result($univ_result,0,'nume'));
