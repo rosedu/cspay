@@ -1,4 +1,4 @@
 <?php
-	echo "Hello, World!"
-	echo "Salut, mundi!"
+	echo "Hello, World!";
+	echo "Salut, mundi!";
 ?>
