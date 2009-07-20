@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import MySQLdb
 import sys
 import datetime
@@ -13,12 +14,9 @@ def gather_data(name, year, univ, facl, desk, months = 0):
             for the given universitary year
         """
         try:
-#Daniel-laptop
                 conn = MySQLdb.connect (host = "localhost", user = "root",
-                                        passwd = "myraki", db = "cspay")
-#Server
-#		conn = MySQLdb.connect (host = "localhost", user = "cspay",
-#                                        passwd = "Chote3at", db = "rsoc_cspay")
+                                        passwd = "myraki", db = "cspay", charset = "utf8",
+                                        use_unicode = True )
         except MySQLdb.Error, e:
                 print "Error %d: %s" % (e.args[0], e.args[1])
                 sys.exit (1)
@@ -126,6 +124,7 @@ def gather_data(name, year, univ, facl, desk, months = 0):
 
         cursor.close ()
         conn.close()
+
         if i:
                 print "No pay-per-hour found for", name
         else:
@@ -161,3 +160,7 @@ def conv_day(string):
 def conv_grade(string):
         """Convert a grade from db format to logic_module format"""
         return levels[string]
+
+#Server
+#		conn = MySQLdb.connect (host = "localhost", user = "cspay",
+#                                        passwd = "Chote3at", db = "rsoc_cspay")

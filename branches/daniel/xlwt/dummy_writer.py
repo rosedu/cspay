@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 #uses xlwt module
+# -*- coding: utf8 -*-
 
 import xlwt as pycel
 STYLE_FACTORY = {}
