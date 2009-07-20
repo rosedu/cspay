@@ -15,6 +15,7 @@ if __name__ == "__main__":
     letters=['a','b','c','d','e','f','g','h','1','2','3']
     random.shuffle(letters)
     path=basepath+"".join(letters)
+    print commands.getstatusoutput('rm -f *')
     print commands.getstatusoutput("mkdir "+path)
     print commands.getstatusoutput('ls -l')
     path += "/"
