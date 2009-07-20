@@ -1,0 +1,4 @@
+db/     - Database handling scripts
+import/ - Python scripts for importing schedule file (spreadsheet)
+export/ - Python scripts for exporting hourly payment files (spreadsheet)
+webui/  - PHP-based Web interface
