@@ -2,7 +2,8 @@ import sys
 import random
 import commands
 from db_gather import gather_data
-import time
+from time import gmtime, strftime
+
 
 #calling example:
 # call.py <year> <univ> <fac> <desk> <name1> [ name2 ... ]
