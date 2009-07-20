@@ -22,6 +22,6 @@ if __name__ == "__main__":
     zipname = basepath+str(time.localtime())+".zip"
     print zipname
 
-     commands.getstatusoutput('zip -r path zipname')
+    commands.getstatusoutput("zip -r path zipname")
 
 
