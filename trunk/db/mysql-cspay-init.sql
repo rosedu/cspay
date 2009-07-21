@@ -101,7 +101,7 @@ CREATE TABLE `utilizatori` (
   `tip_cont` varchar(5) NOT NULL default '',
   `link_cat` int(11) NOT NULL default '0',
   `link_disc` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`utilizator`)
+  PRIMARY KEY  (`utilizator_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
