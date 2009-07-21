@@ -64,7 +64,7 @@ $query = "SELECT `pers_acoperit` FROM `ore`
 $result = mysql_query($query);
 $nr_reg = mysql_num_rows($result);
 
-$pers = '<select size="10" name="pers_acoperit[]" multiple="multiple">';
+$pers = '<select style="width:40px; font-size:10pt;" name="pers_acoperit[]" multiple="multiple">';
 for($i=0;$i<$nr_reg;$i++)
 {
 	$pers .= '<option>'.mysql_result($result,$i,'pers_acoperit').'</option>';
