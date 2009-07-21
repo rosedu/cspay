@@ -26,11 +26,11 @@ if(isset($_POST['salveaza']))//tratare formular export
 	$command = $command.addslashes(addquot($_SESSION['cat_nume']));
 	foreach ($_POST['pers_acoperit'] as $dobi)
 		$command = $command." ".addslashes(addquot($dobi));
-	$ics=$ics.$command;
+	$ics=$ics.$command.<br>;
 	exec($command,&$output);
 	
 	foreach($output as $line)
-		print $line."<br>";
+		$ics=$ics.$line."<br>";
 
 }
 return $ics;
