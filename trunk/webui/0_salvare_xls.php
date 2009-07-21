@@ -76,7 +76,7 @@ $form = '<form name="profesori" action="" method="post">
 	';
 
 add($form,'
-			<td style="width:30%;">Profesor :<br>'
+			<td style="width:30%;" valign="top">Profesor :<br>'
 			.$pers.
 			'
 			</select>
@@ -85,7 +85,7 @@ add($form,'
 				onclick="javascript:selectallList();"
 				onfocus="this.blur()">Selecteaza pe toti</a>
 			</td>
-			<td style="width:30%;">Format iesire:<br>
+			<td valign="top" style="width:30%;">Format iesire:<br>
 				<select style="font-size:10pt;" name="tip_fisier[]" id="tip_fisier" multiple="multiple">
 
 				<option selected="selected" value="xls">Microsoft Excel (.xls)</option>
@@ -93,7 +93,7 @@ add($form,'
 				<option value="pdf">Adobe Acrobat (.pdf)</option>	
 			</select>
 			</td>
-			<td style="width:30%;">'.
+			<td style="width:30%;" valign="top">'.
 			dourjob().
 			'</tr>
 			<tr>
