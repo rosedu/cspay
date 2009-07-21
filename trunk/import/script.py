@@ -84,16 +84,16 @@ print " ------------------------------------------> "
 print " Database ore "
 print " ------------------------------------------> "
 print "\n\n"
-cursor.execute("Select * FROM ore")
-ore_print=cursor.fetchall()
-iii=0
+#cursor.execute("Select * FROM ore")
+#ore_print=cursor.fetchall()
+#iii=0
 #comment if no need to pring ore table contents
-for value in ore_print:
-    if(iii==24):
-        print "\n\n"
-        iii=0
-    print value
-    iii+=1
+#for value in ore_print:
+ #   if(iii==24):
+  #      print "\n\n"
+  #      iii=0
+  #  print value
+  #  iii+=1
     
 cursor.close ()
 conn.close()
