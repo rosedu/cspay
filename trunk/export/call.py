@@ -12,6 +12,7 @@ from time import gmtime, strftime
 if __name__ == "__main__":
 
     basepath = "/home/cspay/public_html/out/"
+    commands.getstatusoutput("rm -r " + basepath+"*.zip")
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', '1', '2', '3']
     random.shuffle(letters)
     path = basepath + "".join(letters)
