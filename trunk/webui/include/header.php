@@ -63,6 +63,18 @@ function equal($a,$b,$var)
 define("menu",0);
 define("submenu",1);
 
+function get_id($post)
+{
+	if ($post === "S") {
+	 return 0;
+} elseif ($post === "P") {
+    return 1;
+} elseif ($i === "A") {
+    return 2;
+}
+	return -1;
+}
+
 function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2 pt secretara, prof si admin; optiunea selectata
 {
 	$menu = array(3);
@@ -184,12 +196,12 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 	if($tip_meniu == menu )
 	{
 		//if($tip_meniu >=0)
-			$var = $menu[$tip_cont];
+			$var = $menu[get_id($tip_cont)];
 	}
 	else
 	if($tip_meniu == submenu && $cat >=0)
 	{
-		$var = $submenu[$tip_cont][$cat];
+		$var = $submenu[get_id($tip_cont)][$cat];
 	}
 	
 	return $var;
@@ -197,7 +209,7 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 
 function get_facultate($id)//preia datele unei facultati care are id dat
 {
-	$query = "SELECT * FROM `facultati` WHERE `fac_id`='".$id."' LIMIT 1";
+	$query = "SELECT * FROM `facultate` WHERE `fac_id`='".$id."' LIMIT 1";
 	$result = mysql_query($query);
 	
 	return $result;
@@ -205,7 +217,7 @@ function get_facultate($id)//preia datele unei facultati care are id dat
 
 function get_catedra($id)//preia datele unei facultati care are id dat
 {
-	$query = "SELECT * FROM `catedre` WHERE `cat_id`='".$id."' LIMIT 1";
+	$query = "SELECT * FROM `catedra` WHERE `cat_id`='".$id."' LIMIT 1";
 	$result = mysql_query($query);
 	
 	return $result;
@@ -213,7 +225,7 @@ function get_catedra($id)//preia datele unei facultati care are id dat
 
 function get_materie_from_univ($univ_id)
 {
-	$query = "SELECT  `materie` FROM `ore` WHERE `link_univ`='".$_SESSION['univ_id']."' GROUP by `materie`";
+	$query = "SELECT  `materie` FROM `orar` WHERE `link_univ`='".$_SESSION['univ_id']."' GROUP by `materie`";
 	$result = mysql_query($query);
 	$nr = mysql_num_rows($result);
 	
