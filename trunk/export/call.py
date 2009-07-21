@@ -20,9 +20,7 @@ if __name__ == "__main__":
     path += "/"
 
     users = sys.argv[4:]
-    print "pipera"
-    for args in sys.argv:
-        print args
+
     for user in users:
         gather_data(user, sys.argv[1], sys.argv[2], sys.argv[3], path)
 

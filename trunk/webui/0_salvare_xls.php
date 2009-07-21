@@ -26,11 +26,12 @@ if(isset($_POST['salveaza']))//tratare formular export
 	$command = $command.addquot($_SESSION['cat_nume']);
 	foreach ($_POST['pers_acoperit'] as $dobi)
 		$command = $command." ".addquot($dobi);
-	$ics=$ics.$command."<br>";
 	exec($command,&$output);
 	
 	foreach($output as $line)
 		$ics=$ics.$line."<br>";
+		
+	$ics=$ics."<a href = \"file:///".$output[cout($output)-1]."\">Fisierul dvs</a>"
 
 }
 return $ics;
