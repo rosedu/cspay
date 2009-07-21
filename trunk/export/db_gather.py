@@ -8,7 +8,7 @@ from logic_proto import output_table
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
 levels = {'4a': "as", '3s': "sl", '2c': "conf", '1p': "prof"}
 
-def gather_data(name, year, univ, facl, desk, path, months = 0):
+def gather_data(name, univ, facl, desk, path, months = 0):
         """ Gather data from a mySQL database for a certain name,
             and then write an Excel WorkBook for the given months,
             for the given universitary year
@@ -21,7 +21,7 @@ def gather_data(name, year, univ, facl, desk, path, months = 0):
                 print "Error %d: %s" % (e.args[0], e.args[1])
                 sys.exit (1)
 
-        input = {'an': year, 'profesor': name, 'luni': [],
+        input = {'an': "", 'profesor': name, 'luni': [],
                  'facultate': facl, 'catedra': desk, 'functie_baza': "",
                  'ore': [], 'statut': "", 'titular_curs': "",
                  'sef_catedra': "", 'decan': "", 'universitate': univ,
@@ -43,9 +43,13 @@ def gather_data(name, year, univ, facl, desk, path, months = 0):
         if temp2['data_start'].month < temp2['data_stop'].month :
                 input['luni'] = range(temp2['data_start'].month,
                                       temp2['data_stop'].month + 1)
+                input['an'] = (str(temp2['data_start'].year) + "/" +
+                               str(temp2['data_stop'].year))
         else:
                 input['luni'] = ( range(temp2['data_start'].month, 13) +
                                   range(1, temp2['data_stop'].month + 1) )
+                input['an'] = (str(temp2['data_start'].year - 1) + "/" +
+                               str(temp2['data_stop'].year))
         used_par = parities[temp2['univ_id']]
 
                 
