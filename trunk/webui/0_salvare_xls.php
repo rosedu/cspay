@@ -26,7 +26,7 @@ if(isset($_POST['salveaza']))//tratare formular export
 	$command = $command.addquot($_SESSION['cat_nume']);
 	foreach ($_POST['pers_acoperit'] as $dobi)
 		$command = $command." ".addquot($dobi);
-		$ics=$ics.$command."<br>";
+		//$ics=$ics.$command."<br>";
 	exec($command,&$output);
 	
 	foreach($output as $line)
