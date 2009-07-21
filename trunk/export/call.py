@@ -32,6 +32,6 @@ if __name__ == "__main__":
     commands.getstatusoutput("zip -r -j " + zipname + " " + path)
     commands.getstatusoutput("rm -r " + path)
 
-    print "/out/" + tik + ".zip"
+    print "/~cspay/out/" + tik + ".zip"
 
 
