@@ -22,10 +22,10 @@ if(isset($_POST['salveaza']))//tratare formular export
 
 	$output=array();
 	$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python call.py ";
-	$command = $command." ".addslashes(addquot($_SESSION['univ_nume']))." ".addslashes(addquot($_SESSION['fac_nume']))." ";
-	$command = $command.addslashes(addquot($_SESSION['cat_nume']));
+	$command = $command." ".addquot($_SESSION['univ_nume'])." ".addquot($_SESSION['fac_nume'])." ";
+	$command = $command.addquot($_SESSION['cat_nume']);
 	foreach ($_POST['pers_acoperit'] as $dobi)
-		$command = $command." ".addslashes(addquot($dobi));
+		$command = $command." ".addquot($dobi);
 	$ics=$ics.$command."<br>";
 	exec($command,&$output);
 	
