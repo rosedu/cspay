@@ -43,12 +43,12 @@ def gather_data(name, univ, facl, desk, path, months = 0):
         if temp2['data_start'].month < temp2['data_stop'].month :
                 input['luni'] = range(temp2['data_start'].month,
                                       temp2['data_stop'].month + 1)
-                input['an'] = (str(temp2['data_start'].year) + "/" +
+                input['an'] = (str(temp2['data_start'].year - 1) + "/" +
                                str(temp2['data_stop'].year))
         else:
                 input['luni'] = ( range(temp2['data_start'].month, 13) +
                                   range(1, temp2['data_stop'].month + 1) )
-                input['an'] = (str(temp2['data_start'].year - 1) + "/" +
+                input['an'] = (str(temp2['data_start'].year) + "/" +
                                str(temp2['data_stop'].year))
         used_par = parities[temp2['univ_id']]
 
