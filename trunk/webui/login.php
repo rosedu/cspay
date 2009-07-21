@@ -34,15 +34,24 @@ if(isset($_POST['login']))
 		$eroare = 1;
 	}
 	else 
-	if($count == 1)//daca s-a gasit utilizatorul in tabela utilizatori
+	if($count == 1)//daca s-a gasit utilizatorul in tabela admin
 	{
 		$_SESSION['logged'] = true;
 		$_SESSION['utilizator'] = $utilizator; 
 		$_SESSION['parola'] = $parola;
-		$_SESSION['materie'] = stripslashes(mysql_result($result,0,'materie'));
 		$_SESSION['tip_cont'] = mysql_result($result,0,'tip_cont');
+		$link_cat = mysql_result($result,0,'link_cat');
 		
-		$link_univ = mysql_result($result,0,'link_univ');
+		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$link_cat'";
+		$cat_result = mysql_query($query);
+		$_SESSION['cat_nume'] = stripslashes(mysql_result($cat_result,0,'nume'));
+		$link_fac = mysql_result($cat_result,0,'link_fac');
+		
+		$query = "SELECT * FROM `facultati` WHERE `fac_id` = '$link_fac'";
+		$fac_result = mysql_query($query);
+		$_SESSION['fac_nume'] = stripslashes(mysql_result($fac_result,0,'nume'));
+		$link_univ = mysql_result($fac_result,0,'link_univ');
+		
 		$query = "SELECT * FROM `universitati` WHERE `univ_id` = '$link_univ'";
 		$univ_result = mysql_query($query);
 		$_SESSION['univ_id'] = mysql_result($univ_result,0,'univ_id');
