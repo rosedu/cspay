@@ -27,7 +27,7 @@ if(isset($_POST['salveaza']))//tratare formular export
 	foreach ($_POST['pers_acoperit'] as $dobi)
 		$command = $command." ".addslashes(addquot($dobi));
 	$ics=$ics.$command;
-	/exec($command,&$output);
+	exec($command,&$output);
 	
 	foreach($output as $line)
 		print $line."<br>";
