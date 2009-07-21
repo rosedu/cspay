@@ -17,7 +17,7 @@ if(isset($_POST['salveaza']))//tratare formular export
 	if (count($_POST['pers_acoperit']) == 0)
 		{
 			$ics=$ics."Nu ati selectat nici un profesor";
-			break;
+			return $ics
 		}
 
 	$output=array();
