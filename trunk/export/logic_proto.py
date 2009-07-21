@@ -24,8 +24,6 @@ def output_table(input, holidays, parities, path):
 		who = input['profesor']
 	title = when + ' ' + where + ' ' + who
 	title=path+title.replace(" ","_")
-	print title
-	print title
 	
 	for month in months:
 		if month < 8:
