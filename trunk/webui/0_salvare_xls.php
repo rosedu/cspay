@@ -71,12 +71,12 @@ for($i=0;$i<$nr_reg;$i++)
 }
 
 $form = '<form name="profesori" action="" method="post">
-		<table width="800px" border="0">
+		<table style="width:100%;" border="0">
 		<tr>
 	';
 
 add($form,'
-			<td>Profesor :<br>'
+			<td style="width:30%;">Profesor :<br>'
 			.$pers.
 			'
 			</select>
@@ -85,7 +85,7 @@ add($form,'
 				onclick="javascript:selectallList();"
 				onfocus="this.blur()">Selecteaza pe toti</a>
 			</td>
-			<td >Format iesire:<br>
+			<td style="width:30%;">Format iesire:<br>
 				<select name="tip_fisier[]" id="tip_fisier" multiple="multiple">
 
 				<option selected="selected" value="xls">Microsoft Excel (.xls)</option>
@@ -93,7 +93,7 @@ add($form,'
 				<option value="pdf">Adobe Acrobat (.pdf)</option>	
 			</select>
 			</td>
-			<td>'.
+			<td style="width:30%;">'.
 			dourjob().
 			'</tr>
 			<tr>
