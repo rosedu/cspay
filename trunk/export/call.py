@@ -21,16 +21,15 @@ if __name__ == "__main__":
 
     users = sys.argv[4:]
 
-    for args in sys.argv:
-        print args
     for user in users:
         gather_data(user, sys.argv[1], sys.argv[2], sys.argv[3], path)
 
     tik = strftime("%d_%b_%Y",  gmtime())
-    zipname = basepath+tik+".zip"
-
+    zipname = basepath + tik + ".zip"
+    
     commands.getstatusoutput("zip -r -j " + zipname + " " + path)
     commands.getstatusoutput("rm -r " + path)
-    print zipname
+
+    print "/out/" + tik + ".zip"
 
 

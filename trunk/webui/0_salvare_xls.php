@@ -32,7 +32,7 @@ if(isset($_POST['salveaza']))//tratare formular export
 	foreach($output as $line)
 		$ics=$ics.$line."<br>";
 		
-	$ics=$ics."<a href = \"file:///".$output[count($output)-1]."\">Fisierul dvs</a>";
+	$ics=$ics."<a href = \"".$output[count($output)-1]."\">Fisierul dvs</a>";
 
 }
 return $ics;
