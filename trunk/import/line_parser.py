@@ -76,8 +76,8 @@ def parse(list_data,line_number):
     for value in list_data:
         
         if isinstance(value, unicode): #check data type
-            print "unicode"
-            #list_data[index]=value.encode('ascii','ignore')
+            
+            list_data[index]=str(value)
              #removes leading and trailing spaces from string types
             #print value
         elif isinstance(value, str): #check data type
