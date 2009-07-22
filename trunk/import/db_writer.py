@@ -69,7 +69,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             db+='\''+str(line_data[21])+'\',' #sala
             db+='\''+paritate+'\','#paritate, #
             db+='\''+paritate_start+'\')'#,paritate_start)
-            
+            print db,"\n"            
             db2=(id_ora['disc_id'],line_data[1],line_data[3],line_data[4],line_data[5],line_data[6],
                  line_data[7],line_data[8],line_data[9],line_data[10],line_data[11],line_data[12],
                  line_data[13],line_data[14],line_data[15],line_data[16],line_data[17],line_data[18],
