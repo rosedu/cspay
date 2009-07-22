@@ -61,7 +61,6 @@ index_line=2
 sheet = file_xls.sheet_by_index(0)
 while index_line<sheet.nrows:
     
-    print "\n\n   --------------------------------- \n    "
     line=line_reader.read_line(sheet,index_line)
     error_check=line_parser.parse(line,index_line) #if "OK" data is consistent
     if error_check=="Ok":
@@ -70,6 +69,7 @@ while index_line<sheet.nrows:
     elif error_check=="Ignore":
         print "Line ",index_line+2," has been ignored "
     elif (prev_error<3):
+        print "\n\n   --------------------------------- \n    "
         print "Data missing on line :",
         print error_check+1," Sheet :",sheet.name
         print "Please correct XLS file"
