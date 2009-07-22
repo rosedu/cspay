@@ -3,7 +3,7 @@ import sys
 
 
 def db_write_line(cursor,line_data,line_index,prev_error):
-print ">>>>",prev_error
+    print "------------",prev_error
     cursor.execute ("""SELECT fac_id
                            FROM facultati
                            WHERE LOWER(nume_scurt)=%s""",
