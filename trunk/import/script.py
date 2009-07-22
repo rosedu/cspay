@@ -73,9 +73,9 @@ while index_line<sheet.nrows:
         print "Data missing on line :",
         print error_check+1," Sheet :",sheet.name
         print "Please correct XLS file"
-        prev_error+=1
+        prev_error=prev_error+1
     else:
-        prev_error+=1
+        prev_error=prev_error+1
         #index_sheet=file_xls.nsheets
         #break
     index_line+=1
