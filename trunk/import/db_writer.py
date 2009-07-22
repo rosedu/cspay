@@ -16,12 +16,12 @@ def db_write_line(cursor,line_data,line_index):
     else :   
         cursor.execute ("""SELECT disc_id
                            FROM discipline
-                           WHERE LOWER(link_fac)=%s AND LOWER(nume)=%s""",
-                        (str.lower(link_fac['fac_id']),str.lower(line_data[2])))
+                           WHERE link_fac=%s AND LOWER(nume)=%s""",
+                        (link_fac['fac_id'],str.lower(line_data[2])))
         id_ora = cursor.fetchone ()
         if not id_ora:
-            print "SELECT disc_id FROM discipline WHERE LOWER(link_fac)=",
-            str.lower(link_fac['fac_id']),
+            print "SELECT disc_id FROM discipline WHERE link_fac=",
+            link_fac['fac_id'],
             " AND LOWER(nume)=",
             str.lower(line_data[2])
             print "Error -> Line NR ",line_index,"data did not have a coresponding course/lect id"
