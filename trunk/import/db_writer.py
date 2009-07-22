@@ -6,7 +6,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
     
     cursor.execute ("""SELECT fac_id
                            FROM facultati
-                           WHERE LOWER(nume_scurt)=%s""",
+                           WHERE LOWER(nume_scurt)=?""",
                         (str.lower(line_data[0])))
     link_fac = cursor.fetchone ()
     
@@ -21,17 +21,15 @@ def db_write_line(cursor,line_data,line_index,prev_error):
     else :   
         cursor.execute ("""SELECT disc_id
                            FROM discipline
-                           WHERE link_fac=%s AND LOWER(nume)=%s""",
+                           WHERE link_fac=? AND LOWER(nume)=?""",
                         (link_fac['fac_id'],str.lower(line_data[2])))
         id_ora = cursor.fetchone ()
 
         if not id_ora:
             if(prev_error<3):
                 print "\n\n   --------------------------------- \n    "
-                print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",
-                link_fac['fac_id'],
-                " AND LOWER(nume)=",
-                str.lower(line_data[2])
+                print "SQL : SELECT disc_id FROM discipline WHERE link_fac=?",link_fac['fac_id'],
+                " AND LOWER(nume)=?",str.lower(line_data[2])
                 print "\nERROR : Line NR ",line_index,"data did not have a coresponding course/lect id"
                 print "Possible causses : course/lecture name changed, table 'discipline' was altered"
             prev_error+=1
