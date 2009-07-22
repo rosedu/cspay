@@ -62,11 +62,11 @@ def db_write_line(cursor,line_data,line_index):
 
             
             
-            print "\n\n\n\n\n\n\n"
-            print " SQL final statement ----------------------> "
-            print db
-            print " ------------------------------------------> "
-            print "\n\n\n\n\n\n\n"
+            #print "\n\n\n\n\n\n\n"
+            #print " SQL final statement ----------------------> "
+            #print db
+            #print " ------------------------------------------> "
+            #print "\n\n\n\n\n\n\n"
 
             cursor.execute(db)
             
