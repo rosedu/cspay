@@ -11,7 +11,7 @@ def db_write_line(cursor,line_data,line_index):
     link_fac = cursor.fetchone ()
     
     if not link_fac:
-        print "SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",str.lower(line_data[0])
+        print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",str.lower(line_data[0])
         print "Error : Line NR ",line_index,"data did not have a coresponding faculty id "
         print "Possible causses : faculty short name changed, table 'facultati' was altered"
         
@@ -23,7 +23,7 @@ def db_write_line(cursor,line_data,line_index):
         id_ora = cursor.fetchone ()
 
         if not id_ora:
-            print "SELECT disc_id FROM discipline WHERE link_fac=",
+            print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",
             link_fac['fac_id'],
             " AND LOWER(nume)=",
             str.lower(line_data[2])

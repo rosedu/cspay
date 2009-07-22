@@ -9,7 +9,7 @@
 #If the data is inconsistent it gives an error and halts execution
 
 def parse(list_data,line_number):
-    print "Parser called at line number :",line_number
+    #print "Parser called at line number :",line_number
     #all cells in a line are empty=>ignore the line, return Ok
     ii=0
     i=0
