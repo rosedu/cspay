@@ -54,7 +54,7 @@ cursor = conn.cursor (MySQLdb.cursors.DictCursor)
 # for each sheet ot the file get all line
 #
 ################################################
-
+cursor.execute("TRUNCATE TABLE ore")
 index_line=2
 #get sheet and pass it to read line
 
@@ -80,7 +80,7 @@ while index_line<sheet.nrows:
         #break
     index_line+=1
 
-#cursor.execute("TRUNCATE TABLE ore")
+
 print "\n Table has been truncated >>>"
 print "\n\n ---------------------------------------- \n"
 print " Only first 3 errors are displayed (if any) !!! "
