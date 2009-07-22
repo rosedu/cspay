@@ -6,7 +6,7 @@ def db_write_line(cursor,line_data,line_index):
 
     cursor.execute ("""SELECT fac_id
                            FROM facultati
-                           WHERE LOWER(nume_scurt)=%s""",
+                           WHERE LOWER(nume_scurt)=?""",
                         (str.lower(line_data[0])))
     link_fac = cursor.fetchone ()
     
@@ -18,7 +18,7 @@ def db_write_line(cursor,line_data,line_index):
     else :   
         cursor.execute ("""SELECT disc_id
                            FROM discipline
-                           WHERE link_fac=%s AND LOWER(nume)=%s""",
+                           WHERE link_fac=? AND LOWER(nume)=?""",
                         (link_fac['fac_id'],str.lower(line_data[2])))
         id_ora = cursor.fetchone ()
 
