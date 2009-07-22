@@ -74,7 +74,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             #print "\n\n\n\n\n\n\n"
 
             cursor.execute(db)
-            
+    return prev_error
                         
                             
         
