@@ -70,7 +70,14 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             db+='\''+paritate+'\','#paritate, #
             db+='\''+paritate_start+'\')'#,paritate_start)
             
-            
+            db2=(id_ora['disc_id'],line_data[1],line_data[3],line_data[4],line_data[5],line_data[6]
+                 line_data[7],line_data[8],line_data[9],line_data[10],line_data[11],line_data[12],
+                 line_data[13],line_data[14],line_data[15],line_data[16],line_data[17],line_data[18],
+                 line_data[19],line_data[20],line_data[21],paritate,paritate_start)
+            db="""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
+	  nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
+	  grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
+	  sala,paritate,paritate_start) VALUES (?)""",db2
             
             #print "\n\n\n\n\n\n\n"
             #print " SQL final statement ----------------------> "
