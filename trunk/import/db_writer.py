@@ -33,7 +33,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 " AND LOWER(nume)=",str.lower(line_data[2])
                 print "\nERROR : Line NR ",line_index,"data did not have a coresponding course/lect id"
                 print "Possible causses : course/lecture name changed, table 'discipline' was altered"
-            prev_error+=1
+            prev_error=prev_error+1
         else:
             if(line_data[19][2:3]=='i'):
                 paritate="2"
