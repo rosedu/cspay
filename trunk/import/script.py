@@ -76,7 +76,10 @@ while index_line<sheet.nrows:
         #index_sheet=file_xls.nsheets
         #break
     index_line+=1
-    
+input "Enter y to truncate table or any other to keep variables",yes
+if yes=='y'
+    cursor.execute("TRUNCATE TABLE ore")
+print "\n Table has been truncated >>>"
 #test read first line in xls file -> uncomment next line to test
 #print "Line 0 : ",reader.read_line(xls_file,0,0)
 print " \n\n\n\n\n\n"

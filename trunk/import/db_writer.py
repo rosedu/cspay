@@ -6,21 +6,24 @@ def db_write_line(cursor,line_data,line_index):
 
     cursor.execute ("""SELECT fac_id
                            FROM facultati
-                           WHERE nume_scurt=%s""",
-                        (line_data[0]))
+                           WHERE LOWER(nume_scurt)=%s""",
+                        (str.lower(line_data[0])))
     link_fac = cursor.fetchone ()
     if not link_fac:
-        print "SELECT fac_id FROM facultati WHERE nume_scurt=",line_data[0]
+        print "SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",str.lower(line_data[0])
         print "Error -> Line NR ",line_index,"data did not have a coresponding faculty id "
         print "Possible causses : faculty short name changed, table 'facultati' was altered"
     else :   
         cursor.execute ("""SELECT disc_id
                            FROM discipline
-                           WHERE link_fac=%s AND nume=%s""",
-                        (link_fac['fac_id'],line_data[2]))
+                           WHERE LOWER(link_fac)=%s AND LOWER(nume)=%s""",
+                        (str.lower(link_fac['fac_id']),str.lower(line_data[2])))
         id_ora = cursor.fetchone ()
         if not id_ora:
-            print "SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id']," AND nume=",line_data[2]
+            print "SELECT disc_id FROM discipline WHERE LOWER(link_fac)=",
+            str.lower(link_fac['fac_id']),
+            " AND LOWER(nume)=",
+            str.lower(line_data[2])
             print "Error -> Line NR ",line_index,"data did not have a coresponding course/lect id"
             print "Possible causses : course/lecture name changed, table 'discipline' was altered"
         else:
@@ -52,6 +55,8 @@ def db_write_line(cursor,line_data,line_index):
             db+='\''+str(line_data[21])+'\',' #sala
             db+='1,'#paritate, #
             db+='1)'#,paritate_start)
+
+            
             
             print "\n\n\n\n\n\n\n"
             print " SQL final statement ----------------------> "
@@ -60,7 +65,7 @@ def db_write_line(cursor,line_data,line_index):
             print "\n\n\n\n\n\n\n"
 
             cursor.execute(db)
-                        
+            
                         
                             
         
