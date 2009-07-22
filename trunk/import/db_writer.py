@@ -36,7 +36,6 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             prev_error+=1
         else:
             if(line_data[19][2:3]=='i'):
-                print line_data[19][2:3]
                 paritate="2"
                 paritate_start="1"
             elif(line_data[19][2:3]=='p'):
