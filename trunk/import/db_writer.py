@@ -35,10 +35,10 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             prev_error+=1
         else:
             print line_data[19][2:3]
-            if(line_data[19][2:3]=="i"):
+            if(line_data[19][2:3]=='i'):
                 line_data[20]="2"
                 line_data[21]="1"
-            elif(line_data[19][2:3]=="p"):
+            elif(line_data[19][2:3]=='p'):
                 line_data[20]="2"
                 line_data[21]="2"
             else :
