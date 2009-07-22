@@ -80,7 +80,7 @@ while index_line<sheet.nrows:
         #break
     index_line+=1
 
-cursor.execute("TRUNCATE TABLE ore")
+#cursor.execute("TRUNCATE TABLE ore")
 print "\n Table has been truncated >>>"
 print "\n\n ---------------------------------------- \n"
 print " Only first 3 errors are displayed (if any) !!! "
