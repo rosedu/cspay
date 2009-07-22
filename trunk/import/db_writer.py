@@ -25,13 +25,14 @@ def db_write_line(cursor,line_data,line_index,prev_error):
         id_ora = cursor.fetchone ()
 
         if not id_ora:
-            print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",
-            link_fac['fac_id'],
-            " AND LOWER(nume)=",
-            str.lower(line_data[2])
-            print "ERROR : Line NR ",line_index,"data did not have a coresponding course/lect id"
-            print "Possible causses : course/lecture name changed, table 'discipline' was altered"
-
+            if(prev_error<3):
+                print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",
+                link_fac['fac_id'],
+                " AND LOWER(nume)=",
+                str.lower(line_data[2])
+                print "ERROR : Line NR ",line_index,"data did not have a coresponding course/lect id"
+                print "Possible causses : course/lecture name changed, table 'discipline' was altered"
+            prev_error+=1
         else:
             db="""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
 	  nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
