@@ -13,7 +13,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
     if not link_fac:
         if(prev_error<3):
             print "\n\n   --------------------------------- \n    "
-            print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=%s",(str.lower(line_data[0]))
+            print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=%s",str.lower(line_data[0])
             print "\nERROR : Line NR ",line_index,"data did not have a coresponding faculty id "
             print "Possible causses : faculty short name changed, table 'facultati' was altered"
         prev_error+=1
