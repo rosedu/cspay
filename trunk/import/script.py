@@ -61,11 +61,11 @@ index_line=2
 sheet = file_xls.sheet_by_index(0)
 while index_line<sheet.nrows:
     
-    print index_line,"\n\n -----------------"
+    print "\n\n   --------------------------------- \n    "
     line=line_reader.read_line(sheet,index_line)
     error_check=line_parser.parse(line,index_line) #if "OK" data is consistent
     if error_check=="Ok":
-        print "Line ",index_line+2," is candidate to be inserted into DB"
+        #print "Line ",index_line+2," is candidate to be inserted into DB"
         db_writer.db_write_line(cursor,line,index_line)  #pass the line and its number
     elif error_check=="Ignore":
         print "Line ",index_line+2," has been ignored "
