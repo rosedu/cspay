@@ -24,7 +24,8 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                            WHERE link_fac=%s AND LOWER(nume)=%s""",
                         (link_fac['fac_id'],str.lower(line_data[2])))
         id_ora = cursor.fetchone ()
-
+        paritate="1"
+        paritate_start="1"
         if not id_ora:
             if(prev_error<3):
                 print "\n\n   --------------------------------- \n    "
@@ -34,17 +35,13 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 print "Possible causses : course/lecture name changed, table 'discipline' was altered"
             prev_error+=1
         else:
-            
             if(line_data[19][2:3]=='i'):
                 print line_data[19][2:3]
-                line_data[20]="2"
-                line_data[21]="1"
+                paritate="2"
+                paritate_start="1"
             elif(line_data[19][2:3]=='p'):
-                line_data[20]="2"
-                line_data[21]="2"
-            else :
-                line_data[20]="1"
-                line_data[21]="1"
+                paritate="2"
+                paritate_start="2"
             db="""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
 	  nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
 	  grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
@@ -71,8 +68,8 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             db+='\''+str(line_data[19][:2])+'\',' #zi
             db+='\''+str(line_data[20])+'\',' #ora
             db+='\''+str(line_data[21])+'\',' #sala
-            db+='1,'#paritate, #
-            db+='1)'#,paritate_start)
+            db+='\''+paritate+'\','#paritate, #
+            db+='\''+paritate_start+'\')'#,paritate_start)
             
             
             
