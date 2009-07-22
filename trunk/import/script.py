@@ -69,7 +69,7 @@ while index_line<sheet.nrows:
         db_writer.db_write_line(cursor,line,index_line,prev_error)  #pass the line and its number
     elif error_check=="Ignore":
         print "Line ",index_line+2," has been ignored "
-    elif prev_error<3:
+    elif (prev_error<3):
         print "Data missing on line :",
         print error_check+1," Sheet :",sheet.name
         print "Please correct XLS file"
