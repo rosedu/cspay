@@ -15,9 +15,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=%s",str.lower(line_data[0])
             print "Error : Line NR ",line_index,"data did not have a coresponding faculty id "
             print "Possible causses : faculty short name changed, table 'facultati' was altered"
-            prev_error+=1
-        else :
-            prev_error+=1
+        prev_error+=1
         
     else :   
         cursor.execute ("""SELECT disc_id
