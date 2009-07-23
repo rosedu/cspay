@@ -30,7 +30,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 print "\n\n   --------------------------------- \n    "
                 print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
                 " AND LOWER(nume)=",line_data[2]
-                print "\nERROR : Line NR ",line_index," DISCIPLINA ID : ",line_data[2]
+                print "\nERROR : Line NR ",line_index," DISCIPLINA ID "
             prev_error=prev_error+1
         else:
             if(line_data[19][2:3]=='i'):
