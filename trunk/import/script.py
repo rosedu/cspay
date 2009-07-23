@@ -62,9 +62,8 @@ while file_exists==0:
         file_xls=xlrd.open_workbook(file_name)
         file_exists=1
     except:
-        print "Error! File (.xls) not found !"
-        print "If problems persist contact your local administrator !"
-        file_name=raw_input("Enter the correct path to the xls file !!! ")
+        print "Error! File (.xls) not found "
+        file_name=raw_input("Enter the correct path to the xls file ")
         file_exists=0
 
 
@@ -92,11 +91,15 @@ cursor = conn.cursor (MySQLdb.cursors.DictCursor)
 #
 ################################################
 cursor.execute("TRUNCATE TABLE ore")
-index_line=2
 #get sheet and pass it to read line
-
+if(end_check==0):
+    end_check=start_check+1
+if(start_check==0):
+    start_check=2
+    end_check=sheet.nrows
+index_line=start_check-1
 sheet = file_xls.sheet_by_index(0)
-while index_line<sheet.nrows:
+while index_line<end_check:
     
     line=line_reader.read_line(sheet,index_line)
     error_check=line_parser.parse(line,index_line) #if "OK" data is consistent
