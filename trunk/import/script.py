@@ -9,10 +9,33 @@ import db_writer
 import sys
 import MySQLdb
 #pointer to the xls file
-print sys.argv[1],"----\n"
-print sys.argv[2],"----\n"
-print sys.argv[3]
-file_name=raw_input("Enter the correct path to the xls file !!! ")
+
+# Each file is checked between line numbers (ex: all lines,line 6,lines 5-10)
+# all files -> start_check=0 , end_check=0
+# line a -> start_check=a end_check<start_check
+# lines a-b -> start_check=a and end_check=b where a<b
+file_name="model.xls"
+start_check=0   
+end_check=0
+if sys.argv[1]:
+    file_name=sys.argv[1]        
+else :
+    print """No filename entered !\n
+         Default 'model.xls' will be used\n"""
+
+if sys.argv[2]:
+    if isinstance(sys.argv[2], int):
+        start_check=sys.argv[2]
+    else :
+        print """Parameter passed is not integer ! \n
+        Default settings will be used (all lines) !\n"""
+if sys.argv[3]:
+    if isinstance(sys.argv[3], int):
+        start_end=sys.argv[3]
+    else :
+        print """Parameter passed is not integer ! \n
+        Default settings will be used !\n"""
+
 
 ################################################
 #
@@ -20,7 +43,6 @@ file_name=raw_input("Enter the correct path to the xls file !!! ")
 #
 ################################################
 prev_error=0 #number of errors
-file_name="model.xls"
 file_exists=0
 while file_exists==0:
     
