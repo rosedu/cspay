@@ -38,7 +38,11 @@ else :
     print """Parameter passed is not integer ! \n
         Default settings will be used !\n"""
 
-
+print file_name
+print start_check
+print end_check
+file_name=raw_input("Enter the correct path to the xls file !!! ")
+        
 ################################################
 #
 # Verify if file exists and open it
