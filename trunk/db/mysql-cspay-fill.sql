@@ -48,7 +48,7 @@ INSERT INTO `discipline` (`link_fac`, `link_cat`, `nume`, `nume_scurt`) VALUES
 (3, 3, 'Utilizarea Sistemelor de Operare', 'USO'),
 (3, 3, 'Programarea Calculatoarelor', 'Prog'),
 (3, 3, 'Introducere in Informatica', 'II'),
-(3, 3, 'Programare Logica', 'PL'),
+(3, 3, 'Proiectare Logica', 'PL'),
 (3, 3, 'Structuri de Date', 'SD'),
 (3, 3, 'Metode Numerice', 'MN'),
 (3, 3, 'Introd. in Org. Calc. si L. de Asambl.', 'PLAS'),
