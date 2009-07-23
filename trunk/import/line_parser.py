@@ -62,7 +62,7 @@ def parse(list_data,line_number):
     
     #mandatory data only for L
         #mandatory data only for C
-    elif list_data[1]=="L" or list_data[1]=="P":
+    elif list_data[1]=="L" or list_data[1]=="P" or list_data[1]=="S":
         if not list_data[9]:
             print "Cell ",9,
             return line_number
