@@ -9,7 +9,9 @@ import db_writer
 import sys
 import MySQLdb
 #pointer to the xls file
-
+print sys.argv[1],"----\n"
+print sys.argv[2],"----\n"
+print sys.argv[3]
 print sys.getdefaultencoding()
 ################################################
 #
