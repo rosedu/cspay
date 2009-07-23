@@ -3,20 +3,20 @@ import MySQLdb
 import sys
 import datetime
 import pickle
-from logic_proto import output_table
+from alceva import output_table
 
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
 levels = {'4a': "as", '3s': "sl", '2c': "conf", '1p': "prof"}
 
-def gather_data(name, univ, facl, desk, path, months = 0):
+def gather_data(name, univ, facl, desk, path, function, months = 0):
         """ Gather data from a mySQL database for a certain name,
             and then write an Excel WorkBook for the given months,
             for the given universitary year
         """
         print "Processing", name,"..."
         try:
-                conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rosedu_cspay",
-                                        passwd = "huashaquou", db = "rosedu_cspay", charset = "utf8",
+                conn = MySQLdb.connect (host = "localhost", user = "root",
+                                        passwd = "myraki", db = "cspay", charset = "utf8",
                                         use_unicode = True )
         except MySQLdb.Error, e:
                 print "Error %d: %s" % (e.args[0], e.args[1])
@@ -68,12 +68,15 @@ def gather_data(name, univ, facl, desk, path, months = 0):
         temp2 = cursor.fetchone()
         input['sef_catedra'] = temp2['sef']
 
-                
-        cursor.execute ("""SELECT link_disc, tip_ora, nr_post, an, serie,
-                           grad_post, an_grupa, zi, ora, paritate,paritate_start
+        command = """SELECT link_disc, tip_ora, nr_post, an, serie,
+                           grad_post, an_grupa, zi, ora, paritate, paritate_start, sala
                            FROM ore
-                           WHERE pers_acoperit=%s AND tip_ocupare='po'""",
-                        name)
+                           """
+        if not function:
+                 command += " WHERE pers_acoperit=%s AND tip_ocupare='po'"
+        else:
+                 command += " WHERE pers_acoperit_efect=%s"
+        cursor.execute (command, name)
         result_set = cursor.fetchall ()
 
         i = 1
@@ -131,7 +134,7 @@ def gather_data(name, univ, facl, desk, path, months = 0):
         if i:
                 print "No pay-per-hour found for", name
         else:
-                output_table(input, vacante, used_par, path)
+                output_table(input, vacante, used_par)
         print "OK"
 	
 
@@ -141,7 +144,7 @@ def build_course(row, clas, fac):
         """
         course = {'functie': "", 'nr_post': 0, 'facultate': "", 'zi': 0,
                   'tip': "", 'disciplina': "", 'grupa': "", 'ore': "",
-                  'parit': 0, 'pari_st': 0}
+                  'parit': 0, 'pari_st': 0, 'sala':""}
         course['functie'] = conv_grade(row['grad_post'])
         course['nr_post'] = row['nr_post']
         course['zi'] = conv_day(row['zi'])
@@ -151,6 +154,7 @@ def build_course(row, clas, fac):
         course['disciplina'] = clas
         course['facultate'] = fac
         course['parit'] = row['paritate']
+        course['sala'] = row['sala']
         if row['paritate_start'] == course['parit']:
                 course['pari_st'] = 0
         else:

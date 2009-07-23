@@ -74,16 +74,23 @@ def initializeWB(coding):
 	wb = pycel.Workbook(encoding=coding)
 	return wb
 	
-def initializeWS(wb,name):
+def initializeWS(wb, name, format=0, scale=0):
 	"""Initialize a WorkSheet with a certain name"""
 	ws = wb.add_sheet(name)
-	ws.fit_num_pages = 1
-	ws.fit_height_to_pages = 1
-	ws.fit_width_to_pages = 1
 	ws.paper_size_code = 9
 	ws.footer_str= ""
 	ws.header_str='&F'
-	ws.portrait = 1
+	if format:
+		ws.portrait = 0
+	else:
+		ws.portrait = 1
+	if scale:
+		ws.print_scaling = scale
+	else:
+		ws.fit_num_pages = 1
+		ws.fit_height_to_pages = 1
+		ws.fit_width_to_pages = 1
+		
 	return ws
 	
 def finish(wb, title):
@@ -94,7 +101,7 @@ def formula(str):
 	"""Conver formula from string to internal format"""
 	return pycel.Formula(str)
 	
-def boxed(i, v_center=0, wrap=0, h_center=1):
+def boxed(i, v_center=0, wrap=0, h_align=1):
 	"""Set borders: 
 	    i=1 for thin border
 		i=2 for thick border
@@ -106,8 +113,96 @@ def boxed(i, v_center=0, wrap=0, h_center=1):
 		lista.append(("wrap", pycel.Alignment.WRAP_AT_RIGHT))
 	if v_center:
 		lista.append(("vert", pycel.Alignment.VERT_CENTER))
-	if h_center:
+	if h_align == 1:
 		lista.append(("horz", pycel.Alignment.HORZ_CENTER))
+	elif h_align == 2:
+		lista.append(("horz", pycel.Alignment.HORZ_RIGHT))
 	if list:
 		result.update({"alignment":tuple(lista)})
 	return result
+
+def faktup(weight):
+	borders = pycel.Borders()
+	borders.left = weight
+	borders.right = weight
+	borders.top = weight
+	borders.bottom = weight
+
+	al = pycel.Alignment()
+	al.wrap = pycel.Alignment.WRAP_AT_RIGHT
+	al.horz = pycel.Alignment.HORZ_CENTER
+	al.vert = pycel.Alignment.VERT_CENTER
+
+	style = pycel.XFStyle()
+	style.borders = borders
+	style.alignment = al
+	return style
+
+def sideboxed(start = 0, left = 0, right = 0, end = 0):
+	borders = pycel.Borders()
+	if left:
+		borders.left = 1
+	if right:
+		borders.right = 1
+	if start:
+		borders.top = 1
+	if end:
+		borders.bottom = 1
+	style = pycel.XFStyle()
+	style.borders = borders
+	return style
+
+def set_row_h(ws, i, k):
+        fnt = pycel.Font()
+        fnt.height = k * 10 * 20
+        style = pycel.XFStyle()
+        style.font = fnt
+        ws.row(i).set_style(style)
+		
+def half(type):
+	borders = pycel.Borders()
+	if type == "up":
+		borders.left = 2
+		borders.top = 2
+	else:
+		borders.right = 2
+		borders.bottom = 2
+
+	al = pycel.Alignment()
+	al.wrap = pycel.Alignment.WRAP_AT_RIGHT
+	al.horz = pycel.Alignment.HORZ_CENTER
+	al.vert = pycel.Alignment.VERT_CENTER
+
+	style = pycel.XFStyle()
+	style.borders = borders
+	style.alignment = al
+	return style
+	
+def corner(where, type):
+	borders = pycel.Borders()
+	borders.diag = 2
+	borders.need_diag2 = pycel.Borders.NEED_DIAG2
+	
+	if where == 1:
+		if type == 1:
+			borders.left = 2
+		elif type == 2:
+			borders.bottom = 2
+		else:
+			borders.left = 2
+			borders.bottom = 2
+	if where == 0:
+		if type == 1:
+			borders.top = 2
+		elif type == 2:
+			borders.right = 2
+		else:
+			borders.top = 2
+			borders.right = 2
+	style = pycel.XFStyle()
+	style.borders = borders
+	return style
+
+			
+		
+	
