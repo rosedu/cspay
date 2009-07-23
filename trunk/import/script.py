@@ -120,7 +120,7 @@ while index_line<end_check:
     index_line+=1
 
 cursor.execute("TRUNCATE TABLE ore")
-print " Only first 3 errors are displayed (if any) !!! "
+print "\n Only first 5 errors are displayed (if any) !!! "
 print " There have been found a total of",prev_error,"errors in the .xls file or in the database"
 #test read first line in xls file -> uncomment next line to test
 #print "Line 0 : ",reader.read_line(xls_file,0,0)
