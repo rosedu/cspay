@@ -4,7 +4,7 @@ import dummy_writer as dw
 
 ro_days = ["Luni", "Marţi", "Miercuri", "Joi", "Vineri"]
 		
-def output_orar(input):
+def output_orar(input, path):
 
 	F = dw.initializeWB("utf8")
 	months = input['luni']
@@ -16,8 +16,8 @@ def output_orar(input):
 	except TypeError:
 		who = input['profesor']
 	title = "Orar" + ' ' + who + ' ' + when
-	title=title.replace(" ","_")
-	print title
+	title = path + title.replace(" ","_")
+
 	
 	S = dw.initializeWS(F, input['profesor'], 1)
 	write_header(S, input['universitate'], input['facultate'],

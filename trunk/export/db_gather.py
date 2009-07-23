@@ -3,7 +3,8 @@ import MySQLdb
 import sys
 import datetime
 import pickle
-from alceva import output_table
+from logic_proto import output_table
+from orar import output_orar
 
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
 levels = {'4a': "as", '3s': "sl", '2c': "conf", '1p': "prof"}
@@ -15,8 +16,8 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
         """
         print "Processing", name,"..."
         try:
-                conn = MySQLdb.connect (host = "localhost", user = "root",
-                                        passwd = "myraki", db = "cspay", charset = "utf8",
+                conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rosedu_cspay",
+                                        passwd = "huashaquou", db = "rosedu_cspay", charset = "utf8",
                                         use_unicode = True )
         except MySQLdb.Error, e:
                 print "Error %d: %s" % (e.args[0], e.args[1])
@@ -132,9 +133,15 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
         conn.close()
 
         if i:
-                print "No pay-per-hour found for", name
+                if function:
+                        print "No hour found for", name
+                else:
+                        print "No pay-per-hour found for", name
         else:
-                output_table(input, vacante, used_par)
+                if function:
+                        output_orar(input)
+                else:
+                        output_table(input, vacante, used_par, path)
         print "OK"
 	
 
