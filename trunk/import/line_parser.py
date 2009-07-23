@@ -26,7 +26,7 @@ def parse(list_data,line_number):
     #common mandatory data 1(C+L, index 0->6)
     i=0
     while i<7:
-        if not list_data[i]:
+        if list_data[i]=='0':
             print "Cell ",i,
             return line_number 
         i=i+1
@@ -34,14 +34,14 @@ def parse(list_data,line_number):
     #common mandatory data 2(C+L, index 12->13)
     i=12
     while i<14:
-        if not list_data[i]:
+        if list_data[i]=='0':
             print "Cell ",i,
             return line_number
         i=i+1
     #common mandatory data 3(C+L, index 15->21)
     i=15
     while i<22:
-        if not list_data[i]:
+        if list_data[i]=='0':
             print "Cell ",i,
             return line_number
         i=i+1
@@ -49,23 +49,23 @@ def parse(list_data,line_number):
 
     #mandatory data only for C
     if list_data[1]=="C":
-        if not list_data[7]:
+        if list_data[7]=='0':
             print "Cell 7",
             return line_number
-        if not list_data[8]:
+        if list_data[8]=='0':
             print "Cell 8",
             return line_number
-        if not list_data[10]:
+        if list_data[10]=='0':
             print "Cell 10",
             return line_number
 
     
     #mandatory data only for L
     elif list_data[1]=="L" or list_data[1]=="P" or list_data[1]=="S":
-        if not list_data[9]:
+        if list_data[9]=='0':
             print "Cell 9",
             return line_number
-        if not list_data[11]:
+        if list_data[11]=='0':
             print "Cell 11",
             return line_number
     else:
