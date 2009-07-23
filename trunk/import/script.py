@@ -55,7 +55,6 @@ print " --------------------------------->>>"
 #
 ################################################
 prev_error=0 #number of errors
-file_name="model.xls"
 file_exists=0
 while file_exists==0:
     
