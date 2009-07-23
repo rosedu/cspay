@@ -41,15 +41,14 @@ else :
 print file_name
 print start_check
 print end_check
-file_name=raw_input("Enter the correct path to the xls file !!! ")
-        
+ 
 ################################################
 #
 # Verify if file exists and open it
 #
 ################################################
 prev_error=0 #number of errors
-file_name="model.xls"
+#file_name="model.xls"
 file_exists=0
 while file_exists==0:
     
