@@ -16,56 +16,43 @@ def parse(list_data,line_number):
     
     for empty in list_data:
         if not empty:
+            #common mandatory data
+            if(i<7):
+                print "Error NO DATA Line NR : line_number",line_number
+                print "Cell ",i+1,"\n"
+                return line_number
+            #common mandatory data
+            if((i>11)and(i<14)):
+                print "Error NO DATA Line NR : line_number",line_number
+                print "Cell ",i+1,"\n"
+                return line_number
+            #common mandatory data
+            if((i>14)and(i<22)):
+                print "Error NO DATA Line NR : line_number",line_number
+                print "Cell ",i+1,"\n"
+                return line_number
+            if((i==10)and(str(list_data[1])=="C")):
+                print "Error NO DATA Line NR : line_number",line_number
+                print "Cell 11\n"
+                return line_number
+            if((str(list_data[1])=="L")or(str(list_data[1])=="P")or(str(list_data[1])=="C")):
+                if(i==12):
+                    print "Error NO DATA Line NR : line_number",line_number
+                    print "Cell 13\n"
+                    return line_number
             ii=ii+1
             list_data[i]='0'
         i=i+1
-    if(len(list_data)>22):
+               
+    if(i>21):
         print "Line : ",line_number,"\nWarning : Number of columns exceeds 22 (=nr needed) "
-    elif(len(list_data)<22):
+    elif(i<21):
         print "Line : ",line_number,"\nWarning : Number of columns bellow 22 (=nr needed) "
     
     if ii>21:
         return "Ignore"     # more than 21 lines that count
                             # should make the line be ignored
-    
-    #common mandatory data 1(C+L, index 0->6)
-    i=0
-    while i<7:
-        if list_data[i]=='0':
-            print "Cell ",i+1
-            return line_number 
-        i=i+1
 
-    #common mandatory data 2(C+L, index 12->13)
-    i=12
-    while i<14:
-        if list_data[i]=='0':
-            print "Cell ",i+1
-            return line_number
-        i=i+1
-    #common mandatory data 3(C+L, index 15->21)
-    i=15
-    while i<22:
-        if list_data[i]=='0':
-            print "Cell ",i+1
-            return line_number
-        i=i+1
-    
-
-    #mandatory data only for C
-    if list_data[1]=="C":
-        if list_data[10]=='0':
-            print "Cell 11"
-            return line_number
-
-    
-    #mandatory data only for L
-    elif list_data[1]=="L" or list_data[1]=="P" or list_data[1]=="S":
-        if list_data[11]=='0':
-            print "Cell 12"
-            return line_number
-    else:
-        return line_number
         #remove spacesa
     index=0
     for value in list_data:
