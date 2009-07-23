@@ -21,18 +21,18 @@ nr_argv=0
 for arg in sys.argv:
     nr_argv+=1
     
-if nr_argv>0:
+if nr_argv>1:
     file_name=sys.argv[1]
 else :
     print """No filename entered !\n
             Default 'model.xls' will be used\n"""
 
-if nr_argv>1:
+if nr_argv>2:
     start_check=sys.argv[2]
 else :
     print """Parameter passed is not integer ! \n
         Default settings will be used (all lines) !\n"""
-if nr_argv>2:
+if nr_argv>3:
     start_end=sys.argv[3]
 else :
     print """Parameter passed is not integer ! \n
