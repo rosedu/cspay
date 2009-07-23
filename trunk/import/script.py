@@ -48,7 +48,6 @@ if start_check==0:
 else:
     print "no"
 print " --------------------------------->>>"
-file_name=raw_input("Enter the correct path to the xls file !!! ")
         
 ################################################
 #
