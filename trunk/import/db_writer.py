@@ -14,7 +14,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
         if(prev_error<5):
             print "\n\n\n ",prev_error+1,
             print ")SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",line_data[0]
-            print "\nERROR : Line NR ",line_index," FACULTY : < ",line_data[0]," >\n"
+            print "\nERROR : Line NR ",line_index," FACULTATE : < ",line_data[0]," >\n"
         prev_error+=1
         
     else :   
@@ -40,13 +40,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 elif(line_data[19][2:3]=='p'):
                     paritate="2"
                     paritate_start="2"
-                else:
-                    print "\n\n\n ",prev_error+1,
-                    print ")SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
-                    " AND LOWER(nume)=",line_data[2]
-                    print "\nERROR : Line NR ",line_index," PARITATE : < ",line_data[19][0:3]," > "
-                    print "EXPECTED : lu(p/i),ma(p/i),mi(p/i),jo(p/i),vi(p/i),sa(p/i),du(p/i)"
-                    prev_error=prev_error+1
+                
             elif(prev_error<5):
                 print "\n\n\n ",prev_error+1,
                 print ")SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
