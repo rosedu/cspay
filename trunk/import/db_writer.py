@@ -14,7 +14,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
         if(prev_error<5):
             print "\n\n\n ",prev_error+1,
             print ")SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",line_data[0]
-            print "\nERROR : Line NR ",line_index," FACULTY ID : < ",line_data[0]," >\n"
+            print "\nERROR : Line NR ",line_index," FACULTY : < ",line_data[0]," >\n"
         prev_error+=1
         
     else :   
@@ -30,7 +30,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 print "\n\n\n ",prev_error+1,
                 print ")SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
                 " AND LOWER(nume)=",line_data[2]
-                print "\nERROR : Line NR ",line_index," DISCIPLINA ID : < ",line_data[2]," >\n"
+                print "\nERROR : Line NR ",line_index," DISCIPLINA : < ",line_data[2]," >\n"
             prev_error=prev_error+1
         else:
             if(line_data[19][2:3]=='i'):
