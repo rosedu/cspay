@@ -15,9 +15,9 @@ def read_line(sheet,line_nr):
         item=sheet.cell_value(line_nr,i_col)
         list_el.append(item)
         i_col=i_col+1
-    if(len(list_el)>21):
+    if(len(list_el)>22):
         print "Line : ",line_nr,"\nWarning : Number of columns exceeds 21 (=nr needed) "
-    elif(len(list_el)<21):
+    elif(len(list_el)<22):
         print "Line : ",line_nr,"\nWarning : Number of columns bellow 21 (=nr needed) "
     
     return list_el
