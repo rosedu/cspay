@@ -18,8 +18,12 @@ def parse(list_data,line_number):
         if not empty:
             ii=ii+1
             list_data[i]='0'
-           
-        i=i+1        
+        i=i+1
+    if(len(list_el)>22):
+        print "Line : ",line_nr,"\nWarning : Number of columns exceeds 22 (=nr needed) "
+    elif(len(list_el)<22):
+        print "Line : ",line_nr,"\nWarning : Number of columns bellow 22 (=nr needed) "
+    
     if ii>21:
         return "Ignore"     # more than 21 lines that count
                             # should make the line be ignored
