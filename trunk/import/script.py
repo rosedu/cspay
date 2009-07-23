@@ -27,6 +27,9 @@ for arg in sys.argv:
         if(start_check!=arg):
             end_check=arg
 
+print file_name
+print start_check
+print end_check
 ################################################
 #
 # Verify if file exists and open it
