@@ -93,16 +93,16 @@ cursor = conn.cursor (MySQLdb.cursors.DictCursor)
 cursor.execute("TRUNCATE TABLE ore")
 #get sheet and pass it to read line
 if(end_check==0):
-    end_check=start_check+1
+    end_check=start_check
 if(start_check==0):
-    start_check=2
+    start_check=3
     end_check=sheet.nrows
 index_line=start_check-1
 sheet = file_xls.sheet_by_index(0)
 while index_line<end_check:
-    
     line=line_reader.read_line(sheet,index_line)
     error_check=line_parser.parse(line,index_line) #if "OK" data is consistent
+
     if error_check=="Ok":
         #print "Line ",index_line+2," is candidate to be inserted into DB"
         prev_error=db_writer.db_write_line(cursor,line,index_line,prev_error)  #pass the line and its number
@@ -112,7 +112,6 @@ while index_line<end_check:
         print "\n\n   --------------------------------- \n    "
         print "Data missing on line :",
         print error_check+1," Sheet :",sheet.name
-        print "Please correct XLS file"
         prev_error=prev_error+1
     else:
         prev_error=prev_error+1
@@ -120,9 +119,7 @@ while index_line<end_check:
         #break
     index_line+=1
 
-
-print "\n Table has been truncated >>>"
-print "\n\n ---------------------------------------- \n"
+cursor.execute("TRUNCATE TABLE ore")
 print " Only first 3 errors are displayed (if any) !!! "
 print " There have been found a total of",prev_error,"errors in the .xls file or in the database"
 #test read first line in xls file -> uncomment next line to test

@@ -14,8 +14,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
         if(prev_error<3):
             print "\n\n   --------------------------------- \n    "
             print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",str.lower(line_data[0])
-            print "\nERROR : Line NR ",line_index,"data did not have a coresponding faculty id "
-            print "Possible causses : faculty short name changed, table 'facultati' was altered"
+            print "\nERROR : Line NR ",line_index," FACULTY id "
         prev_error+=1
         
     else :   
@@ -31,8 +30,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 print "\n\n   --------------------------------- \n    "
                 print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
                 " AND LOWER(nume)=",str.lower(line_data[2])
-                print "\nERROR : Line NR ",line_index,"data did not have a coresponding course/lect id"
-                print "Possible causses : course/lecture name changed, table 'discipline' was altered"
+                print "\nERROR : Line NR ",line_index," DISCIPLINA id"
             prev_error=prev_error+1
         else:
             if(line_data[19][2:3]=='i'):
