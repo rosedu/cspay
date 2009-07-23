@@ -17,27 +17,35 @@ import MySQLdb
 file_name="model.xls"
 start_check=0   
 end_check=0
+nr_argv=0
+for arg in sys.argv:
+    nr_argv+=1
+    
+if nr_argv>0:
+    file_name=sys.argv[1]
+else :
+    print """No filename entered !\n
+            Default 'model.xls' will be used\n"""
 
-for arg in sys.argv: 
-    if isinstance(arg, str):
-        file_name=arg
-    if isinstance(arg, int):
-        start_check=arg
-    if isinstance(arg,int):
-        if(start_check!=arg):
-            end_check=arg
-            
-print file_name
-print start_check
-print end_check
-file_name=raw_input("Enter the correct path to the xls file !!! ")
-       
+if nr_argv>1:
+    start_check=sys.argv[2]
+else :
+    print """Parameter passed is not integer ! \n
+        Default settings will be used (all lines) !\n"""
+if nr_argv>2:
+    start_end=sys.argv[3]
+else :
+    print """Parameter passed is not integer ! \n
+        Default settings will be used !\n"""
+
+
 ################################################
 #
 # Verify if file exists and open it
 #
 ################################################
 prev_error=0 #number of errors
+file_name="model.xls"
 file_exists=0
 while file_exists==0:
     
