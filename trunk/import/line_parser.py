@@ -50,12 +50,6 @@ def parse(list_data,line_number):
 
     #mandatory data only for C
     if list_data[1]=="C":
-        if list_data[7]=='0':
-            print "Cell 8"
-            return line_number
-        if list_data[8]=='0':
-            print "Cell 9"
-            return line_number
         if list_data[10]=='0':
             print "Cell 11"
             return line_number
@@ -63,9 +57,6 @@ def parse(list_data,line_number):
     
     #mandatory data only for L
     elif list_data[1]=="L" or list_data[1]=="P" or list_data[1]=="S":
-        if list_data[9]=='0':
-            print "Cell 10\n"
-            return line_number
         if list_data[11]=='0':
             print "Cell 12"
             return line_number
