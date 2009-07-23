@@ -17,12 +17,12 @@ import MySQLdb
 file_name="model.xls"
 start_check=0   
 end_check=0
-if sys.argv[1]:
-    file_name=sys.argv[1]        
-else :
+if not sys.argv[1]:
     print """No filename entered !\n
-         Default 'model.xls' will be used\n"""
-
+         Default 'model.xls' will be used\n"""       
+else :
+    file_name=sys.argv[1]
+    
 if sys.argv[2]:
     if isinstance(sys.argv[2], int):
         start_check=sys.argv[2]
