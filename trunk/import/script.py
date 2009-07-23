@@ -28,12 +28,12 @@ else :
             Default 'model.xls' will be used\n"""
 
 if nr_argv>2:
-    start_check=sys.argv[2]
+    start_check=int(sys.argv[2])
 else :
     print """Parameter passed is not integer ! \n
         Default settings will be used (all lines) !\n"""
 if nr_argv>3:
-     end_check=sys.argv[3]
+     end_check=int(sys.argv[3])
 else :
     print """Parameter passed is not integer ! \n
         Default settings will be used !\n"""
