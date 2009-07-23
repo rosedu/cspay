@@ -33,12 +33,28 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 print "\nERROR : Line NR ",line_index," DISCIPLINA : < ",line_data[2]," >\n"
             prev_error=prev_error+1
         else:
-            if(line_data[19][2:3]=='i'):
-                paritate="2"
-                paritate_start="1"
-            elif(line_data[19][2:3]=='p'):
-                paritate="2"
-                paritate_start="2"
+            if line_data[19][0:2] in ["lu","ma","mi","jo","vi","sa","du"]:
+                if(line_data[19][2:3]=='i'):
+                    paritate="2"
+                    paritate_start="1"
+                elif(line_data[19][2:3]=='p'):
+                    paritate="2"
+                    paritate_start="2"
+                else:
+                    print "\n\n\n ",prev_error+1,
+                    print ")SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
+                    " AND LOWER(nume)=",line_data[2]
+                    print "\nERROR : Line NR ",line_index," PARITATE : < ",line_data[19][0:3]," > "
+                    print "EXPECTED : lu(p/i),ma(p/i),mi(p/i),jo(p/i),vi(p/i),sa(p/i),du(p/i)"
+                    prev_error=prev_error+1
+            elif(prev_error<5):
+                print "\n\n\n ",prev_error+1,
+                print ")SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
+                " AND LOWER(nume)=",line_data[2]
+                print "\nERROR : Line NR ",line_index," PARITATE : < ",line_data[19][0:3]," > "
+                print "EXPECTED : lu(p/i),ma(p/i),mi(p/i),jo(p/i),vi(p/i),sa(p/i),du(p/i)"
+                prev_error=prev_error+1
+            prev_error=prev_error+1
             db="""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
 	  nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
 	  grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
