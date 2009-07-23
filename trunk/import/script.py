@@ -33,14 +33,21 @@ else :
     print """Parameter passed is not integer ! \n
         Default settings will be used (all lines) !\n"""
 if nr_argv>3:
-    start_end=sys.argv[3]
+     end_check=sys.argv[3]
 else :
     print """Parameter passed is not integer ! \n
         Default settings will be used !\n"""
 
-print file_name
-print start_check
-print end_check
+print " Parameters ------------------------ >>> "
+print " FILENAME ",file_name
+print " START CHECK ",start_check
+print " END CHECK ",end_check
+print " CHECK WHOLE FILE : "
+if start_check==0:
+    print "yes"
+else:
+    print "no"
+print " --------------------------------->>>"
 file_name=raw_input("Enter the correct path to the xls file !!! ")
         
 ################################################
