@@ -33,11 +33,11 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 print "\nERROR : Line NR ",line_index," DISCIPLINA : < ",line_data[2]," >\n"
             prev_error=prev_error+1
         else:
-            if line_data[19][0:2] in ["lu","ma","mi","jo","vi","sa","du"]:
-                if(line_data[19][2:3]=='i'):
+            if str.lower(line_data[19][0:2]) in ["lu","ma","mi","jo","vi","sa","du"]:
+                if(str.lower(line_data[19][2:3])=='i'):
                     paritate="2"
                     paritate_start="1"
-                elif(line_data[19][2:3]=='p'):
+                elif(str.lower(line_data[19][2:3])=='p'):
                     paritate="2"
                     paritate_start="2"
                 
