@@ -17,25 +17,15 @@ import MySQLdb
 file_name="model.xls"
 start_check=0   
 end_check=0
-if not sys.argv[1]:
-    print """No filename entered !\n
-         Default 'model.xls' will be used\n"""       
-else :
-    file_name=sys.argv[1]
-    
-if sys.argv[2]:
-    if isinstance(sys.argv[2], int):
-        start_check=sys.argv[2]
-    else :
-        print """Parameter passed is not integer ! \n
-        Default settings will be used (all lines) !\n"""
-if sys.argv[3]:
-    if isinstance(sys.argv[3], int):
-        start_end=sys.argv[3]
-    else :
-        print """Parameter passed is not integer ! \n
-        Default settings will be used !\n"""
 
+for arg in sys.argv: 
+    if isinstance(arg, str):
+        file_name=arg
+    if isinstance(arg, int):
+        start_check=arg
+    if isinstance(arg,int):
+        if(start_check!=arg):
+            end_check=arg
 
 ################################################
 #
