@@ -12,7 +12,8 @@ import MySQLdb
 print sys.argv[1],"----\n"
 print sys.argv[2],"----\n"
 print sys.argv[3]
-print sys.getdefaultencoding()
+file_name=raw_input("Enter the correct path to the xls file !!! ")
+
 ################################################
 #
 # Verify if file exists and open it
