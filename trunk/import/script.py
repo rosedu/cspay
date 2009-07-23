@@ -42,7 +42,7 @@ print " Parameters ------------------------ >>> "
 print " FILENAME ",file_name
 print " START CHECK ",start_check
 print " END CHECK ",end_check
-print " CHECK WHOLE FILE : "
+print " CHECK WHOLE FILE : ",
 if start_check==0:
     print "yes"
 else:
