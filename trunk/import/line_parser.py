@@ -19,9 +19,9 @@ def parse(list_data,line_number):
             ii=ii+1
             list_data[i]='0'
         i=i+1
-    if(len(list_el)>22):
+    if(len(list_data)>22):
         print "Line : ",line_nr,"\nWarning : Number of columns exceeds 22 (=nr needed) "
-    elif(len(list_el)<22):
+    elif(len(list_data)<22):
         print "Line : ",line_nr,"\nWarning : Number of columns bellow 22 (=nr needed) "
     
     if ii>21:
