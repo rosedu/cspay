@@ -53,7 +53,7 @@ def parse(list_data,line_number,prev_error):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "[",col_list[i],"]","Cell ",i,"\n"
-                prev_error+=1
+                prev_error=prev_error+1
                 return prev_error
             
             #if((str(list_data[1])=="L")or(str(list_data[1])=="P")or(str(list_data[1])=="C")):
@@ -69,17 +69,17 @@ def parse(list_data,line_number,prev_error):
     if(i>21):
         if(prev_error<5):
             print "Line : ",line_number,"\nError : Number of columns exceeds 22 (=nr needed) "
-        prev_error+=1
+        prev_error=prev_error+1
         return prev_error
     elif(i<21):
         if(prev_error<5):
             print "Line : ",line_number,"\nError : Number of columns bellow 22 (=nr needed) "
-        prev_error+=1
+        prev_error=prev_error+1
         return prev_error
     if ii>21:
         if(prev_error<5):
             print "Line : ",line_number," has been ignored -> 22 fields missing"
-        prev_error+=1
+        prev_error=prev_error+1
         return prev_error     # more than 21 lines that count
                             # should make the line be ignored
 
