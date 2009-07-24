@@ -50,8 +50,9 @@ def parse(list_data,line_number,prev_error):
         if not empty:
             #common mandatory data
             if(i==oblig[i]):
-                print "Error NO DATA Line NR : ",line_number
-                print "[",col_list[i],"]","Cell ",i,"\n"
+                if(prev_error<5):
+                    print "Error NO DATA Line NR : ",line_number
+                    print "[",col_list[i],"]","Cell ",i,"\n"
                 prev_error+=1
                 return prev_error
             
@@ -66,15 +67,18 @@ def parse(list_data,line_number,prev_error):
         i=i+1
                
     if(i>21):
-        print "Line : ",line_number,"\nError : Number of columns exceeds 22 (=nr needed) "
+        if(prev_error<5):
+            print "Line : ",line_number,"\nError : Number of columns exceeds 22 (=nr needed) "
         prev_error+=1
         return prev_error
     elif(i<21):
-        print "Line : ",line_number,"\nError : Number of columns bellow 22 (=nr needed) "
+        if(prev_error<5):
+            print "Line : ",line_number,"\nError : Number of columns bellow 22 (=nr needed) "
         prev_error+=1
         return prev_error
     if ii>21:
-        print "Line : ",line_number," has been ignored -> 22 fields missing"
+        if(prev_error<5):
+            print "Line : ",line_number," has been ignored -> 22 fields missing"
         prev_error+=1
         return prev_error     # more than 21 lines that count
                             # should make the line be ignored
