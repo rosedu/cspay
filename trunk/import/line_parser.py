@@ -93,7 +93,7 @@ def parse(list_data,line_number,prev_error):
             list_data[index]=int(value)
         index=index+1
     
-    return "Ok"
+    return prev_error
         
 
 
