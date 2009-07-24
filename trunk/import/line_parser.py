@@ -8,6 +8,15 @@
 #Does not change attempt to correct data errors
 #If the data is inconsistent it gives an error and halts execution
 
+################################################
+
+
+col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf",
+          "Nr gr/sg","sg","C2","A2","Post","Grad","PERS","Tip","Acoperit",
+          "Acop.efectiv","An/Gr","Zi","Ora","Sala"]
+
+################################################
+
 def parse(list_data,line_number,prev_error):
     #print "Parser called at line number :",line_number
     #all cells in a line are empty=>ignore the line, return Ok
@@ -19,30 +28,30 @@ def parse(list_data,line_number,prev_error):
             #common mandatory data
             if(i<7):
                 print "Error NO DATA Line NR : ",line_number
-                print "Cell ",i+1,"\n"
+                print "[",col_list[i],"]","Cell ",i+1,"\n"
                 prev_error+=1
                 return prev_error
             #common mandatory data
             #if((i>11)and(i<14)):
                 print "Error NO DATA Line NR : ",line_number
-                print "Cell ",i+1,"\n"
+                print "[",col_list[i],"]","Cell ",i+1,"\n"
                 prev_error+=1
                 return prev_error
             #common mandatory data
            # if((i>14)and(i<22)):
                 print "Error NO DATA Line NR : ",line_number
-                print "Cell ",i+1,"\n"
+                print "[",col_list[i],"]","Cell ",i+1,"\n"
                 prev_error+=1
                 return prev_error
           #  if((i==10)and(str(list_data[1])=="C")):
                 print "Error NO DATA Line NR : ",line_number
-                print "Cell 11\n"
+                print "[",col_list[i],"]","Cell 11\n"
                 prev_error+=1
                 return prev_error
             if((str(list_data[1])=="L")or(str(list_data[1])=="P")or(str(list_data[1])=="C")):
                 if(i==12):
                     print "Error NO DATA Line NR : line_number",line_number
-                    print "Cell 13\n"
+                    print "[",col_list[i],"]","Cell 13\n"
                     prev_error+=1
                     return prev_error
             ii=ii+1
