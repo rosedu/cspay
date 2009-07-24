@@ -51,7 +51,7 @@ def parse(list_data,line_number,prev_error):
             #common mandatory data
             if(i==oblig[i]):
                 print "Error NO DATA Line NR : ",line_number
-                print "[",col_list[i],"]","Cell ",i+1,"\n"
+                print "[",col_list[i],"]","Cell ",i,"\n"
                 prev_error+=1
                 return prev_error
             
