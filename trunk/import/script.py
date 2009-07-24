@@ -90,6 +90,15 @@ cursor = conn.cursor (MySQLdb.cursors.DictCursor)
 # for each sheet ot the file get all line
 #
 ################################################
+
+
+col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf",
+          "Nr gr/sg","sg","C2","A2","Post","Grad","PERS","Tip","Acoperit",
+          "Acop.efectiv","An/Gr","Zi","Ora","Sala"]
+
+################################################
+
+
 cursor.execute("TRUNCATE TABLE ore")
 sheet = file_xls.sheet_by_index(0)
 #get sheet and pass it to read line

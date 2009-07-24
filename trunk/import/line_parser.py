@@ -11,9 +11,32 @@
 ################################################
 
 
-col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf",
+col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stud",
           "Nr gr/sg","sg","C2","A2","Post","Grad","PERS","Tip","Acoperit",
           "Acop.efectiv","An/Gr","Zi","Ora","Sala"]
+
+oblig=[0, # Facultate
+       1, # C,L,P,S
+       2, # Titlu disc
+       3, # Forma
+       4, # Cod
+       5, # An
+       6, # Serie
+       -7, # Nr Stud
+       -8, # Nr gr/sg
+       -9, # sg
+       10,#C2
+       11,#A2
+       12,#Post
+       13,#Grad
+       -14,#PERS
+       15,#Tip
+       16,#Acoperit
+       17,#Acop.efectiv
+       18,#An/Gr
+       19,#Zi
+       20,#Ora
+       21]#Sala
 
 ################################################
 
@@ -26,34 +49,18 @@ def parse(list_data,line_number,prev_error):
     for empty in list_data:
         if not empty:
             #common mandatory data
-            if(i<7):
+            if(i==oblig[i]):
                 print "Error NO DATA Line NR : ",line_number
                 print "[",col_list[i],"]","Cell ",i+1,"\n"
                 prev_error+=1
                 return prev_error
-            #common mandatory data
-            #if((i>11)and(i<14)):
-                print "Error NO DATA Line NR : ",line_number
-                print "[",col_list[i],"]","Cell ",i+1,"\n"
-                prev_error+=1
-                return prev_error
-            #common mandatory data
-           # if((i>14)and(i<22)):
-                print "Error NO DATA Line NR : ",line_number
-                print "[",col_list[i],"]","Cell ",i+1,"\n"
-                prev_error+=1
-                return prev_error
-          #  if((i==10)and(str(list_data[1])=="C")):
-                print "Error NO DATA Line NR : ",line_number
-                print "[",col_list[i],"]","Cell 11\n"
-                prev_error+=1
-                return prev_error
-            if((str(list_data[1])=="L")or(str(list_data[1])=="P")or(str(list_data[1])=="C")):
-                if(i==12):
-                    print "Error NO DATA Line NR : line_number",line_number
-                    print "[",col_list[i],"]","Cell 13\n"
-                    prev_error+=1
-                    return prev_error
+            
+            #if((str(list_data[1])=="L")or(str(list_data[1])=="P")or(str(list_data[1])=="C")):
+             #   if(i==12):
+              #      print "Error NO DATA Line NR : line_number",line_number
+               #     print "[",col_list[i],"]","Cell 13\n"
+               #     prev_error+=1
+               #     return prev_error
             ii=ii+1
             list_data[i]='0'
         i=i+1
