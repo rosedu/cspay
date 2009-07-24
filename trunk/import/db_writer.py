@@ -78,7 +78,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             db+='\''+paritate_start+'\')'#,paritate_start)
             
             cursor.execute(db)
-   return prev_error
+    return prev_error
                         
                             
         
