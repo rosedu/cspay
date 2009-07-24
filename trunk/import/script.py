@@ -112,7 +112,7 @@ index_line=start_check-1
 while index_line<end_check:
     line=line_reader.read_line(sheet,index_line)
     error_check=prev_error
-    error_check=line_parser.parse(line,index_line,prev_error) #if "OK" data is consistent
+    prev_error=line_parser.parse(line,index_line,prev_error) #if "OK" data is consistent
     if(error_check<prev_error):
             print "[ LINE PARSE ] Error occured on line ",index_line
     if error_check==prev_error:
