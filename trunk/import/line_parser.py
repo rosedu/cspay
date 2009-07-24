@@ -18,24 +18,24 @@ def parse(list_data,line_number,prev_error):
         if not empty:
             #common mandatory data
             if(i<7):
-                print "Error NO DATA Line NR : line_number",line_number
+                print "Error NO DATA Line NR : ",line_number
                 print "Cell ",i+1,"\n"
                 prev_error+=1
                 return prev_error
             #common mandatory data
             #if((i>11)and(i<14)):
-                print "Error NO DATA Line NR : line_number",line_number
+                print "Error NO DATA Line NR : ",line_number
                 print "Cell ",i+1,"\n"
                 prev_error+=1
                 return prev_error
             #common mandatory data
            # if((i>14)and(i<22)):
-                print "Error NO DATA Line NR : line_number",line_number
+                print "Error NO DATA Line NR : ",line_number
                 print "Cell ",i+1,"\n"
                 prev_error+=1
                 return prev_error
           #  if((i==10)and(str(list_data[1])=="C")):
-                print "Error NO DATA Line NR : line_number",line_number
+                print "Error NO DATA Line NR : ",line_number
                 print "Cell 11\n"
                 prev_error+=1
                 return prev_error
