@@ -21,7 +21,7 @@ oblig=[0, # Facultate
        3, # Forma
        4, # Cod
        5, # An
-       6, # Serie
+       -6, # Serie
        -7, # Nr Stud
        -8, # Nr gr/sg
        -9, # sg
