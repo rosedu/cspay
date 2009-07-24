@@ -91,6 +91,7 @@ cursor = conn.cursor (MySQLdb.cursors.DictCursor)
 #
 ################################################
 cursor.execute("TRUNCATE TABLE ore")
+sheet = file_xls.sheet_by_index(0)
 #get sheet and pass it to read line
 if(end_check==0):
     end_check=start_check
@@ -98,7 +99,7 @@ if(start_check==0):
     start_check=3
     end_check=sheet.nrows
 index_line=start_check-1
-sheet = file_xls.sheet_by_index(0)
+
 while index_line<end_check:
     line=line_reader.read_line(sheet,index_line)
     error_check=line_parser.parse(line,index_line,prev_error) #if "OK" data is consistent
