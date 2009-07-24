@@ -14,7 +14,7 @@
 col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stud",
           "Nr gr/sg","sg","C2","A2","Post","Grad","PERS","Tip","Acoperit",
           "Acop.efectiv","An/Gr","Zi","Ora","Sala"]
-
+# mark with a '-' the ones that are not mandatory
 oblig=[0, # Facultate
        1, # C,L,P,S
        2, # Titlu disc
@@ -25,8 +25,8 @@ oblig=[0, # Facultate
        -7, # Nr Stud
        -8, # Nr gr/sg
        -9, # sg
-       10,#C2
-       11,#A2
+       -10,#C2
+       -11,#A2
        12,#Post
        13,#Grad
        -14,#PERS
