@@ -8,7 +8,7 @@
 #Does not change attempt to correct data errors
 #If the data is inconsistent it gives an error and halts execution
 
-def parse(list_data,line_number):
+def parse(list_data,line_number,prev_error):
     #print "Parser called at line number :",line_number
     #all cells in a line are empty=>ignore the line, return Ok
     ii=0
@@ -20,37 +20,44 @@ def parse(list_data,line_number):
             if(i<7):
                 print "Error NO DATA Line NR : line_number",line_number
                 print "Cell ",i+1,"\n"
-                return line_number
+                prev_error+=1
+                return prev_error
             #common mandatory data
             if((i>11)and(i<14)):
                 print "Error NO DATA Line NR : line_number",line_number
                 print "Cell ",i+1,"\n"
-                return line_number
+                prev_error+=1
+                return prev_error
             #common mandatory data
             if((i>14)and(i<22)):
                 print "Error NO DATA Line NR : line_number",line_number
                 print "Cell ",i+1,"\n"
-                return line_number
+                prev_error+=1
+                return prev_error
             if((i==10)and(str(list_data[1])=="C")):
                 print "Error NO DATA Line NR : line_number",line_number
                 print "Cell 11\n"
-                return line_number
+                prev_error+=1
+                return prev_error
             if((str(list_data[1])=="L")or(str(list_data[1])=="P")or(str(list_data[1])=="C")):
                 if(i==12):
                     print "Error NO DATA Line NR : line_number",line_number
                     print "Cell 13\n"
-                    return line_number
+                    prev_error+=1
+                    return prev_error
             ii=ii+1
             list_data[i]='0'
         i=i+1
                
-    if(i>21):
+    if(i>22):
         print "Line : ",line_number,"\nWarning : Number of columns exceeds 22 (=nr needed) "
-    elif(i<21):
+    elif(i<22):
         print "Line : ",line_number,"\nWarning : Number of columns bellow 22 (=nr needed) "
     
     if ii>21:
-        return "Ignore"     # more than 21 lines that count
+        print "Line : ",line_number," has been ignored -> 22 fields missing"
+        prev_error+=1
+        return prev_error     # more than 21 lines that count
                             # should make the line be ignored
 
         #remove spacesa
