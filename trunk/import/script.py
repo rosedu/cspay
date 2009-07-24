@@ -113,11 +113,11 @@ while index_line<end_check:
     line=line_reader.read_line(sheet,index_line)
     error_check=prev_error
     prev_error=line_parser.parse(line,index_line,prev_error) #if "OK" data is consistent
-    if(error_check<prev_error):
+    if(error_check<prev_error)and(prev_error<5):
             print "[ LINE PARSE ] Error occured on line ",index_line
     if error_check==prev_error:
         prev_error=db_writer.db_write_line(cursor,line,index_line,prev_error)  #pass the line and its number
-        if(error_check<prev_error):
+        if(error_check<prev_error)and(prev_error<5):
             print "[ DB INSERT ] Error occured on line ",index_line
     #elif error_check=="Ignore":
    #     print "Line ",index_line+2," has been ignored "
