@@ -69,7 +69,7 @@ function get_id($post)
 	 return 0;
 } elseif ($post === "P") {
     return 1;
-} elseif ($i === "A") {
+} elseif ($post === "A") {
     return 2;
 }
 	return -1;
