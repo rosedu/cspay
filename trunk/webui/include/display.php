@@ -56,8 +56,7 @@ function get_nume_scurt($univ_id)
 
 function get_nume_disc($disc_id)
 {
-	$output = '';
-	$query = "SELECT `nume_scurt` FROM `discipline` WHERE `disc_id`='".disc_id."'";
+	$query = "SELECT `nume_scurt` FROM `discipline` WHERE `disc_id`='".$disc_id."'";
 	$result = mysql_query($query);
 	$output = mysql_result($result,0,'nume_scurt');
 	return $output;
