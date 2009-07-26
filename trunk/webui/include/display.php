@@ -311,6 +311,7 @@ function display_select_materie()
 	$select_materie = '<select name="materie">';
 
 	for($i=0;$i<$nr;$i++)
+	if ( mysql_result($result,$i,'tip_cont') != "A")
 	{
 		$id = mysql_result($result,$i,'utilizator_id');//tre verificat
 		$cat_id =  mysql_result($result,$i,'link_cat');
