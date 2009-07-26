@@ -341,6 +341,7 @@ function criterii_norma()
 				$val =  mysql_result($result,$i,'pers_norma');
 				$select_an .= '<option value="'.$val.'">'.$val.'</option>';	
 	}
+	$select_an .='<option value="all">"Toti"</option>'
 	$select_an .= '</select>';
 	
 	return $select_an;
@@ -364,6 +365,7 @@ function criterii_serie()
 				$val =  mysql_result($result,$i,'serie');
 				$select_an .= '<option value="'.$val.'">'.$val.'</option>';	
 	}
+	$select_an .='<option value="all">"Toate"</option>'
 	$select_an .= '</select>';
 	
 	return $select_an;
@@ -387,6 +389,7 @@ function criterii_an()
 				$val =  mysql_result($result,$i,'an');
 				$select_an .= '<option value="'.$val.'">'.$val.'</option>';	
 	}
+	$select_an .='<option value="all">"Toti"</option>'
 	$select_an .= '</select>';
 	
 	return $select_an;
@@ -434,19 +437,19 @@ function formular_criterii_selectie()
 		foreach($_POST as $index=>$value)
 		{	$$index = $value;
 		}
-		if($norma != 'non_select')
+		if($norma != 'non_select' && $norma != 'all')
 			{
 			add($result,'`pers_norma`=\''.$norma.'\'');
 			$flag=1;			
 			}
-		if($serie != 'non_select')
+		if($serie != 'non_select' && $serie != 'all')
 			{
 			if($flag == 1)
 				add($result,' AND ');
 			add($result,'`serie`=\''.$serie.'\'');
 			$flag=1;
 			}
-		if($an != 'non_select')
+		if($an != 'non_select' && $an != 'all')
 			{
 			if($flag == 1)
 				add($result,' AND ');
