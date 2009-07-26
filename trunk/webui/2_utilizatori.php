@@ -148,7 +148,7 @@ add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="550px">
 				<td>Nr</td>
 				<td>Nume</td>
 				<td>Email</td>
-				<td>Materie/Tip</td>
+				<td>Catedra/Tip</td>
 				<td>Optiuni</td>
 			</tr>');
 			

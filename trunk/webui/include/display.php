@@ -308,7 +308,7 @@ function display_select_materie()
 
 	$nr = mysql_num_rows($result);
 	
-	$select_materie = '<select name="materie">';
+	$select_materie = '<select style="font-size:10pt;" name="materie">';
 
 	for($i=0;$i<$nr;$i++)
 	if ( mysql_result($result,$i,'tip_cont') != "A")
@@ -318,7 +318,7 @@ function display_select_materie()
 		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$cat_id'";
 		$cat_result = mysql_query($query);
 		$val = mysql_result($cat_result,0,'nume');
-		$select_materie .= '<option style="font-size:10pt;" value="'.$id.'">'.$val.'</option>';	
+		$select_materie .= '<option value="'.$id.'">'.$val.'</option>';	
 	}
 	$select_materie .= '</select>';
 
