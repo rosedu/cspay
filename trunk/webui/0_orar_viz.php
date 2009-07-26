@@ -16,7 +16,13 @@ if($opt_selectie != -1)
 else 
 	$_SESSION['opt_selectie'] = '';
 
-$query = "SELECT  `orar_id` , `link_univ` , `facultate` , `tip_curs1` , `materie` , `forma` , `cod` , `an` , `serie` , `nr_stud` , `nr_grupa` , `tip_grupa` , `modul_c` , `modul_a` , `tip_curs2` , `post` , `grad` , `norma` , `ocupat` , `acoperit` , `acoperit_efect` , `an_grupa` , `zi` , `ora` , `sala` FROM `orar` ".$_SESSION['opt_selectie']."";
+$query = "SELECT  `ora_id`, `link_disc`, `tip_ora`, `forma`, `cod`,
+          `an`, `serie`, `nr_stud`, `nr_grupa`, `tip_grupa_aplicatii`,
+		  `nr_ore_curs`, `nr_ore_aplicatii`, `nr_post`, `grad_post`,
+		  `pers_norma`, `tip_ocupare`, `pers_acoperit`, 
+		  `pers_acoperit_efect`, `an_grupa`, `zi`, `ora`, `sala`,
+		  `paritate`, `paritate_start` FROM `ore` ".
+		  $_SESSION['opt_selectie']."";
 
 $result_orar = mysql_query($query);
 $nr = mysql_num_rows($result_orar);
