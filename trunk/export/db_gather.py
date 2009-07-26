@@ -5,6 +5,7 @@ import datetime
 import pickle
 from logic_proto import output_table
 from orar import output_orar
+from mycal import output_ical
 
 days = ["lu", "ma", "mi", "jo", "vi", "sa", "du"]
 levels = {'4a': "as", '3s': "sl", '2c': "conf", '1p': "prof"}
@@ -138,10 +139,12 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                 else:
                         print "No pay-per-hour found for", name
         else:
-                if function:
+                if not function:
+                        output_table(input, vacante, used_par, path)
+                elif function == 1:
                         output_orar(input, path)
                 else:
-                        output_table(input, vacante, used_par, path)
+                        output_ical(input, vacante, used_par, path)
         print "OK"
 	
 

@@ -71,7 +71,6 @@ def insert_course(ws, i, courses):
 				t = 0	
 		
 		if curs['parit'] == 2:
-			print "semi:"
 			if curs['pari_st'] == 1:
 				ws.write(h1, j, curs['disciplina'] + " (" + curs ['tip'] + ") \n"
                        + curs['grupa'] + " - " + curs['sala'], dw.half("up"))
@@ -94,12 +93,10 @@ def insert_course(ws, i, courses):
 
 def put_corner(ws, loc, t):
 	x, y = loc
-	print x, y, "kabum"
 	ws.write(x, y + 1, "", dw.corner(0, t))
 	ws.write(x + 1, y , "", dw.corner(1, t))
 	
 def jump(ws, h0, h1, j):
-	print h0, h1
 	for i in range(h0, h1 - 1):
 		ws.write(i, j, "", dw.sideboxed(left=1))
 		ws.write(i, j + 1, "", dw.sideboxed(right=1))
