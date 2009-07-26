@@ -12,7 +12,7 @@ echo '<select name="universitate" onChange="CategoryGrab('."'".'get_fac.php?idFa
 echo '<option value="0"> </option>';
 for ($i = 0; $i <$nr;$i++)
 {
- echo "<option value=".'"'.mysql_result($result,$i,'fac_id').'" >'.mysql_result($result,$i,'nume')."</option>";
+ echo "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option>";
 }
 echo '</select>';
 
