@@ -110,7 +110,7 @@ if(isset($_GET['modifica']))//trebuie afisat formularul pentru modificat datele 
 	@mysql_free_result($result);
 }
 
-$content = '<script src="include/ajaxscript.js"/>';
+$content = '<script src="include/ajaxscript.js" type="text/javascript">';
 add($content,'<div class="title" align="center">Utilizatori</div>');
 add($content,'<br>');
 add($content,$mesaj);
