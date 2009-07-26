@@ -328,7 +328,7 @@ function display_select_materie()
 
 function display_select_tip()
 {
-	$result='<select style="font-size:10pt;" name="tip">'
+	$result='<select style="font-size:10pt;" name="tip">';
 	$result .= '<option value="S">Secretara</option>';
 	$result .= '<option value="P">Profesor</option>';
 	$result .= '<option value="A">Administrator</option>';
