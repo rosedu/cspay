@@ -1,9 +1,9 @@
 <?
 include("debug.php");
 
-define("SECRETARA",0);
-define("PROFESOR",1);
-define("ADMINISTRATOR",2);
+define("SECRETARA","S");
+define("PROFESOR","P");
+define("ADMINISTRATOR","A");
 
 
 $class_select = array(0=>"tip_1",1=>"tip_2");
