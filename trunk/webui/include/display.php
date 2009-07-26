@@ -491,7 +491,7 @@ function display_result_read_only($result,$index,$count)
 	 $aux = strstr($ora,"-");
 	 $ora_start = substr($ora,0,strlen($ora)-strlen($aux));
 	 $ora_stop  = substr($aux,1,strlen($aux)-1);
-	 $info = get_disc_fac($link_disc)
+	 $info = get_disc_fac($link_disc);
 	add($output,'<tr bgcolor="'.$color[$index%2].'">');//deschid un nou rand 
 	add($output,'<td class="read_only">'.($index+1).'</td>');//scriu numarul liniei curente - needitabil
 	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$info[0].'</div></td>');//materia - needitabil
