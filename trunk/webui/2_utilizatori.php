@@ -37,7 +37,7 @@ if(isset($_POST['adauga_cont']))
 			  VALUES('".$userid."','".$parola."','".$tipC."',$catedra)";
 	$result = mysql_query($query);
 	
-	$query = "SELECT * FROM `utilizatori` WHERE `utilizator` = $userid AND `parola` = $parola";
+	$query = "SELECT * FROM `utilizatori` WHERE `utilizator`='".$userid."' AND `parola`='".$parola."'";
 	$result = mysql_query($query);
 	$link_user = mysql_result($result,0,'utilizator_id');
 	
