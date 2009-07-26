@@ -10,7 +10,7 @@ echo '<option value="0"> </option>';
 for ($i = 0; $i <$nr;$i++)
 {
 	 echo "<option value=".mysql_result($result,$i,'fac_id').">".
-			mysql_result($result,$i,'nume')."</option>";
+			mysql_result($result,$i,'nume_scurt')."</option>";
 }
 echo '</select>';
 mysql_close($conexiune);

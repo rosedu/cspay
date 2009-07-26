@@ -338,12 +338,12 @@ function display_select_tip()
 
 function display_select_univ()
 {
-	$result = mysql_query("SELECT * FROM facultati");
+	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
 	$univ = '<select style="font-size:10pt;" name="universitate" onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
 	$univ .= '<option value="0"> </option>';
 	for ($i = 0; $i <$nr;$i++)
-		$univ .= "<option value=".'"'.mysql_result($result,$i,'fac_id').'" >'.mysql_result($result,$i,'nume')."</option>";
+		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option>";
 	
 	return $univ;
 }
