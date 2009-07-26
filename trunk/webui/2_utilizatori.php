@@ -9,6 +9,10 @@ check_auth(ADMINISTRATOR);//verifica daca este cont de administrator
 
 $mesaj = '';
 $select_materie = display_select_materie();//conturile disponibile
+$select_tip = display_select_tip();//tipuri posibile
+$select_univ = display_select_univ;//universitati disponibile
+$select_fac = display_select_fac();
+$select_cat = display_select_cat();
 
 $layout->get_template('include/template.html');
 $layout->replace('TITLE','Administrare');
@@ -26,7 +30,7 @@ if(isset($_POST['adauga_cont']))
 	$email = addslashes(html_entity_decode($_POST['email']));
 	$materie = addslashes(html_entity_decode($_POST['materie']));
 	
-	$query = "INSERT INTO `asocieri` (`nume`,`email`,`link_admin`) 
+	$query = "INSERT INTO `asocieri` (`nume`,`email`,`link_utilizator`) 
 			  VALUES('".$nume."','".$email."','".$materie."')";
 	$result = mysql_query($query);
 	
@@ -96,7 +100,7 @@ if(isset($_GET['modifica']))//trebuie afisat formularul pentru modificat datele 
 					</tr>
 					<tr>
 					<td>Nume <input type="text" name="nume" value="'.$nume.'"></td>
-					<td>Email <input type="text" name="email" value="'.$email.'"></td> 
+					<td>Email <input type="text" name="email" value="'.$email.'"></td>
 					<td>Materie/Tip '.$select_materie.'</td>
 					<td><input type="submit" name="modifica_cont" value="Modifica"></td>
 					</tr>
@@ -106,7 +110,7 @@ if(isset($_GET['modifica']))//trebuie afisat formularul pentru modificat datele 
 	@mysql_free_result($result);
 }
 
-$content = "";
+$content = '<script src="include/ajaxscript.js"/>'
 add($content,'<div class="title" align="center">Utilizatori</div>');
 add($content,'<br>');
 add($content,$mesaj);
@@ -129,12 +133,15 @@ add($utilizator_plus,'<form action="" method="post">
 					<tr>
 						<td>Nume <input type="text" name="nume"></td>
 						<td>Email <input type="text" name="email"></td> 
-						<td>Materie/Tip '.$select_materie.'</td>
+						<td>Tip '.$select_tip.'</td> 
+						<td>'.$select_univ'</td> 
+						<td>'.$select_fac.'</td>
+						<td>'.$select_cat.'</td>
 						<td><input type="submit" name="adauga_cont" value="Adauga"></td>
 					</tr>
 				</table>				
 				</form><br>');
-
+				
 //afisare utilizatori existenti
 $tabel = '';
 $query = "SELECT * FROM `asocieri`";
