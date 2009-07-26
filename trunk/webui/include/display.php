@@ -303,7 +303,7 @@ function display_result_prof($result,$index,$count)
 }
 function display_select_materie()
 {
-	$query = "SELECT * FROM `utilizatori` WHERE `link_univ`='".$_SESSION['univ_id']."' ORDER BY `tip_cont` ASC";
+	$query = "SELECT * FROM `utilizatori` ORDER BY `tip_cont` ASC";
 	$result = mysql_query($query);
 
 	$nr = mysql_num_rows($result);
@@ -312,13 +312,15 @@ function display_select_materie()
 
 	for($i=0;$i<$nr;$i++)
 	{
-		$id = mysql_result($result,$i,'admin_id');//tre verificat
-				$val =  mysql_result($result,$i,'materie');
-				$select_materie .= '<option value="'.$id.'">'.$val.'</option>';	
+		$id = mysql_result($result,$i,'utilizator_id');//tre verificat
+		$cat_id =  mysql_result($result,$i,'link_cat');
+		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$cat_id'";
+		$cat_result = mysql_query($query);
+		$val = mysql_result($cat_result,0,'nume');
+		$select_materie .= '<option value="'.$id.'">'.$val.'</option>';	
 	}
 	$select_materie .= '</select>';
-	
-	mysql_free_result($result);
+
 	
 	return $select_materie;
 }
