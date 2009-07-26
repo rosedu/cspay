@@ -28,10 +28,21 @@ if(isset($_POST['adauga_cont']))
 {
 	$nume = addslashes(html_entity_decode($_POST['nume']));
 	$email = addslashes(html_entity_decode($_POST['email']));
-	$materie = addslashes(html_entity_decode($_POST['materie']));
+	$userid = addslashes(html_entity_decode($_POST['userID']));
+	$parola = addslashes(html_entity_decode($_POST['passw']));
+	$tipC = $_POST['tip']
+	$catedra = $_POST['catedra'];
+	
+	$query = "INSERT INTO `utilizatori` (`utilizator`,`parola`,`tip`, `link_cat`) 
+			  VALUES('".$userid."','".$parola."','".$tipC."',$catedra)";
+	$result = mysql_query($query);
+	
+	$query = "SELECT * FROM `utilizatori` WHERE `utilizator` = $userid AND `parola` = $parola"
+	$result = mysql_query($query);
+	$link_user = mysql_result($result,0,'utilizator_id')
 	
 	$query = "INSERT INTO `asocieri` (`nume`,`email`,`link_utilizator`) 
-			  VALUES('".$nume."','".$email."','".$materie."')";
+			  VALUES('".$nume."','".$email."','".$link_user."')";
 	$result = mysql_query($query);
 	
 	if($result)
@@ -133,11 +144,17 @@ add($utilizator_plus,'<form action="" method="post">
 					<tr>
 						<td>Nume <input type="text" name="nume"></td>
 						<td>Email <input type="text" name="email"></td> 
-						<td>Tip '.$select_tip.'</td> 
+						<td>Tip '.$select_tip.'</td>
+					</tr>
+					<tr>
 						<td>Universitate '.$select_univ.'</td> 
 						<td>'.$select_fac.'</td>
 						<td>'.$select_cat.'</td>
 						<td><input type="submit" name="adauga_cont" value="Adauga"></td>
+					</tr>
+					<tr>
+						<td>ID utilizator <input type="text" name="userID"></td>
+						<td>Parola <input type="text" name="passw"></td>
 					</tr>
 				</table>				
 				</form><br>');
