@@ -134,7 +134,7 @@ add($utilizator_plus,'<form action="" method="post">
 						<td>Nume <input type="text" name="nume"></td>
 						<td>Email <input type="text" name="email"></td> 
 						<td>Tip '.$select_tip.'</td> 
-						<td>'.$select_univ'</td> 
+						<td>'.$select_univ.'</td> 
 						<td>'.$select_fac.'</td>
 						<td>'.$select_cat.'</td>
 						<td><input type="submit" name="adauga_cont" value="Adauga"></td>
