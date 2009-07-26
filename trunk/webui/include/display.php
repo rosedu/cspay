@@ -340,7 +340,7 @@ function display_select_univ()
 {
 	$result = mysql_query("SELECT * FROM facultati");
 	$nr = mysql_num_rows($result);
-	$univ = '<select name="universitate" onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
+	$univ = '<select style="font-size:10pt;" name="universitate" onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
 	$univ .= '<option value="0"> </option>';
 	for ($i = 0; $i <$nr;$i++)
 		$univ .= "<option value=".'"'.mysql_result($result,$i,'fac_id').'" >'.mysql_result($result,$i,'nume')."</option>";
@@ -350,7 +350,7 @@ function display_select_univ()
 
 function display_select_fac()
 {
-	$fac ='<div id="div_fac">Facultate:<select name="facultate" style="width: 100px" >';
+	$fac ='<div id="div_fac">Facultate:<select style="font-size:10pt;width: 100px;" name="facultate" >';
 	$fac .='<option value="0"> </option>';
 	$fac .= '</select></div>';
 	return $fac;
@@ -358,7 +358,7 @@ function display_select_fac()
 		
 function display_select_cat()
 {
-	$fac ='<div id="div_cat">Catedra:<select name="catedra" style="width: 100px" >';
+	$fac ='<div id="div_cat">Catedra:<select name="catedra" style="font-size:10pt;width: 100px;" >';
 	$fac .='<option value="0"> </option>';
 	$fac .= '</select></div>';
 	return $fac;
