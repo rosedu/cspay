@@ -58,7 +58,7 @@ function get_disc_fac($disc_id)
 {
 	$query = "SELECT `nume_scurt`, `link_fac` FROM `discipline` WHERE `disc_id`='".$disc_id."'";
 	$result = mysql_query($query);
-	$output = array()
+	$output = array();
 	$output[] = mysql_result($result,0,'nume_scurt');
 	$link_fac = mysql_result($result,0,'link_fac');
 	$query = "SELECT `nume_scurt` FROM `facultati` WHERE `fac_id`='".$link_fac."'";
