@@ -137,7 +137,7 @@ add($utilizator_plus,'<form action="" method="post">
 
 //afisare utilizatori existenti
 $tabel = '';
-$query = "SELECT * FROM `asociatie`";
+$query = "SELECT * FROM `asocieri`";
 $res_asoc = mysql_query($query);
 $nr = mysql_num_rows($res_asoc);
 
@@ -162,9 +162,9 @@ for($i=0;$i<$nr;$i++)
 	$email = stripslashes($email);
 	$email = htmlspecialchars($email,ENT_QUOTES);
 	
-	$link_admin = mysql_result($res_asoc,$i,'link_admin');
+	$link_admin = mysql_result($res_asoc,$i,'link_utilizator');
 	
-	$query = "SELECT * FROM `utilizatori` WHERE `admin_id`='".$link_admin."' LIMIT 1";
+	$query = "SELECT * FROM `utilizatori` WHERE `utilizator_id`='".$link_admin."' LIMIT 1";
 	$res_cont = mysql_query($query);
 	$nr_admin = mysql_num_rows($res_cont);
 	
@@ -173,7 +173,16 @@ for($i=0;$i<$nr;$i++)
 	else
 	{
 	$cont = mysql_result($res_cont,0,'tip_cont');
-	$materie = html_entity_decode(mysql_result($res_cont,0,'materie'));
+	if ($cont === "A")
+		$materie="-";
+	else
+		{
+		$cat_id =  mysql_result($res_cont,0,'link_cat');
+		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$cat_id'";
+		$cat_result = mysql_query($query);
+		$val = mysql_result($cat_result,0,'nume');
+		$materie = html_entity_decode($val);
+		}
 	}
 	
 	$vector_cont = array("Secretara","Profesor","Administrator");
