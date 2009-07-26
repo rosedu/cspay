@@ -333,7 +333,7 @@ function criterii_norma()
 	$nr = mysql_num_rows($result);
 	
 	$select_an = '<select name="norma" style="font-size:10pt;" >
-					<option value="non_select">Alege Norma</option>';
+					<option value="non_select">Alege Persoana Norma</option>';
 
 	for($i=0;$i<$nr;$i++)
 	{
@@ -341,7 +341,7 @@ function criterii_norma()
 				$val =  mysql_result($result,$i,'pers_norma');
 				$select_an .= '<option value="'.$val.'">'.$val.'</option>';	
 	}
-	$select_an .='<option value="all">"Toti"</option>';
+	$select_an .='<option value="all">Toti</option>';
 	$select_an .= '</select>';
 	
 	return $select_an;
@@ -365,7 +365,7 @@ function criterii_serie()
 				$val =  mysql_result($result,$i,'serie');
 				$select_an .= '<option value="'.$val.'">'.$val.'</option>';	
 	}
-	$select_an .='<option value="all">"Toate"</option>';
+	$select_an .='<option value="all">Toate</option>';
 	$select_an .= '</select>';
 	
 	return $select_an;
@@ -389,7 +389,7 @@ function criterii_an()
 				$val =  mysql_result($result,$i,'an');
 				$select_an .= '<option value="'.$val.'">'.$val.'</option>';	
 	}
-	$select_an .='<option value="all">"Toti"</option>';
+	$select_an .='<option value="all">Toti</option>';
 	$select_an .= '</select>';
 	
 	return $select_an;
