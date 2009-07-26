@@ -54,6 +54,14 @@ function get_nume_scurt($univ_id)
 	return $output;
 }
 
+function get_nume_disc($disc_id)
+{
+	$output = '';
+	$query = "SELECT `nume_scurt` FROM `discipline` WHERE `disc_id`='".disc_id."'";
+	$result = mysql_query($query);
+	$output = mysql_result($result,0,'nume_scurt');
+	return $output;
+}
 //preia campurile din vectorul $result returnat de mysql_query
 //si afiseaza sub forma de tabel
 function display_result_secr($result,$index,$count)
@@ -482,9 +490,9 @@ function display_result_read_only($result,$index,$count)
 	
 	add($output,'<tr bgcolor="'.$color[$index%2].'">');//deschid un nou rand 
 	add($output,'<td class="read_only">'.($index+1).'</td>');//scriu numarul liniei curente - needitabil
-	add($output,'<td class="read_only"><div id="td_2_'.$count.'">'.$tip_ora.'</div></td>');//tipul cursului : C sau L
-	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$link_disc.'</div></td>');//materia - needitabil
+	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.get_nume_disc($link_disc).'</div></td>');//materia - needitabil
 	add($output,'<td class="read_only"><div id="td_3b_'.$count.'">'.'</div></td>');//materia - needitabil
+	add($output,'<td class="read_only"><div id="td_2_'.$count.'">'.$tip_ora.'</div></td>');//tipul cursului : C sau L
 	add($output,'<td class="read_only"><div id="td_4_'.$count.'">'.$forma.'</div></td>');//tipul orei 
 	add($output,'<td class="read_only"><div id="td_5_'.$count.'">'.$cod.'</div></td>');//codul asociat
 	add($output,'<td class="read_only"><div id="td_6_'.$count.'">'.$an.'</div></td>');//anul
@@ -505,6 +513,8 @@ function display_result_read_only($result,$index,$count)
 	add($output,'<td class="read_only"><div id="td_21_'.$count.'">'.$ora_start.'</div></td>');
 	add($output,'<td class="read_only"><div id="td_22_'.$count.'">'.$ora_stop.'</div></td>');
 	add($output,'<td class="read_only"><div id="td_23_'.$count.'">'.$sala.'</div></td>');
+	add($output,'<td class="read_only"><div id="td_24_'.$count.'">'.$parit.'</div></td>');
+	add($output,'<td class="read_only"><div id="td_25_'.$count.'">sapt. '.$pari_st.'</div></td>');
 
 	add($output,'</tr>');//inchid randul
 	
