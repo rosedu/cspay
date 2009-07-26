@@ -332,7 +332,8 @@ function criterii_norma()
 
 	$nr = mysql_num_rows($result);
 	
-	$select_an = '<select name="norma"><option value="non_select">Alege Norma</option>';
+	$select_an = '<select name="norma" style="font-size:10pt;" >
+					<option value="non_select">Alege Norma</option>';
 
 	for($i=0;$i<$nr;$i++)
 	{
@@ -354,7 +355,8 @@ function criterii_serie()
 
 	$nr = mysql_num_rows($result);
 	
-	$select_an = '<select name="serie"><option value="non_select">Alege Seria</option>';
+	$select_an = '<select style="font-size:10pt;" name="serie">
+					<option value="non_select">Alege Seria</option>';
 
 	for($i=0;$i<$nr;$i++)
 	{
@@ -376,7 +378,8 @@ function criterii_an()
 
 	$nr = mysql_num_rows($result);
 	
-	$select_an = '<select name="an"><option value="non_select">Alege Anul</option>';
+	$select_an = '<select style="font-size:10pt;" name="an">
+					<option value="non_select">Alege Anul</option>';
 
 	for($i=0;$i<$nr;$i++)
 	{
@@ -396,7 +399,8 @@ $query = "SELECT * FROM `utilizatori` WHERE `tip_cont`='".PROFESOR."' ORDER BY `
 
 	$nr = mysql_num_rows($result);
 	
-	$select_materie = '<select name="materie"><option value="non_select">Alege Materia</option>';
+	$select_materie = '<select style="font-size:10pt;" name="materie">
+						<option value="non_select">Alege Materia</option>';
 
 	for($i=0;$i<$nr;$i++)
 	{
