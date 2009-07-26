@@ -8,6 +8,7 @@ function addquot($str)
 {
 return "\"".$str."\"";
 }
+
 function dourjob()
 {
 global $_POST, $pers_acoperit;

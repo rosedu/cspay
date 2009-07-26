@@ -58,29 +58,29 @@ function get_nume_scurt($univ_id)
 //si afiseaza sub forma de tabel
 function display_result_secr($result,$index,$count)
 {
-	
+	 
 	$hidden_id = 'modificat_'.$index;
 	global $color;//culorile pentru linii pare sau impare
-	global $select_ora,$select_forma,$select_cod,
-		   $select_an,$select_serie,$select_tip_grupa,
-		   $select_a,$select_c,$select_nr_grupa,
-		   $select_grupa,$select_grad,$select_zi,$select_ora,
-		   $select_sala,$select_tip_ora;
+	global $select_ora, $select_forma, $select_cod,
+		   $select_an, $select_serie, $select_tip_grupa,
+		   $select_a, $select_c, $select_nr_grupa,
+		   $select_grupa, $select_grad, $select_zi, $select_ora,
+		   $select_sala, $select_tip_ora;
 	
 	$output = '';
 	
 	mysql_data_seek($result,$index);//trec la intrarea cu numarul $index
-	$valori = list(	  $orar_id, $link_disc, $tip_ora, $forma, $cod, $an, $serie, 
+	$valori = list(	  $ora_id, $link_disc, $tip_ora, $forma, $cod, $an, $serie, 
 	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $post,
-	  $grad, $norma, $tip_ocup, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
-	  $ora, $sala) = mysql_fetch_array($result); 
+	  $grad, $norma, $tip_ocup, $acoperit, $acoperit_efect, $an_grupa, $zi, 
+	  $ora, $sala, $parit, $parit_st) = mysql_fetch_array($result); 
 
 	foreach($valori as $i=>$val)
 		$valori[$i] = htmlspecialchars(stripslashes($val),ENT_QUOTES);
 
 	$aux = strstr($ora,"-");
-	 $ora_start = substr($ora,0,strlen($ora)-strlen($aux));
-	 $ora_stop  = substr($aux,1,strlen($aux)-1);
+	$ora_start = substr($ora,0,strlen($ora)-strlen($aux));
+	$ora_stop  = substr($aux,1,strlen($aux)-1);
 	
 	//campul care arata daca s-a schimbat ceva in linia curenta
 	add($output,'<input type="hidden" name="modificat[]" value="0" id="'.$hidden_id.'">');
@@ -121,15 +121,13 @@ function display_result_secr($result,$index,$count)
 	return $output;
 }
 
-$thead_secr = array('Nr*','Disciplina*','Tip','Forma','Cod','An','Serie','Nr Stud',
-		    'Nr Grupe','Tip Grupa','C1','A1','Post','Grad','Norma','Ocupat','Acoperit',
-		    'Efectiv','Grupa','Zi','Ora Start','Ora Stop','Sala');
-$thead_secr_ro = array('Nr*','Disciplina*','Tip','Forma*','Cod*','An*','Serie*','Nr Stud*',
-		    'Nr Grupe*','Tip Grupa*','C1*','A1*','Post*','Grad*','Norma*','Ocupat*','Acoperit*',
-		    'Efectiv*','Grupa*','Zi*','Ora Start*','Ora Stop*','Sala*');
-$thead_prof = array('Nr*','Disciplina*','Tip*','Forma*','Cod*','An*','Serie*','Nr Stud',
-		    'Nr Grupe*','Tip Grupa*','C1*','A1*','Post*','Grad*','Norma','Ocupat','Acoperit',
-		    'Efectiv','Grupa','Zi','Ora Start','Ora Stop','Sala');
+$thead_secr = array('Nr', 'Disciplina', 'Facultate', 'Tip', 'Forma', 'Cod',
+					'An', 'Serie', 'Nr Stud', 'Nr Grupa', 'Tip Grupa',
+					'Ore curs', 'Ore aplicatii', 'Post', 'Grad', 'Norma',
+					'Tip ocupare', 'Acoperit', 'Efectiv', 'Grupa', 'Zi',
+					'Ora Start', 'Ora Stop', 'Sala', 'Tip paritate',
+					'Inceput paritate');
+
 function write_vert($text)
 {
 	$val = '<div title="'.$text.'"></div>';
@@ -335,7 +333,6 @@ function criterii_norma()
 	return $select_an;
 }
 
-
 function criterii_serie()
 {
 	$content = '';
@@ -357,8 +354,6 @@ function criterii_serie()
 	
 	return $select_an;
 }
-
-
 
 function criterii_an()
 {
@@ -478,8 +473,8 @@ function display_result_read_only($result,$index,$count)
 	mysql_data_seek($result,$index);//trec la intrarea cu numarul $index
 	list($orar_id, $link_disc, $tip_ora, $forma, $cod, $an, $serie, 
 	  $nr_stud, $nr_grupa, $tip_grupa, $modul_c, $modul_a, $post,
-	  $grad, $norma, $tip_ocup, $ocupat, $acoperit, $acoperit_efect, $an_grupa, $zi, 
-	  $ora, $sala) = mysql_fetch_array($result); 
+	  $grad, $norma, $tip_ocup, $acoperit, $acoperit_efect, $an_grupa, $zi, 
+	  $ora, $sala, $parit, $pari_st) = mysql_fetch_array($result); 
 	  
 	 $aux = strstr($ora,"-");
 	 $ora_start = substr($ora,0,strlen($ora)-strlen($aux));
@@ -487,8 +482,9 @@ function display_result_read_only($result,$index,$count)
 	
 	add($output,'<tr bgcolor="'.$color[$index%2].'">');//deschid un nou rand 
 	add($output,'<td class="read_only">'.($index+1).'</td>');//scriu numarul liniei curente - needitabil
-	add($output,'<td class="read_only"><div id="td_2_'.$count.'">'.$tip_curs1.'</div></td>');//tipul cursului : C sau L
+	add($output,'<td class="read_only"><div id="td_2_'.$count.'">'.$tip_ora.'</div></td>');//tipul cursului : C sau L
 	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$link_disc.'</div></td>');//materia - needitabil
+	add($output,'<td class="read_only"><div id="td_3b_'.$count.'">'.'</div></td>');//materia - needitabil
 	add($output,'<td class="read_only"><div id="td_4_'.$count.'">'.$forma.'</div></td>');//tipul orei 
 	add($output,'<td class="read_only"><div id="td_5_'.$count.'">'.$cod.'</div></td>');//codul asociat
 	add($output,'<td class="read_only"><div id="td_6_'.$count.'">'.$an.'</div></td>');//anul
@@ -500,9 +496,8 @@ function display_result_read_only($result,$index,$count)
 	add($output,'<td class="read_only"><div id="td_12_'.$count.'">'.$modul_a.'</div></td>');//modulul A1
 	add($output,'<td class="read_only"><div id="td_13_'.$count.'">'.$post.'</div></td>');//postul
 	add($output,'<td class="read_only"><div id="td_14_'.$count.'">'.$grad.'</div></td>');//gradul
-	
 	add($output,'<td class="read_only"><div id="td_15_'.$count.'">'.$norma.'</div></td>');
-	add($output,'<td class="read_only"><div id="td_16_'.$count.'">'.$ocupat.'</div></td>');	
+	add($output,'<td class="read_only"><div id="td_16_'.$count.'">'.$tip_ocup.'</div></td>');	
 	add($output,'<td class="read_only"><div id="td_17_'.$count.'">'.$acoperit.'</div></td>');
 	add($output,'<td class="read_only"><div id="td_18_'.$count.'">'.$acoperit_efect.'</div></td>');
 	add($output,'<td class="read_only"><div id="td_19_'.$count.'">'.$an_grupa.'</div></td>');
