@@ -436,7 +436,7 @@ function formular_criterii_selectie()
 		}
 		if($norma != 'non_select')
 			{
-			add($result,'`norma`=\''.$norma.'\'');
+			add($result,'`pers_norma`=\''.$norma.'\'');
 			$flag=1;			
 			}
 		if($serie != 'non_select')
