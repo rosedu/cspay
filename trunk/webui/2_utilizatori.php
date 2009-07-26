@@ -33,7 +33,7 @@ if(isset($_POST['adauga_cont']))
 	$tipC = $_POST['tip'];
 	$catedra = $_POST['catedra'];
 	
-	$query = "INSERT INTO `utilizatori` (`utilizator`,`parola`,`tip`, `link_cat`) 
+	$query = "INSERT INTO `utilizatori` (`utilizator`,`parola`,`tip_conts`, `link_cat`) 
 			  VALUES('".$userid."','".$parola."','".$tipC."',$catedra)";
 	$result = mysql_query($query);
 	
