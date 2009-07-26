@@ -5,7 +5,7 @@ echo $ID;
 $query = "SELECT * FROM catedre WHERE link_fac=$ID";
 $result = mysql_query($query);
 $nr = mysql_num_rows($result);
-echo 'Catedra:<select name="catedra" width="100">';
+echo 'Catedra:<select name="catedra" style="font-size:10pt;">';
 echo '<option value="0"> </option>';
 for ($i = 0; $i <$nr;$i++)
 {

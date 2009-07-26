@@ -5,7 +5,7 @@ echo $ID;
 $query = "SELECT * FROM facultati WHERE link_univ=$ID";
 $result = mysql_query($query);
 $nr = mysql_num_rows($result);
-echo 'Facultate:<select name="facultate" width="100" onChange="CategoryGrab('."'".'get_cat.php?idCat='."'".'+this.value,'."'div_cat'".');">';
+echo 'Facultate:<select name="facultate" style="font-size:10pt;" onChange="CategoryGrab('."'".'get_cat.php?idCat='."'".'+this.value,'."'div_cat'".');">';
 echo '<option value="0"> </option>';
 for ($i = 0; $i <$nr;$i++)
 {
