@@ -30,16 +30,16 @@ if(isset($_POST['adauga_cont']))
 	$email = addslashes(html_entity_decode($_POST['email']));
 	$userid = addslashes(html_entity_decode($_POST['userID']));
 	$parola = addslashes(html_entity_decode($_POST['passw']));
-	$tipC = $_POST['tip']
+	$tipC = $_POST['tip'];
 	$catedra = $_POST['catedra'];
 	
 	$query = "INSERT INTO `utilizatori` (`utilizator`,`parola`,`tip`, `link_cat`) 
 			  VALUES('".$userid."','".$parola."','".$tipC."',$catedra)";
 	$result = mysql_query($query);
 	
-	$query = "SELECT * FROM `utilizatori` WHERE `utilizator` = $userid AND `parola` = $parola"
+	$query = "SELECT * FROM `utilizatori` WHERE `utilizator` = $userid AND `parola` = $parola";
 	$result = mysql_query($query);
-	$link_user = mysql_result($result,0,'utilizator_id')
+	$link_user = mysql_result($result,0,'utilizator_id');
 	
 	$query = "INSERT INTO `asocieri` (`nume`,`email`,`link_utilizator`) 
 			  VALUES('".$nume."','".$email."','".$link_user."')";
