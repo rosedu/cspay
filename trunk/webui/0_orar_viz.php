@@ -12,6 +12,7 @@ $opt_selectie = formular_criterii_selectie();
 if($opt_selectie != -1)
 	{
 	$_SESSION['opt_selectie'] = $opt_selectie;
+	print $opt_selectie;
 	}
 else 
 	$_SESSION['opt_selectie'] = '';
@@ -157,7 +158,7 @@ if($nr != 0)//daca exista inregistrari in tabela `orar`
 else
 	{
 	if($opt_selectie != -1)//daca s-au marcat criterii de selectie
-		add($content,'Nu s-au gasit inregistrari.');
+		add($content,'Nu s-au gasit inregistrari.'.$opt_selectie."pip");
 	else
 	add($content,"Fisierul XlS nu a fost importat.");	
 	}
