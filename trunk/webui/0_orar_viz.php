@@ -12,7 +12,6 @@ $opt_selectie = formular_criterii_selectie();
 if($opt_selectie != -1)
 	{
 	$_SESSION['opt_selectie'] = $opt_selectie;
-	print $opt_selectie;
 	}
 else 
 	$_SESSION['opt_selectie'] = '';
@@ -47,46 +46,6 @@ if(!isset($_SESSION['nr_afisari_viz']))//seteaza numarul de afisari pe pagina
 	$_SESSION['nr_afisari_viz'] = 10;
 }
 
-if(isset($_POST['salveaza']))//formularul tabelului
-{
-	foreach($_POST as $index=>$val)
-	{
-		$$index = $val;
-		//add($content,$index.' => '.$val .'<br>');
-	}	
-	//add($content,'linii modificate <br>');
-	foreach($modificat as $index=>$val)//verific campul ascuns modificat
-	{		
-	if($val == '1')//daca a fost modificata o valoare pe linia curenta
-		{
-		$ora = $orar_ora_start .'-'.$orar_ora_stop;
-		$query = "UPDATE `ore` SET `tip_curs1`='".$orar_tip_ora[$index]."' ,
-			 `forma`='".$orar_forma[$index]."' , `cod`='".$orar_cod[$index]."' , `an`='".$orar_an[$index]."',
-			 `serie`='".$orar_seria[$index]."' , `nr_stud`='".$orar_nr_stud[$index]."' ,
-			 `nr_grupa`='".$orar_nr_grupa[$index]."' , `tip_grupa`='".$orar_tip_grupa[$index]."' , 
-			 `modul_c`='".$orar_modul_c[$index]."' , `modul_a`='".$orar_modul_a[$index]."' , 
-			 `post`='".$orar_post[$index]."' , `grad`='".$orar_grad[$index]."' , `norma`='".$orar_norma[$index]."' , 
-			 `ocupat`='".$orar_ocupat[$index]."' , `acoperit`='".$orar_acoperit[$index]."' ,
-			 `acoperit_efect`='".$orar_acoperit_efect[$index]."' , `an_grupa`='".$orar_an_grupa[$index]."',
-			 `zi`='".$orar_zi[$index]."' , `ora`='".$ora."' , `sala`='".$orar_sala[$index]."'		
-			  WHERE `orar_id`='".$orar_id[$index]."' LIMIT 1";
-		$result = mysql_query($query);
-		if(!result)
-			{
-			add($mesaj,'<div class="eroare">Eroare : modificarile nu au fost salvate</div>');
-			//break;
-			}	
-		else if(!$flag)
-			{
-				$flag = 1;
-				add($mesaj,'Modificarile au fost salvate<br>');			
-			}
-		
-		}
-		
-		//mysql_free_result($result);
-	}
-}
 
 if(isset($_POST['pagina']))//redirectare la pagina
 {
@@ -146,7 +105,6 @@ if($nr != 0)//daca exista inregistrari in tabela `orar`
 	
 	add($content,'</table>');
 	add($content,'<input type="hidden" id="nr_inreg" value="'.($stop-$start).'">');
-	add($content,'<input type="submit" name="salveaza" value="Salveaza">');
 	add($content,'</form>');
 	add($content,display_page_nav_secr($start,$nr_afisari,$nr,"0_orar_viz.php"));
 	add($content,criterii_selectie());
