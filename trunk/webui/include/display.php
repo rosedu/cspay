@@ -54,11 +54,16 @@ function get_nume_scurt($univ_id)
 	return $output;
 }
 
-function get_nume_disc($disc_id)
+function get_disc_fac($disc_id)
 {
-	$query = "SELECT `nume_scurt` FROM `discipline` WHERE `disc_id`='".$disc_id."'";
+	$query = "SELECT `nume_scurt`, `link_fac` FROM `discipline` WHERE `disc_id`='".$disc_id."'";
 	$result = mysql_query($query);
-	$output = mysql_result($result,0,'nume_scurt');
+	$output = array()
+	$output[] = mysql_result($result,0,'nume_scurt');
+	$link_fac = mysql_result($result,0,'link_fac');
+	$query = "SELECT `nume_scurt` FROM `facultati` WHERE `fac_id`='".$link_fac."'";
+	$result = mysql_query($query);
+	$output[] = mysql_result($result,0,'nume_scurt');
 	return $output;
 }
 //preia campurile din vectorul $result returnat de mysql_query
@@ -486,11 +491,11 @@ function display_result_read_only($result,$index,$count)
 	 $aux = strstr($ora,"-");
 	 $ora_start = substr($ora,0,strlen($ora)-strlen($aux));
 	 $ora_stop  = substr($aux,1,strlen($aux)-1);
-	
+	 $info = get_disc_fac($link_disc)
 	add($output,'<tr bgcolor="'.$color[$index%2].'">');//deschid un nou rand 
 	add($output,'<td class="read_only">'.($index+1).'</td>');//scriu numarul liniei curente - needitabil
-	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.get_nume_disc($link_disc).'</div></td>');//materia - needitabil
-	add($output,'<td class="read_only"><div id="td_3b_'.$count.'">'.'</div></td>');//materia - needitabil
+	add($output,'<td class="read_only"><div id="td_3_'.$count.'">'.$info[0].'</div></td>');//materia - needitabil
+	add($output,'<td class="read_only"><div id="td_3b_'.$count.'">'.$info[1].'</div></td>');//materia - needitabil
 	add($output,'<td class="read_only"><div id="td_2_'.$count.'">'.$tip_ora.'</div></td>');//tipul cursului : C sau L
 	add($output,'<td class="read_only"><div id="td_4_'.$count.'">'.$forma.'</div></td>');//tipul orei 
 	add($output,'<td class="read_only"><div id="td_5_'.$count.'">'.$cod.'</div></td>');//codul asociat
