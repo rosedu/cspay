@@ -1,7 +1,6 @@
 <?php
 include("include/mysql_config.php");
 $ID=$_REQUEST['idFac'];
-echo $ID;
 $query = "SELECT * FROM facultati WHERE link_univ=$ID";
 $result = mysql_query($query);
 $nr = mysql_num_rows($result);
