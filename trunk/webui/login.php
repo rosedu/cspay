@@ -42,6 +42,8 @@ if(isset($_POST['login']))
 		$_SESSION['tip_cont'] = mysql_result($result,0,'tip_cont');
 		$link_cat = mysql_result($result,0,'link_cat');
 		
+		if ($_SESSION['tip_cont'] != "A")
+		{
 		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$link_cat'";
 		$cat_result = mysql_query($query);
 		$_SESSION['cat_nume'] = stripslashes(mysql_result($cat_result,0,'nume'));
@@ -56,6 +58,7 @@ if(isset($_POST['login']))
 		$univ_result = mysql_query($query);
 		$_SESSION['univ_id'] = mysql_result($univ_result,0,'univ_id');
 		$_SESSION['univ_nume'] = stripslashes(mysql_result($univ_result,0,'nume'));
+		}
 		
 		header("Location: index.php");//redirectioneaza catre pagina principala
 		die();
