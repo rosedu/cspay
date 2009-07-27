@@ -98,22 +98,12 @@ CREATE TABLE `utilizatori` (
   `utilizator_id` int(11) NOT NULL auto_increment,
   `utilizator` varchar(40) NOT NULL default '',
   `parola` varchar(40) NOT NULL default '',
+  `nume` varchar(40) NOT NULL default '',
+  `email` varchar(45) NOT NULL default '',
   `tip_cont` varchar(5) NOT NULL default '',
   `link_cat` int(11) NOT NULL default '0',
   `link_disc` int(11) NOT NULL default '0',
   PRIMARY KEY  (`utilizator_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- 
--- Table structure for table `asocieri`
--- 
-
-CREATE TABLE `asocieri` (
-  `asoc_id` int(11) NOT NULL auto_increment,
-  `link_utilizator` int(11) NOT NULL default '0',
-  `nume` varchar(40) NOT NULL default '',
-  `email` varchar(45) NOT NULL default '',
-  PRIMARY KEY  (`asoc_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- 
