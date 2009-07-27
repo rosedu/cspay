@@ -236,7 +236,7 @@ for($i=0;$i<$nr;$i++)
 					<td><a href="2_utilizatori.php?sterge='.$ut_ID.'">sterge</a>
 						<a href="2_utilizatori.php?modifica='.$ut_ID.'">modifica</a></td>
 				</tr>');
-	mysql_free_result($res_cont);
+
 }
 
 add($tabel,'</table>');

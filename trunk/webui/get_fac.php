@@ -64,11 +64,12 @@ if($ID != "A")
 	$sel_cat = display_select_cat();
 	$univ .= '<td>'.$sel_fac.'</td>';
 	$univ .= '<td>'.$sel_cat.'</td>';
+	$univ .= '</tr><tr><td><input align="center" type="submit" name="adauga_cont" value="Adauga"></td>';
 	echo $univ;
 }
 else
 {
-	echo " ";
+	echo '<td><input align="center" type="submit" name="adauga_cont" value="Adauga"></td>';
 }
 }
 mysql_close($conexiune);
