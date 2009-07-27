@@ -21,7 +21,7 @@ if (isset($_REQUEST['idCat']))
 {
 $ID=$_REQUEST['idCat'];
 $query = "SELECT * FROM catedre WHERE link_fac=$ID";
-echo 'Catedra:<select name="catedra" style="font-size:10pt;">';
+echo '<select name="catedra" style="font-size:10pt;">';
 echo '<option value="0"> </option>';
 
 $result = mysql_query($query);
@@ -43,7 +43,7 @@ $ID=$_REQUEST['idFac'];
 $query = "SELECT * FROM facultati WHERE link_univ=$ID";
 $result = mysql_query($query);
 $nr = mysql_num_rows($result);
-echo 'Facultate:<select name="facultate" style="font-size:10pt;" onChange="CategoryGrab('."'".'get_fac.php?idCat='."'".'+this.value,'."'div_cat'".');">';
+echo '<select name="facultate" style="font-size:10pt;" onChange="CategoryGrab('."'".'get_fac.php?idCat='."'".'+this.value,'."'div_cat'".');">';
 echo '<option value="0"> </option>';
 for ($i = 0; $i <$nr;$i++)
 {
