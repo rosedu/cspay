@@ -132,7 +132,7 @@ add($utilizator_plus,'<form action="" method="post">
 					</tr>
 					<tr>
 						<td>ID utilizator</td><td><input type="text" name="userID"></td>
-						<td>Parola <input type="text" name="passw"></td>
+						<td>Parola </td><td><input type="text" name="passw"></td>
 					</tr>
 					<tr>
 						<td>Nume </td><td><input type="text" name="nume"></td>
