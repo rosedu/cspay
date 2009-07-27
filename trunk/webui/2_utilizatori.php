@@ -202,7 +202,7 @@ for($i=0;$i<$nr;$i++)
 		elseif ($Tip === "S")
 			$Ttip = "Secretara";
 
-		$val = mysql_result($cat_result,$i,'link_cat');
+		$val = mysql_result($res_asoc,$i,'link_cat');
 		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$val'";
 		$cat_result = mysql_query($query);
 		$val = mysql_result($cat_result,0,'nume');

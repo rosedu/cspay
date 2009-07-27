@@ -66,6 +66,9 @@ if($ID != "A")
 	$univ .= '<td>'.$sel_cat.'</td>';
 	echo $univ;
 }
+else
+{
+	echo " ";
 }
 mysql_close($conexiune);
 ?>
