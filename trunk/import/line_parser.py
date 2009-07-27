@@ -25,8 +25,8 @@ oblig=[0, # Facultate
        -7, # Nr Stud
        -8, # Nr gr/sg
        -9, # sg
-       -10,#C2
-       -11,#A2
+       110,#C2
+       111,#A2
        12,#Post
        13,#Grad
        -14,#PERS
@@ -50,6 +50,28 @@ def parse(list_data,line_number,prev_error):
         if not empty:
             #common mandatory data
             if(i==oblig[i]):
+                if(prev_error<5):
+                    print "Error NO DATA Line NR : ",line_number
+                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                prev_error=prev_error+1
+                return prev_error
+            if(i==110)and(list_data[i]=="C"):
+                if(prev_error<5):
+                    print "Error NO DATA Line NR : ",line_number
+                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                prev_error=prev_error+1
+                return prev_error
+            if(i==111)and(list_data[i]=="L"):
+                if(prev_error<5):
+                    print "Error NO DATA Line NR : ",line_number
+                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                prev_error=prev_error+1
+            if(i==111)and(list_data[i]=="P"):
+                if(prev_error<5):
+                    print "Error NO DATA Line NR : ",line_number
+                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                prev_error=prev_error+1
+            if(i==111)and(list_data[i]=="S"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
