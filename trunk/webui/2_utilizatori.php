@@ -58,7 +58,7 @@ if(isset($_POST['modifica_cont']))
 
 if(isset($_GET['sterge']))
 {
-	$query = "DELETE FROM `asocieri` WHERE `asoc_id`='".$_GET['sterge']."' LIMIT 1";
+	$query = "DELETE FROM `utilizatori` WHERE `utilizator_id`='".$_GET['sterge']."' LIMIT 1";
 	$result = mysql_query($query);
 	if($result)
 	{

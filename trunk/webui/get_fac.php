@@ -66,8 +66,8 @@ if($ID != "A")
 		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option></select></td></tr>";
 	$sel_fac = display_select_fac();
 	$sel_cat = display_select_cat();
-	$univ .= '<tr><td>Facultate:</td><td>'.$sel_fac.'</td></tr>';
-	$univ .= '<tr><td>Catedra:</td><td>'.$sel_cat.'</td></tr>';
+	$univ .= '<br><tr><td>Facultate:</td><td>'.$sel_fac.'</td></tr>';
+	$univ .= '<br><tr><td>Catedra:</td><td>'.$sel_cat.'</td></tr>';
 	echo $univ;
 }
 else
