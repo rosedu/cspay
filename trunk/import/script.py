@@ -75,8 +75,8 @@ while file_exists==0:
 ################################################
 
 try:
-    conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rsoc_cspay",
-                                    passwd = "huashaquou", db = "rsoc_cspay")
+    conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rosedu_cspay",
+                                    passwd = "huashaquou", db = "rosedu_cspay")
 except MySQLdb.Error, e:
     print "Error %d: %s" % (e.args[0], e.args[1])
     sys.exit (1)
