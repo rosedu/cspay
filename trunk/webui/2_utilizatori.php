@@ -140,10 +140,15 @@ add($utilizator_plus,'<form action="" method="post">
 						<td>Tip '.$select_tip.'</td>
 					</tr>
 					<tr>
-						<div id="div_univ">
-						<td><input align="center" type="submit" name="adauga_cont" value="Adauga"></td>
-						</div>				
+						<td>
+							<div id="div_univ">
+							
+							</div>
+						</td>
+					</tr>
 					<tr>
+						<td><input align="center" type="submit" name="adauga_cont" value="Adauga"></td>
+					</tr>
 				</table>				
 				</form><br>');
 				
