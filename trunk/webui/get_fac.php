@@ -21,15 +21,19 @@ if (isset($_REQUEST['idCat']))
 {
 $ID=$_REQUEST['idCat'];
 $query = "SELECT * FROM catedre WHERE link_fac=$ID";
-$result = mysql_query($query);
-$nr = mysql_num_rows($result);
 echo 'Catedra:<select name="catedra" style="font-size:10pt;">';
 echo '<option value="0"> </option>';
-for ($i = 0; $i <$nr;$i++)
-{
-	 echo "<option value=".mysql_result($result,$i,'cat_id').">".
-			mysql_result($result,$i,'nume')."</option>";
-}
+
+$result = mysql_query($query);
+if ($result)
+	{
+	$nr = mysql_num_rows($result);
+	for ($i = 0; $i <$nr;$i++)
+		{
+			echo "<option value=".mysql_result($result,$i,'cat_id').">".
+					mysql_result($result,$i,'nume')."</option>";
+		}
+	}
 echo '</select>';
 }
 
@@ -50,7 +54,7 @@ echo '</select>';
 }
 elseif (isset($_REQUEST['idTip']))
 {
-$ID=$_REQUEST['idFac'];
+$ID=$_REQUEST['idTip'];
 if($ID != "A")
 {
 	$result = mysql_query("SELECT * FROM universitati");
