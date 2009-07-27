@@ -122,7 +122,7 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 		<ul>
 			<li'.equal(0,$select,' class="subactive"').'><a href="0_orar_viz.php">Vizualizare</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="0_salvare_xls.php">Salvare table plata</a></li>
-			<li'.equal(2,$select,' class="subactive"').'><a href="0_salvare_xls.php">Salvare orar</a></li>
+			<li'.equal(2,$select,' class="subactive"').'><a href="0_salvare_orar.php">Salvare orar</a></li>
 		</ul>';
 	$submenu[0][2] = '
 		<ul>
