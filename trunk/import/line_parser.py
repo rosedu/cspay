@@ -49,29 +49,31 @@ def parse(list_data,line_number,prev_error):
     for empty in list_data:
         if not empty:
             #common mandatory data
-            if(i==oblig[i]):
+            if(i==10)and(list_data[1]=="C"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
                 return prev_error
-            if(i==110)and(list_data[1]=="C"):
+            if(i==11)and(list_data[1]=="L"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
                 return prev_error
-            if(i==111)and(list_data[1]=="L"):
+            if(i==11)and(list_data[1]=="P"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
-            if(i==111)and(list_data[1]=="P"):
+                return prev_error
+            if(i==11)and(list_data[1]=="S"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
-            if(i==111)and(list_data[1]=="S"):
+                return prev_error
+            if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
