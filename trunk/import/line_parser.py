@@ -52,7 +52,7 @@ def parse(list_data,line_number,prev_error):
             if(i==oblig[i]):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
-                    print "Cell : [",col_list[i],"]"," -> Cell index :",i,"\n"
+                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
                 return prev_error
             
