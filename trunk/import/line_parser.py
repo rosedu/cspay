@@ -78,12 +78,7 @@ def parse(list_data,line_number,prev_error):
                 prev_error=prev_error+1
                 return prev_error
             
-            #if((str(list_data[1])=="L")or(str(list_data[1])=="P")or(str(list_data[1])=="C")):
-             #   if(i==12):
-              #      print "Error NO DATA Line NR : line_number",line_number
-               #     print "[",col_list[i],"]","Cell 13\n"
-               #     prev_error+=1
-               #     return prev_error
+            
             ii=ii+1
             list_data[i]='0'
         i=i+1
