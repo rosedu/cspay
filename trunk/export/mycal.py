@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 from icalendar import Calendar, Event, Timezone, vRecur, vDatetime, StandardT
-from icalendar import DaylightT, UTC
-from icalendar import UIDGenerator
+from icalendar import DaylightT, UTC, UIDGenerator
 from datetime import datetime, timedelta
 
 days = ['MO','TU','WE','TH', 'FR', 'SA','SU']
@@ -33,7 +32,7 @@ class Entry():
                                                 self.str, 0, 0))
 
         def add_end(self, d):
-                end = vDatetime(datetime(d.year, d. month, d.day-1,
+                end = vDatetime(datetime(d.year, d. month, d.day,
                                          12, 0, 0, tzinfo = UTC))
                 self.rpt += end.ical()
                 self.ev.add('rrule',vRecur.from_ical(self.rpt))
@@ -111,7 +110,10 @@ def insert_course(C, curs, holidays, parit, start, stop):
 			E.add_except(d, d1)
 			d = d1
 		elif t == 2 and p:
-			E.add_end(stop)
+			if stop.weekday() == curs['zi']:
+				E.add_end(stop + timedelta(days=1))
+			else:
+				E.add_end(stop)
 			C.add_component(E.get_entry())
 		else:
 			E = Entry(curs)
