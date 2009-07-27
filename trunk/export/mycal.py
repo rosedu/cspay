@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
-from icalendar import Calendar, Event, Timezone, vRecur, vDatetime, StandardT, DaylightT, UTC
+from icalendar import Calendar, Event, Timezone, vRecur, vDatetime, StandardT
+from icalendar import DaylightT, UTC
 from icalendar import UIDGenerator
 from datetime import datetime, timedelta
 
@@ -9,42 +10,45 @@ class Entry():
         def __init__(self, course):
                 day = days[course['zi']]
                 interv = str(course['parit'])
-                what = course['disciplina'] + " (" + course['tip'] + ") - " + course['grupa']
+                what = course['disciplina'] + " (" + course['tip'] + ") - "
+                what += course['grupa']
                 where = course['sala']
                 x, y = course['ore'].split('-')
                 self.str = int(x)
                 far = int(y) - int(x)
                 g = UIDGenerator()
                 uid = g.uid('CSPay')
-                
-
+        
                 self.ev = Event()
                 self.ev.add('summary', what)
                 self.ev.add('location', where)
                 self.ev.add('tzid', 'Europe/Bucharest')
                 self.ev.add('duration', timedelta(hours = far))
                 self.ev.add('uid',uid)
-                self.rpt = 'FREQ=WEEKLY;INTERVAL='+interv+';BYDAY='+day+';UNTIL='
+                self.rpt = ('FREQ=WEEKLY;INTERVAL='+interv+';BYDAY='+day+
+                            ';UNTIL=')
 
         def add_start(self, d):
-                self.ev.add('dtstart', datetime(d.year, d. month, d.day, self.str, 0, 0))
+                self.ev.add('dtstart', datetime(d.year, d. month, d.day,
+                                                self.str, 0, 0))
 
         def add_end(self, d):
-                end = vDatetime(datetime(d.year, d. month, d.day-1, 12, 0, 0, tzinfo = UTC))
+                end = vDatetime(datetime(d.year, d. month, d.day-1,
+                                         12, 0, 0, tzinfo = UTC))
                 self.rpt += end.ical()
                 self.ev.add('rrule',vRecur.from_ical(self.rpt))
 
-	def add_except(self, ds, de):		
-		exdate = []
-		exdate.append(vDatetime(datetime(ds.year, ds. month, ds.day, 12, 0, 0, tzinfo = UTC)))
-		d = ds + timedelta(days=7)
-		while d < ds:
-			exdate.append(vDatetime(datetime(d.year, d. month, d.day, 12, 0, 0, tzinfo = UTC)))
-			d = d + timedelta(days=7)
-		self.ev.add('exdate', exdate)
+        def add_except(self, ds, de):
+                exdate = []
+                exdate.append(datetime(ds.year, ds.month, ds.day,
+                                       self.str, 0, 0))
+                d = ds + timedelta(days=7)
+                while d < de:
+                        exdate.append(datetime(d.year, d.month, d.day,
+                                               self.str, 0, 0))
+                        d = d + timedelta(days=7)
+                self.ev.add('exdate', [exdate])
 		
-
-
         def get_entry(self):
                 return self.ev
 
@@ -75,49 +79,53 @@ def output_ical(input, holidays, parities, path):
 
 def insert_course(C, curs, holidays, parit, start, stop):
 	"""Insert a line for every application for a given month"""
-        d = start
-        h1, h2 = curs['ore'].split('-')
-        H = int(h1)
-        p = 0
+	d = start
+	h1, h2 = curs['ore'].split('-')
+	H = int(h1)
+	p = 0
 
-        while True:
-                if d > stop:
-                        break;
-
-                t = 1
-                d = get_next_wday(curs['zi'], d)
-                while True:
-                        if d > stop:
+	while True:
+		if d > stop:
+			break
+		t = 1
+		d = get_next_wday(curs['zi'], d)
+		while True:
+			if d > stop:
 				t = 2
-                                break
-                        else:
-                                d1 = in_holiday(d, holidays)
-                                if d1:
-                                        break
-                                elif (not p) and (curs['parit'] == 1 or
-                                                  ( parit[d.isocalendar()[1]] % curs['parit'] == curs['pari_st'])):
-                                        t = 0
-                                        break
-                                d = d + timedelta( days = 7)
-                if t == 1 and p:
+				break
+			else:
+				d1 = in_holiday(d, holidays)
+				if d1:
+					break
+				elif ((not p) and
+                                      (curs['parit'] == 1 or
+                                       (parit[d.isocalendar()[1]]
+                                        % curs['parit'] == curs['pari_st'])
+                                       )
+                                      ):
+					t = 0
+					break
+				d = d + timedelta( days = 7)
+		
+		if t == 1 and p:
 			E.add_except(d, d1)
 			d = d1
 		elif t == 2 and p:
 			E.add_end(stop)
 			C.add_component(E.get_entry())
-                else:
-                        E = Entry(curs)
-                        E.add_start(d)
-                        p = 1
+		else:
+			E = Entry(curs)
+			E.add_start(d)
+			p = 1
 
-
-						 
+					
 def get_next_wday(which, after):
 	if after.weekday() == which:
 		return after
 	else:
 		if after.weekday() > which:
-			d = after + timedelta(days=(7 + which - after.weekday()))
+			d = after + timedelta(days=
+                                              (7 + which - after.weekday()))
 		else:
 			d = after +timedelta(days=(which - after.weekday()))
 		return d
