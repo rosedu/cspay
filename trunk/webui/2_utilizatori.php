@@ -139,8 +139,10 @@ add($utilizator_plus,'<form action="" method="post">
 						<td>Email <input type="text" name="email"></td> 
 						<td>Tip '.$select_tip.'</td>
 					</tr>
-					<div id="div_univ">
-					</div>
+					<tr>
+						<div id="div_univ">
+						</div>
+					</tr>
 					<tr>
 						<td><input align="center" type="submit" name="adauga_cont" value="Adauga"></td>
 					<tr>
@@ -149,7 +151,7 @@ add($utilizator_plus,'<form action="" method="post">
 				
 //afisare utilizatori existenti
 $tabel = '';
-$query = "SELECT * FROM `asocieri`";
+$query = "SELECT * FROM `utilizatori`";
 $res_asoc = mysql_query($query);
 $nr = mysql_num_rows($res_asoc);
 
@@ -160,50 +162,74 @@ add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="550px">
 				<td>Nr</td>
 				<td>Nume</td>
 				<td>Email</td>
-				<td>Catedra/Tip</td>
-				<td>Optiuni</td>
+				<td>Utilizator</td>
+				<td>Parola</td>
+				<td>Tip</td>
+				<td>Catedra</td>
+				<td>Facultatea</td>
+				<td>Universitatea</td>
 			</tr>');
 			
 for($i=0;$i<$nr;$i++)
 {
-	$asoc_id = mysql_result($res_asoc,$i,'asoc_id');
-	$nume = mysql_result($res_asoc,$i,'nume');
-	$nume = htmlspecialchars(stripslashes($nume),ENT_QUOTES);
+	$Tnume = mysql_result($res_asoc,$i,'nume');
+	$Tnume = htmlspecialchars(stripslashes($Tnume),ENT_QUOTES);
 	
-	$email = mysql_result($res_asoc,$i,'email');
-	$email = stripslashes($email);
-	$email = htmlspecialchars($email,ENT_QUOTES);
+	$Temail = mysql_result($res_asoc,$i,'email');
+	$Temail = stripslashes($Temail);
+	$Temail = htmlspecialchars($Temail,ENT_QUOTES);
 	
-	$link_admin = mysql_result($res_asoc,$i,'link_utilizator');
+	$Tutilizator = mysql_result($res_asoc,$i,'utilizator');
+	$Tutilizator = htmlspecialchars(stripslashes($Tutilizator),ENT_QUOTES);
 	
-	$query = "SELECT * FROM `utilizatori` WHERE `utilizator_id`='".$link_admin."' LIMIT 1";
-	$res_cont = mysql_query($query);
-	$nr_admin = mysql_num_rows($res_cont);
+	$Tparola = mysql_result($res_asoc,$i,'parola');
+	$Tparola = htmlspecialchars(stripslashes($Tparola),ENT_QUOTES);
 	
-	if($nr_admin == 0)
-		$materie = "nedefinit";
-	else
-	{
-	$cont = mysql_result($res_cont,0,'tip_cont');
-	if ($cont === "A")
-		$materie="-";
+	$Ttip = mysql_result($res_asoc,$i,'tip_cont');
+	if ($Ttip === "A")
+		{
+		$Ttip = "Administrator";
+		$Tcatedra = "-";
+		$Tfac = "-";
+		$Tuniv = "-";
 	else
 		{
-		$cat_id =  mysql_result($res_cont,0,'link_cat');
-		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$cat_id'";
+		if ($Tip === "P")
+			$Ttip = "Profesor";
+		elseif ($Tip === "S")
+			$Ttip = "Secretara";
+
+		$val = mysql_result($cat_result,$i,'link_cat');
+		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$val'";
 		$cat_result = mysql_query($query);
 		$val = mysql_result($cat_result,0,'nume');
-		$materie = html_entity_decode($val);
+		$Tcatedra = html_entity_decode($val);
+		
+		$val = mysql_result($cat_result,0,'link_fac');
+		$query = "SELECT * FROM `facultati` WHERE `fac_id` = '$val'";
+		$cat_result = mysql_query($query);
+		$val = mysql_result($cat_result,0,'nume_scurt');
+		$Tfac = html_entity_decode($val);
+		
+		$val = mysql_result($cat_result,0,'link_fac');
+		$query = "SELECT * FROM `facultati` WHERE `fac_id` = '$val'";
+		$cat_result = mysql_query($query);
+		$val = mysql_result($cat_result,0,'nume_scurt');
+		$Tuniv = html_entity_decode($val);
 		}
-	}
 	
 	$vector_cont = array("Secretara","Profesor","Administrator");
 	
 	add($tabel,'<tr class="'.$class_select[$i%2].'">
 					<td>'.($i+1).'</td>
-					<td>'.$nume.'</td>
-					<td>'.$email.'</td>
-					<td>'.$materie.'</td>
+					<td>'.$Tnume.'</td>
+					<td>'.$Temail.'</td>
+					<td>'.$Tutilizator.'</td>
+					<td>'.$Tparola.'</td>
+					<td>'.$Ttip.'</td>
+					<td>'.$Tcatedra.'</td>
+					<td>'.$Tfac.'</td>
+					<td>'.$Tuniv.'</td>
 					<td><a href="2_utilizatori.php?sterge='.$asoc_id.'">sterge</a>
 						<a href="2_utilizatori.php?modifica='.$asoc_id.'">modifica</a></td>
 				</tr>');

@@ -55,15 +55,15 @@ if($ID != "A")
 {
 	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
-	$univ ='<tr><td>Universitate';
+	$univ ='<td>Universitate';
 	$univ .= '<select style="font-size:10pt;" name="universitate" onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
 	$univ .= '<option value="0"> </option>';
 	for ($i = 0; $i <$nr;$i++)
-		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option>";
+		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option></select></td>";
 	$sel_fac = display_select_fac();
 	$sel_cat = display_select_cat();
 	$univ .= '<td>'.$sel_fac.'</td>';
-	$univ .= '<td>'.$sel_cat.'</td></tr>';
+	$univ .= '<td>'.$sel_cat.'</td>';
 	echo $univ;
 }
 }
