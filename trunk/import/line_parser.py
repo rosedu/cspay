@@ -85,7 +85,7 @@ def parse(list_data,line_number,prev_error):
         elif(list_data[15]!="po")or(list_data[15]!="pa")or(list_data[15]!="B"):
             if(prev_error<5):
                 print "Error BAD DATA Line NR : ",line_number+1
-                print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
+                print "Column : ",col_list[i],"\nCell index :",15,"\n"
                 print "Options: po,pa,B\n"
             prev_error=prev_error+1
             return prev_error
