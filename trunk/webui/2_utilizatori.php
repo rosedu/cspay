@@ -131,18 +131,18 @@ add($utilizator_plus,'<form action="" method="post">
 						<td colspan="5">Adauga utilizator</td>
 					</tr>
 					<tr>
-						<td>ID utilizator <input type="text" name="userID"></td>
+						<td>ID utilizator</td><td><input type="text" name="userID"></td>
 						<td>Parola <input type="text" name="passw"></td>
 					</tr>
 					<tr>
-						<td>Nume <input type="text" name="nume"></td>
-						<td>Email <input type="text" name="email"></td> 
-						<td>Tip '.$select_tip.'</td>
+						<td>Nume </td><td><input type="text" name="nume"></td>
+						<td>Email </td><td><input type="text" name="email"></td> 
+						<td>Tip </td><td>'.$select_tip.'</td>
 					</tr>
 					<tr>
 						<td>
 							<div id="div_univ">
-							
+							&nbsp;
 							</div>
 						</td>
 					</tr>
