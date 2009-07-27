@@ -69,7 +69,7 @@ $nr_reg = mysql_num_rows($result);
 $pers = '<select size="10" style="font-size:10pt;" name="pers_acoperit[]" multiple="multiple">';
 for($i=0;$i<$nr_reg;$i++)
 {
-	$pers .= '<option>'.mysql_result($result,$i,'pers_acoperit').'</option>';
+	$pers .= '<option>'.mysql_result($result,$i,'pers_acoperit_efect').'</option>';
 }
 
 $form = '<form name="profesori" action="" method="post">
