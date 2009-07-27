@@ -5,7 +5,7 @@ include("include/header.php");
 include("include/check_login.php");
 
 $layout->get_template('include/template.html');
-$layout->replace('TITLE','prima pagina');
+$layout->replace('TITLE','prima pagina'); 
 
 $meniu = show_menu(menu,$_SESSION['tip_cont'],9);
 $layout->replace('MENU',$meniu);
