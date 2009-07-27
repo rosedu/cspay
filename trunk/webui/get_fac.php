@@ -72,7 +72,7 @@ if($ID != "A")
 }
 else
 {
-	echo '<td>&nbsp;</td>';
+	echo '&nbsp;';
 }
 }
 mysql_close($conexiune);
