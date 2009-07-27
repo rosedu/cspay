@@ -156,4 +156,3 @@ def inside(d, range):
 	if (d1 <= d) and (d <= d2):
 		return 1
 	return 0
-			
