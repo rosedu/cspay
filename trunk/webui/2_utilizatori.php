@@ -10,9 +10,6 @@ check_auth(ADMINISTRATOR);//verifica daca este cont de administrator
 $mesaj = '';
 $select_materie = display_select_materie();//conturile disponibile
 $select_tip = display_select_tip();//tipuri posibile
-$select_univ = display_select_univ();//universitati disponibile
-$select_fac = display_select_fac();
-$select_cat = display_select_cat();
 
 $layout->get_template('include/template.html');
 $layout->replace('TITLE','Administrare');
