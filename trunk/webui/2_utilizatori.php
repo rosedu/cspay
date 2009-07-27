@@ -33,16 +33,8 @@ if(isset($_POST['adauga_cont']))
 	$tipC = $_POST['tip'];
 	$catedra = $_POST['catedra'];
 	
-	$query = "INSERT INTO `utilizatori` (`utilizator`,`parola`,`tip_cont`, `link_cat`) 
-			  VALUES('".$userid."','".$parola."','".$tipC."',$catedra)";
-	$result = mysql_query($query);
-	
-	$query = "SELECT * FROM `utilizatori` WHERE `utilizator`='".$userid."' AND `parola`='".$parola."'";
-	$result = mysql_query($query);
-	$link_user = mysql_result($result,0,'utilizator_id');
-	
-	$query = "INSERT INTO `asocieri` (`nume`,`email`,`link_utilizator`) 
-			  VALUES('".$nume."','".$email."','".$link_user."')";
+	$query = "INSERT INTO `utilizatori` (`utilizator`,`parola`,`nume`,`email`,`tip_cont`, `link_cat`) 
+			  VALUES('".$userid."','".$parola."','".$nume."','".$email."','".$tipC."',$catedra)";
 	$result = mysql_query($query);
 	
 	if($result)
@@ -142,20 +134,19 @@ add($utilizator_plus,'<form action="" method="post">
 						<td colspan="5">Adauga utilizator</td>
 					</tr>
 					<tr>
+						<td>ID utilizator <input type="text" name="userID"></td>
+						<td>Parola <input type="text" name="passw"></td>
+					</tr>
+					<tr>
 						<td>Nume <input type="text" name="nume"></td>
 						<td>Email <input type="text" name="email"></td> 
 						<td>Tip '.$select_tip.'</td>
 					</tr>
+					<div id="div_univ">
+					</div>
 					<tr>
-						<td>Universitate '.$select_univ.'</td> 
-						<td>'.$select_fac.'</td>
-						<td>'.$select_cat.'</td>
-						<td><input type="submit" name="adauga_cont" value="Adauga"></td>
-					</tr>
+						<td><input align="center" type="submit" name="adauga_cont" value="Adauga"></td>
 					<tr>
-						<td>ID utilizator <input type="text" name="userID"></td>
-						<td>Parola <input type="text" name="passw"></td>
-					</tr>
 				</table>				
 				</form><br>');
 				
