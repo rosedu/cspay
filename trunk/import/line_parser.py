@@ -82,14 +82,14 @@ def parse(list_data,line_number,prev_error):
             
             ii=ii+1
             list_data[i]='0'
+        elif(list_data[15]!="po")or(list_data[15]!="pa")or(list_data[15]!="B"):
+            if(prev_error<5):
+                print "Error BAD DATA Line NR : ",line_number+1
+                print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
+                print "Options: po,pa,B\n"
+            prev_error=prev_error+1
+            return prev_error
         i=i+1
-    if(list_data[15]!="po")or(list_data[15]!="pa")or(list_data[15]!="B"):
-                    if(prev_error<5):
-                        print "Error BAD DATA Line NR : ",line_number+1
-                        print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
-                        print "Options: po,pa,B\n"
-                    prev_error=prev_error+1
-                    return prev_error
     if(i>22):
         if(prev_error<5):
             print "Line : ",line_number+1,"\nError : Number of columns exceeds 22 (=nr needed) "
