@@ -53,9 +53,9 @@ INSERT INTO `ore`(`link_disc`, `tip_ora`, `forma`, `cod`, `an`, `serie`, `nr_stu
 (38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 2, 100, '4a', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Alecsandrescu', 'opt2b', 'lu', '16-18', 'EG106', 1, 1),
 (38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 2, 100, '4a', 'Gogu', 'po', 'Cosmin Ratiu', 'Adrian Stanciu', 'opt3a', 'mi', '16-18', 'EG106', 1, 1),
 (38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 2, 100, '4a', 'Gogu', 'po', 'Cosmin Ratiu', 'Adrian Stanciu', 'opt3b', 'mi', '18-20', 'EG106', 1, 1),
-(38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '341C3', 'lu', '12-14', 'EG106', 1, 1),
-(38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '342C3', 'lu', '12-14', 'EG106', 1, 1),
-(38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '343C3', 'ma', '14-16', 'EG106', 1, 1),
-(38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '344C3', 'ma', '14-16', 'EG106', 1, 1),
-(38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', 'opt1', 'ma', '12-14', 'EG106', 1, 1),
-(38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', 'opt2', 'ma', '12-14', 'EG106', 1, 1);
+(38, 'P', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '341C3', 'lu', '12-14', 'EG106', 2, 1),
+(38, 'P', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '342C3', 'lu', '12-14', 'EG106', 2, 2),
+(38, 'P', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '343C3', 'ma', '14-16', 'EG106', 2, 1),
+(38, 'P', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', '344C3', 'ma', '14-16', 'EG106', 2, 2),
+(38, 'P', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', 'opt1', 'ma', '12-14', 'EG106', 2, 1),
+(38, 'P', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 1, 66, '3s', 'Gogu', 'po', 'Cosmin Ratiu', 'Razvan Deaconescu', 'opt2', 'ma', '12-14', 'EG106', 2, 2);

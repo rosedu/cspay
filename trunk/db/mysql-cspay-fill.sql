@@ -51,7 +51,7 @@ INSERT INTO `discipline` (`disc_id`, `link_fac`, `link_cat`, `nume`, `nume_scurt
 (4, 3, 3, 'Proiectare Logica', 'PL'),
 (5, 3, 3, 'Structuri de Date', 'SD'),
 (6, 3, 3, 'Metode Numerice', 'MN'),
-(7, 3, 3, 'Introd. in Org. Calc. si L. de Asambl.', 'PLAS'),
+(7, 3, 3, 'Introd.in Org.Calc.si L.de Asambl', 'PLAS'),
 (8, 3, 3, 'Analiza Algoritmilor', 'AA'),
 (9, 3, 3, 'Elemente de Electronica Analogica', 'EEA'),
 (10, 3, 3, 'Programarea Orientata pe Obiecte', 'POO'),
@@ -242,4 +242,5 @@ INSERT INTO `titulari` (`link_disc`, `nume`, `an`, `serie`) VALUES
 --
 
 INSERT INTO `utilizatori` (`utilizator`, `parola`, `tip_cont`, `link_cat`, `link_disc`) VALUES
-('secretara', 'secretara', 'S', 3, 0);
+('secretara', 'secretara', 'S', 3, 0),
+('admin', 'admin', 'A', 0, 0);
