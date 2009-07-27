@@ -34,6 +34,16 @@ class Entry():
                 self.rpt += end.ical()
                 self.ev.add('rrule',vRecur.from_ical(self.rpt))
 
+	def add_except(self, ds, de):		
+		exdate = vDatetime(datetime(ds.year, ds. month, ds.day, 12, 0, 0, tzinfo = UTC))
+		d = ds + timedelta(days=7)
+		while d < ds:
+			exdate += "," + vDatetime(datetime(d.year, d. month, d.day, 12, 0, 0, tzinfo = UTC))
+			d = d + timedelta(days=7)
+		self.ev.add('exdate', exdate)
+		
+
+
         def get_entry(self):
                 return self.ev
 
@@ -70,14 +80,14 @@ def insert_course(C, curs, holidays, parit, start, stop):
         p = 0
 
         while True:
-                if d >= stop:
+                if d > stop:
                         break;
 
                 t = 1
                 d = get_next_wday(curs['zi'], d)
                 while True:
-                        if d >= stop:
-                                d1 = d
+                        if d > stop:
+				t = 2
                                 break
                         else:
                                 d1 = in_holiday(d, holidays)
@@ -88,12 +98,12 @@ def insert_course(C, curs, holidays, parit, start, stop):
                                         t = 0
                                         break
                                 d = d + timedelta( days = 7)
-                if t:
-                        if p:
-                                E.add_end(d)
-                                C.add_component(E.get_entry())
-                                p = 0
-                        d = d1
+                if t == 1 and p:
+			E.add_except(d, d1)
+			d = d1
+		elif t == 2 and p:
+			E.add_end(stop)
+			C.add_component(E.get_entry())
                 else:
                         E = Entry(curs)
                         E.add_start(d)
@@ -156,3 +166,4 @@ def inside(d, range):
 	if (d1 <= d) and (d <= d2):
 		return 1
 	return 0
+			
