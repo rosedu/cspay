@@ -41,12 +41,12 @@ return $ics;
 }
 
 $layout->get_template('include/template.html');
-$layout->replace('TITLE','Salvare formular');
+$layout->replace('TITLE','Salvare orar');
 
 $meniu = show_menu(menu,$_SESSION['tip_cont'],1);
 $layout->replace('MENU',$meniu);
 
-$submeniu = show_menu(submenu,$_SESSION['tip_cont'],1,1);
+$submeniu = show_menu(submenu,$_SESSION['tip_cont'],1,2);
 $layout->replace('SUBMENU',$submeniu);
 
 $content = '<script type="text/javascript">
