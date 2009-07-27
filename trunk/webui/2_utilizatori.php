@@ -214,10 +214,10 @@ for($i=0;$i<$nr;$i++)
 		$val = mysql_result($cat_result,0,'nume_scurt');
 		$Tfac = html_entity_decode($val);
 		
-		$val = mysql_result($cat_result,0,'link_fac');
-		$query = "SELECT * FROM `facultati` WHERE `fac_id` = '$val'";
+		$val = mysql_result($cat_result,0,'link_univ');
+		$query = "SELECT * FROM `universitati` WHERE `univ_id` = '$val'";
 		$cat_result = mysql_query($query);
-		$val = mysql_result($cat_result,0,'nume_scurt');
+		$val = mysql_result($cat_result,0,'nume');
 		$Tuniv = html_entity_decode($val);
 		}
 	

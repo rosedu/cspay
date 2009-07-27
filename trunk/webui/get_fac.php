@@ -70,5 +70,6 @@ else
 {
 	echo " ";
 }
+}
 mysql_close($conexiune);
 ?>
