@@ -55,23 +55,23 @@ def parse(list_data,line_number,prev_error):
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
                 return prev_error
-            if(i==110)and(list_data[i]=="C"):
+            if(i==110)and(list_data[1]=="C"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
                 return prev_error
-            if(i==111)and(list_data[i]=="L"):
+            if(i==111)and(list_data[1]=="L"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
-            if(i==111)and(list_data[i]=="P"):
+            if(i==111)and(list_data[1]=="P"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
                 prev_error=prev_error+1
-            if(i==111)and(list_data[i]=="S"):
+            if(i==111)and(list_data[1]=="S"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number
                     print "Column : ",col_list[i],"\nCell index :",i,"\n"
