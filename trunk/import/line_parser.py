@@ -52,31 +52,31 @@ def parse(list_data,line_number,prev_error):
             if(i==10)and(list_data[1]=="C"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="L"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="P"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="S"):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<5):
                     print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i,"\n"
+                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
                 prev_error=prev_error+1
                 return prev_error
             
@@ -87,17 +87,17 @@ def parse(list_data,line_number,prev_error):
                
     if(i>22):
         if(prev_error<5):
-            print "Line : ",line_number,"\nError : Number of columns exceeds 22 (=nr needed) "
+            print "Line : ",line_number+1,"\nError : Number of columns exceeds 22 (=nr needed) "
         prev_error=prev_error+1
         return prev_error
     elif(i<22):
         if(prev_error<5):
-            print "Line : ",line_number,"\nError : Number of columns bellow 22 (=nr needed) "
+            print "Line : ",line_number+1,"\nError : Number of columns bellow 22 (=nr needed) "
         prev_error=prev_error+1
         return prev_error
     if ii>21:
         if(prev_error<5):
-            print "Line : ",line_number," has been ignored -> 22 fields missing"
+            print "Line : ",line_number+1," has been ignored -> 22 fields missing"
         prev_error=prev_error+1
         return prev_error     # more than 21 lines that count
                             # should make the line be ignored
