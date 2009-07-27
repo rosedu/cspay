@@ -3,7 +3,7 @@ include("include/mysql_config.php");
 
 function display_select_fac()
 {
-	$fac ='<div id="div_fac">Facultate:<select style="font-size:10pt;width: 100px;" name="facultate" >';
+	$fac ='<div id="div_fac"><select style="font-size:10pt;width: 100px;" name="facultate" >';
 	$fac .='<option value="0"> </option>';
 	$fac .= '</select></div>';
 	return $fac;
@@ -11,7 +11,7 @@ function display_select_fac()
 		
 function display_select_cat()
 {
-	$fac ='<div id="div_cat">Catedra:<select name="catedra" style="font-size:10pt;width: 100px;" >';
+	$fac ='<div id="div_cat"><select name="catedra" style="font-size:10pt;width: 100px;" >';
 	$fac .='<option value="0"> </option>';
 	$fac .= '</select></div>';
 	return $fac;
@@ -66,8 +66,8 @@ if($ID != "A")
 		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option></select></td>";
 	$sel_fac = display_select_fac();
 	$sel_cat = display_select_cat();
-	$univ .= '<td>'.$sel_fac.'</td>';
-	$univ .= '<td>'.$sel_cat;
+	$univ .= '<td>Facultate:</td><td>'.$sel_fac.'</td>';
+	$univ .= '<td>Catedra:</td><td>'.$sel_cat;
 	echo $univ;
 }
 else
