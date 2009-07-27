@@ -185,6 +185,8 @@ for($i=0;$i<$nr;$i++)
 	$Tparola = mysql_result($res_asoc,$i,'parola');
 	$Tparola = htmlspecialchars(stripslashes($Tparola),ENT_QUOTES);
 	
+	$ut_ID = mysql_result($res_asoc,$i,'utilizator_id');
+	
 	$Ttip = mysql_result($res_asoc,$i,'tip_cont');
 	if ($Ttip === "A")
 		{
@@ -192,6 +194,7 @@ for($i=0;$i<$nr;$i++)
 		$Tcatedra = "-";
 		$Tfac = "-";
 		$Tuniv = "-";
+		}
 	else
 		{
 		if ($Tip === "P")
@@ -230,8 +233,8 @@ for($i=0;$i<$nr;$i++)
 					<td>'.$Tcatedra.'</td>
 					<td>'.$Tfac.'</td>
 					<td>'.$Tuniv.'</td>
-					<td><a href="2_utilizatori.php?sterge='.$asoc_id.'">sterge</a>
-						<a href="2_utilizatori.php?modifica='.$asoc_id.'">modifica</a></td>
+					<td><a href="2_utilizatori.php?sterge='.$ut_ID.'">sterge</a>
+						<a href="2_utilizatori.php?modifica='.$ut_ID.'">modifica</a></td>
 				</tr>');
 	mysql_free_result($res_cont);
 }
