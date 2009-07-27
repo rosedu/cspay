@@ -67,7 +67,7 @@ if($ID != "A")
 	$sel_fac = display_select_fac();
 	$sel_cat = display_select_cat();
 	$univ .= '<td>Facultate:</td><td>'.$sel_fac.'</td>';
-	$univ .= '<td>Catedra:</td><td>'.$sel_cat'.</td>';
+	$univ .= '<td>Catedra:</td><td>'.$sel_cat.'</td>';
 	echo $univ;
 }
 else
