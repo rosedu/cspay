@@ -62,7 +62,7 @@ add($content,'<div class="title" align="center">Salvare formular</div>');
 add($content,'<br><div class="content_center">');
 
 $query = "SELECT `pers_acoperit_efect` FROM `ore`
-		   GROUP BY `pers_acoperit`";
+		   GROUP BY `pers_acoperit_efect`";
 $result = mysql_query($query);
 $nr_reg = mysql_num_rows($result);
 
