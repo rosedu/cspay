@@ -2,14 +2,13 @@
 -- Drop tables for cleanup
 --
 
-DROP TABLE IF EXISTS `utilizatori`;
-DROP TABLE IF EXISTS `asocieri`;
 DROP TABLE IF EXISTS `universitati`;
 DROP TABLE IF EXISTS `vacante`;
 DROP TABLE IF EXISTS `facultati`;
 DROP TABLE IF EXISTS `catedre`;
 DROP TABLE IF EXISTS `discipline`;
 DROP TABLE IF EXISTS `titulari`;
+DROP TABLE IF EXISTS `utilizatori`;
 DROP TABLE IF EXISTS `ore`;
 
 
