@@ -27,6 +27,10 @@ if __name__ == "__main__":
                     int(sys.argv[1]))
 
     tik = strftime("%d_%b_%Y",  gmtime())
+	
+    if int(sys.argv[1]):
+	    tik = "Orare_" + tik
+
     zipname = basepath + tik + ".zip"
     
     commands.getstatusoutput("zip -r -j " + zipname + " " + path)
