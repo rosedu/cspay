@@ -25,8 +25,8 @@ oblig=[0, # Facultate
        -7, # Nr Stud
        -8, # Nr gr/sg
        -9, # sg
-       110,#C2
-       111,#A2
+       10,#C2
+       11,#A2
        12,#Post
        13,#Grad
        -14,#PERS
