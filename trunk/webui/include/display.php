@@ -333,6 +333,7 @@ function display_select_tip()
 	$result .= '<option value="S">Secretara</option>';
 	$result .= '<option value="P">Profesor</option>';
 	$result .= '<option value="A">Administrator</option>';
+	$result .= '</select>';
 	
 	return $result;
 }
