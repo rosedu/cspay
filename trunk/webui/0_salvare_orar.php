@@ -22,7 +22,8 @@ if(isset($_POST['salveaza']))//tratare formular export
 		}
 
 	$output=array();
-	$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python call.py 0 ";
+	$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python call.py ";
+	$command .= $_POST['tip_cal']." ";
 	$command = $command." ".addquot($_SESSION['univ_nume'])." ".addquot($_SESSION['fac_nume'])." ";
 	$command = $command.addquot($_SESSION['cat_nume']);
 	foreach ($_POST['pers_acoperit'] as $dobi)
@@ -60,8 +61,8 @@ $content = '<script type="text/javascript">
 add($content,'<div class="title" align="center">Salvare formular</div>');
 add($content,'<br><div class="content_center">');
 
-$query = "SELECT `pers_acoperit` FROM `ore`
-		   WHERE `tip_ocupare`='po' GROUP BY `pers_acoperit`";
+$query = "SELECT `pers_acoperit_efect` FROM `ore`
+		   GROUP BY `pers_acoperit`";
 $result = mysql_query($query);
 $nr_reg = mysql_num_rows($result);
 
@@ -87,11 +88,9 @@ add($form,'
 				onfocus="this.blur()">Selecteaza pe toti</a>
 			</td>
 			<td valign="top" style="width:30%;">Format iesire:<br>
-				<select style="font-size:10pt;" name="tip_fisier[]" id="tip_fisier" multiple="multiple">
-
-				<option selected="selected" value="xls">Microsoft Excel (.xls)</option>
-				<option value="ods">OpenDocumentSpreadsheet (.ods)</option>
-				<option value="pdf">Adobe Acrobat (.pdf)</option>	
+				<select style="font-size:10pt;" name="tip_cal" id="tip_fisier">
+				<option value="1">Microsoft Excel (.xls)</option>
+				<option value="2">iCalendar (.ics)</option>	
 			</select>
 			</td>
 			<td style="width:30%;" valign="top">'.

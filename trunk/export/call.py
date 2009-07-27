@@ -6,7 +6,7 @@ from time import gmtime, strftime
 
 
 #calling example:
-# call.py <univ> <fac> <desk> <name1> [ name2 ... ]
+# call.py <type> <univ> <fac> <desk> <name1> [ name2 ... ]
 
 
 if __name__ == "__main__":
@@ -19,11 +19,12 @@ if __name__ == "__main__":
     commands.getstatusoutput("mkdir "+path)
     path += "/"
 
-    users = sys.argv[4:]
+    users = sys.argv[5:]
 
    # for args in sys.argv:print args
     for user in users:
-        gather_data(user, sys.argv[1], sys.argv[2], sys.argv[3], path, 2)
+        gather_data(user, sys.argv[2], sys.argv[3], sys.argv[4], path,
+                    int(sys.argv[1]))
 
     tik = strftime("%d_%b_%Y",  gmtime())
     zipname = basepath + tik + ".zip"
