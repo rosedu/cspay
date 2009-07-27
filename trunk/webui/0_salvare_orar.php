@@ -46,7 +46,7 @@ $layout->replace('TITLE','Salvare orar');
 $meniu = show_menu(menu,$_SESSION['tip_cont'],1);
 $layout->replace('MENU',$meniu);
 
-$submeniu = show_menu(submenu,$_SESSION['tip_cont'],1,2);
+$submeniu = show_menu(submenu,$_SESSION['tip_cont'],1,2); 
 $layout->replace('SUBMENU',$submeniu);
 
 $content = '<script type="text/javascript">
