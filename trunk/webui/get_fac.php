@@ -59,15 +59,15 @@ if($ID != "A")
 {
 	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
-	$univ ='<tr><td>Universitate</td><td>';
+	$univ ='<td>Universitate';
 	$univ .= '<select style="font-size:10pt;" name="universitate" onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
 	$univ .= '<option value="0">&nbsp;</option>';
 	for ($i = 0; $i <$nr;$i++)
-		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option></select></td></tr>";
+		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option></select></td>";
 	$sel_fac = display_select_fac();
 	$sel_cat = display_select_cat();
-	$univ .= '<br><tr><td>Facultate:</td><td>'.$sel_fac.'</td></tr>';
-	$univ .= '<br><tr><td>Catedra:</td><td>'.$sel_cat.'</td></tr>';
+	$univ .= '<br><td>Facultate:'.$sel_fac.'</td>';
+	$univ .= '<br><td>Catedra:'.$sel_cat.'</td>';
 	echo $univ;
 }
 else
