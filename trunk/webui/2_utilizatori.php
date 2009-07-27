@@ -141,10 +141,8 @@ add($utilizator_plus,'<form action="" method="post">
 					</tr>
 					<tr>
 						<div id="div_univ">
-						</div>
-					</tr>
-					<tr>
 						<td><input align="center" type="submit" name="adauga_cont" value="Adauga"></td>
+						</div>				
 					<tr>
 				</table>				
 				</form><br>');
@@ -197,9 +195,9 @@ for($i=0;$i<$nr;$i++)
 		}
 	else
 		{
-		if ($Tip === "P")
+		if ($Ttip === "P")
 			$Ttip = "Profesor";
-		elseif ($Tip === "S")
+		elseif ($Ttip === "S")
 			$Ttip = "Secretara";
 
 		$val = mysql_result($res_asoc,$i,'link_cat');
