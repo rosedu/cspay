@@ -37,7 +37,6 @@ INSERT INTO `ore`(`link_disc`, `tip_ora`, `forma`, `cod`, `an`, `serie`, `nr_stu
 (21, 'L', 'L', 'R', 3, 'CC', 145, 5, 'sg', 3, 2, 134, '4a', 'Gogu', 'po', 'Iulian Moraru', 'Iulian Moraru', '334CCb', 'ma', '10-12', 'EG207', 1, 1),
 (21, 'L', 'L', 'R', 3, 'CC', 145, 5, 'sg', 3, 2, 134, '4a', 'Gogu', 'po', 'Mihai Capota', 'Razvan Deaconescu', '335CCa', 'lu', '14-16', 'EG207', 1, 1),
 (21, 'L', 'L', 'R', 3, 'CC', 145, 5, 'sg', 3, 2, 134, '4a', 'Gogu', 'po', 'Mihai Capota', 'Iulian Moraru', '335CCb', 'ma', '8-10', 'EG207', 1, 1),
-(21, 'L', 'L', 'R', 3, 'CC', 145, 5, 'sg', 3, 2, 134, '4a', 'Gogu', 'po', 'Mihai Capota', 'Iulian Moraru', '335CCb', 'ma', '8-10', 'EG207', 1, 1),
 (38, 'C', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 2, 66, '3s', 'Gogu', 'po', 'Octavian Purdila', 'Octavian Purdila', '4C3', 'jo', '14-17', 'EC105', 1, 1),
 (38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 2, 122, '4a', 'Gogu', 'po', 'Cosmin Ratiu', 'George Ciobanu', '344C3a', 'ma', '16-18', 'EG106', 1, 1),
 (38, 'L', 'L', 'R', 4, 'C3', 100, 4, 'sg', 2, 2, 122, '4a', 'Gogu', 'po', 'Cosmin Ratiu', 'George Ciobanu', '344C3b', 'ma', '18-20', 'EG106', 1, 1),
