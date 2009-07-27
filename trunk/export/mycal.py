@@ -35,10 +35,11 @@ class Entry():
                 self.ev.add('rrule',vRecur.from_ical(self.rpt))
 
 	def add_except(self, ds, de):		
-		exdate = vDatetime(datetime(ds.year, ds. month, ds.day, 12, 0, 0, tzinfo = UTC))
+		exdate = []
+		exdate.append(vDatetime(datetime(ds.year, ds. month, ds.day, 12, 0, 0, tzinfo = UTC)))
 		d = ds + timedelta(days=7)
 		while d < ds:
-			exdate += "," + vDatetime(datetime(d.year, d. month, d.day, 12, 0, 0, tzinfo = UTC))
+			exdate.append(vDatetime(datetime(d.year, d. month, d.day, 12, 0, 0, tzinfo = UTC)))
 			d = d + timedelta(days=7)
 		self.ev.add('exdate', exdate)
 		
