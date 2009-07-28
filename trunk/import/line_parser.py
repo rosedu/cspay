@@ -58,25 +58,25 @@ def parse(list_data,line_number,prev_error):
             if(i==11)and(list_data[1]=="L"):
                 if(prev_error<5):
                     print "Line:",line_number+1,
-                    print "Column:",col_list[i],"Column index:",i+1," Error: MISSING DATA \n"
+                    print "Column:",col_list[i],"Column index:",i+1," Error: MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="P"):
                 if(prev_error<5):
-                    print "Line: ",line_number+1,
-                    print "Column :",col_list[i]," Column index:",i+1," Error: MISSING DATA \n"
+                    print "Line:",line_number+1,
+                    print "Column :",col_list[i]," Column index:",i+1," Error: MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="S"):
                 if(prev_error<5):
                     print "Line:",line_number+1,
-                    print "Column:",col_list[i],"Column index:",i+1,"Error: MISSING DATA \n"
+                    print "Column:",col_list[i],"Column index:",i+1,"Error: MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<5):
-                    print "Line: ",line_number+1,
-                    print "Column :",col_list[i]," Column index:",i+1,"Error: MISSING DATA\n"
+                    print "Line:",line_number+1,
+                    print "Column :",col_list[i]," Column index:",i+1,"Error: MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             
@@ -84,9 +84,8 @@ def parse(list_data,line_number,prev_error):
             list_data[i]='0'
         elif(list_data[15]!="po")and(list_data[15]!="pa")and(list_data[15]!="B"):
             if(prev_error<5):
-                print "Error BAD DATA Line NR : ",line_number+1
-                print "Column : ",col_list[15],"\nCell index :",15
-                print "Options: po,pa,B - Read :",list_data[15],"\n"
+                print "Line:",line_number+1,
+                print "Column :",col_list[15]," Column index:",15,"Error BAD DATA (po,pa,B)-",list_data[15]
             prev_error=prev_error+1
             return prev_error
         i=i+1
