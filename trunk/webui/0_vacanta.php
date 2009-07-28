@@ -18,7 +18,7 @@ function gen_univ_sel( $sel )
 	for ($i = 0; $i <$nr;$i++)
 		{
 		$val = mysql_result($result,$i,'univ_id');
-		$univ .= "<option value=".'"'.$val.'"'.($sel==$val)?"selected":"".'>'.mysql_result($result,$i,'nume')."</option></select>";
+		$univ .= "<option value=".'"'.$val.'" '.($sel==$val)?"selected":"".'>'.mysql_result($result,$i,'nume')."</option></select>";
 		}
 	return $univ;
 }
