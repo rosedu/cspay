@@ -159,8 +159,8 @@ for($i=0;$i<$nr_vac;$i++)
 {
 	$vac_id = mysql_result($res_vac,$i,'fac_id');
 	$nume = stripslashes(mysql_result($res_vac,$i,'nume'));
-	$decan = stripslashes((mysql_result($res_vac,$i,'decan'));
-	$nume_scurt = stripslashes((mysql_result($res_vac,$i,'nume_scurt'));
+	$decan = stripslashes(mysql_result($res_vac,$i,'decan'));
+	$nume_scurt = stripslashes(mysql_result($res_vac,$i,'nume_scurt'));
 	$univ_id = mysql_result($res_vac,$i,'link_univ');
 	$query = "SELECT * FROM universitati WHERE univ_id=".$univ_id;
 	$result = mysql_query($query);
