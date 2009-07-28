@@ -98,7 +98,7 @@ add($content,'<div class="title" align="center">Editare Facultati</div>');
 add($content,$mesaj);
 
 
-if((!isset($_POST['renunta']))&&isset($_GET['fac_modifica'])&&isset($_GET['univ_id']))
+if(isset($_GET['fac_modifica'])&&isset($_GET['univ_id']))
 {
 	$msj = "Modificare facultate";
 	$univ_id = $_GET['univ_id'];
