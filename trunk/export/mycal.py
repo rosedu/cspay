@@ -76,13 +76,9 @@ def output_ical(input, holidays, parities, path):
 	for curs in courses:
 		i = insert_course(C, curs, holidays, parities, start, stop)
 
-	try:
-		ical_write(C, title)
-	except:
-		print "Sunt la scriere fisier ", str(sys.exc_info())
+	ical_write(C, title)
 
-
-
+	
 def insert_course(C, curs, holidays, parit, start, stop):
 	"""Insert a line for every application for a given month"""
 	d = start
@@ -167,7 +163,10 @@ def ical_init():
 	return cal
 
 def ical_write(C, title):
-	f = open(title+'.ics', 'wb')
+	try:
+		f = open(title+'.ics', 'wb')
+	except:
+		print "Sunt la deschidere fisier ", str(sys.exc_info())
 	f.write(C.as_string())
 	f.close()
 						 
