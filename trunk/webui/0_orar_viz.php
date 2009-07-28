@@ -1,4 +1,6 @@
 <?php
+//Eduard Tuþescu & Daniel Urdã
+//July 2008 - July 2009
 //include headers
 include("include/config.php");
 include("include/header.php");
@@ -42,88 +44,78 @@ $content = '';
 $mesaj   = '';
 
 if(!isset($_SESSION['nr_afisari_viz']))//seteaza numarul de afisari pe pagina
-{
+	{
 	$_SESSION['nr_afisari_viz'] = 10;
-}
-
+	}
 
 if(isset($_POST['pagina']))//redirectare la pagina
-{
+	{
 		header("Location: ".$_POST['pagina']);//redirectioneaza catre pagina principala
 		die();
-}
+	}
 
 if(isset($_POST['nr_pe_pag']))//modificare afisari pe pagina
-{
+	{
 		if($_POST['nr_pe_pag'] == "tot")
 			$_SESSION['nr_afisari_viz'] = $nr;
 		else
 			$_SESSION['nr_afisari_viz'] = $_POST['nr_pe_pag'];
 		$start = 0;
-}
+	}
 
 //tratare pagina si parametri
 if(isset($_GET['start']) && !isset($_POST['nr_pe_pag']))
-{
-	$start = $_GET['start'];
-	$stop = $start + $_SESSION['nr_afisari_viz'];
-	if($stop>$nr)
-		$stop = $nr;
-}
+	{
+		$start = $_GET['start'];
+		$stop = $start + $_SESSION['nr_afisari_viz'];
+		if($stop>$nr)
+			$stop = $nr;
+	}
 else
-{
-	$start = 0;
-	$stop = $_SESSION['nr_afisari_viz'];
-	if($stop>$nr)
-		$stop = $nr;
-}	
+	{
+		$start = 0;
+		$stop = $_SESSION['nr_afisari_viz'];
+		if($stop>$nr)
+			$stop = $nr;
+	}	
 $nr_afisari = $_SESSION['nr_afisari_viz'];
 
 add($content,'<div class="title" align="center">Formular detalii plata cu ora</div>');
 add($content,$mesaj);
 
 if($opt_selectie)
-{
-$start = 0;
+	{
+	$start = 0;
 	$stop = $_SESSION['nr_afisari_viz'];
 	if($stop>$nr)
 		$stop = $nr;
-}
-		
+	}
 
 if($nr != 0)//daca exista inregistrari in tabela `orar`
-{
-	add($content,display_page_nav_secr($start,$nr_afisari,$nr,"0_orar_viz.php"));//butoanele inainte si inapoi
-	
-	add($content,display_thead_orar_secr($thead_secr_ro));//scrie capul de tabel
-
-	for($i=$start;$i<$stop;$i++)//pentru  fiecare intrare
 	{
+	add($content,display_page_nav_secr($start,$nr_afisari,$nr,"0_orar_viz.php"));//butoanele inainte si inapoi
+	add($content,display_thead_orar_secr($thead_secr_ro));//scrie capul de tabel
+	for($i=$start;$i<$stop;$i++)//pentru  fiecare intrare
+		{
 		$output = display_result_read_only($result_orar,$i,$i-$start);//scrie linia respectiva sub forma de tabel
 		add($content,$output);
-	}	
-	
+		}	
 	add($content,'</table>');
 	add($content,'<input type="hidden" id="nr_inreg" value="'.($stop-$start).'">');
 	add($content,'</form>');
 	add($content,display_page_nav_secr($start,$nr_afisari,$nr,"0_orar_viz.php"));
 	add($content,criterii_selectie());
-	
 	}
 else
 	{
 	if($opt_selectie != -1)//daca s-au marcat criterii de selectie
-		add($content,'Nu s-au gãsit înregistrãri.'.$opt_selectie."pip");
+		add($content,'Nu s-au gãsit înregistrãri.');
 	else
-	add($content,"Fiºierul XlS nu a fost importat.");	
+		add($content,"Fiºierul XlS nu a fost importat.");	
 	}
-
 	
 $layout->replace('CONTENT',$content);
-
 $layout->print_template();
-
-//mysql_free_result($result_orar);
 ?>
 
 

@@ -1,10 +1,11 @@
-<?
+<?php
+//Eduard Tuþescu & Daniel Urdã
+//July 2008 - July 2009
 include("debug.php");
 
 define("SECRETARA","S");
 define("PROFESOR","P");
 define("ADMINISTRATOR","A");
-
 
 $class_select = array(0=>"tip_1",1=>"tip_2");
 $class_std =  array(0 => "tr_1",1=>"tr_2");
@@ -51,7 +52,6 @@ $luna = array(0=>"Ianuarie",1=>"Februarie",2=>"Martie",3=>"Aprilie",4=>"Mai",5=>
 function add(&$content, $var) //concateneaza continutul variabilelor
 {
 	$content .= $var;
-	
 	return $var;
 }
 
@@ -314,6 +314,5 @@ add($output,'</select></tr>');
 
 return $output;
 }
-
 
 ?>

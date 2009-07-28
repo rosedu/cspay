@@ -1,44 +1,42 @@
 <?php
+//Eduard Tuþescu & Daniel Urdã
+//July 2008 - July 2009
 //include headers
 include("include/config.php");
 include("include/header.php");
 include("include/check_login.php");
 
 function addquot($str)
-{
-return "\"".$str."\"";
-}
+	{
+	return "\"".$str."\"";
+	}
 
 function dourjob()
-{
-global $_POST, $pers_acoperit;
-$ics="";
-if(isset($_POST['salveaza']))//tratare formular export
-{
-	if (count($_POST['pers_acoperit']) == 0)
+	{
+	global $_POST, $pers_acoperit;
+	$ics="";
+	if(isset($_POST['salveaza']))//tratare formular export
 		{
+		if (count($_POST['pers_acoperit']) == 0)
+			{
 			$ics=$ics."Nu a&#x163;i selectat nici un profesor";
 			return $ics;
+			}
+		$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python call.py ";
+		$command .= $_POST['tip_cal']." ";
+		$command = $command." ".addquot($_SESSION['univ_nume'])." ".addquot($_SESSION['fac_nume'])." ";
+		$command = $command.addquot($_SESSION['cat_nume']);
+		foreach ($_POST['pers_acoperit'] as $dobi)
+			$command = $command." ".addquot($dobi);
+
+		$output=array();
+		exec($command,&$output);
+		foreach($output as $line)
+			$ics=$ics.$line."<br>";
+		$ics=$ics."<a href = \"".$output[count($output)-1]."\">Fi&#x15F;ierul dvs</a>";
 		}
-
-	$output=array();
-	$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python call.py ";
-	$command .= $_POST['tip_cal']." ";
-	$command = $command." ".addquot($_SESSION['univ_nume'])." ".addquot($_SESSION['fac_nume'])." ";
-	$command = $command.addquot($_SESSION['cat_nume']);
-	foreach ($_POST['pers_acoperit'] as $dobi)
-		$command = $command." ".addquot($dobi);
-		//$ics=$ics.$command."<br>";
-	exec($command,&$output);
-	
-	foreach($output as $line)
-		$ics=$ics.$line."<br>";
-		
-	$ics=$ics."<a href = \"".$output[count($output)-1]."\">Fi&#x15F;ierul dvs</a>";
-
-}
-return $ics;
-}
+	return $ics;
+	}
 
 $layout->get_template('include/template.html');
 $layout->replace('TITLE','Salvare orar');
@@ -65,17 +63,16 @@ $query = "SELECT `pers_acoperit_efect` FROM `ore`
 		   GROUP BY `pers_acoperit_efect`";
 $result = mysql_query($query);
 $nr_reg = mysql_num_rows($result);
-
 $pers = '<select size="10" style="font-size:10pt;" name="pers_acoperit[]" multiple="multiple">';
 for($i=0;$i<$nr_reg;$i++)
-{
+	{
 	$pers .= '<option>'.mysql_result($result,$i,'pers_acoperit_efect').'</option>';
-}
+	}
 
 $form = '<form name="profesori" action="" method="post">
 		<table style="width:100%;" border="0">
 		<tr>
-	';
+		';
 
 add($form,'
 			<td style="width:30%;" valign="top">Profesor :<br>'
@@ -110,10 +107,7 @@ add($form,'
 			');
 add($content,$form);
 
-
-
 $layout->replace('CONTENT',$content);
-
-$layout->print_template();
+s$layout->print_template();
 ?>
 

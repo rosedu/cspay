@@ -23,8 +23,8 @@ add($content,'<div class="content_center">');
 
 add($content,'<h1>Optiuni posibile :</h1><ul><li><i><b>utilizatori</b></i><br>Permite adaugarea, editarea si stergerea
 			  datelor apartinand persoanelor cu drept de autentificare.<br>Datele inserate sunt reprezentate de numele 
-			  persoanei, adresa de email, materia predata si tipul contului asociat.<br>Exista trei tipuri de conturi:<br>
-			  <ul><li>secretara - toate campurile din orar sunt editabile</li>
+			  persoanei, adresa de email, catedra/materia si tipul contului asociat.<br>Exista trei tipuri de conturi:<br>
+			  <ul><li>secretara - acces la incarcarea orarului si exportul tabelelor de plata si orarelor</li>
 			  	  <li>profesor - acces limitat la editarea orarului</li>
 				  <li>administrator - configurarea conturilor si a orarului initial</li>
 			  </ul>
