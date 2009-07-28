@@ -25,9 +25,9 @@ if nr_argv>1:
     file_name=sys.argv[1]
 else :
     print """ ERROR  -> Possible parameters :
-            \n python check.py filename.xls     ->go threw all lines
-            \n python check.py filename.xls x   ->go only at line x
-            \n python check.py filename.xls x y ->go only threw lines x->y
+            \n python insert.py filename.xls     ->go threw all lines
+            \n python insert.py filename.xls x   ->go only at line x
+            \n python insert.py filename.xls x y ->go only threw lines x->y
             """
     
 
@@ -87,7 +87,6 @@ col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf
 ################################################
 
 
-cursor.execute("TRUNCATE TABLE ore")
 sheet = file_xls.sheet_by_index(0)
 #get sheet and pass it to read line
 if(end_check==0):
@@ -114,7 +113,6 @@ while index_line<end_check:
      #   prev_error=prev_error+1
     index_line+=1
 
-cursor.execute("TRUNCATE TABLE ore")
 print "\n Only first 5 errors are displayed (if any) !!! "
 print " There have been found a total of",prev_error,"errors in the .xls file or in the database"
 
