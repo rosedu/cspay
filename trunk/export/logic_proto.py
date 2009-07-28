@@ -40,6 +40,7 @@ def output_table(input, holidays, parities, path):
 		
 		courses = input['ore']
 		for curs in courses:
+			print curs['disciplina']
 			i = insert_course(S, i, curs, year, month,
                                           input['semestru'], holidays, 
 										  parities, C_count, A_count)
