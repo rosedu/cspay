@@ -12,9 +12,8 @@ def db_write_line(cursor,line_data,line_index,prev_error):
     
     if not link_fac:
         if(prev_error<5):
-            print "\n\n\n ",prev_error+1,
-            print ")SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",line_data[0]
-            print "\nERROR : Line NR ",line_index," FACULTATE : < ",line_data[0]," >\n"
+            print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",line_data[0]
+            print "Line NR ",line_index," FACULTATE : < ",line_data[0]," > ERROR WRONG DATA"
         prev_error+=1
         
     else :   
@@ -27,10 +26,9 @@ def db_write_line(cursor,line_data,line_index,prev_error):
         paritate_start="1"
         if not id_ora:
             if(prev_error<5):
-                print "\n\n\n ",prev_error+1,
-                print ")SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
+                print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
                 " AND LOWER(nume)=",line_data[2]
-                print "\nERROR : Line NR ",line_index," DISCIPLINA : < ",line_data[2]," >\n"
+                print "Line NR ",line_index," DISCIPLINA : < ",line_data[2]," > ERROR WRONG DATA"
             prev_error=prev_error+1
         else:
             if str.lower(line_data[19][0:2]) in ["lu","ma","mi","jo","vi","sa","du"]:
@@ -41,12 +39,12 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     paritate="2"
                     paritate_start="2"
                 
-            elif(prev_error<5):
-                print "\n\n\n ",prev_error+1,
-                print ")SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
-                " AND LOWER(nume)=",line_data[2]
-                print "\nERROR : Line NR ",line_index," PARITATE : < ",line_data[19][0:3]," > "
-                print "EXPECTED : lu(p/i),ma(p/i),mi(p/i),jo(p/i),vi(p/i),sa(p/i),du(p/i)"
+            else:
+                if(prev_error<5):
+                    print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
+                    " AND LOWER(nume)=",line_data[2]
+                    print "ERROR : Line NR ",line_index," PARITATE : < ",line_data[19][0:3]," > ERROR WRONG DATA"
+                    print "EXPECTED : lu(p/i),ma(p/i),mi(p/i),jo(p/i),vi(p/i),sa(p/i),du(p/i)"
                 prev_error=prev_error+1
                 
             db="""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
