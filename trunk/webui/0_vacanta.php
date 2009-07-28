@@ -101,7 +101,7 @@ add($content,'<div class="title" align="center">Editare Vacante</div>');
 add($content,$mesaj);
 
 
-if((!isset($_POST['renunta']))&&isset($_GET['vacanta_modifica'])&&isset($_GET['univ_id']))
+if(isset($_GET['vacanta_modifica'])&&isset($_GET['univ_id']))
 {
 	$msj = "Modificare perioada de vacanta";
 	$univ_id = $_GET['univ_id'];

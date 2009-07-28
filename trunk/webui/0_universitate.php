@@ -130,7 +130,7 @@ if(isset($_GET['sterge']))
 
 //adaug formularul in care poate modifica numele universitatii, data de start si de sfarsit
 add($content,'
-	<form action="" method="post">
+	<form action="0_universitate.php" method="post">
 	<table width="500px" cellpadding="3" cellspacing="3" class="formular">
 		<tr>
 		<td>Nume Universitate</td>
