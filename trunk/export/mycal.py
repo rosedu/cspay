@@ -163,10 +163,9 @@ def ical_init():
 	return cal
 
 def ical_write(C, title):
-	try:
-		title_comp = title+'.ics'
-	except:
-		print "Sunt la concatenare ", str(sys.exc_info())
+	title_comp = title+'.ics'
+	print sys.getfilesystemencoding()
+	print os.listdir('.')
 	try:
 		f = open(title_comp, 'wb')
 	except:
