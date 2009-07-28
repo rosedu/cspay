@@ -11,9 +11,9 @@ def db_write_line(cursor,line_data,line_index,prev_error):
     link_fac = cursor.fetchone ()
     
     if not link_fac:
-        if(prev_error<5):
+        if(prev_error<1000):
             print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",line_data[0]
-            print "Line:",line_index,"FACULTATE:",line_data[0],"ERROR WRONG DATA"
+            print "line:",line_index,"facultate:",line_data[0],"ERROR WRONG DATA"
         prev_error+=1
         
     else :   
@@ -25,10 +25,10 @@ def db_write_line(cursor,line_data,line_index,prev_error):
         paritate="1"
         paritate_start="1"
         if not id_ora:
-            if(prev_error<5):
+            if(prev_error<1000):
                 print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
                 " AND LOWER(nume)=",line_data[2]
-                print "Line:",line_index,"DISCIPLINA:",line_data[2],"ERROR WRONG DATA"
+                print "line:",line_index,"disciplina:'",line_data[2],"',ERROR WRONG DATA"
             prev_error=prev_error+1
         else:
             if str.lower(line_data[19][0:2]) in ["lu","ma","mi","jo","vi","sa","du"]:
@@ -40,10 +40,10 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     paritate_start="2"
                 
             else:
-                if(prev_error<5):
+                if(prev_error<1000):
                     print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
                     " AND LOWER(nume)=",line_data[2]
-                    print "ERROR : Line NR ",line_index," PARITATE : < ",line_data[19][0:3]," > ERROR WRONG DATA"
+                    print "line:",line_index,"paritate :'",line_data[19][0:3],"' ERROR WRONG DATA"
                     print "EXPECTED : lu(p/i),ma(p/i),mi(p/i),jo(p/i),vi(p/i),sa(p/i),du(p/i)"
                 prev_error=prev_error+1
                 
