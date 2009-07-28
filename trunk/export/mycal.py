@@ -172,7 +172,7 @@ def ical_write(C, title):
 	print sys.platform
 	print locale.getpreferredencoding()
 	try:
-		risk=title_comp.encode('utf-8')
+		risk=title_comp.encode('cp1250')
 	except:
 		print "eroare la codare", str(sys.exc_info())
 	try:
