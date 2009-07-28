@@ -12,8 +12,6 @@ function gen_univ_sel( $sel )
 {
 	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
-	print $nr;
-	print $sel;
 	$univ ='Universitate</td><td>';
 	$univ .= '<select style="font-size:10pt;" name="universitate">';
 	$univ .= '<option value="0">&nbsp;</option>';
@@ -23,10 +21,7 @@ function gen_univ_sel( $sel )
 		$sele = "";
 		if ($val == $sel)
 			$sele = "selected";
-		print "egal?";
-		print $val;
-		print $sele;
-		$univ .= '<option ".$sele." value="'.$val.'">'.mysql_result($result,$i,'nume')."</option>";
+		$univ .= '<option '.$sele.' value="'.$val.'">'.mysql_result($result,$i,'nume')."</option>";
 		}
 	$univ .= "</select>";
 	return $univ;
@@ -159,8 +154,6 @@ for($i=0;$i<$nr_vac;$i++)
 	$data_start = mysql_result($res_vac,$i,'data_start');
 	$data_stop = mysql_result($res_vac,$i,'data_stop');
 	$univ_id = mysql_result($res_vac,$i,'link_univ');
-	print "univ";
-	print $univ_id;
 	$query = "SELECT * FROM universitati WHERE univ_id=".$univ_id;
 	$result = mysql_query($query);
 	$nume_univ = mysql_result($result,0,'nume');
