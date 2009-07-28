@@ -53,6 +53,7 @@ if(isset($_POST['fac_modifica']))
 	{
 		$$index = $val;
 	}
+	print $fac_id;
 	$data_start = $data_start_an . '-' . (($data_start_luna<10)?'0':'') . $data_start_luna . '-' .
 				  (($data_start_zi)<10?'0':''). $data_start_zi;
 	$data_sfarsit = $data_sfarsit_an . '-' . (($data_sfarsit_luna<10)?'0':'') . $data_sfarsit_luna . '-' .
@@ -100,6 +101,8 @@ if((!isset($_POST['renunta']))&&isset($_GET['fac_modifica'])&&isset($_GET['univ_
 {
 	$msj = "Modificare facultate";
 	$univ_id = $_GET['univ_id'];
+	print "larao";
+	print $_GET['fac_modifica'];
 	$query = "SELECT * FROM facultati WHERE fac_id=".$_GET['fac_modifica'];
 	$result = mysql_query($query);
 	$fac_nume = stripslashes(mysql_result($result,0,'nume'));
