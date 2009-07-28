@@ -14,7 +14,7 @@ import platform
 
 if __name__ == "__main__":
 
-   print platform.machine()
+	print platform.machine()
         
     basepath = "/home/cspay/public_html/out/"
     commands.getstatusoutput("rm -r " + basepath+"*")
