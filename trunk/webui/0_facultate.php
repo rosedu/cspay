@@ -54,6 +54,10 @@ if(isset($_POST['fac_modifica']))
 		$$index = $val;
 	}
 	print $fac_id;
+	print $universitate;
+	print $nume;
+	print $nume_sc;
+	$nume $decan;
 	$data_start = $data_start_an . '-' . (($data_start_luna<10)?'0':'') . $data_start_luna . '-' .
 				  (($data_start_zi)<10?'0':''). $data_start_zi;
 	$data_sfarsit = $data_sfarsit_an . '-' . (($data_sfarsit_luna<10)?'0':'') . $data_sfarsit_luna . '-' .
