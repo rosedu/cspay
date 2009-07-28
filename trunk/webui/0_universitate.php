@@ -83,6 +83,7 @@ else
 
 if(isset($_POST['univ_add']))
 {
+/*
 add($mesaj,"$data_start_luna, $data_start_zi, $data_start_an");
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
@@ -94,7 +95,7 @@ elseif (!checkdate($data_sfarsit_luna,$data_sfarsit_zi,$data_sfarsit_an))
 	add($mesaj,'Data de sfarsit incorecta<br>');
 	}
 	
-else
+else*/
 	{
 	foreach($_POST as $index=>$val)
 		{
