@@ -24,7 +24,7 @@ for arg in sys.argv:
 if nr_argv>1:
     file_name=sys.argv[1]
 else :
-    print """ ERROR\n Possible parameters : \n
+    print """ ERROR  -> Possible parameters :
             \n python script.py filename.xls     ->go threw all lines
             \n python script.py filename.xls x   ->go only at line x
             \n python script.py filename.xls x y ->go only threw lines x->y

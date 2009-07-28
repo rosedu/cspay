@@ -51,32 +51,32 @@ def parse(list_data,line_number,prev_error):
             #common mandatory data
             if(i==10)and(list_data[1]=="C"):
                 if(prev_error<5):
-                    print "Error NO DATA Line: ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
+                    print "Line: ",line_number+1
+                    print " Column : ",col_list[i]," Column index :",i+1," Error MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="L"):
                 if(prev_error<5):
-                    print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
+                    print "Line: ",line_number+1
+                    print " Column : ",col_list[i]," Column index :",i+1," Error MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="P"):
                 if(prev_error<5):
-                    print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
+                    print "Line: ",line_number+1
+                    print " Column : ",col_list[i]," Column index :",i+1," Error MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="S"):
                 if(prev_error<5):
-                    print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
+                    print "Line: ",line_number+1
+                    print " Column : ",col_list[i]," Column index :",i+1," Error MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<5):
-                    print "Error NO DATA Line NR : ",line_number+1
-                    print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
+                    print "Line: ",line_number+1
+                    print " Column : ",col_list[i]," Column index :",i+1," Error MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             
