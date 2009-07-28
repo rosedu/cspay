@@ -83,6 +83,7 @@ else
 
 if(isset($_POST['univ_add']))
 {
+add($mesaj,"$data_start_luna, $data_start_zi, $data_start_an");
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
 	add($mesaj,'Data de inceput incorecta<br>');
