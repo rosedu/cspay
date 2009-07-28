@@ -170,7 +170,7 @@ def ical_write(C, title):
 	print os.path.supports_unicode_filenames
 	print sys.platform
 	elist = list(set(encodings._aliases.values()))
-	elist.sort()
+	print elist.sort()
 
 	try:
 		f = open(title_comp, 'wb')
