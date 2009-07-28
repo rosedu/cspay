@@ -185,6 +185,7 @@ add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="550px">
 				<td>Nume</td>
 				<td>Data inceput</td>
 				<td>Data sfarsit</td>
+				<td>Optiuni</td>
 			</tr>');
 			
 for($i=0;$i<$nr;$i++)

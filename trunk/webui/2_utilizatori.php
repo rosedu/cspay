@@ -171,6 +171,7 @@ add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="550px">
 				<td>Catedra</td>
 				<td>Facultatea</td>
 				<td>Universitatea</td>
+				<td>Optiuni</td>
 			</tr>');
 			
 for($i=0;$i<$nr;$i++)
