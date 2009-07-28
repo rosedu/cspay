@@ -4,7 +4,7 @@ include("include/config.php");
 include("include/header.php");
 include("include/check_login.php");
 
-check_auth(SECRETARA);//verifica daca este cont de secretara
+check_auth(ADMINISTRATOR);//verifica daca este cont de secretara
 
 define("VACANTA_MODIFICA",1);
 

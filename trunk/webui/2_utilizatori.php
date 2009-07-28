@@ -17,7 +17,7 @@ $layout->replace('TITLE','Administrare');
 $meniu = show_menu(menu,$_SESSION['tip_cont'],0);
 $layout->replace('MENU',$meniu);
 
-$submeniu = show_menu(submenu,$_SESSION['tip_cont'],0,0);
+$submeniu = show_menu(submenu,$_SESSION['tip_cont'],4,0);
 $layout->replace('SUBMENU',$submeniu);
 
 //tratare formulare

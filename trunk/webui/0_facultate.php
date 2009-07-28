@@ -4,6 +4,8 @@ include("include/config.php");
 include("include/header.php");
 include("include/check_login.php");
 
+check_auth(ADMINISTRATOR);//verifica daca este cont de secretara
+
 define("CATEDRA_MODIIFCA",1);
 define("FACULTATE_MODIFICA",2);
 
