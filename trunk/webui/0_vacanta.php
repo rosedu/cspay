@@ -6,21 +6,9 @@ include("include/check_login.php");
 
 check_auth(ADMINISTRATOR);//verifica daca este cont de secretara
 
-define("VACANTA_MODIFICA",1);
-
 $mesaj = "";
-$flag_form = false;
 
-function write_table_head()
-{
-	$output = "";
-	add($output,'<table width="500px" cellpadding="1" cellspacing="1" class="special">');
-	add($output,'<tr class="tr_head"><td>Nr</td><td>Data inceput</td><td>Data sfarsit</td><td>Optiuni</td></tr>');
-	
-	return $output;
-}
-
-function gen_univ_sel()
+function gen_univ_sel( $sel )
 {
 	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
@@ -28,7 +16,9 @@ function gen_univ_sel()
 	$univ .= '<select style="font-size:10pt;" name="universitate">';
 	$univ .= '<option value="0">&nbsp;</option>';
 	for ($i = 0; $i <$nr;$i++)
-		$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.mysql_result($result,$i,'nume')."</option></select>";
+		{
+		$val = mysql_result($result,$i,'univ_id');
+		$univ .= "<option value=".'"'.$val.'"'.($sel==$val)?"selected":"".'>'.mysql_result($result,$i,'nume')."</option></select>";
 	return $univ;
 }
 
@@ -90,12 +80,6 @@ if(isset($_GET['vacanta_sterge']))
 	else
 		add($mesaj,'<div class="eroare">Eroare : Perioada de vacanta nu a putut fi stearsa</div>');
 }//sfarsit vacanta_sterge
-else
-if(isset($_GET['vacanta_modifica']))
-{
-	add($mesaj,'modifica vacanta');
-	$flag_form = VACANTA_MODIFICA;
-}
 
 $layout->get_template('include/template.html');
 $layout->replace('TITLE','Editare Vacante');
@@ -113,18 +97,37 @@ if($flag_form == false)
 add($content,'<div class="title" align="center">Editare Vacante</div>');
 add($content,$mesaj);
 
+
+if(isset($_GET['vacanta_modifica']))
+{
+	$msj = "Modificare perioada de vacanta";
+	$univ_id = $_GET['vacanta_modifica'];
+	$query = "SELECT * FROM universitati WHERE univ_id=".$univ_id;
+	$result = mysql_query($query);
+	$data_start = mysql_result($result,0,'data_start');
+	$data_stop = mysql_result($result,0,'data_stop');
+	$finish = '"vacanta_modifica" value="Modifica"';
+}
+else
+{
+	$msj="Adaugare perioada de vacanta";
+	$univ_id = 0;
+	$today=getdate();
+	$data_start =$today['year']."-01-01";
+	$data_stop = $today['year']."-01-01";
+	$finish = '"vacanta_adauga" value="Adauga"';
+}
+
 add($content,'<br>
 	<form action="0_vacanta.php" method="post">
 	<table  width="500px" cellpadding="3" cellspacing="3" class="formular">
-		<tr><td colspan="2">Adaugare perioada de vacanta</td></tr>
-		<tr><td>'.gen_univ_sel().'</td></tr>
-		<tr><td>Data inceput</td><td>'.write_select_data("data_start").'</td></tr>
-	    <tr><td>Data sfarsit</td><td>'.write_select_data("data_sfarsit").'</td></tr>
-		<tr><td colspan="2"><input type="submit" value="Adauga" name="vacanta_adauga"></td></tr>
+		<tr><td colspan="2">'.$msj.'</td></tr>
+		<tr><td>'.gen_univ_sel($univ_id).'</td></tr>
+		<tr>'.write_data("data_start","Data inceput",$data_start) . write_data("data_sfarsit","Data sfarsit",$data_stop).'</tr>
+		<tr><td colspan="2"><input type="submit" name='.$finish.'></td></tr>
 	</table><br>
 	</form>');
 
-//add($content,'<tr><td colspan="4"><input type="submit" name="vacanta_salveaza" value="Salveaza"></tr>');
 //selectare din baza de date si afisare perioade
 $query = "SELECT * FROM `vacante`";
 $res_vac = mysql_query($query);
@@ -140,7 +143,6 @@ add($content,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 				<td>Data sfarsit</td>
 				<td>Optiuni</td>
 			</tr>');
-$class =  array(0 => "tr_1",1=>"tr_2");//clasa pentru rand par respectiv impar
 
 for($i=0;$i<$nr_vac;$i++)
 {

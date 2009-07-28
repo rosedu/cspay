@@ -161,7 +161,7 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 			<li'.equal(0,$select,' class="subactive"').'><a href="0_universitate.php">Universitate</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="0_facultate.php">Facultate</a></li>
 			<li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacan&#x21B;e</a></li>
-			<li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedr&#259;</a></li>
+			<li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedre</a></li>
 			<li'.equal(4,$select,' class="subactive"').'><a href="2_utilizatori.php">Utilizatori</a></li>
 		</ul>';
 	$submenu[2][1] = '
@@ -275,5 +275,45 @@ $data_complet = $zi .' '. $luna[(int)$index_luna-1] .' ' .$an;
 
 return $data_complet;
 }
+
+function write_data($data,$text,$data_explicit)
+{
+global $luna;
+
+$aux = strstr($data_explicit,"-");
+$an = substr($data_explicit,0,strlen($data_explicit)-strlen($aux));
+$data_explicit = substr($aux,1,strlen($aux)-1);
+$aux = strstr($data_explicit,"-");
+$index_luna = substr($data_explicit,0,strlen($data_explicit)-strlen($aux));
+$data_explicit = substr($aux,1,strlen($aux)-1);
+$zi = $data_explicit;
+
+$output = '<tr>
+		<td>'.$text.'</td>
+		<td><select name="'.$data.'_zi">';
+
+for($i=1;$i<=31;$i++)
+	{
+		add($output,'<option '.( ($i== $zi)?'selected':'').'>'.$i.'</option>');
+	}
+add($output,'</select>&nbsp;');
+
+add($output,'<select name="'.$data.'_luna">');
+
+for($i=0;$i<12;$i++)
+	add($output,'<option value='.($i+1).(($index_luna-1 == $i)?' selected':'').'>'.$luna[$i].'</option>');
+add($output,'</select>&nbsp;');
+
+add($output,'<select name="'.$data.'_an">');
+for($i=0;$i<=12;$i++)
+	{
+		add($output,'<option '.( (($i+2008)== $an)?'selected':'').'>'.($i+2008).'</option>');
+	}
+
+add($output,'</select></tr>');
+
+return $output;
+}//sfarsit write_data()
+
 
 ?>
