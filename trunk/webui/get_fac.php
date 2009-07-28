@@ -4,7 +4,7 @@ include("include/mysql_config.php");
 function display_select_fac()
 {
 	$fac ='<div id="div_fac"><select style="font-size:10pt;width: 100px;" name="facultate" >';
-	$fac .='<option value="0"> </option>';
+	$fac .='<option value="0">&nbsp;</option>';
 	$fac .= '</select></div>';
 	return $fac;
 }
@@ -12,7 +12,7 @@ function display_select_fac()
 function display_select_cat()
 {
 	$fac ='<div id="div_cat"><select name="catedra" style="font-size:10pt;width: 100px;" >';
-	$fac .='<option value="0"> </option>';
+	$fac .='<option value="0">&nbsp;</option>';
 	$fac .= '</select></div>';
 	return $fac;
 }	
