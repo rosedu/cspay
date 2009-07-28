@@ -12,7 +12,7 @@ function gen_univ_sel( $sel )
 {
 	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
-	print $nr,$sele;
+	print $nr, $sel;
 	$univ ='Universitate</td><td>';
 	$univ .= '<select style="font-size:10pt;" name="universitate">';
 	$univ .= '<option value="0">&nbsp;</option>';
