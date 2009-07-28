@@ -13,7 +13,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
     if not link_fac:
         if(prev_error<5):
             print "SQL : SELECT fac_id FROM facultati WHERE LOWER(nume_scurt)=",line_data[0]
-            print "Line NR ",line_index," FACULTATE : < ",line_data[0]," > ERROR WRONG DATA"
+            print "Line :",line_index," FACULTATE : < ",line_data[0]," > ERROR WRONG DATA"
         prev_error+=1
         
     else :   
@@ -28,7 +28,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             if(prev_error<5):
                 print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
                 " AND LOWER(nume)=",line_data[2]
-                print "Line NR ",line_index," DISCIPLINA : < ",line_data[2]," > ERROR WRONG DATA"
+                print "Line :",line_index," DISCIPLINA : < ",line_data[2]," > ERROR WRONG DATA"
             prev_error=prev_error+1
         else:
             if str.lower(line_data[19][0:2]) in ["lu","ma","mi","jo","vi","sa","du"]:
