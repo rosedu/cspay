@@ -116,7 +116,7 @@ else
 				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 	//actualizarea tabelei `universitate`
 	$query = "INSERT INTO `universitati` (`nume`, `data_start`, `data_stop`) 
-				VALUES ($nume_univ, $data_start, $data_sfarsit)";
+				VALUES ('".$nume_univ."', ".$data_start.", ".$data_sfarsit.")";
 	if(mysql_query($query))
 	{
 		add($mesaj,'Adaugarea a fost realizata cu succes.<br>');
