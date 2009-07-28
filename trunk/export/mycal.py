@@ -163,12 +163,15 @@ def ical_init():
 	return cal
 
 import os
+import encodings
 def ical_write(C, title):
 	title_comp = title+'.ics'
 	print sys.getfilesystemencoding()
-	print os.listdir('.')
 	print os.path.supports_unicode_filenames
 	print sys.platform
+	elist = list(set(encodings._aliases.values()))
+	elist.sort()
+
 	try:
 		f = open(title_comp, 'wb')
 	except:
