@@ -148,7 +148,10 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                 elif function == 1:
                         output_orar(input, path)
                 else:
-                        output_ical(input, vacante, used_par, path)
+                        try:
+                                output_ical(input, vacante, used_par, path)
+                        except:
+                            print "Unexpected error:", sys.exc_info()[0]
         print "OK"
 	
 
