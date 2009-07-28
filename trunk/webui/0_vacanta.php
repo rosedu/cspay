@@ -156,6 +156,8 @@ for($i=0;$i<$nr_vac;$i++)
 	$data_start = mysql_result($res_vac,$i,'data_start');
 	$data_stop = mysql_result($res_vac,$i,'data_stop');
 	$univ_id = mysql_result($res_vac,$i,'link_univ');
+	print "univ";
+	print $univ_id;
 	$query = "SELECT * FROM universitati WHERE univ_id=".$univ_id;
 	$result = mysql_query($query);
 	$nume_univ = mysql_result($result,0,'nume');
