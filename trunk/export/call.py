@@ -14,11 +14,8 @@ import platform
 
 if __name__ == "__main__":
 
-    try:
-        print platform.system()
-    except:
-        print "Sunt la deschidere fisier ", str(sys.exc_info())
-    print sys.platform
+    if platform.system().find("Linux") != -1:
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
         
     basepath = "/home/cspay/public_html/out/"
     commands.getstatusoutput("rm -r " + basepath+"*")
