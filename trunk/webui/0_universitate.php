@@ -115,8 +115,8 @@ else
 	$data_sfarsit = $data_sfarsit_an . '-' . (($data_sfarsit_luna<10)?'0':'') . $data_sfarsit_luna . '-' .
 				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 	//actualizarea tabelei `universitate`
-	$query = "INSERT INTO `universitati` (`nume`, `data_start`, `data_end`) 
-				VALUES ('".$nume_univ."', '".$data_start."', '".$data_sfarsit."')";
+	$query = "INSERT INTO `universitati` (`nume`, `data_start`, `data_stop`) 
+				VALUES ($nume_univ, $data_start, $data_sfarsit)";
 	if(mysql_query($query))
 	{
 		add($mesaj,'Adaugarea a fost realizata cu succes.<br>');
