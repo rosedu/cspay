@@ -53,6 +53,7 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                                   range(1, temp2['data_stop'].month + 1) )
                 input['an'] = (str(temp2['data_start'].year) + "/" +
                                str(temp2['data_stop'].year))
+        uni_id = temp2['univ_id']
         used_par = parities[temp2['univ_id']]
 
                 
@@ -126,7 +127,8 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                                                  temp2['nume_scurt']))
                                   
         vacante=[]
-        cursor.execute(""" SELECT data_start, data_stop FROM vacante""")
+        cursor.execute(""" SELECT data_start, data_stop FROM vacante
+                                        WHERE link_univ=%s""", uni_id)
         result_set = cursor.fetchall()
         for row in result_set:
                 vacante.append((row['data_start'], row['data_stop']))

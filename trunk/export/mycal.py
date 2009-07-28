@@ -46,7 +46,6 @@ class Entry():
                         self.exdate.append(datetime(d.year, d.month, d.day,
                                                self.str, 0, 0))
                         d = d + timedelta(days=7)
-                print str(self.exdate)
                 
 		
         def get_entry(self):
