@@ -151,7 +151,7 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                         try:
                                 output_ical(input, vacante, used_par, path)
                         except:
-                            print "Unexpected error:", sys.exc_info()[0]
+                            print "Unexpected error:", str(sys.exc_info())
         print "OK"
 	
 
