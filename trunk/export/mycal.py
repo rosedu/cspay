@@ -168,6 +168,7 @@ def ical_write(C, title):
 	print sys.getfilesystemencoding()
 	print os.listdir('.')
 	print os.path.supports_unicode_filenames
+	print sys.platform
 	try:
 		f = open(title_comp, 'wb')
 	except:
