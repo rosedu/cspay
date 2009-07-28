@@ -101,7 +101,7 @@ if(isset($_GET['vacanta_modifica']))
 {
 	$msj = "Modificare perioada de vacanta";
 	$univ_id = $_GET['vacanta_modifica'];
-	$query = "SELECT * FROM universitati WHERE univ_id=".$univ_id;
+	$query = "SELECT * FROM vacante WHERE link_univ=".$univ_id;
 	$result = mysql_query($query);
 	$data_start = mysql_result($result,0,'data_start');
 	$data_stop = mysql_result($result,0,'data_stop');
