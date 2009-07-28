@@ -58,13 +58,10 @@ if(isset($_POST['fac_modifica']))
 	print $nume;
 	print $nume_sc;
 	print $decan;
-	$data_start = $data_start_an . '-' . (($data_start_luna<10)?'0':'') . $data_start_luna . '-' .
-				  (($data_start_zi)<10?'0':''). $data_start_zi;
-	$data_sfarsit = $data_sfarsit_an . '-' . (($data_sfarsit_luna<10)?'0':'') . $data_sfarsit_luna . '-' .
-				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 	
-	$query = "UPDATE `facultati` SET `link_univ`=".$universitate.",`nume`='".$nume."' `nume_scurt`='".$nume_sc."',`decan`='".$decan."'
+	$query = "UPDATE `facultati` SET `link_univ`=".$universitate.",`nume`='".$nume."', `nume_scurt`='".$nume_sc."',`decan`='".$decan."'
 			 WHERE `fac_id`=".$fac_id." LIMIT 1";
+	print $query;
 	if(mysql_query($query))
 	{
 		add($mesaj,'Modificarea a fost realizata cu succes.<br>');
