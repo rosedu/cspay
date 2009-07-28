@@ -134,7 +134,7 @@ $data_stop = $today['year']."-01-01";
 $uni_nume="";
 $finish = '"univ_add" value="Adauga"';
 
-if(isset($_GET['modifica'])
+if(isset($_GET['modifica']))
 	{
 		$query = "SELECT * FROM universitati WHERE univ_id=".$_GET['modifica'];
 		$result = mysql_query($query);
@@ -144,7 +144,7 @@ if(isset($_GET['modifica'])
 		$finish = '"univ_mod" value="Modifica"';
 	}
 	
-if(isset($_GET['sterge'])
+if(isset($_GET['sterge']))
 	{
 	$query = "DELETE FROM `universitati` WHERE `univ_id`='".$_GET['sterge']."' LIMIT 1";
 	$result = mysql_query($query);
