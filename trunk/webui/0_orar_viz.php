@@ -5,6 +5,8 @@ include("include/header.php");
 include("include/check_login.php");
 include("include/display.php");//functii pentru aratat materiile
 
+check_auth(SECRETARA);//verifica daca este cont de secretara
+
 //selecteaza inregistrarile din tabela orar
 //selecteaza inregistrarile din tabela orar
 $opt_selectie = formular_criterii_selectie();
@@ -27,10 +29,8 @@ $query = "SELECT  `ora_id`, `link_disc`, `tip_ora`, `forma`, `cod`,
 $result_orar = mysql_query($query);
 $nr = mysql_num_rows($result_orar);
 
-check_auth(SECRETARA);//verifica daca este cont de secretara
-
 $layout->get_template('include/template.html');
-$layout->replace('TITLE','Formular detalii plata cu ora');
+$layout->replace('TITLE','Formular detalii platã cu ora');
 
 $meniu = show_menu(menu,$_SESSION['tip_cont'],1);
 $layout->replace('MENU',$meniu);
@@ -109,16 +109,13 @@ if($nr != 0)//daca exista inregistrari in tabela `orar`
 	add($content,display_page_nav_secr($start,$nr_afisari,$nr,"0_orar_viz.php"));
 	add($content,criterii_selectie());
 	
-	add($content,'* Coloanele marcate cu acest simbol nu sunt editabile.<br>
-		      ** Pentru vizulizarea intregului tabel folositi scroll-ul orizontal sau ascundeti<br>
-		      &nbsp;&nbsp;colonele dorite prin efectuarea unui click pe capul de tabel.');
 	}
 else
 	{
 	if($opt_selectie != -1)//daca s-au marcat criterii de selectie
-		add($content,'Nu s-au gasit inregistrari.'.$opt_selectie."pip");
+		add($content,'Nu s-au gãsit înregistrãri.'.$opt_selectie."pip");
 	else
-	add($content,"Fisierul XlS nu a fost importat.");	
+	add($content,"Fiºierul XlS nu a fost importat.");	
 	}
 
 	

@@ -40,10 +40,10 @@ if(isset($_POST['fac_adauga']))
 	$res_add_vac = mysql_query($query);
 	if($res_add_vac)
 	{
-		add($mesaj,'Facultatea a fost adaugata cu succes.<br>');
+		add($mesaj,'Facultatea a fost ad&#x103;ugat&#x103; cu succes.<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare : Facultatea nu a putut fi adaugata</div>');
+		add($mesaj,'<div class="eroare">Eroare : Facultatea nu a putut fi ad&#x103;ugat&#x103;</div>');
 	
 }//sfarsit tratare formular
 else
@@ -59,10 +59,10 @@ if(isset($_POST['fac_modifica']))
 
 	if(mysql_query($query))
 	{
-		add($mesaj,'Modificarea a fost realizata cu succes.<br>');
+		add($mesaj,'Modificarea a fost realizat&#x103; cu succes.<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare aparuta la aplicarea modificarii.</div>');
+		add($mesaj,'<div class="eroare">Eroare ap&#x103;rut&#x103; la aplicarea modific&#x103;rii.</div>');
 }
 
 //tratare pagina si parametri transmisi
@@ -72,14 +72,14 @@ if(isset($_GET['fac_sterge']))
 	$result = mysql_query($query);
 	if($result)
 	{
-		add($mesaj,'Facultatea a fost stearsa cu succes<br>');
+		add($mesaj,'Facultatea a fost &#x15F;tears&#x103; cu succes<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare : Facultatea nu a putut fi stearsa</div>');
+		add($mesaj,'<div class="eroare">Eroare : Facultatea nu a putut fi &#x15F;tears&#x103;</div>');
 }//sfarsit vacanta_sterge
 
 $layout->get_template('include/template.html');
-$layout->replace('TITLE','Editare Facultati');
+$layout->replace('TITLE','Facult&#x103;&#x163;i');
 
 $meniu = show_menu(menu,$_SESSION['tip_cont'],0);
 $layout->replace('MENU',$meniu);
@@ -89,7 +89,7 @@ $layout->replace('SUBMENU',$submeniu);
 
 $content = "";
 
-add($content,'<div class="title" align="center">Editare Facultati</div>');
+add($content,'<div class="title" align="center">Facult&#x103;&#x163;i</div>');
 add($content,$mesaj);
 
 
@@ -102,18 +102,18 @@ if(isset($_GET['fac_modifica'])&&isset($_GET['univ_id']))
 	$fac_nume = stripslashes(mysql_result($result,0,'nume'));
 	$fac_nume_sc = stripslashes(mysql_result($result,0,'nume_scurt'));
 	$fac_decan = stripslashes(mysql_result($result,0,'decan'));
-	$finish = '"fac_modifica" value="Modifica"></td>';
-	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunta">';
+	$finish = '"fac_modifica" value="Modific&#x103;"></td>';
+	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renun&#x163;&#x103;">';
 	$hide = '<input type="hidden" name="fac_id" value="'.$_GET['fac_modifica'].'">';
 }
 else
 {
-	$msj="Adaugare facultate";
+	$msj="Ad&#x103;ugare facultate";
 	$univ_id = 0;
 	$fac_nume = '';
 	$fac_nume_sc = '';
 	$fac_decan = '';
-	$finish = '"fac_adauga" value="Adauga">';
+	$finish = '"fac_adauga" value="Adaug&#x103;">';
 	$hide = '';
 }
 
@@ -149,7 +149,7 @@ add($content,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 				<td>Nume</td>
 				<td>Nume scurt</td>
 				<td>Decan</td>
-				<td>Optiuni</td>
+				<td>Op&#x163;iuni</td>
 			</tr>');
 
 for($i=0;$i<$nr_fac;$i++)

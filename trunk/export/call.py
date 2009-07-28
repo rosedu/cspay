@@ -30,7 +30,7 @@ if __name__ == "__main__":
 	
     if int(sys.argv[1]):
 	    tik = "Orare_" + tik
-    tik +="".join(letters)
+    tik +="_"+"".join(letters)
 
     zipname = basepath + tik + ".zip"
     

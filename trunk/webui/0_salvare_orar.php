@@ -17,7 +17,7 @@ if(isset($_POST['salveaza']))//tratare formular export
 {
 	if (count($_POST['pers_acoperit']) == 0)
 		{
-			$ics=$ics."Nu ati selectat nici un profesor";
+			$ics=$ics."Nu a&#x163;i selectat nici un profesor";
 			return $ics;
 		}
 
@@ -34,7 +34,7 @@ if(isset($_POST['salveaza']))//tratare formular export
 	foreach($output as $line)
 		$ics=$ics.$line."<br>";
 		
-	$ics=$ics."<a href = \"".$output[count($output)-1]."\">Fisierul dvs</a>";
+	$ics=$ics."<a href = \"".$output[count($output)-1]."\">Fi&#x15F;ierul dvs</a>";
 
 }
 return $ics;
@@ -85,9 +85,9 @@ add($form,'
 			<br/>
 			<a href="#"
 				onclick="javascript:selectallList();"
-				onfocus="this.blur()">Selecteaza pe toti</a>
+				onfocus="this.blur()">Selecteaz&#x103; pe to&#x163;i</a>
 			</td>
-			<td valign="top" style="width:30%;">Format iesire:<br>
+			<td valign="top" style="width:30%;">Format ie&#x15F;ire:<br>
 				<select style="font-size:10pt;" name="tip_cal" id="tip_fisier">
 				<option value="1">Microsoft Excel (.xls)</option>
 				<option value="2">iCalendar (.ics)</option>	
@@ -98,12 +98,12 @@ add($form,'
 			'</tr>
 			<tr>
 			<td colspan="2">
-				<br>Pentru selectie multipla<br>tineti apasata tasta Ctrl
+				<br>Pentru selec&#x163;ie multiplp<br>&#x163;ine&#x163;i ap&#x103;sat&#x103; tasta Ctrl
 			</td>
 			</tr>
 			<tr>
 			<td colspan="2">
-				<input type="submit" name="salveaza" value="Salveaza">
+				<input type="submit" name="salveaza" value="Salveaz&#x103;">
 			</td>
 			</tr>
 			</table>
