@@ -78,7 +78,7 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                  command += " WHERE pers_acoperit=%s AND tip_ocupare='po'"
         else:
                  command += " WHERE pers_acoperit_efect=%s"
-        command += " ORDER BY tip_ora, link_disc, nr_post"
+        #command += " ORDER BY tip_ora, link_disc, nr_post"
         cursor.execute (command, name)
         result_set = cursor.fetchall ()
 
