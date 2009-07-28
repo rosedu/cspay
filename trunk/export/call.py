@@ -4,6 +4,8 @@ import random
 import commands
 from db_gather import gather_data
 from time import gmtime, strftime
+import locale
+import platform
 
 
 #calling example:
@@ -12,6 +14,8 @@ from time import gmtime, strftime
 
 if __name__ == "__main__":
 
+   print platform.machine()
+        
     basepath = "/home/cspay/public_html/out/"
     commands.getstatusoutput("rm -r " + basepath+"*")
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', '1', '2', '3']
