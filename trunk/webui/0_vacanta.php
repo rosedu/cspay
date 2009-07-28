@@ -97,11 +97,11 @@ add($content,'<div class="title" align="center">Editare Vacante</div>');
 add($content,$mesaj);
 
 
-if(isset($_GET['vacanta_modifica']))
+if(isset($_GET['vacanta_modifica'])&&isset($_GET['univ_id']))
 {
 	$msj = "Modificare perioada de vacanta";
-	$univ_id = $_GET['vacanta_modifica'];
-	$query = "SELECT * FROM vacante WHERE link_univ=".$univ_id;
+	$univ_id = $_GET['univ_id'];
+	$query = "SELECT * FROM vacante WHERE vac_id=".$_GET['vacanta_modifica']
 	$result = mysql_query($query);
 	$data_start = mysql_result($result,0,'data_start');
 	$data_stop = mysql_result($result,0,'data_stop');
@@ -138,6 +138,7 @@ add($content,'<form action="0_vacanta.php" method="post"');
 add($content,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 			<tr class="tr_head">
 				<td>Nr</td>
+				<td>Universitate</td>
 				<td>Data inceput</td>
 				<td>Data sfarsit</td>
 				<td>Optiuni</td>
@@ -148,13 +149,18 @@ for($i=0;$i<$nr_vac;$i++)
 	$vac_id = mysql_result($res_vac,$i,'vac_id');
 	$data_start = mysql_result($res_vac,$i,'data_start');
 	$data_stop = mysql_result($res_vac,$i,'data_stop');
+	$univ_id = mysql_result($res_vac,$i,'link_univ');
+	$query = "SELECT * FROM universitati WHERE univ_id=".$univ_id;
+	$result = mysql_query($query);
+	$nume_univ = mysql_result($result,0,'nume');
 	
 	add($content,'<tr class="'.$class_std[$i%2].'">
 					<td>'.($i+1).'</td>
+					<td>'.$nume_univ.'</td>
 					<td>'.translate_date($data_start).'</td>
 					<td>'.translate_date($data_stop).'</td>
-					<td><a href="0_vacanta.php?vacanta_sterge='.$vac_id.'">sterge</a> 
-						<a href="0_vacanta.php?vacanta_modifica='.$vac_id.'">modifica</a>
+					<td><a href="0_vacanta.php?vacanta_sterge='.$vac_id.'>sterge</a> 
+						<a href="0_vacanta.php?vacanta_modifica='.$vac_id.'&univ_id="'.$univ_id.'">modifica</a>
 					</td>
 				</tr>');
 }
