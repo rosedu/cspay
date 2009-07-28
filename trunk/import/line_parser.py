@@ -45,8 +45,8 @@ def parse(list_data,line_number,prev_error):
     #all cells in a line are empty=>ignore the line, return Ok
     ii=0
     i=0
-    for empty1 in list_data:
-        if not empty2:
+    for check in list_data:
+        if not check:
             ii=ii+1
         i=i+1
     if(i>22):
