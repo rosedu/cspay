@@ -77,7 +77,7 @@ def output_ical(input, holidays, parities, path):
 		i = insert_course(C, curs, holidays, parities, start, stop)
 
 	try:
-		cal_write(C, title)
+		ical_write(C, title)
 	except:
 		print "Sunt la scriere fisier ", str(sys.exc_info())
 
