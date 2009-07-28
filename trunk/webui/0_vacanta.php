@@ -135,11 +135,14 @@ for($i=0;$i<$nr_vac;$i++)
 	$data_start = mysql_result($res_vac,$i,'data_start');
 	$data_stop = mysql_result($res_vac,$i,'data_stop');
 	
-	add($content,'<tr class="'.$class[$i%2].'"><td>'.($i+1).'</td><td>'.translate_date($data_start).
-				 '</td><td>'.translate_date($data_stop).'</td><td>
-				 <a href="0_vacanta.php?vacanta_sterge='.$vac_id.'">sterge</a> 
-				 <a href="0_vacanta.php?vacanta_modifica='.$vac_id.'">modifica</a>
-				 </td></tr>');
+	add($content,'<tr class="'.$class_select[$i%2].'">
+					<td>'.($i+1).'</td>
+					<td>'.translate_date($data_start).'</td>
+					<td>'.translate_date($data_stop).'</td>
+					<td><a href="0_vacanta.php?vacanta_sterge='.$vac_id.'">sterge</a> 
+						<a href="0_vacanta.php?vacanta_modifica='.$vac_id.'">modifica</a>
+					</td>
+				</tr>');
 }
 
 add($content,'</table></form>');
