@@ -64,8 +64,15 @@ def output_ical(input, holidays, parities, path):
 		who = unicode(input['profesor'], "utf8")
 	except TypeError:
 		who = input['profesor']
-	title = "Orar " + who + ' ' + when
-	title = path+title.replace(" ","_")
+                
+	try:
+		title = "Orar " + who + ' ' + when
+	except:
+		print "Sunt la concat ", str(sys.exc_info())
+	try:
+		title = path+title.replace(" ","_")
+	except:
+		print "Sunt la replace ", str(sys.exc_info())
 	
 	start, stop = input['semestru']
 	
@@ -74,7 +81,10 @@ def output_ical(input, holidays, parities, path):
 	for curs in courses:
 		i = insert_course(C, curs, holidays, parities, start, stop)
 
-	ical_write(C, title)
+	try:
+		cal_write(C, title)
+	except:
+		print "Sunt la scriere fisier ", str(sys.exc_info())
 
 
 
