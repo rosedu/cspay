@@ -53,15 +53,10 @@ if(isset($_POST['fac_modifica']))
 	{
 		$$index = $val;
 	}
-	print $fac_id;
-	print $universitate;
-	print $nume;
-	print $nume_sc;
-	print $decan;
 	
 	$query = "UPDATE `facultati` SET `link_univ`=".$universitate.",`nume`='".$nume."', `nume_scurt`='".$nume_sc."',`decan`='".$decan."'
 			 WHERE `fac_id`=".$fac_id." LIMIT 1";
-	print $query;
+
 	if(mysql_query($query))
 	{
 		add($mesaj,'Modificarea a fost realizata cu succes.<br>');
@@ -102,8 +97,6 @@ if(isset($_GET['fac_modifica'])&&isset($_GET['univ_id']))
 {
 	$msj = "Modificare facultate";
 	$univ_id = $_GET['univ_id'];
-	print "larao";
-	print $_GET['fac_modifica'];
 	$query = "SELECT * FROM facultati WHERE fac_id=".$_GET['fac_modifica'];
 	$result = mysql_query($query);
 	$fac_nume = stripslashes(mysql_result($result,0,'nume'));
