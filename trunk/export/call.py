@@ -14,7 +14,11 @@ import platform
 
 if __name__ == "__main__":
 
-	print platform.machine()
+	try:
+		print platform.machine()
+	except:
+		print "Sunt la deschidere fisier ", str(sys.exc_info())
+	print sys.platform
         
     basepath = "/home/cspay/public_html/out/"
     commands.getstatusoutput("rm -r " + basepath+"*")
