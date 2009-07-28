@@ -53,6 +53,9 @@ if(isset($_POST['univ_mod']))//formularul de modificare al universitatii
 $data_start_an = $_POST['data_start_an'];
 $data_start_luna = $_POST['data_start_luna'];
 $data_start_zi = $_POST['data_start_zi'];
+$data_sfarsit_an = $_POST['data_sfarsit_an'];
+$data_sfarsit_luna = $_POST['data_sfarsit_luna'];
+$data_sfarsit_zi = $_POST['data_sfarsit_zi'];
 $nume_univ = addslashes(html_entity_decode($_POST['nume_univ']));
 
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
@@ -86,8 +89,11 @@ if(isset($_POST['univ_add']))
 {
 
 $data_start_an = $_POST['data_start_an'];
-$data_start_luna = $_POST['data_start_an'];
-$data_start_zi = $_POST['data_start_an'];
+$data_start_luna = $_POST['data_start_luna'];
+$data_start_zi = $_POST['data_start_zi'];
+$data_sfarsit_an = $_POST['data_sfarsit_an'];
+$data_sfarsit_luna = $_POST['data_sfarsit_luna'];
+$data_sfarsit_zi = $_POST['data_sfarsit_zi'];
 $nume_univ = addslashes(html_entity_decode($_POST['nume_univ']));
 
 add($mesaj,"$data_start_luna, $data_start_zi, $data_start_an");
