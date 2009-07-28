@@ -15,9 +15,8 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
             and then write an Excel WorkBook for the given months,
             for the given universitary year
         """
-        print "Processing", name,"...",
-        for litera in name:
-                print litera
+        print "Processing", name, univ, facl, desk"...",
+
         try:
                 conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rosedu_cspay",
                                         passwd = "huashaquou", db = "rosedu_cspay", charset = "utf8",
