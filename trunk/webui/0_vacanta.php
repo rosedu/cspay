@@ -64,7 +64,7 @@ if(isset($_POST['vacanta_modifica']))
 				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 	
 	$query = "UPDATE `vacante` SET `data_start`='".$data_start."',`data_stop`='".$data_sfarsit."'
-			 WHERE `vac_id`='".$universitate."' LIMIT 1";
+			 WHERE `vac_id`='".$vac_id."' LIMIT 1";
 	if(mysql_query($query))
 	{
 		add($mesaj,'Modificarea a fost realizata cu succes.<br>');
@@ -111,6 +111,7 @@ if((!isset($_POST['renunta']))&&isset($_GET['vacanta_modifica'])&&isset($_GET['u
 	$data_stop = mysql_result($result,0,'data_stop');
 	$finish = '"vacanta_modifica" value="Modifica"></td>';
 	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunta">';
+	$hide = '<input type="hidden" name="vac_id" value="'.$_GET['vacanta_modifica'].'">';
 }
 else
 {
@@ -120,6 +121,7 @@ else
 	$data_start =$today['year']."-01-01";
 	$data_stop = $today['year']."-01-01";
 	$finish = '"vacanta_adauga" value="Adauga">';
+	$hide ='';
 }
 
 add($content,'<br>
@@ -129,8 +131,7 @@ add($content,'<br>
 		<tr><td>'.gen_univ_sel($univ_id).'</td></tr>
 		<tr>'.write_data("data_start","Data inceput",$data_start) . write_data("data_sfarsit","Data sfarsit",$data_stop).'</tr>
 		<tr><td colspan="2"><input type="submit" name='.$finish.'</td></tr>
-	</table><br>
-	</form>');
+	</table><br>'.$hide.'</form>');
 
 //selectare din baza de date si afisare perioade
 $query = "SELECT * FROM `vacante`";

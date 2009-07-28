@@ -34,7 +34,7 @@ else
 				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 	//actualizarea tabelei `universitate`
 	$query = "UPDATE `universitati` SET `nume`='".$nume_univ."',`data_start`='".$data_start."',`data_stop`='".$data_sfarsit."' WHERE 
-			  `univ_id`='".$_SESSION['univ_id']."' LIMIT 1";
+			  `univ_id`='".$univ_id."' LIMIT 1";
 	if(mysql_query($query))
 	{
 		add($mesaj,'Modificarea a fost realizata cu succes.<br>');
@@ -101,6 +101,7 @@ $data_start =$today['year']."-01-01";
 $data_stop = $today['year']."-01-01";
 $uni_nume="";
 $finish = '"univ_add" value="Adauga">';
+$hide = '';
 
 if(isset($_GET['modifica'])&&(!isset($_POST['renunta'])))
 	{
@@ -111,6 +112,7 @@ if(isset($_GET['modifica'])&&(!isset($_POST['renunta'])))
 		$data_stop = mysql_result($result,0,'data_stop');
 		$finish = '"univ_mod" value="Modifica"></td>';
 		$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunta">';
+		$hide = '<input type="hidden" name="univ_id" value="'.$_GET['modifica'].'">';
 		
 	}
 	
@@ -138,7 +140,7 @@ add($content,'
 		.'<tr>
 		<td colspan="2"><input type="submit" name='.$finish.'</td>
 		</tr>
-	</table>');
+	</table>'.$hide.'</form>');
 
 $tabel = '';
 $query = "SELECT * FROM `universitati`";
