@@ -19,6 +19,7 @@ function gen_univ_sel( $sel )
 		{
 		$val = mysql_result($result,$i,'univ_id');
 		$univ .= "<option value=".'"'.$val.'"'.($sel==$val)?"selected":"".'>'.mysql_result($result,$i,'nume')."</option></select>";
+		}
 	return $univ;
 }
 
@@ -92,8 +93,6 @@ $layout->replace('SUBMENU',$submeniu);
 
 $content = "";
 
-if($flag_form == false)
-{
 add($content,'<div class="title" align="center">Editare Vacante</div>');
 add($content,$mesaj);
 
@@ -162,24 +161,10 @@ for($i=0;$i<$nr_vac;$i++)
 
 add($content,'</table></form>');
 }//end if($nr_vac)
-}//sfasit flag_form
-else
-if($flag_form == VACANTA_MODIFICA)//afisez formularul de modificare al unei perioade
-{
-	add($content,'<br>
-	<form action="0_vacanta.php" method="post">
-	<input type="hidden" name="vac_id" value="'.$_GET['vacanta_modifica'].'">
-	<table  width="500px" cellpadding="3" cellspacing="3" class="formular">
-		<tr><td colspan="2">Modificare perioada de vacanta</td></tr>
-		<tr><td>Data inceput</td><td>'.write_select_data("data_start").'</td></tr>
-	    <tr><td>Data sfarsit</td><td>'.write_select_data("data_sfarsit").'</td></tr>
-		<tr><td colspan="2"><input type="submit" value="Modifica" name="vacanta_modifica"></td></tr>
-	</table><br>
-	</form>');
-}//sfarsit formular
+
+
 
 $layout->replace('CONTENT',$content);
 
 $layout->print_template();
 ?>
-
