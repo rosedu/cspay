@@ -140,7 +140,7 @@ if(isset($_GET['modifica']))
 	{
 		$query = "SELECT * FROM universitati WHERE univ_id=".$_GET['modifica'];
 		$result = mysql_query($query);
-		$uni_nume = stripslashes(mysql_result($res_univ,0,'nume'));
+		$uni_nume = stripslashes(mysql_result($result,0,'nume'));
 		$data_start = mysql_result($result,0,'data_start');
 		$data_stop = mysql_result($result,0,'data_stop');
 		$finish = '"univ_mod" value="Modifica"';

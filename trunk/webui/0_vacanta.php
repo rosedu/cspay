@@ -122,7 +122,11 @@ $nr_vac = mysql_num_rows($res_vac);
 if($nr_vac)
 {
 add($content,'<form action="0_vacanta.php" method="post"');
-add($content,write_table_head());
+add($content,'<table class="special" cellpading="1" cellspacing="1" width="550px">
+			<tr class="tr_head">
+				<td>Data inceput</td>
+				<td>Data sfarsit</td>
+			</tr>');
 $class =  array(0 => "tr_1",1=>"tr_2");//clasa pentru rand par respectiv impar
 
 for($i=0;$i<$nr_vac;$i++)
