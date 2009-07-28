@@ -19,5 +19,6 @@ $conexiune = mysql_connect($AdresaBazaDate,$UtilizatorBazaDate,$ParolaBazaDate)
 	     or die("I can't connect to MySQL");
 mysql_select_db($NumeBazaDate,$conexiune)
 	     or die("I can't find the ".$NumeBazaDate." database");
+mysql_set_charset('utf8',$conexiune); 
 
 ?>
