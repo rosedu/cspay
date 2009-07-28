@@ -164,7 +164,11 @@ def ical_init():
 
 def ical_write(C, title):
 	try:
-		f = open(title+'.ics', 'wb')
+		title_comp = title+'.ics'
+	except:
+		print "Sunt la concatenare ", str(sys.exc_info())
+	try:
+		f = open(title_comp, 'wb')
 	except:
 		print "Sunt la deschidere fisier ", str(sys.exc_info())
 	f.write(C.as_string())
