@@ -171,9 +171,12 @@ def ical_write(C, title):
 	print os.path.supports_unicode_filenames
 	print sys.platform
 	print locale.getpreferredencoding()
-
 	try:
-		f = open(title_comp, 'wb')
+		risk=title_comp.encode('utf-8')
+	except:
+		print "eroare la codare", str(sys.exc_info())
+	try:
+		f = open(risk, 'wb')
 	except:
 		print "Sunt la deschidere fisier ", str(sys.exc_info())
 	f.write(C.as_string())
