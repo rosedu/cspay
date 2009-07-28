@@ -75,14 +75,14 @@ if(isset($_GET['fac_sterge']))
 	$result = mysql_query($query);
 	if($result)
 	{
-		add($mesaj,'Perioada de vacanta a fost stearsa cu succes<br>');
+		add($mesaj,'Facultatea a fost stearsa cu succes<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare : Perioada de vacanta nu a putut fi stearsa</div>');
+		add($mesaj,'<div class="eroare">Eroare : Facultatea nu a putut fi stearsa</div>');
 }//sfarsit vacanta_sterge
 
 $layout->get_template('include/template.html');
-$layout->replace('TITLE','Editare Vacante');
+$layout->replace('TITLE','Editare Facultati');
 
 $meniu = show_menu(menu,$_SESSION['tip_cont'],0);
 $layout->replace('MENU',$meniu);
@@ -92,7 +92,7 @@ $layout->replace('SUBMENU',$submeniu);
 
 $content = "";
 
-add($content,'<div class="title" align="center">Editare Vacante</div>');
+add($content,'<div class="title" align="center">Editare Facultati</div>');
 add($content,$mesaj);
 
 
@@ -100,7 +100,7 @@ if((!isset($_POST['renunta']))&&isset($_GET['fac_modifica'])&&isset($_GET['univ_
 {
 	$msj = "Modificare facultate";
 	$univ_id = $_GET['univ_id'];
-	$query = "SELECT * FROM facultati WHERE fac_id=".$_GET['vacanta_modifica'];
+	$query = "SELECT * FROM facultati WHERE fac_id=".$_GET['fac_modifica'];
 	$result = mysql_query($query);
 	$fac_nume = stripslashes(mysql_result($result,0,'nume'));
 	$fac_nume_sc = stripslashes(mysql_result($result,0,'nume_scurt'));
@@ -121,7 +121,7 @@ else
 }
 
 add($content,'<br>
-	<form action="0_vacanta.php" method="post">
+	<form action="0_facultate.php" method="post">
 	<table  width="500px" cellpadding="3" cellspacing="3" class="formular">
 		<tr><td colspan="2">'.$msj.'</td></tr>
 		<tr><td>'.gen_univ_sel($univ_id).'</td></tr>
@@ -139,12 +139,12 @@ add($content,'<br>
 
 //selectare din baza de date si afisare perioade
 $query = "SELECT * FROM `facultati`";
-$res_vac = mysql_query($query);
-$nr_vac = mysql_num_rows($res_vac);
+$res_fac = mysql_query($query);
+$nr_fac = mysql_num_rows($res_fac);
 
-if($nr_vac)
+if($nr_fac)
 {
-add($content,'<form action="0_vacanta.php" method="get"');
+add($content,'<form action="0_facultate.php" method="get"');
 add($content,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 			<tr class="tr_head">
 				<td>Nr</td>
@@ -155,13 +155,13 @@ add($content,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 				<td>Optiuni</td>
 			</tr>');
 
-for($i=0;$i<$nr_vac;$i++)
+for($i=0;$i<$nr_fac;$i++)
 {
-	$vac_id = mysql_result($res_vac,$i,'fac_id');
-	$nume = stripslashes(mysql_result($res_vac,$i,'nume'));
-	$decan = stripslashes(mysql_result($res_vac,$i,'decan'));
-	$nume_scurt = stripslashes(mysql_result($res_vac,$i,'nume_scurt'));
-	$univ_id = mysql_result($res_vac,$i,'link_univ');
+	$fac_id = mysql_result($res_fac,$i,'fac_id');
+	$nume = stripslashes(mysql_result($res_fac,$i,'nume'));
+	$decan = stripslashes(mysql_result($res_fac,$i,'decan'));
+	$nume_scurt = stripslashes(mysql_result($res_fac,$i,'nume_scurt'));
+	$univ_id = mysql_result($res_fac,$i,'link_univ');
 	$query = "SELECT * FROM universitati WHERE univ_id=".$univ_id;
 	$result = mysql_query($query);
 	$nume_univ = mysql_result($result,0,'nume');
@@ -172,8 +172,8 @@ for($i=0;$i<$nr_vac;$i++)
 					<td>'.htmlspecialchars($nume,ENT_QUOTES).'</td>
 					<td>'.htmlspecialchars($nume_scurt,ENT_QUOTES).'</td>
 					<td>'.htmlspecialchars($decan,ENT_QUOTES).'</td>
-					<td><a href="0_facultate.php?fac_sterge='.$vac_id.'">sterge</a> 
-						<a href="0_facultate.php?fac_modifica='.$vac_id.'&univ_id='.$univ_id.'">modifica</a>
+					<td><a href="0_facultate.php?fac_sterge='.$fac_id.'">sterge</a> 
+						<a href="0_facultate.php?fac_modifica='.$fac_id.'&univ_id='.$univ_id.'">modifica</a>
 					</td>
 				</tr>');
 }
