@@ -160,7 +160,7 @@ $nr = mysql_num_rows($res_asoc);
 
 if($nr)
 {
-add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="100%">
+add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 			<tr class="tr_head">
 				<td>Nr</td>
 				<td>Nume</td>
