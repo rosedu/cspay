@@ -102,7 +102,7 @@ $data_stop = $today['year']."-01-01";
 $uni_nume="";
 $finish = '"univ_add" value="Adauga">';
 
-if(isset($_GET['modifica']))
+if(isset($_GET['modifica'])&&(!isset($_POST['renunta'])))
 	{
 		$query = "SELECT * FROM universitati WHERE univ_id=".$_GET['modifica'];
 		$result = mysql_query($query);
@@ -111,6 +111,7 @@ if(isset($_GET['modifica']))
 		$data_stop = mysql_result($result,0,'data_stop');
 		$finish = '"univ_mod" value="Modifica"></td>';
 		$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunta">';
+		
 	}
 	
 if(isset($_GET['sterge']))
