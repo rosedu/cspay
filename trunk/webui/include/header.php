@@ -7,6 +7,7 @@ define("ADMINISTRATOR","A");
 
 
 $class_select = array(0=>"tip_1",1=>"tip_2");
+$class_std =  array(0 => "tr_1",1=>"tr_2");
 $color = array(0 => "#f6f2d8",1 => "#ede7c2");
 
 function check_auth($tip)

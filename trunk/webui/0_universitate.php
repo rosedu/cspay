@@ -197,7 +197,7 @@ for($i=0;$i<$nr;$i++)
 	$Tdata_stop = mysql_result($res_univ,$i,'data_stop');
 	$un_ID = mysql_result($res_univ,$i,'univ_id');
 	
-	add($tabel,'<tr class="'.$class_select[$i%2].'">
+	add($tabel,'<tr class="'.$class_std[$i%2].'">
 					<td>'.($i+1).'</td>
 					<td>'.$Tnume.'</td>
 					<td>'.translate_date($Tdata_start).'</td>

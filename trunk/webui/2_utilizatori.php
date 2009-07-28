@@ -227,7 +227,7 @@ for($i=0;$i<$nr;$i++)
 	
 	$vector_cont = array("Secretara","Profesor","Administrator");
 	
-	add($tabel,'<tr class="'.$class_select[$i%2].'">
+	add($tabel,'<tr class="'.$class_std[$i%2].'">
 					<td>'.($i+1).'</td>
 					<td>'.$Tnume.'</td>
 					<td>'.$Temail.'</td>

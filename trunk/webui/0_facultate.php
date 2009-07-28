@@ -206,7 +206,7 @@ add($content,'</select>
 
 add($content,write_table_head());//scriu capul de tabel pentru facultati
 
-$class =  array(0 => "tr_1",1=>"tr_2");//clasa pentru rand par respectiv impar
+//clasa pentru rand par respectiv impar
 
 for($i=0;$i<$nr;$i++)//scriu fiecare intrare din tabela `facultate`
 {
@@ -216,7 +216,7 @@ for($i=0;$i<$nr;$i++)//scriu fiecare intrare din tabela `facultate`
 	$decan = stripslashes(mysql_result($res_fac,$i,'decan'));
 		
 	//scriu datele in tabel pe un rand nou
-	add($content,'<tr class="'.$class[$i%2].'">
+	add($content,'<tr class="'.$class_std[$i%2].'">
 				  <td>'.($i+1).'</td>
 				  <td>'.htmlspecialchars($nume,ENT_QUOTES).'</td>
 				  <td>'.htmlspecialchars($nume_scurt,ENT_QUOTES).'</td>
@@ -230,7 +230,7 @@ for($i=0;$i<$nr;$i++)//scriu fiecare intrare din tabela `facultate`
 	if($nr_cat != 0)//daca sunt catedre petru facultate
 	{
 	//adauga un nou rand in tabelul facultatilor si deschid un nou tabel
-	add($content,'<tr id="catedra_'.$i.'" class="'.$class[$i%2].'"><td>Catedre</td><td colspan="3">
+	add($content,'<tr id="catedra_'.$i.'" class="'.$class_std[$i%2].'"><td>Catedre</td><td colspan="3">
 					<table class="none" width="100%">
 					<tr class="tr_head"><td>Nume</td><td>Sef</td><td>Optiuni</td></tr>');
 	for($j=0;$j<$nr_cat;$j++)
@@ -239,7 +239,7 @@ for($i=0;$i<$nr;$i++)//scriu fiecare intrare din tabela `facultate`
 		$sef = stripslashes(mysql_result($res_cat,$j,'sef'));
 		$id_catedra = mysql_result($res_cat,$j,'cat_id');
 		
-		add($content,'<tr class="'.$class[$j%2].'"><td width="33%">'.htmlspecialchars($nume,ENT_QUOTES).'</td><td width="33%">'.htmlspecialchars($sef,ENT_QUOTES)
+		add($content,'<tr class="'.$class_std[$j%2].'"><td width="33%">'.htmlspecialchars($nume,ENT_QUOTES).'</td><td width="33%">'.htmlspecialchars($sef,ENT_QUOTES)
 					 .'</td><td width="34%"><a href="?catedra_sterge='.$id_catedra.'">sterge</a> 
 					 <a href="?catedra_modifica='.$id_catedra.'">modifica</a></td></tr>');	
 	    }

@@ -137,7 +137,7 @@ for($i=0;$i<$nr_vac;$i++)
 	$data_start = mysql_result($res_vac,$i,'data_start');
 	$data_stop = mysql_result($res_vac,$i,'data_stop');
 	
-	add($content,'<tr class="'.$class_select[$i%2].'">
+	add($content,'<tr class="'.$class_std[$i%2].'">
 					<td>'.($i+1).'</td>
 					<td>'.translate_date($data_start).'</td>
 					<td>'.translate_date($data_stop).'</td>
