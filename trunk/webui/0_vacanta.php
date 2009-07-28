@@ -126,7 +126,7 @@ add($content,'<br>
 
 //add($content,'<tr><td colspan="4"><input type="submit" name="vacanta_salveaza" value="Salveaza"></tr>');
 //selectare din baza de date si afisare perioade
-$query = "SELECT * FROM `vacante` WHERE `link_univ`='".$_SESSION['univ_id']."'";
+$query = "SELECT * FROM `vacante`";
 $res_vac = mysql_query($query);
 $nr_vac = mysql_num_rows($res_vac);
 
