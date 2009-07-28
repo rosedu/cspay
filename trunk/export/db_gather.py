@@ -16,6 +16,8 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
             for the given universitary year
         """
         print "Processing", name,"...",
+        for litera in name:
+                print litera
         try:
                 conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rosedu_cspay",
                                         passwd = "huashaquou", db = "rosedu_cspay", charset = "utf8",
