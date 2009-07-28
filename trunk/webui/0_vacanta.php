@@ -12,14 +12,16 @@ function gen_univ_sel( $sel )
 {
 	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
+	print $nr;
 	$univ ='Universitate</td><td>';
 	$univ .= '<select style="font-size:10pt;" name="universitate">';
 	$univ .= '<option value="0">&nbsp;</option>';
 	for ($i = 0; $i <$nr;$i++)
 		{
 		$val = mysql_result($result,$i,'univ_id');
-		$univ .= "<option value=".'"'.$val.'" '.($sel==$val)?"selected":"".'>'.mysql_result($result,$i,'nume')."</option></select>";
+		$univ .= "<option ".($sel==$val)?"selected":" "." value=".'"'.$val.'">'.mysql_result($result,$i,'nume')."</option>";
 		}
+	$univ . ="</select>";
 	return $univ;
 }
 
