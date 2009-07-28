@@ -134,11 +134,11 @@ function display_result_secr($result,$index,$count)
 }
 
 $thead_secr = array('Nr', 'Disciplina', 'Facultate', 'Tip', 'Forma', 'Cod',
-					'An', 'Serie', 'Nr Stud', 'Nr Grupa', 'Tip Grupa',
-					'Ore curs', 'Ore aplicatii', 'Post', 'Grad', 'Norma',
+					'An', 'Serie', 'Nr Stud', 'Nr Grupã', 'Tip Grupã',
+					'Ore curs', 'Ore aplicaþii', 'Post', 'Grad', 'Norma',
 					'Tip ocupare', 'Acoperit', 'Efectiv', 'Grupa', 'Zi',
 					'Ora Start', 'Ora Stop', 'Sala', 'Tip paritate',
-					'Inceput paritate');
+					'Început paritate');
 
 function write_vert($text)
 {
@@ -540,7 +540,7 @@ function display_result_read_only($result,$index,$count)
 	add($output,'<td class="read_only"><div id="td_22_'.$count.'">'.$ora_stop.'</div></td>');
 	add($output,'<td class="read_only"><div id="td_23_'.$count.'">'.$sala.'</div></td>');
 	add($output,'<td class="read_only"><div id="td_24_'.$count.'">'.$parit.'</div></td>');
-	add($output,'<td class="read_only"><div id="td_25_'.$count.'">sapt. '.$pari_st.'</div></td>');
+	add($output,'<td class="read_only"><div id="td_25_'.$count.'">sãpt. '.$pari_st.'</div></td>');
 
 	add($output,'</tr>');//inchid randul
 	
