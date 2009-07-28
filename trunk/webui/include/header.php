@@ -87,7 +87,7 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 	$menu[0] = 	'
 		<ul>
 			<li'.equal(9,$select,' class="active"').'><a href="index.php">Acas&#259;</a></li>
-			<li'.equal(0,$select,' class="active"').'><a href="0_calendar.php">Calendar</a></li>
+			<!--li'.equal(0,$select,' class="active"').'><a href="0_calendar.php">Calendar</a></li-->
 			<li'.equal(1,$select,' class="active"').'><a href="0_orar.php">Orar</a></li>
 			<li'.equal(2,$select,' class="active"').'><a href="0_asistenta.php">Asisten&#x21B;&#259;</a></li>
 			<li'.equal(3,$select,' class="active"').'><a href="logout.php">Deconectare</a></li>
@@ -161,8 +161,10 @@ function show_menu($tip_meniu,$tip_cont,$select,$cat=0)//MENU sau SUBMENU, 0,1,2
 			<li'.equal(0,$select,' class="subactive"').'><a href="0_universitate.php">Universit&#259;&#x21B;i</a></li>
 			<li'.equal(1,$select,' class="subactive"').'><a href="0_facultate.php">Facult&#259;&#x21B;i</a></li>
 			<li'.equal(2,$select,' class="subactive"').'><a href="0_vacanta.php">Vacan&#x21B;e</a></li>
-			<li'.equal(3,$select,' class="subactive"').'><a href="0_catedra.php">Catedre</a></li>
-			<li'.equal(4,$select,' class="subactive"').'><a href="2_utilizatori.php">Utilizatori</a></li>
+			<li'.equal(3,$select,' class="subactive"').'><a href="2_catedra.php">Catedre</a></li>
+			<li'.equal(4,$select,' class="subactive"').'><a href="2_disciplina.php">Discipline</a></li>
+			<li'.equal(5,$select,' class="subactive"').'><a href="2_titulari.php">Titulari</a></li>
+			<li'.equal(6,$select,' class="subactive"').'><a href="2_utilizatori.php">Utilizatori</a></li>
 		</ul>';
 	$submenu[2][1] = '
 		<ul>
