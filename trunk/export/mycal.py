@@ -62,7 +62,7 @@ def output_ical(input, holidays, parities, path):
 	year1, year2 = input['an'].split('/')
 	when = str(year1) + "-" + str (year2) 
 	try:
-		who = unicode(input['profesor'], "utf8")
+		who = unicode(input['profesor'], "iso8859_2")
 	except TypeError:
 		who = input['profesor']
                 
