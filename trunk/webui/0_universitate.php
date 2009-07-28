@@ -50,6 +50,11 @@ $mesaj = "";
 //tratare formulare
 if(isset($_POST['univ_mod']))//formularul de modificare al universitatii
 {
+$data_start_an = $_POST['data_start_an'];
+$data_start_luna = $_POST['data_start_an'];
+$data_start_zi = $_POST['data_start_an'];
+$nume_univ = addslashes(html_entity_decode($_POST['nume_univ']));
+
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
 	add($mesaj,'Data de inceput incorecta<br>');
@@ -61,10 +66,6 @@ elseif (!checkdate($data_sfarsit_luna,$data_sfarsit_zi,$data_sfarsit_an))
 	}
 else
 	{
-	foreach($_POST as $index=>$val)
-		{
-		$$index = addslashes(html_entity_decode($val));
-		}
 	$data_start = $data_start_an . '-' . (($data_start_luna<10)?'0':'') . $data_start_luna . '-' .
 				  (($data_start_zi)<10?'0':''). $data_start_zi;
 	$data_sfarsit = $data_sfarsit_an . '-' . (($data_sfarsit_luna<10)?'0':'') . $data_sfarsit_luna . '-' .
@@ -83,7 +84,12 @@ else
 
 if(isset($_POST['univ_add']))
 {
-/*
+
+$data_start_an = $_POST['data_start_an'];
+$data_start_luna = $_POST['data_start_an'];
+$data_start_zi = $_POST['data_start_an'];
+$nume_univ = addslashes(html_entity_decode($_POST['nume_univ']));
+
 add($mesaj,"$data_start_luna, $data_start_zi, $data_start_an");
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
@@ -95,19 +101,16 @@ elseif (!checkdate($data_sfarsit_luna,$data_sfarsit_zi,$data_sfarsit_an))
 	add($mesaj,'Data de sfarsit incorecta<br>');
 	}
 	
-else*/
+else
 	{
-	foreach($_POST as $index=>$val)
-		{
-		$$index = addslashes(html_entity_decode($val));
-		}
+
 	$data_start = $data_start_an . '-' . (($data_start_luna<10)?'0':'') . $data_start_luna . '-' .
 				  (($data_start_zi)<10?'0':''). $data_start_zi;
 	$data_sfarsit = $data_sfarsit_an . '-' . (($data_sfarsit_luna<10)?'0':'') . $data_sfarsit_luna . '-' .
 				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 	//actualizarea tabelei `universitate`
 	$query = "INSERT INTO `universitati` (`nume`, `data_start`, `data_end`) 
-				VALUES ($nume_univ., $data_start, $data_sfarsit)";
+				VALUES ('".$nume_univ."', '".$data_start."', '".$data_sfarsit."')";
 	if(mysql_query($query))
 	{
 		add($mesaj,'Adaugarea a fost realizata cu succes.<br>');
