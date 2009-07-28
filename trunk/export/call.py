@@ -14,8 +14,13 @@ import platform
 
 if __name__ == "__main__":
 
+    locale.getpreferredencoding()
     if platform.system().find("Linux") != -1:
-        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+        print "palilula"
+        print locale.getlocale()
+        print locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+        print locale.getlocale()
+        print locale.getpreferredencoding()
         
     basepath = "/home/cspay/public_html/out/"
     commands.getstatusoutput("rm -r " + basepath+"*")
