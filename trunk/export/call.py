@@ -15,7 +15,7 @@ import platform
 if __name__ == "__main__":
 
     try:
-        print platform.machine()
+        print platform.system()
     except:
         print "Sunt la deschidere fisier ", str(sys.exc_info())
     print sys.platform
