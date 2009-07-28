@@ -24,7 +24,7 @@ function gen_univ_sel()
 {
 	$result = mysql_query("SELECT * FROM universitati");
 	$nr = mysql_num_rows($result);
-	$univ ='Universitate';
+	$univ ='Universitate</td><td>';
 	$univ .= '<select style="font-size:10pt;" name="universitate">';
 	$univ .= '<option value="0">&nbsp;</option>';
 	for ($i = 0; $i <$nr;$i++)
@@ -35,19 +35,18 @@ function gen_univ_sel()
 //tratare formular
 if(isset($_POST['vacanta_adauga']))
 {
-	$data_start_an = $_POST['data_start_an'];
-	$data_start_luna = $_POST['data_start_luna'];
-	$data_start_zi = $_POST['data_start_zi'];
-	$data_sfarsit_an = $_POST['data_sfarsit_an'];
-	$data_sfarsit_luna = $_POST['data_sfarsit_luna'];
-	$data_sfarsit_zi = $_POST['data_sfarsit_zi'];
+	foreach($_POST as $index=>$val)
+	{
+		$$index = $val;
+	}
+	
 	$data_start = $data_start_an . '-' . (($data_start_luna<10)?'0':'') . $data_start_luna . '-' .
 				  (($data_start_zi)<10?'0':''). $data_start_zi;
 	$data_sfarsit = $data_sfarsit_an . '-' . (($data_sfarsit_luna<10)?'0':'') . $data_sfarsit_luna . '-' .
 				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 		
 	$query = "INSERT INTO `vacante` (`link_univ`,`data_start`,`data_stop`) VALUES
-			 ('".$_POST['link_univ']."','".$data_start."','".$data_sfarsit."')";
+			 ('".$universitate."','".$data_start."','".$data_sfarsit."')";
 	$res_add_vac = mysql_query($query);
 	if($res_add_vac)
 	{
@@ -70,7 +69,7 @@ if(isset($_POST['vacanta_modifica']))
 				  (($data_sfarsit_zi)<10?'0':''). $data_sfarsit_zi;
 	
 	$query = "UPDATE `vacante` SET `data_start`='".$data_start."',`data_stop`='".$data_sfarsit."'
-			 WHERE `vac_id`='".$_POST['link_univ']."' LIMIT 1";
+			 WHERE `vac_id`='".$universitate."' LIMIT 1";
 	if(mysql_query($query))
 	{
 		add($mesaj,'Modificarea a fost realizata cu succes.<br>');
