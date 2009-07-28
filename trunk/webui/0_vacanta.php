@@ -21,7 +21,7 @@ function gen_univ_sel( $sel )
 		$val = mysql_result($result,$i,'univ_id');
 		$univ .= "<option ".($sel==$val)?"selected":" "." value=".'"'.$val.'">'.mysql_result($result,$i,'nume')."</option>";
 		}
-	$univ . ="</select>";
+	$univ .= "</select>";
 	return $univ;
 }
 
