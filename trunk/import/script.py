@@ -14,7 +14,7 @@ import MySQLdb
 # all files -> start_check=0 , end_check=0
 # line a -> start_check=a end_check<start_check
 # lines a-b -> start_check=a and end_check=b where a<b
-file_name="model.xls"
+file_name=""
 start_check=0   
 end_check=0
 nr_argv=0
@@ -24,31 +24,19 @@ for arg in sys.argv:
 if nr_argv>1:
     file_name=sys.argv[1]
 else :
-    print """No filename entered !\n
-            Default 'model.xls' will be used\n"""
+    print """ ERROR\n Possible parameters : \n
+            \n python script.py filename.xls     ->go threw all lines
+            \n python script.py filename.xls x   ->go only at line x
+            \n python script.py filename.xls x y ->go only threw lines x->y
+            """
+    
 
 if nr_argv>2:
     start_check=int(sys.argv[2])
-else :
-    print """Parameter passed is not integer ! \n
-        Default settings will be used (all lines) !\n"""
+
 if nr_argv>3:
      end_check=int(sys.argv[3])
-else :
-    print """Parameter passed is not integer ! \n
-        Default settings will be used !\n"""
 
-print " Parameters ------------------------ >>> "
-print " FILENAME ",file_name
-print " START CHECK ",start_check
-print " END CHECK ",end_check
-print " CHECK WHOLE FILE : ",
-if start_check==0:
-    print "yes"
-else:
-    print "no"
-print " --------------------------------->>>"
-        
 ################################################
 #
 # Verify if file exists and open it
@@ -63,7 +51,7 @@ while file_exists==0:
         file_exists=1
     except:
         print "Error! File (.xls) not found "
-        file_name=raw_input("Enter the correct path to the xls file ")
+        file_name=raw_input(" Enter the correct path to the xls file ")
         file_exists=0
 
 

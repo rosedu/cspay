@@ -51,7 +51,7 @@ def parse(list_data,line_number,prev_error):
             #common mandatory data
             if(i==10)and(list_data[1]=="C"):
                 if(prev_error<5):
-                    print "Error NO DATA Line NR : ",line_number+1
+                    print "Error NO DATA Line: ",line_number+1
                     print "Column : ",col_list[i],"\nCell index :",i+1,"\n"
                 prev_error=prev_error+1
                 return prev_error
