@@ -23,6 +23,9 @@ function gen_univ_sel( $sel )
 		$sele = "";
 		if ($val == $sel)
 			$sele = "selected";
+		print "egal?";
+		print $val;
+		print $sele;
 		$univ .= '<option ".$sele." value="'.$val.'">'.mysql_result($result,$i,'nume')."</option>";
 		}
 	$univ .= "</select>";
