@@ -45,7 +45,29 @@ def parse(list_data,line_number,prev_error):
     #all cells in a line are empty=>ignore the line, return Ok
     ii=0
     i=0
-    
+    for empty1 in list_data:
+        if not empty2:
+            ii=ii+1
+        i=i+1
+    if(i>22):
+        if(prev_error<5):
+            print "Line : ",line_number+1,"Error : Number of columns exceeds 22 (=nr needed) "
+        prev_error=prev_error+1
+        return prev_error
+    elif(i<22):
+        if(prev_error<5):
+            print "Line : ",line_number+1,"Error : Number of columns bellow 22 (=nr needed) "
+        prev_error=prev_error+1
+        return prev_error
+    if ii>21:
+        if(prev_error<5):
+            print "Line : ",line_number+1," has been ignored -> 22 fields missing"
+        prev_error=prev_error+1
+        return prev_error     # more than 21 lines that count
+                            # should make the line be ignored
+        
+    ii=0
+    i=0
     for empty in list_data:
         if not empty:
             #common mandatory data
@@ -89,23 +111,6 @@ def parse(list_data,line_number,prev_error):
             prev_error=prev_error+1
             return prev_error
         i=i+1
-    if(i>22):
-        if(prev_error<5):
-            print "Line : ",line_number+1,"\nError : Number of columns exceeds 22 (=nr needed) "
-        prev_error=prev_error+1
-        return prev_error
-    elif(i<22):
-        if(prev_error<5):
-            print "Line : ",line_number+1,"\nError : Number of columns bellow 22 (=nr needed) "
-        prev_error=prev_error+1
-        return prev_error
-    if ii>21:
-        if(prev_error<5):
-            print "Line : ",line_number+1," has been ignored -> 22 fields missing"
-        prev_error=prev_error+1
-        return prev_error     # more than 21 lines that count
-                            # should make the line be ignored
-
         #remove spacesa
     index=0
     for value in list_data:
