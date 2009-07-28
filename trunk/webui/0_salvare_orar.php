@@ -108,6 +108,6 @@ add($form,'
 add($content,$form);
 
 $layout->replace('CONTENT',$content);
-s$layout->print_template();
+$layout->print_template();
 ?>
 
