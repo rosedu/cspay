@@ -51,17 +51,17 @@ def parse(list_data,line_number,prev_error):
         i=i+1
     if(i>22):
         if(prev_error<5):
-            print "Line : ",line_number+1,"Error : Number of columns exceeds 22 (=nr needed) "
+            print "Line:",line_number+1,"Error : Number of columns exceeds 22 (=nr needed) "
         prev_error=prev_error+1
         return prev_error
     elif(i<22):
         if(prev_error<5):
-            print "Line : ",line_number+1,"Error : Number of columns bellow 22 (=nr needed) "
+            print "Line:",line_number+1,"Error : Number of columns bellow 22 (=nr needed) "
         prev_error=prev_error+1
         return prev_error
     if ii>21:
         if(prev_error<5):
-            print "Line : ",line_number+1," has been ignored -> 22 fields missing"
+            print "Line:",line_number+1," has been ignored -> 22 fields missing"
         prev_error=prev_error+1
         return prev_error     # more than 21 lines that count
                             # should make the line be ignored
