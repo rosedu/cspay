@@ -190,9 +190,9 @@ for($i=0;$i<$nr;$i++)
 	$Tnume = mysql_result($res_univ,$i,'nume');
 	$Tnume = htmlspecialchars(stripslashes($Tnume),ENT_QUOTES);
 	
-	$Tdata_start = mysql_result($res_asoc,$i,'data_start');
-	$Tdata_stop = mysql_result($res_asoc,$i,'data_stop');
-	$un_ID = mysql_result($res_asoc,$i,'univ_id');
+	$Tdata_start = mysql_result($res_univ,$i,'data_start');
+	$Tdata_stop = mysql_result($res_univ,$i,'data_stop');
+	$un_ID = mysql_result($res_univ,$i,'univ_id');
 	
 	add($tabel,'<tr class="'.$class_select[$i%2].'">
 					<td>'.($i+1).'</td>
