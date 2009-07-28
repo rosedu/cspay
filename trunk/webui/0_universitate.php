@@ -179,7 +179,7 @@ $nr = mysql_num_rows($res_univ);
 
 if($nr)
 {
-add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="550px">
+add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="100%">
 			<tr class="tr_head">
 				<td>Nr</td>
 				<td>Nume</td>

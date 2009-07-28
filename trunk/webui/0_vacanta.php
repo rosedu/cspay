@@ -122,7 +122,7 @@ $nr_vac = mysql_num_rows($res_vac);
 if($nr_vac)
 {
 add($content,'<form action="0_vacanta.php" method="post"');
-add($content,'<table class="special" cellpading="1" cellspacing="1" width="550px">
+add($content,'<table class="special" cellpading="1" cellspacing="1" width="100%">
 			<tr class="tr_head">
 				<td>Nr</td>
 				<td>Data inceput</td>
