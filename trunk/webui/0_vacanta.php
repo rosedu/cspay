@@ -159,7 +159,7 @@ for($i=0;$i<$nr_vac;$i++)
 					<td>'.$nume_univ.'</td>
 					<td>'.translate_date($data_start).'</td>
 					<td>'.translate_date($data_stop).'</td>
-					<td><a href="0_vacanta.php?vacanta_sterge='.$vac_id.'>sterge</a> 
+					<td><a href="0_vacanta.php?vacanta_sterge='.$vac_id.'">sterge</a> 
 						<a href="0_vacanta.php?vacanta_modifica='.$vac_id.'&univ_id="'.$univ_id.'">modifica</a>
 					</td>
 				</tr>');
