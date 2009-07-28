@@ -313,7 +313,7 @@ for($i=0;$i<=12;$i++)
 add($output,'</select></tr>');
 
 return $output;
-}//sfarsit write_data()
+}
 
 
 ?>
