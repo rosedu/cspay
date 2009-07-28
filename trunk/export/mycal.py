@@ -162,10 +162,12 @@ def ical_init():
 	
 	return cal
 
+import os
 def ical_write(C, title):
 	title_comp = title+'.ics'
 	print sys.getfilesystemencoding()
 	print os.listdir('.')
+	print os.path.supports_unicode_filenames
 	try:
 		f = open(title_comp, 'wb')
 	except:
