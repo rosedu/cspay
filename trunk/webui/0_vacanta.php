@@ -37,12 +37,12 @@ if(isset($_POST['vacanta_adauga']))
 	
 	if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
-	add($mesaj,'Data de început incorectã<br>');
+	add($mesaj,'Data de &#xEE;nceput incorect&#259;<br>');
 	}
 
 	elseif (!checkdate($data_sfarsit_luna,$data_sfarsit_zi,$data_sfarsit_an))
 	{
-	add($mesaj,'Data de sfârºit incorectã<br>');
+	add($mesaj,'Data de sf&#xE2;r&#x15F;it incorect&#259;<br>');
 	}
 	
 	else
@@ -57,10 +57,10 @@ if(isset($_POST['vacanta_adauga']))
 	$res_add_vac = mysql_query($query);
 	if($res_add_vac)
 	{
-		add($mesaj,'Perioada a fost adãugatã cu succes.<br>');
+		add($mesaj,'Perioada a fost ad&#259;ugat&#259; cu succes.<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare : Perioada nu a putut fi adãugatã</div>');
+		add($mesaj,'<div class="eroare">Eroare : Perioada nu a putut fi ad&#259;ugat&#259;</div>');
 	}
 }//sfarsit tratare formular
 else
@@ -73,12 +73,12 @@ if(isset($_POST['vacanta_modifica']))
 	
 	if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
-	add($mesaj,'Data de început incorectã<br>');
+	add($mesaj,'Data de &#xEE;nceput incorect&#259;<br>');
 	}
 
 	elseif (!checkdate($data_sfarsit_luna,$data_sfarsit_zi,$data_sfarsit_an))
 	{
-	add($mesaj,'Data de sfârºit incorectã<br>');
+	add($mesaj,'Data de sf&#xE2;r&#x15F;it incorect&#259;<br>');
 	}
 	
 	else
@@ -92,10 +92,10 @@ if(isset($_POST['vacanta_modifica']))
 			 WHERE `vac_id`='".$vac_id."' LIMIT 1";
 	if(mysql_query($query))
 	{
-		add($mesaj,'Modificarea a fost realizatã cu succes.<br>');
+		add($mesaj,'Modificarea a fost realizat&#259; cu succes.<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare aparutã la aplicarea modificãrii.</div>');
+		add($mesaj,'<div class="eroare">Eroare aparut&#259; la aplicarea modific&#259;rii.</div>');
 	}
 }
 
@@ -106,14 +106,14 @@ if(isset($_GET['vacanta_sterge']))
 	$result = mysql_query($query);
 	if($result)
 	{
-		add($mesaj,'Perioada de vacanþã a fost ºtearsã cu succes<br>');
+		add($mesaj,'Perioada de vacan&#x21B;&#259; a fost &#x15F;tears&#259; cu succes<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare : Perioada de vacanþa nu a putut fi ºtearsã</div>');
+		add($mesaj,'<div class="eroare">Eroare : Perioada de vacan&#x21B;a nu a putut fi &#x15F;tears&#259;</div>');
 }//sfarsit vacanta_sterge
 
 $layout->get_template('include/template.html');
-$layout->replace('TITLE','Vacanþe');
+$layout->replace('TITLE','Vacan&#x21B;e');
 
 $meniu = show_menu(menu,$_SESSION['tip_cont'],0);
 $layout->replace('MENU',$meniu);
@@ -123,30 +123,30 @@ $layout->replace('SUBMENU',$submeniu);
 
 $content = "";
 
-add($content,'<div class="title" align="center">Vacanþe</div>');
+add($content,'<div class="title" align="center">Vacan&#x21B;e</div>');
 add($content,$mesaj);
 
 
 if(isset($_GET['vacanta_modifica'])&&isset($_GET['univ_id']))
 {
-	$msj = "Modificare perioade de vacanþã";
+	$msj = "Modificare perioade de vacan&#x21B;&#259;";
 	$univ_id = $_GET['univ_id'];
 	$query = "SELECT * FROM vacante WHERE vac_id=".$_GET['vacanta_modifica'];
 	$result = mysql_query($query);
 	$data_start = mysql_result($result,0,'data_start');
 	$data_stop = mysql_result($result,0,'data_stop');
-	$finish = '"vacanta_modifica" value="Modificã"></td>';
-	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunþã">';
+	$finish = '"vacanta_modifica" value="Modific&#259;"></td>';
+	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renun&#x21B;&#259;">';
 	$hide = '<input type="hidden" name="vac_id" value="'.$_GET['vacanta_modifica'].'">';
 }
 else
 {
-	$msj="Adãugare perioade de vacanþã";
+	$msj="Ad&#259;ugare perioade de vacan&#x21B;&#259;";
 	$univ_id = 0;
 	$today=getdate();
 	$data_start =$today['year']."-01-01";
 	$data_stop = $today['year']."-01-01";
-	$finish = '"vacanta_adauga" value="Adaugã">';
+	$finish = '"vacanta_adauga" value="Adaug&#259;">';
 	$hide ='';
 }
 
@@ -171,9 +171,9 @@ add($content,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 			<tr class="tr_head">
 				<td>Nr</td>
 				<td>Universitate</td>
-				<td>Data început</td>
-				<td>Data sfârºit</td>
-				<td>Opþiuni</td>
+				<td>Data &#xEE;nceput</td>
+				<td>Data sf&#xE2;r&#x15F;it</td>
+				<td>Op&#x21B;iuni</td>
 			</tr>');
 
 for($i=0;$i<$nr_vac;$i++)
@@ -191,8 +191,8 @@ for($i=0;$i<$nr_vac;$i++)
 					<td>'.$nume_univ.'</td>
 					<td>'.translate_date($data_start).'</td>
 					<td>'.translate_date($data_stop).'</td>
-					<td><a href="0_vacanta.php?vacanta_sterge='.$vac_id.'">ºterge</a> 
-						<a href="0_vacanta.php?vacanta_modifica='.$vac_id.'&univ_id='.$univ_id.'">modificã</a>
+					<td><a href="0_vacanta.php?vacanta_sterge='.$vac_id.'">&#x15F;terge</a> 
+						<a href="0_vacanta.php?vacanta_modifica='.$vac_id.'&univ_id='.$univ_id.'">modific&#259;</a>
 					</td>
 				</tr>');
 }

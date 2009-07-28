@@ -19,12 +19,12 @@ $nume_univ = addslashes(html_entity_decode($_POST['nume_univ']));
 
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
-	add($mesaj,'Data de început incorectã<br>');
+	add($mesaj,'Data de &#xEE;nceput incorect&#259;<br>');
 	}
 
 elseif (!checkdate($data_sfarsit_luna,$data_sfarsit_zi,$data_sfarsit_an))
 	{
-	add($mesaj,'Data de sfârºit incorectã<br>');
+	add($mesaj,'Data de sf&#xE2;r&#x15F;it incorect&#259;<br>');
 	}
 else
 	{
@@ -37,10 +37,10 @@ else
 			  `univ_id`='".$univ_id."' LIMIT 1";
 	if(mysql_query($query))
 	{
-		add($mesaj,'Modificarea a fost realizatã cu succes.<br>');
+		add($mesaj,'Modificarea a fost realizat&#259; cu succes.<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare apãrutã la aplicarea modificãrii.</div>');
+		add($mesaj,'<div class="eroare">Eroare ap&#259;rut&#259; la aplicarea modific&#259;rii.</div>');
 	}
 }//sfarsit formular
 
@@ -55,12 +55,12 @@ $nume_univ = addslashes(html_entity_decode($_POST['nume_univ']));
 
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
 	{
-	add($mesaj,'Data de început incorectã<br>');
+	add($mesaj,'Data de &#xEE;nceput incorect&#259;<br>');
 	}
 
 elseif (!checkdate($data_sfarsit_luna,$data_sfarsit_zi,$data_sfarsit_an))
 	{
-	add($mesaj,'Data de sfârºit incorectã<br>');
+	add($mesaj,'Data de sf&#xE2;r&#x15F;it incorect&#259;<br>');
 	}
 	
 else
@@ -75,14 +75,14 @@ else
 				VALUES ('".$nume_univ."', '".$data_start."', '".$data_sfarsit."')";
 	if(mysql_query($query))
 	{
-		add($mesaj,'Adãugarea a fost realizatã cu succes.<br>');
+		add($mesaj,'Ad&#259;ugarea a fost realizat&#259; cu succes.<br>');
 	}
 	else
-		add($mesaj,'<div class="eroare">Eroare aparutã la adaãgare.</div>');
+		add($mesaj,'<div class="eroare">Eroare aparut&#259; la ad&#259;ugare.</div>');
 	}
 }
 $layout->get_template('include/template.html');
-$layout->replace('TITLE','Universitãþi');
+$layout->replace('TITLE','Universit&#259;&#x21B;i');
 
 $meniu = show_menu(menu,$_SESSION['tip_cont'],0);
 $layout->replace('MENU',$meniu);
@@ -91,7 +91,7 @@ $submeniu = show_menu(submenu,$_SESSION['tip_cont'],0,0);
 $layout->replace('SUBMENU',$submeniu);
 
 $content = "";
-add($content,'<div class="title" align="center">Universitãþi</div>');
+add($content,'<div class="title" align="center">Universit&#259;&#x21B;i</div>');
 
 add($content,$mesaj);
 
@@ -99,7 +99,7 @@ $today=getdate();
 $data_start =$today['year']."-01-01";
 $data_stop = $today['year']."-01-01";
 $uni_nume="";
-$finish = '"univ_add" value="Adaugã">';
+$finish = '"univ_add" value="Adaug&#259;">';
 $hide = '';
 
 if(isset($_GET['modifica'])&&(!isset($_POST['renunta'])))
@@ -109,8 +109,8 @@ if(isset($_GET['modifica'])&&(!isset($_POST['renunta'])))
 		$uni_nume = stripslashes(mysql_result($result,0,'nume'));
 		$data_start = mysql_result($result,0,'data_start');
 		$data_stop = mysql_result($result,0,'data_stop');
-		$finish = '"univ_mod" value="Modificã"></td>';
-		$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunþã">';
+		$finish = '"univ_mod" value="Modific&#259;"></td>';
+		$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renun&#x21B;&#259;">';
 		$hide = '<input type="hidden" name="univ_id" value="'.$_GET['modifica'].'">';
 		
 	}
@@ -121,10 +121,10 @@ if(isset($_GET['sterge']))
 	$result = mysql_query($query);
 	if($result)
 	{
-		add($mesaj,'Universitatea a fost ºtearsã din baza de date.<br><br>');
+		add($mesaj,'Universitatea a fost &#x15F;tears&#259; din baza de date.<br><br>');
 	}
 		else
-			dd($mesaj,'<div class="eroare">Eroare : Universitatea nu a putut fi ºtearsã din baza de date.');
+			dd($mesaj,'<div class="eroare">Eroare : Universitatea nu a putut fi &#x15F;tears&#259; din baza de date.');
 	}
 
 //adaug formularul in care poate modifica numele universitatii, data de start si de sfarsit
@@ -135,7 +135,7 @@ add($content,'
 		<td>Nume</td>
 			<td><input type="text" name="nume_univ" size="35" value="'.htmlspecialchars($uni_nume,ENT_QUOTES).'">
 		</tr>'.
-		write_data("data_start","Data început",$data_start) . write_data("data_sfarsit","Data sfârºit",$data_stop)
+		write_data("data_start","Data &#xEE;nceput",$data_start) . write_data("data_sfarsit","Data sf&#xE2;r&#x15F;it",$data_stop)
 		.'<tr>
 		<td colspan="2"><input type="submit" name='.$finish.'</td>
 		</tr>
@@ -152,9 +152,9 @@ add($tabel,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 			<tr class="tr_head">
 				<td>Nr</td>
 				<td>Nume</td>
-				<td>Data început</td>
-				<td>Data sfârºit</td>
-				<td>Opþiuni</td>
+				<td>Data &#xEE;nceput</td>
+				<td>Data sf&#xE2;r&#x15F;it</td>
+				<td>Op&#x21B;iuni</td>
 			</tr>');
 			
 for($i=0;$i<$nr;$i++)
@@ -171,8 +171,8 @@ for($i=0;$i<$nr;$i++)
 					<td>'.$Tnume.'</td>
 					<td>'.translate_date($Tdata_start).'</td>
 					<td>'.translate_date($Tdata_stop).'</td>
-					<td><a href="0_universitate.php?sterge='.$un_ID.'">ºterge</a>
-						<a href="0_universitate.php?modifica='.$un_ID.'">modificã</a></td>
+					<td><a href="0_universitate.php?sterge='.$un_ID.'">&#x15F;terge</a>
+						<a href="0_universitate.php?modifica='.$un_ID.'">modific&#259;</a></td>
 				</tr>');
 
 }
@@ -180,7 +180,7 @@ for($i=0;$i<$nr;$i++)
 add($tabel,'</table>');
 }
 else
-	add($tabel,'Nu existã utilizatori definiþi.<br>');
+	add($tabel,'Nu exist&#259; utilizatori defini&#x21B;i.<br>');
 
 add($content,$tabel);
 $layout->replace('CONTENT',$content);
