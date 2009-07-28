@@ -172,8 +172,8 @@ for($i=0;$i<$nr_vac;$i++)
 					<td>'.htmlspecialchars($nume,ENT_QUOTES).'</td>
 					<td>'.htmlspecialchars($nume_scurt,ENT_QUOTES).'</td>
 					<td>'.htmlspecialchars($decan,ENT_QUOTES).'</td>
-					<td><a href="0_vacanta.php?fac_sterge='.$vac_id.'">sterge</a> 
-						<a href="0_vacanta.php?fac_modifica='.$vac_id.'&univ_id='.$univ_id.'">modifica</a>
+					<td><a href="0_facultate.php?fac_sterge='.$vac_id.'">sterge</a> 
+						<a href="0_facultate.php?fac_modifica='.$vac_id.'&univ_id='.$univ_id.'">modifica</a>
 					</td>
 				</tr>');
 }
