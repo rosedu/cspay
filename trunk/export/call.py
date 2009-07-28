@@ -14,11 +14,11 @@ import platform
 
 if __name__ == "__main__":
 
-	try:
-		print platform.machine()
-	except:
-		print "Sunt la deschidere fisier ", str(sys.exc_info())
-	print sys.platform
+    try:
+        print platform.machine()
+    except:
+        print "Sunt la deschidere fisier ", str(sys.exc_info())
+    print sys.platform
         
     basepath = "/home/cspay/public_html/out/"
     commands.getstatusoutput("rm -r " + basepath+"*")
@@ -36,9 +36,9 @@ if __name__ == "__main__":
                     int(sys.argv[1]))
 
     tik = strftime("%d_%b_%Y",  gmtime())
-	
+        
     if int(sys.argv[1]):
-	    tik = "Orare_" + tik
+            tik = "Orare_" + tik
     tik +="_"+"".join(letters)
 
     zipname = basepath + tik + ".zip"
