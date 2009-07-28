@@ -62,7 +62,7 @@ def output_ical(input, holidays, parities, path):
 	year1, year2 = input['an'].split('/')
 	when = str(year1) + "-" + str (year2) 
 	try:
-		who = unicode(input['profesor'], "latin-2")
+		who = unicode(input['profesor'], "iso8859_2")
 	except TypeError:
 		who = input['profesor']
                 
@@ -172,7 +172,7 @@ def ical_write(C, title):
 	print sys.platform
 	print locale.getpreferredencoding()
 	try:
-		risk=title_comp.encode('cp1250')
+		risk=title_comp.encode('iso8859_2')
 	except:
 		print "eroare la codare", str(sys.exc_info())
 	try:
