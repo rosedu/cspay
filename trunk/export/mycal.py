@@ -26,6 +26,7 @@ class Entry():
                 self.ev.add('uid',uid)
                 self.rpt = ('FREQ=WEEKLY;INTERVAL='+interv+';BYDAY='+day+
                             ';UNTIL=')
+                self.exdate = []
 
         def add_start(self, d):
                 self.ev.add('dtstart', datetime(d.year, d. month, d.day,
@@ -38,17 +39,19 @@ class Entry():
                 self.ev.add('rrule',vRecur.from_ical(self.rpt))
 
         def add_except(self, ds, de):
-                exdate = []
-                exdate.append(datetime(ds.year, ds.month, ds.day,
+                self.exdate.append(datetime(ds.year, ds.month, ds.day,
                                        self.str, 0, 0))
                 d = ds + timedelta(days=7)
                 while d < de:
-                        exdate.append(datetime(d.year, d.month, d.day,
+                        self.exdate.append(datetime(d.year, d.month, d.day,
                                                self.str, 0, 0))
                         d = d + timedelta(days=7)
-                self.ev.add('exdate', [exdate])
+                print str(self.exdate)
+                
 		
         def get_entry(self):
+                if self.exdate:
+                        self.ev.add('exdate', [self.exdate])
                 return self.ev
 
 
