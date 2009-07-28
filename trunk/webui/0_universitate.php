@@ -51,8 +51,8 @@ $mesaj = "";
 if(isset($_POST['univ_mod']))//formularul de modificare al universitatii
 {
 $data_start_an = $_POST['data_start_an'];
-$data_start_luna = $_POST['data_start_an'];
-$data_start_zi = $_POST['data_start_an'];
+$data_start_luna = $_POST['data_start_luna'];
+$data_start_zi = $_POST['data_start_zi'];
 $nume_univ = addslashes(html_entity_decode($_POST['nume_univ']));
 
 if (!checkdate($data_start_luna,$data_start_zi,$data_start_an))
