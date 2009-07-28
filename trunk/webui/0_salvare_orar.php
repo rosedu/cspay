@@ -41,10 +41,10 @@ function dourjob()
 $layout->get_template('include/template.html');
 $layout->replace('TITLE','Salvare orar');
 
-$meniu = show_menu(menu,$_SESSION['tip_cont'],0);
+$meniu = show_menu(menu,$_SESSION['tip_cont'],1);
 $layout->replace('MENU',$meniu);
 
-$submeniu = show_menu(submenu,$_SESSION['tip_cont'],2,0); 
+$submeniu = show_menu(submenu,$_SESSION['tip_cont'],2,1); 
 $layout->replace('SUBMENU',$submeniu);
 
 $content = '<script type="text/javascript">
