@@ -57,26 +57,26 @@ def parse(list_data,line_number,prev_error):
                 return prev_error
             if(i==11)and(list_data[1]=="L"):
                 if(prev_error<5):
-                    print "Line: ",line_number+1,
-                    print " Column : ",col_list[i]," Column index :",i+1," Error : MISSING DATA \n"
+                    print "Line:",line_number+1,
+                    print "Column:",col_list[i],"Column index:",i+1," Error: MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="P"):
                 if(prev_error<5):
                     print "Line: ",line_number+1,
-                    print " Column : ",col_list[i]," Column index :",i+1," Error : MISSING DATA \n"
+                    print "Column :",col_list[i]," Column index:",i+1," Error: MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="S"):
                 if(prev_error<5):
-                    print "Line: ",line_number+1,
-                    print " Column : ",col_list[i]," Column index :",i+1," Error : MISSING DATA \n"
+                    print "Line:",line_number+1,
+                    print "Column:",col_list[i],"Column index:",i+1,"Error: MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<5):
                     print "Line: ",line_number+1,
-                    print " Column : ",col_list[i]," Column index :",i+1," Error : MISSING DATA \n"
+                    print "Column :",col_list[i]," Column index:",i+1,"Error: MISSING DATA\n"
                 prev_error=prev_error+1
                 return prev_error
             
