@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import sys
 from icalendar import Calendar, Event, Timezone, vRecur, vDatetime, StandardT
 from icalendar import DaylightT, UTC, UIDGenerator
 from datetime import datetime, timedelta
@@ -65,14 +66,8 @@ def output_ical(input, holidays, parities, path):
 	except TypeError:
 		who = input['profesor']
                 
-	try:
-		title = "Orar " + who + ' ' + when
-	except:
-		print "Sunt la concat ", str(sys.exc_info())
-	try:
-		title = path+title.replace(" ","_")
-	except:
-		print "Sunt la replace ", str(sys.exc_info())
+	title = "Orar " + who + ' ' + when
+	title = path+title.replace(" ","_")
 	
 	start, stop = input['semestru']
 	
