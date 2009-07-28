@@ -100,7 +100,7 @@ $today=getdate();
 $data_start =$today['year']."-01-01";
 $data_stop = $today['year']."-01-01";
 $uni_nume="";
-$finish = '"univ_add" value="Adauga"';
+$finish = '"univ_add" value="Adauga">';
 
 if(isset($_GET['modifica']))
 	{
@@ -109,7 +109,8 @@ if(isset($_GET['modifica']))
 		$uni_nume = stripslashes(mysql_result($result,0,'nume'));
 		$data_start = mysql_result($result,0,'data_start');
 		$data_stop = mysql_result($result,0,'data_stop');
-		$finish = '"univ_mod" value="Modifica"';
+		$finish = '"univ_mod" value="Modifica"></td>';
+		$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunta">';
 	}
 	
 if(isset($_GET['sterge']))
@@ -134,7 +135,7 @@ add($content,'
 		</tr>'.
 		write_data("data_start","Data inceput",$data_start) . write_data("data_sfarsit","Data sfarsit",$data_stop)
 		.'<tr>
-		<td colspan="2"><input type="submit" name='.$finish.'>
+		<td colspan="2"><input type="submit" name='.$finish.'</td>
 		</tr>
 	</table>');
 

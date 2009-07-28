@@ -109,7 +109,8 @@ if(isset($_GET['vacanta_modifica'])&&isset($_GET['univ_id']))
 	$result = mysql_query($query);
 	$data_start = mysql_result($result,0,'data_start');
 	$data_stop = mysql_result($result,0,'data_stop');
-	$finish = '"vacanta_modifica" value="Modifica"';
+	$finish = '"vacanta_modifica" value="Modifica"></td>';
+	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renunta">';
 }
 else
 {
@@ -118,7 +119,7 @@ else
 	$today=getdate();
 	$data_start =$today['year']."-01-01";
 	$data_stop = $today['year']."-01-01";
-	$finish = '"vacanta_adauga" value="Adauga"';
+	$finish = '"vacanta_adauga" value="Adauga">';
 }
 
 add($content,'<br>
@@ -127,7 +128,7 @@ add($content,'<br>
 		<tr><td colspan="2">'.$msj.'</td></tr>
 		<tr><td>'.gen_univ_sel($univ_id).'</td></tr>
 		<tr>'.write_data("data_start","Data inceput",$data_start) . write_data("data_sfarsit","Data sfarsit",$data_stop).'</tr>
-		<tr><td colspan="2"><input type="submit" name='.$finish.'></td></tr>
+		<tr><td colspan="2"><input type="submit" name='.$finish.'</td></tr>
 	</table><br>
 	</form>');
 
