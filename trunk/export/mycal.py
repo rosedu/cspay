@@ -1,8 +1,9 @@
 # -*- coding: utf8 -*-
-import sys
+import unicodedata
 from icalendar import Calendar, Event, Timezone, vRecur, vDatetime, StandardT
 from icalendar import DaylightT, UTC, UIDGenerator
 from datetime import datetime, timedelta
+
 
 days = ['MO','TU','WE','TH', 'FR', 'SA','SU']
 
@@ -60,11 +61,8 @@ def output_ical(input, holidays, parities, path):
 	C = ical_init()
 
 	year1, year2 = input['an'].split('/')
-	when = str(year1) + "-" + str (year2) 
-	try:
-		who = unicode(input['profesor'], "utf-8")
-	except TypeError:
-		who = input['profesor']
+	when = str(year1) + "-" + str (year2)
+	who = strip_diacritics(input['profesor'])
                 
 	title = "Orar " + who + ' ' + when
 	title = path+title.replace(" ","_")
@@ -162,23 +160,9 @@ def ical_init():
 	
 	return cal
 
-import os
-import locale
 
 def ical_write(C, title):
-	title_comp = title+'.ics'
-	print sys.getfilesystemencoding()
-	print os.path.supports_unicode_filenames
-	print sys.platform
-	print locale.getpreferredencoding()
-	try:
-		risk=unicode(title_comp,"utf-8").encode('cp1250')
-	except:
-		print "eroare la codare", str(sys.exc_info())
-	try:
-		f = open(risk, 'wb')
-	except:
-		print "Sunt la deschidere fisier ", str(sys.exc_info())
+	f = open(title + '.ics', 'wb')
 	f.write(C.as_string())
 	f.close()
 						 
@@ -195,4 +179,7 @@ def inside(d, range):
 	if (d1 <= d) and (d <= d2):
 		return 1
 	return 0
-			
+
+def strip_diacritics(s):
+        ss = unicode(s, "utf-8")
+        return ''.join((c for c in unicodedata.normalize('NFD', ss) if unicodedata.category(c) != 'Mn'))

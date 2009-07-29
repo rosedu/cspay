@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 from datetime import date, timedelta
 import dummy_writer as dw
+import unicodedata
 
 C_col="E"
 A_col="F"
@@ -14,14 +15,8 @@ def output_table(input, holidays, parities, path):
 	months = input['luni']
 	year1, year2 = input['an'].split('/')
 	when = str(year1) + "-" + str (year2) 
-	try:
-		where = unicode(input['functie_baza'], "utf8")
-	except TypeError:
-		where = input['functie_baza']
-	try:
-		who = unicode(input['profesor'], "utf8")
-	except TypeError:
-		who = input['profesor']
+	where = strip_diacritics(input['functie_baza'])
+	who = strip_diacritics(input['profesor'])
 	title = when + ' ' + where + ' ' + who
 	title=path+title.replace(" ","_")
 	
@@ -210,4 +205,7 @@ def inside(d, range):
 	if (d1 <= d) and (d <= d2):
 		return 1
 	return 0
-			
+
+def strip_diacritics(s):
+        ss = unicode(s, "utf-8")
+        return ''.join((c for c in unicodedata.normalize('NFD', ss) if unicodedata.category(c) != 'Mn'))

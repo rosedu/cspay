@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
 import dummy_writer as dw
+import unicodedata
 
 ro_days = ["Luni", "Marţi", "Miercuri", "Joi", "Vineri"]
 		
@@ -10,11 +11,7 @@ def output_orar(input, path):
 	months = input['luni']
 	year1, year2 = input['an'].split('/')
 	when = str(year1) + "-" + str (year2) 
-
-	try:
-		who = unicode(input['profesor'], "utf8")
-	except TypeError:
-		who = input['profesor']
+	who = strip_diacritics(input['profesor'])
 	title = "Orar" + ' ' + who + ' ' + when
 	title = path + title.replace(" ","_")
 
@@ -129,3 +126,7 @@ def order_by_h(x, y):
 		return -1
 	else:
 		return 0
+
+def strip_diacritics(s):
+        ss = unicode(s, "utf-8")
+        return ''.join((c for c in unicodedata.normalize('NFD', ss) if unicodedata.category(c) != 'Mn'))

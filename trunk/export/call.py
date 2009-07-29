@@ -4,9 +4,6 @@ import random
 import commands
 from db_gather import gather_data
 from time import gmtime, strftime
-import locale
-import platform
-
 
 #calling example:
 # call.py <type> <univ> <fac> <desk> <name1> [ name2 ... ]

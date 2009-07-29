@@ -15,7 +15,7 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
             and then write an Excel WorkBook for the given months,
             for the given universitary year
         """
-        print "Processing", name,"&",univ, "&",facl,"&", desk,"...",
+        print "Processing", name,"...",
 
         try:
                 conn = MySQLdb.connect (host = "koala.cs.pub.ro", user = "rosedu_cspay",
@@ -148,10 +148,8 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                 elif function == 1:
                         output_orar(input, path)
                 else:
-                        try:
-                                output_ical(input, vacante, used_par, path)
-                        except:
-                            print "Error:", str(sys.exc_info())
+                        output_ical(input, vacante, used_par, path)
+
         print "OK"
 	
 
