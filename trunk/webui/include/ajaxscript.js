@@ -34,7 +34,9 @@ function CategoryGrab(strURL, div_id)	{
 						alert("There was a problem while using XMLHTTP:\n");
 					}
 				}
-			}        
+			}
+			
+			strURL += (strURL.match(/\?/) == null ? '?' : '&') + (new Date()).getTime();
 			req.open("GET", strURL, true); //open url using get method
 			req.send(null);
 		}
