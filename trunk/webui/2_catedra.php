@@ -127,13 +127,9 @@ add($utilizator_plus,'<form action="" method="post">
 					<tr>
 						<td colspan="5">Adauga catedra</td>
 					</tr>
-					<tr>
-						<td colspan="6">
-						<script type="text/javascript">
-							CategoryGrab('."get_fac.php?idTip='X','div_univ'".');
-						</script>
-						</td>
-					</tr>
+					<tr>'.
+						display_select_herarch(1)
+					.'</tr>
 					<tr>
 						<td>Nume </td><td><input type="text" name="nume"></td>
 						<td>Sef catedra</td><td><input type="text" name="shef"></td> 

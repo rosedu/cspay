@@ -176,6 +176,58 @@ function display_select_tip()
 	
 	return $result;
 	}
+
+function display_select_fac()
+	{
+	$fac ='<div id="div_fac"><select style="font-size:10pt;width: 100px;" name="facultate" >';
+	$fac .='<option value="0">&nbsp;</option>';
+	$fac .= '</select></div>';
+	return $fac;
+	}
+		
+function display_select_cat()
+	{
+	$fac ='<div id="div_cat"><select name="catedra" style="font-size:10pt;width: 100px;" >';
+	$fac .='<option value="0">&nbsp;</option>';
+	$fac .= '</select></div>';
+	return $fac;
+	}
+	
+function display_select_disc()
+	{
+	$fac ='<div id="div_disc"><select style="font-size:10pt;width: 100px;" name="disciplina" >';
+	$fac .='<option value="0">&nbsp;</option>';
+	$fac .= '</select></div>';
+	return $fac;
+	}	
+	
+function display_select_herarch($level)
+	{
+		$result = mysql_query("SELECT * FROM universitati");
+		$nr = mysql_num_rows($result);
+		$univ ='<td>Universitatea:</td><td>';
+		$univ .= '<select style="font-size:10pt;" name="universitate" 
+				   onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
+		$univ .= '<option value="0">&nbsp;</option>';
+		for ($i = 0; $i <$nr;$i++)
+			$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.
+						mysql_result($result,$i,'nume')."</option></select></td>";
+		$sel_fac = display_select_fac();
+		$univ .= '<br><td>Facultatea:</td><td>'.$sel_fac.'</td>';
+
+		if($level > 2)
+			{
+			$sel_cat = display_select_cat();
+			$univ .= '<br><td>Catedra:</td><td>'.$sel_cat.'</td>';
+			}
+		if($level > 3)
+			{
+			$sel_disc = display_select_disc();
+			$univ .= '<br><td>Disciplina:</td><td>'.$sel_disc.'</td>';
+			}
+				
+		return $univ;
+	}
 	
 function criterii_norma()
 	{
