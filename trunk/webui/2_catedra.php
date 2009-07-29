@@ -130,7 +130,7 @@ add($utilizator_plus,'<form action="" method="post">
 					<tr>
 						<td colspan="6">
 						<script type="text/javascript">
-							document.write(CategoryGrab('."get_fac.php?idTip='X','div_univ'".'));
+							CategoryGrab('."get_fac.php?idTip='X','div_univ'".');
 						</script>
 						</td>
 					</tr>
