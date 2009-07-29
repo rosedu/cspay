@@ -180,7 +180,10 @@ for($i=0;$i<$nr;$i++)
 		$val = mysql_result($cat_result,0,'link_fac');
 		}
 	else
+		{
+		$Tcat='';
 		$val = mysql_result($res_asoc,$i,'link_fac');
+		}
 		
 	$query = "SELECT * FROM `facultati` WHERE `fac_id` = '$val'";
 	$cat_result = mysql_query($query);
