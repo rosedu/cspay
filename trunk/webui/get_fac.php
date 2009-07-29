@@ -107,7 +107,7 @@ elseif (isset($_REQUEST['idTip']))
 		if($ID === "P")
 			{
 			$sel_disc = display_select_disc();
-			$univ .= '<br><td>Disciplina:</td><td>'.$sel_cat.'</td>';
+			$univ .= '<br><td>Disciplina:</td><td>'.$sel_disc.'</td>';
 			}
 			
 		echo $univ;
