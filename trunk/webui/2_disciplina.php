@@ -94,7 +94,7 @@ if(isset($_GET['modifica']))
 	}
 else
 	{
-	$msj = "Adauga catedra";
+	$msj = "Adauga disciplina";
 	$nume = "";
 	$numesc = "";
 	$herarch = display_select_herarch(3,0);

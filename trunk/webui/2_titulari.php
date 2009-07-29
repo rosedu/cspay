@@ -96,7 +96,7 @@ if(isset($_GET['modifica']))
 	}
 else
 	{
-	$msj = "Adauga catedra";
+	$msj = "Adauga titular";
 	$nume = "";
 	$serie = "";
 	$an = "";

@@ -59,6 +59,18 @@ if(isset($_POST['modif_cat']))
 			add($mesaj,'<div class="eroare">Eroare ap&#x103;rut&#x103; la aplicarea modific&#x103;rii.</div>');
 	}
 
+if(isset($_GET['sterge']))
+{
+	$query = "DELETE FROM `catedre` WHERE `cat_id`='".$_GET['sterge']."' LIMIT 1";
+	$result = mysql_query($query);
+	if($result)
+	{
+		add($mesaj,'Disciplina a fost stearsa din baza de date.<br><br>');
+	}
+		else
+			dd($mesaj,'<div class="eroare">Eroare : Disciplina nu a putut fi stearsa din baza de date.');
+	@mysql_free_result($result);
+}
 $content = '';
 add($content,'<div class="title" align="center">Catedre</div>');
 add($content,'<br>');
