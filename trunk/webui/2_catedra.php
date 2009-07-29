@@ -17,7 +17,7 @@ $layout->replace('TITLE','Administrare');
 $meniu = show_menu(menu,$_SESSION['tip_cont'],0);
 $layout->replace('MENU',$meniu);
 
-$submeniu = show_menu(submenu,$_SESSION['tip_cont'],6,0);
+$submeniu = show_menu(submenu,$_SESSION['tip_cont'],3,0);
 $layout->replace('SUBMENU',$submeniu);
 
 //tratare formulare
@@ -108,7 +108,7 @@ if(isset($_GET['modifica']))//trebuie afisat formularul pentru modificat datele 
 }
 
 $content = '';
-add($content,'<div class="title" align="center">Utilizatori</div>');
+add($content,'<div class="title" align="center">Catedre</div>');
 add($content,'<br>');
 add($content,$mesaj);
 
@@ -142,7 +142,7 @@ add($utilizator_plus,'<form action="" method="post">
 				
 //afisare utilizatori existenti
 $tabel = '';
-$query = "SELECT * FROM `catedre`";
+$query = "SELECT * FROM `catedre` ORDER BY 'link_univ'";
 $res_asoc = mysql_query($query);
 $nr = mysql_num_rows($res_asoc);
 
@@ -187,8 +187,8 @@ for($i=0;$i<$nr;$i++)
 					<td>'.$Tshef.'</td>
 					<td>'.$Tfac.'</td>
 					<td>'.$Tuniv.'</td>
-					<td><a href="2_utilizatori.php?sterge='.$ct_ID.'">sterge</a>
-						<a href="2_utilizatori.php?modifica='.$ct_ID.'">modifica</a></td>
+					<td><a href="2_catedra.php?sterge='.$ct_ID.'">sterge</a>
+						<a href="2_catedra.php?modifica='.$ct_ID.'">modifica</a></td>
 				</tr>');
 
 }
