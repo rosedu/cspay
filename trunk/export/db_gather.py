@@ -34,7 +34,6 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
 #load configuration file for parities
         config = open('parity.pkl', 'rb')
         parities = pickle.load(config)
-        print parities
         config.close()
         user_par={}
         
