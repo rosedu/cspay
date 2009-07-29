@@ -69,9 +69,14 @@ elseif (isset($_REQUEST['idTip']))
 			$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.
 						mysql_result($result,$i,'nume')."</option></select></td>";
 		$sel_fac = display_select_fac();
-		$sel_cat = display_select_cat();
 		$univ .= '<br><td>Facultatea:</td><td>'.$sel_fac.'</td>';
-		$univ .= '<br><td>Catedra:</td><td>'.$sel_cat.'</td>';
+
+		if($ID === "S")
+			{
+			$sel_cat = display_select_cat();
+			$univ .= '<br><td>Catedra:</td><td>'.$sel_cat.'</td>';
+			}
+				
 		echo $univ;
 		}
 	else
