@@ -141,7 +141,6 @@ $nr_fac = mysql_num_rows($res_fac);
 
 if($nr_fac)
 	{
-	add($content,'<form action="0_facultate.php" method="get"');
 	add($content,'<table class="special" cellpading="1" cellspacing="1" width="90%">
 				<tr class="tr_head">
 					<td>Nr</td>
@@ -174,7 +173,7 @@ if($nr_fac)
 						</td>
 					</tr>');
 		}
-	add($content,'</table></form>');
+	add($content,'</table>');
 	}//end if($nr_vac)
 
 $layout->replace('CONTENT',$content);
