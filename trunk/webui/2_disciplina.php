@@ -171,12 +171,17 @@ for($i=0;$i<$nr;$i++)
 	$dc_ID = mysql_result($res_asoc,$i,'disc_id');
 	
 	$val = mysql_result($res_asoc,$i,'link_cat');
-	$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$val'";
-	$cat_result = mysql_query($query);
-	$val = mysql_result($cat_result,0,'nume');
-	$Tcat = html_entity_decode($val);
-	
-	$val = mysql_result($cat_result,0,'link_fac');
+	if($val)
+		{
+		$query = "SELECT * FROM `catedre` WHERE `cat_id` = '$val'";
+		$cat_result = mysql_query($query);
+		$val = mysql_result($cat_result,0,'nume');
+		$Tcat = html_entity_decode($val);
+		$val = mysql_result($cat_result,0,'link_fac');
+		}
+	else
+		$val = mysql_result($res_asoc,$i,'link_fac');
+		
 	$query = "SELECT * FROM `facultati` WHERE `fac_id` = '$val'";
 	$cat_result = mysql_query($query);
 	$val = mysql_result($cat_result,0,'nume_scurt');
