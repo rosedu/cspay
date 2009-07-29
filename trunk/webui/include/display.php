@@ -177,52 +177,163 @@ function display_select_tip()
 	return $result;
 	}
 
-function display_select_fac()
+function display_select_fac($univ, $facid)
 	{
-	$fac ='<div id="div_fac"><select style="font-size:10pt;width: 100px;" name="facultate" >';
+	$changeprone ="";
+	if($facid && $univ)
+		$changeprone = 'onChange="CategoryGrab('."'get_fac.php?idCat='+this.value,"."'div_cat'".');"';
+	$fac ='<div id="div_fac"><select style="font-size:10pt;width: 100px;" name="facultate" '.$changeprone.' >';
 	$fac .='<option value="0">&nbsp;</option>';
+	if($univ && $facid)
+		{
+		$query = "SELECT * FROM facultati WHERE link_univ=".$univ;
+		$result = mysql_query($query);
+		$nr = mysql_num_rows($result);
+		
+		if($nr)
+			for($i=0;$i<$nr;$i++)
+				{
+				if ($facid == mysql_result($result,$i,'fac_id'))
+					$sel = "selected";
+				else
+					$sel = "";
+				$fac .='<option '.$sel.' value='.mysql_result($result,$i,'fac_id').'>'.
+							mysql_result($result,$i,'nume_scurt')
+							.'</option>';
+				}
+		}
 	$fac .= '</select></div>';
 	return $fac;
 	}
 		
-function display_select_cat()
+function display_select_cat($facid, $cat)
 	{
-	$fac ='<div id="div_cat"><select name="catedra" style="font-size:10pt;width: 100px;" >';
+	$changeprone ="";
+	if($facid && $cat)
+		$changeprone = 'onChange="CategoryGrab('."'get_fac.php?idDisc='+this.value,"."'div_disc'".');"';
+	
+	$fac ='<div id="div_cat"><select name="catedra" style="font-size:10pt;width: 100px;" '.$changeprone.' >';
 	$fac .='<option value="0">&nbsp;</option>';
+	if($facid && $cat)
+		{
+		$query = "SELECT * FROM catedre WHERE link_fac=".$facid;
+		$result = mysql_query($query);
+		$nr = mysql_num_rows($result);
+		
+		if($nr)
+			for($i=0;$i<$nr;$i++)
+				{
+				if ($cat == mysql_result($result,$i,'cat_id'))
+					$sel = "selected";
+				else
+					$sel = "";
+				$fac .='<option '.$sel.' value='.mysql_result($result,$i,'cat_id').'>'.
+							mysql_result($result,$i,'nume')
+							.'</option>';
+				}
+		}	
 	$fac .= '</select></div>';
 	return $fac;
 	}
 	
-function display_select_disc()
+function display_select_disc($cat, $disc)
 	{
+	
 	$fac ='<div id="div_disc"><select style="font-size:10pt;width: 100px;" name="disciplina" >';
 	$fac .='<option value="0">&nbsp;</option>';
+	if($disc && $cat)
+		{
+		$query = "SELECT * FROM discipline WHERE link_cat=".$cat." ORDER BY nume_scurt";
+		$result = mysql_query($query);
+		$nr = mysql_num_rows($result);
+		
+		if($nr)
+			for($i=0;$i<$nr;$i++)
+				{
+				if ($disc == mysql_result($result,$i,'disc_id'))
+					$sel = "selected";
+				else
+					$sel = "";
+				$fac .='<option '.$sel.' value='.mysql_result($result,$i,'disc_id').'>'.
+							mysql_result($result,$i,'nume_scurt')
+							.'</option>';
+				}
+		}	
 	$fac .= '</select></div>';
 	return $fac;
 	}	
 	
-function display_select_herarch($level)
+function display_select_herarch($level, $an_id)
 	{
+		if ($an_id)
+			{
+			if($level>2)
+				{
+				$query = "SELECT * FROM discipline WHERE disc_id=".$an_id;
+				$result = mysql_query($query);
+				$disc_id = $an_id;
+				$cat_id = mysql_result($result,0,'link_cat');
+				}
+			else
+				$cat_id = $an_id;
+
+			if($level>1)
+				{
+				$query = "SELECT * FROM catedre WHERE cat_id=".$cat_id;
+				$result = mysql_query($query);
+				$fac_id = mysql_result($result,0,'link_fac');
+				}
+			else
+				$fac_id = $cat_id;
+
+			if($level>0)
+				{
+				$query = "SELECT * FROM facultati WHERE fac_id=".$fac_id;
+				$result = mysql_query($query);
+				$univ_id = mysql_result($result,0,'link_univ');
+				}
+			else
+				$univ_id = 0;
+
+			}				
+		
 		$result = mysql_query("SELECT * FROM universitati");
 		$nr = mysql_num_rows($result);
 		$univ ='<td>Universitatea:</td><td>';
 		$univ .= '<select style="font-size:10pt;" name="universitate" 
 				   onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
 		$univ .= '<option value="0">&nbsp;</option>';
-		for ($i = 0; $i <$nr;$i++)
-			$univ .= "<option value=".'"'.mysql_result($result,$i,'univ_id').'" >'.
+		for ($i = 0; $i < $nr; $i++)
+			{
+			if($univ_id == mysql_result($result,$i,'univ_id'))
+				$sel = "selected";
+			else
+				$sel = "";
+			$univ .= "<option ".$sel." value=".'"'.mysql_result($result,$i,'univ_id').'" >'.
 						mysql_result($result,$i,'nume')."</option></select></td>";
-		$sel_fac = display_select_fac();
+			}
+			
+		if(! $an_id)
+			$sel_fac = display_select_fac(0,0);
+		else
+			$sel_fac = display_select_fac($univ_id, $fac_id);
 		$univ .= '<br><td>Facultatea:</td><td>'.$sel_fac.'</td>';
 
 		if($level > 2)
 			{
-			$sel_cat = display_select_cat();
+			if(! $an_id)
+				$sel_cat = display_select_cat(0,0);
+			else
+				$sel_cat = display_select_cat($fac_id, $cat_id);
 			$univ .= '<br><td>Catedra:</td><td>'.$sel_cat.'</td>';
 			}
+			
 		if($level > 3)
 			{
-			$sel_disc = display_select_disc();
+			if(! $an_id)
+				$sel_disc = display_select_disc(0,0);
+			else
+				$sel_disc = display_select_disc($cat_id, $disc_id);
 			$univ .= '<br><td>Disciplina:</td><td>'.$sel_disc.'</td>';
 			}
 				

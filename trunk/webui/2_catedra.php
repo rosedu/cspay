@@ -40,104 +40,72 @@ if(isset($_POST['adauga_cat']))
 	@mysql_free_result($result);
 }
 else
-if(isset($_POST['modifica_cont']))
-{
-	foreach($_POST as $index=>$val)
+if(isset($_POST['modif_cat']))
 	{
-		$$index = addslashes(html_entity_decode($val));
-		//echo $index.' = '.$val.'<br>';
-	}
-	$query = "UPDATE `asocieri` SET `nume`='".$nume."',`email`='".$email."',`link_admin`='.$materie.'
-		  WHERE `asoc_id`='".$utilizator_id."' LIMIT 1";
-	$result = mysql_query($query);
-	@mysql_free_result($result);	
-}
+		foreach($_POST as $index=>$val)
+			{
+			$$index = $val;
+			}
+		
+		$query = "UPDATE `catedre` SET `link_fac`=".$facultate.",`nume`='".$nume."',
+										  `sef`='".$shef."'
+				WHERE `cat_id`=".$cat_id." LIMIT 1";
 
-if(isset($_GET['sterge']))
-{
-	$query = "DELETE FROM `catedre` WHERE `cat_id`='".$_GET['sterge']."' LIMIT 1";
-	$result = mysql_query($query);
-	if($result)
-	{
-		add($mesaj,'Catedra a fost stearsa din baza de date.<br><br>');
-	}
-		else
-			dd($mesaj,'<div class="eroare">Eroare : Catedra nu a putut fi stearsa din baza de date.');
-	@mysql_free_result($result);
-}
-else
-if(isset($_GET['modifica']))//trebuie afisat formularul pentru modificat datele unui utilizator
-{
-	$id = addslashes($_GET['modifica']);
-	
-	$query = "SELECT * FROM `asocieri` WHERE `asoc_id`='".$id."' LIMIT 1";
-	$result = mysql_query($query);
-	$nr = mysql_num_rows($result);
-	
-	if($nr == 0)
+		if(mysql_query($query))
 		{
-		add($mesaj,'<div class="eroare">Eroare : Utilizator inexistent.</div></br>');
-		break;
+			add($mesaj,'Modificarea a fost realizat&#x103; cu succes.<br>');
 		}
-	else
-	{	
-	
-	$nume = stripslashes(mysql_result($result,0,'nume'));
-	$email =stripslashes(mysql_result($result,0,'email'));
-	
-	$nume = htmlspecialchars($nume,ENT_QUOTES);
-	$email = htmlspecialchars($email,ENT_QUOTES);
-	
-	$utilizator_modi = '';
-	add($utilizator_modi,'<form action="2_utilizatori.php" method="post">
-			<input type="hidden" name="utilizator_id" value="'.$id.'">
-			<table class="formular">
-					<tr>
-					<td colspan="5">Modifica utilizator</td>
-					</tr>
-					<tr>
-					<td>Nume <input type="text" name="nume" value="'.$nume.'"></td>
-					<td>Email <input type="text" name="email" value="'.$email.'"></td>
-					<td>Materie/Tip '.$select_materie.'</td>
-					<td><input type="submit" name="modifica_cont" value="Modifica"></td>
-					</tr>
-					</table>				
-					</form><br>');
+		else
+			add($mesaj,'<div class="eroare">Eroare ap&#x103;rut&#x103; la aplicarea modific&#x103;rii.</div>');
 	}
-	@mysql_free_result($result);
-}
 
 $content = '';
 add($content,'<div class="title" align="center">Catedre</div>');
 add($content,'<br>');
 add($content,$mesaj);
 
-//adaug formularul de modificare cont
-if(isset($utilizator_modi))
-{
-	if(!empty($utilizator_modi))
+if(isset($_GET['modifica']))
 	{
-		add($content,$utilizator_modi);
+	$msj = "Modifica catedra";
+	$id = $_GET['modifica'];
+	$query = "SELECT * FROM `catedre` WHERE `cat_id`='".$id."' LIMIT 1";
+	$result = mysql_query($query);
+	$nr = mysql_num_rows($result);
+	$nume = stripslashes(mysql_result($result,0,'nume'));
+	$sef = stripslashes(mysql_result($result,0,'sef'));
+	$nume = htmlspecialchars($nume,ENT_QUOTES);
+	$sef = htmlspecialchars($sef,ENT_QUOTES);
+	$herarch = display_select_herarch(2,$id);
+	$finish = '"modif_cat" value="Modific&#259;"></td>';
+	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renun&#x21B;&#259;">';
+	$hide = '<input type="hidden" name="cat_id" value="'.$id.'">';
 	}
-}
-
+else
+	{
+	$msj = "Adauga catedra";
+	$nume = "";
+	$sef = "";
+	$herarch = display_select_herarch(2,0);
+	$finish = '"adauga_cat" value="Adaug&#259;">';
+	$hide ='';
+	}
 //formular de adaugare cont
-add($utilizator_plus,'<form action="" method="post">
+add($utilizator_plus,'<form action="2_catedra.php" method="post">
 				<table class="formular">
 					<tr>
-						<td colspan="5">Adauga catedra</td>
+						<td colspan="5">'.$msj.'</td>
 					</tr>
 					<tr>'.
-						display_select_herarch(1)
+						$herarch
 					.'</tr>
 					<tr>
-						<td>Nume </td><td><input type="text" name="nume"></td>
-						<td>Sef catedra</td><td><input type="text" name="shef"></td> 
+						<td>Nume </td><td><input type="text" name="nume" value="'.$nume.'"></td>
+						<td>Sef catedra</td><td><input type="text" name="shef" value="'.$sef.'"></td> 
 					</tr>
 					<tr>
-						<td><input align="center" type="submit" name="adauga_cat" value="Adauga"></td>
+						<td><input align="center" type="submit" name='.$finish.'</td>
 					</tr>
-				</table>				
+				</table>'.$hide.'				
 				</form><br>');
 				
 //afisare utilizatori existenti

@@ -41,18 +41,24 @@ if(isset($_POST['adauga_tit']))
 	@mysql_free_result($result);
 }
 else
-if(isset($_POST['modifica_cont']))
-{
-	foreach($_POST as $index=>$val)
+if(isset($_POST['modif_tit']))
 	{
-		$$index = addslashes(html_entity_decode($val));
-		//echo $index.' = '.$val.'<br>';
+		foreach($_POST as $index=>$val)
+			{
+			$$index = $val;
+			}
+		
+		$query = "UPDATE `titulari` SET `link_disc`=".$disciplina.",`nume`='".$nume."',
+										  `serie`='".$serie."', `an`=".$an."
+				WHERE `tit_id`=".$tit_id." LIMIT 1";
+
+		if(mysql_query($query))
+		{
+			add($mesaj,'Modificarea a fost realizat&#x103; cu succes.<br>');
+		}
+		else
+			add($mesaj,'<div class="eroare">Eroare ap&#x103;rut&#x103; la aplicarea modific&#x103;rii.</div>');
 	}
-	$query = "UPDATE `asocieri` SET `nume`='".$nume."',`email`='".$email."',`link_admin`='.$materie.'
-		  WHERE `asoc_id`='".$utilizator_id."' LIMIT 1";
-	$result = mysql_query($query);
-	@mysql_free_result($result);	
-}
 
 if(isset($_GET['sterge']))
 {
@@ -66,80 +72,57 @@ if(isset($_GET['sterge']))
 			dd($mesaj,'<div class="eroare">Eroare : Titularul nu a putut fi sters din baza de date.');
 	@mysql_free_result($result);
 }
-else
-if(isset($_GET['modifica']))//trebuie afisat formularul pentru modificat datele unui utilizator
-{
-	$id = addslashes($_GET['modifica']);
-	
-	$query = "SELECT * FROM `asocieri` WHERE `asoc_id`='".$id."' LIMIT 1";
-	$result = mysql_query($query);
-	$nr = mysql_num_rows($result);
-	
-	if($nr == 0)
-		{
-		add($mesaj,'<div class="eroare">Eroare : Utilizator inexistent.</div></br>');
-		break;
-		}
-	else
-	{	
-	
-	$nume = stripslashes(mysql_result($result,0,'nume'));
-	$email =stripslashes(mysql_result($result,0,'email'));
-	
-	$nume = htmlspecialchars($nume,ENT_QUOTES);
-	$email = htmlspecialchars($email,ENT_QUOTES);
-	
-	$utilizator_modi = '';
-	add($utilizator_modi,'<form action="2_utilizatori.php" method="post">
-			<input type="hidden" name="utilizator_id" value="'.$id.'">
-			<table class="formular">
-					<tr>
-					<td colspan="5">Modifica utilizator</td>
-					</tr>
-					<tr>
-					<td>Nume <input type="text" name="nume" value="'.$nume.'"></td>
-					<td>Email <input type="text" name="email" value="'.$email.'"></td>
-					<td>Materie/Tip '.$select_materie.'</td>
-					<td><input type="submit" name="modifica_cont" value="Modifica"></td>
-					</tr>
-					</table>				
-					</form><br>');
-	}
-	@mysql_free_result($result);
-}
 
 $content = '';
 add($content,'<div class="title" align="center">Titulari</div>');
 add($content,'<br>');
 add($content,$mesaj);
 
-//adaug formularul de modificare cont
-if(isset($utilizator_modi))
-{
-	if(!empty($utilizator_modi))
+if(isset($_GET['modifica']))
 	{
-		add($content,$utilizator_modi);
+	$msj = "Modifica titular";
+	$id = $_GET['modifica'];
+	$query = "SELECT * FROM `titulari` WHERE `tit_id`='".$id."' LIMIT 1";
+	$result = mysql_query($query);
+	$nr = mysql_num_rows($result);
+	$nume = stripslashes(mysql_result($result,0,'nume'));
+	$serie = stripslashes(mysql_result($result,0,'serie'));
+	$nume = htmlspecialchars($nume,ENT_QUOTES);
+	$an = mysql_result($result,0,'an');
+	$herarch = display_select_herarch(5,$id);
+	$finish = '"modif_tit" value="Modific&#259;"></td>';
+	$finish .= '<td colspan="2"><input type="submit" name="renunta" value="Renun&#x21B;&#259;">';
+	$hide = '<input type="hidden" name="tit_id" value="'.$id.'">';
 	}
-}
+else
+	{
+	$msj = "Adauga catedra";
+	$nume = "";
+	$serie = "";
+	$an = "";
+	$herarch = display_select_herarch(5,0);
+	$finish = '"adauga_cat" value="Adaug&#259;">';
+	$hide ='';
+	}
 
 //formular de adaugare cont
-add($utilizator_plus,'<form action="" method="post">
+add($utilizator_plus,'<form action="2_titulari.php" method="post">
 				<table class="formular">
 					<tr>
-						<td colspan="5">Adauga titular</td>
+						<td colspan="5">'.$msj.'</td>
 					</tr>
 					<tr>'.
-						display_select_herarch(5)
+						$herarch
 					.'</tr>
 					<tr>
-						<td>Nume </td><td><input type="text" name="nume"></td>
-						<td>An</td><td><input type="text" name="an"></td> 
-						<td>Serie</td><td><input type="text" name="serie"></td>
+						<td>Nume </td><td><input type="text" name="nume" value="'.$nume.'"></td>
+						<td>An</td><td><input type="text" name="an" value='.$an.'></td> 
+						<td>Serie</td><td><input type="text" name="serie" value="'.$serie.'"></td>
 					</tr>
 					<tr>
-						<td><input align="center" type="submit" name="adauga_tit" value="Adauga"></td>
+						<td><input align="center" type="submit" name='.$finish.'</td>
 					</tr>
-				</table>				
+				</table>'.$hide.'				
 				</form><br>');
 				
 //afisare utilizatori existenti
@@ -206,8 +189,8 @@ for($i=0;$i<$nr;$i++)
 					<td>'.$Tcat.'</td>
 					<td>'.$Tfac.'</td>
 					<td>'.$Tuniv.'</td>
-					<td><a href="2_titulari.php?sterge='.$dc_ID.'">sterge</a>
-						<a href="2_titulari.php?modifica='.$dc_ID.'">modifica</a></td>
+					<td><a href="2_titulari.php?sterge='.$tt_ID.'">sterge</a>
+						<a href="2_titulari.php?modifica='.$tt_ID.'">modifica</a></td>
 				</tr>');
 
 }
