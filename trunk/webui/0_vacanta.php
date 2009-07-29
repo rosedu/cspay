@@ -70,8 +70,6 @@ if(isset($_POST['vacanta_adauga']))
 			$dropit = array();
 			$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python parity.py";
 			exec($command,&$dropit);
-			foreach ($dropit as $pis)
-			print $pis;
 			add($mesaj,'Perioada a fost ad&#259;ugat&#259; cu succes.<br>');
 			}
 		else
@@ -118,8 +116,6 @@ else
 			$dropit = array();
 			$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python parity.py";
 			exec($command,&$dropit);
-			foreach ($dropit as $pis)
-				print $pis;
 			add($mesaj,'Modificarea a fost realizat&#259; cu succes.<br>');
 			}
 		else
@@ -137,8 +133,6 @@ if(isset($_GET['vacanta_sterge']))
 		$dropit = array();
 		$command = "cd /home/cspay/web-exec-scripts/ && /usr/bin/python parity.py";
 		exec($command,&$dropit);
-		foreach ($dropit as $pis)
-			print $pis;
 		add($mesaj,'Perioada de vacan&#x21B;&#259; a fost &#x15F;tears&#259; cu succes<br>');
 		}
 	else

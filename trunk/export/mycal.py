@@ -10,7 +10,6 @@ days = ['MO','TU','WE','TH', 'FR', 'SA','SU']
 class Entry():
         def __init__(self, course):
                 day = days[course['zi']]
-                interv = str(course['parit'])
                 what = course['disciplina'] + " (" + course['tip'] + ") - "
                 what += course['grupa']
                 where = course['sala']
@@ -26,7 +25,7 @@ class Entry():
                 self.ev.add('tzid', 'Europe/Bucharest')
                 self.ev.add('duration', timedelta(hours = far))
                 self.ev.add('uid',uid)
-                self.rpt = ('FREQ=WEEKLY;INTERVAL='+interv+';BYDAY='+day+
+                self.rpt = ('FREQ=WEEKLY;INTERVAL=1;BYDAY='+day+
                             ';UNTIL=')
                 self.exdate = []
 
@@ -85,9 +84,7 @@ def insert_course(C, curs, holidays, parit, start, stop):
 	p = 0
 
 	while True:
-		if d > stop:
-			break
-		t = 1
+		t = 0
 		d = get_next_wday(curs['zi'], d)
 		while True:
 			if d > stop:
@@ -96,17 +93,20 @@ def insert_course(C, curs, holidays, parit, start, stop):
 			else:
 				d1 = in_holiday(d, holidays)
 				if d1:
+					t = 1
 					break
-				elif ((not p) and
-                                      (curs['parit'] == 1 or
-                                       (parit[d.isocalendar()[1]]
-                                        % curs['parit'] == curs['pari_st'])
-                                       )
+				elif ((curs['parit'] > 1) and
+                                                              (parit[d.isocalendar()[1]]%curs['parit']
+                                                               != curs['pari_st'])
                                       ):
-					t = 0
+					
+					t = 1
+					d1 = d + timedelta( days = 7)
+					break
+				if not p:
 					break
 				d = d + timedelta( days = 7)
-		
+
 		if t == 1 and p:
 			E.add_except(d, d1)
 			d = d1
@@ -116,10 +116,14 @@ def insert_course(C, curs, holidays, parit, start, stop):
 			else:
 				E.add_end(stop)
 			C.add_component(E.get_entry())
+			break
 		else:
-			E = Entry(curs)
-			E.add_start(d)
-			p = 1
+			if not t:
+				E = Entry(curs)
+				E.add_start(d)
+				p = 1
+			d = d + timedelta( days = 7)
+
 
 					
 def get_next_wday(which, after):
