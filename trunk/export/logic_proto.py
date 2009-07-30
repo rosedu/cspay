@@ -207,5 +207,8 @@ def inside(d, range):
 	return 0
 
 def strip_diacritics(s):
-        ss = unicode(s, "utf-8")
+        try:
+                ss = unicode(s, "utf-8")
+        except TypeError:
+                return s
         return ''.join((c for c in unicodedata.normalize('NFD', ss) if unicodedata.category(c) != 'Mn'))
