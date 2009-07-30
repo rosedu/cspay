@@ -74,7 +74,7 @@ if (isset($_REQUEST['idFac']))
 	$nr = mysql_num_rows($result);
 	echo '<select name="facultate" style="font-size:10pt;" 
 			onChange="CategoryGrab('."'".'get_fac.php?idCat='."'".'+this.value,'."'div_cat'".');
-					  CategoryGrab('."'".'get_fac.php?idDisc='."'".'+this.value,'."'div_disc'".');">';
+					  CategoryGrab('."'".'get_fac.php?idDisc=-1'."',"."'div_disc'".');">';
 	echo '<option value="0">&nbsp;</option>';
 	if($nr)
 		{
