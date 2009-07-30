@@ -46,7 +46,7 @@ if (isset($_REQUEST['idDisc']))
 		}
 	echo '</select>';
 	}	
-elseif (isset($_REQUEST['idCat']))
+if (isset($_REQUEST['idCat']))
 	{
 	$ID=$_REQUEST['idCat'];
 	$query = "SELECT * FROM catedre WHERE link_fac=$ID";
@@ -66,7 +66,7 @@ elseif (isset($_REQUEST['idCat']))
 		}
 	echo '</select>';
 	}
-elseif (isset($_REQUEST['idFac']))
+if (isset($_REQUEST['idFac']))
 	{
 	$ID=$_REQUEST['idFac'];
 	$query = "SELECT * FROM facultati WHERE link_univ=$ID";
@@ -75,14 +75,17 @@ elseif (isset($_REQUEST['idFac']))
 	echo '<select name="facultate" style="font-size:10pt;" 
 			onChange="CategoryGrab('."'".'get_fac.php?idCat='."'".'+this.value,'."'div_cat'".');">';
 	echo '<option value="0">&nbsp;</option>';
-	for ($i = 0; $i <$nr;$i++)
+	if($nr)
 		{
-		echo "<option value=".mysql_result($result,$i,'fac_id').">".
-				mysql_result($result,$i,'nume_scurt')."</option>";
+		for ($i = 0; $i <$nr;$i++)
+			{
+			echo "<option value=".mysql_result($result,$i,'fac_id').">".
+					mysql_result($result,$i,'nume_scurt')."</option>";
+			}
 		}
 	echo '</select>';
 	}
-elseif (isset($_REQUEST['idTip']))
+if (isset($_REQUEST['idTip']))
 	{
 	$ID=$_REQUEST['idTip'];
 	if($ID != "A")
