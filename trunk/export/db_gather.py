@@ -144,7 +144,10 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                         print "No pay-per-hour found for", name
         else:
                 if not function:
-                        output_table(input, vacante, used_par, path)
+                        try:
+                                output_table(input, vacante, used_par, path)
+                        except:
+                                print "Eroare la",sys.exc_info()
                 elif function == 1:
                         output_orar(input, path)
                 else:
