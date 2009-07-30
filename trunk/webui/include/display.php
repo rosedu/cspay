@@ -181,7 +181,8 @@ function display_select_fac($univ, $facid)
 	{
 	$changeprone ="";
 	if($facid && $univ)
-		$changeprone = 'onChange="CategoryGrab('."'get_fac.php?idCat='+this.value,"."'div_cat'".');"';
+		$changeprone = 'onChange="CategoryGrab('."'".'get_fac.php?idDisc=0,'."'div_disc'".');
+								  CategoryGrab('."'get_fac.php?idCat='+this.value,"."'div_cat'".');"';
 	$fac ='<div id="div_fac"><select style="font-size:10pt;width: 100px;" name="facultate" '.$changeprone.' >';
 	$fac .='<option value="0">&nbsp;</option>';
 	if($univ && $facid)
@@ -301,7 +302,10 @@ function display_select_herarch($level, $an_id)
 		$nr = mysql_num_rows($result);
 		$univ ='<td>Universitatea:</td><td>';
 		$univ .= '<select style="font-size:10pt;" name="universitate" 
-				   onChange="CategoryGrab('."'".'get_fac.php?idFac='."'".'+this.value,'."'div_fac'".');">';
+				   onChange="CategoryGrab('."'".'get_fac.php?idDisc=0,'."'div_disc'".');
+							 CategoryGrab('."'".'get_fac.php?idCat=0,'."'div_cat'".');
+							 CategoryGrab('."'".'get_fac.php?idCat='."'".'+this.value,'."'div_fac'".');
+							">';
 		$univ .= '<option value="0">&nbsp;</option>';
 		for ($i = 0; $i < $nr; $i++)
 			{
