@@ -147,11 +147,17 @@ def gather_data(name, univ, facl, desk, path, function, months = 0):
                         try:
                                 output_table(input, vacante, used_par, path)
                         except:
-                                print "Eroare la",sys.exc_info()
+                                print "Eroare export tabela: ",sys.exc_info()
                 elif function == 1:
-                        output_orar(input, path)
+                        try:
+                                output_orar(input, path)
+                        except:
+                              print "Eroare export orar xls: ",sys.exc_info()  
                 else:
-                        output_ical(input, vacante, used_par, path)
+                        try:
+                                output_ical(input, vacante, used_par, path)
+                        except:
+                                print "Eroareexport orar ics: ",sys.exc_info() 
 
         print "OK"
 	
