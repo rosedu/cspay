@@ -74,31 +74,31 @@ def parse(list_data,line_number,prev_error):
             if(i==10)and(list_data[1]=="C"):
                 if(prev_error<1000):
                     print "line:",line_number+1
-                    print "column:",col_list[i],",column index:",i+1,",Error MISSING DATA \n"
+                    print ",column:",col_list[i],",column index:",i+1,",Error MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="L"):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
+                    print ",column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="P"):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
+                    print ",column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="S"):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
+                    print ",column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
+                    print ",column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             
@@ -107,7 +107,7 @@ def parse(list_data,line_number,prev_error):
         elif(list_data[15]!="po")and(list_data[15]!="pa")and(list_data[15]!="B"):
             if(prev_error<1000):
                 print "line:",line_number+1,
-                print "column:",col_list[15],",column index:",15,",Error BAD DATA (po,pa,B)-",list_data[15]
+                print ",column:",col_list[15],",column index:",15,",Error BAD DATA (po,pa,B)-",list_data[15]
             prev_error=prev_error+1
             return prev_error
         i=i+1
