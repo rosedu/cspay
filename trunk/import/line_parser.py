@@ -108,7 +108,9 @@ def parse(list_data,line_number,prev_error):
             if(prev_error<1000):
                 print "line:",line_number+1,
                 print ",column:",col_list[15],",column index:",15,",Error WRONG DATA "
-                print "EXPECTED: po,pa,B at","column:",col_list[15],",column index:",15," found:",list_data[15]
+                print "line:",line_number+1,
+                print ",column:",col_list[15],",column index:",15,
+                print "EXPECTED: po,pa,B but found:",list_data[15]
             prev_error=prev_error+1
             return prev_error
         i=i+1
