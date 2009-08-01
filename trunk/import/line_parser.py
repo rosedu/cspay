@@ -41,7 +41,7 @@ oblig=[0, # Facultate
 ################################################
 
 def parse(list_data,line_number,prev_error):
-    #print "Parser called at line number :",line_number
+    #print "Parser called at line number:",line_number
     #all cells in a line are empty=>ignore the line, return Ok
     ii=0
     i=0
@@ -51,12 +51,12 @@ def parse(list_data,line_number,prev_error):
         i=i+1
     if(i>22):
         if(prev_error<1000):
-            print "line:",line_number+1,",Error : Number of columns exceeds 22 (=nr needed) "
+            print "line:",line_number+1,",Error:Number of columns exceeds 22 (=nr needed) "
         prev_error=prev_error+1
         return prev_error
     elif(i<22):
         if(prev_error<1000):
-            print "line:",line_number+1,",Error : Number of columns bellow 22 (=nr needed) "
+            print "line:",line_number+1,",Error:Number of columns bellow 22 (=nr needed) "
         prev_error=prev_error+1
         return prev_error
     if ii>21:
@@ -73,32 +73,32 @@ def parse(list_data,line_number,prev_error):
             #common mandatory data
             if(i==10)and(list_data[1]=="C"):
                 if(prev_error<1000):
-                    print "line: ",line_number+1
-                    print "column : ",col_list[i],",column index :",i+1,",Error MISSING DATA \n"
+                    print "line:",line_number+1
+                    print "column:",col_list[i],",column index:",i+1,",Error MISSING DATA \n"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="L"):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column:",col_list[i],",column index:",i+1,",Error: MISSING DATA"
+                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="P"):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column :",col_list[i],",column index:",i+1,",Error: MISSING DATA"
+                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==11)and(list_data[1]=="S"):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column:",col_list[i],",column index:",i+1,",Error: MISSING DATA"
+                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<1000):
                     print "line:",line_number+1,
-                    print "column :",col_list[i],",column index:",i+1,",Error: MISSING DATA"
+                    print "column:",col_list[i],",column index:",i+1,",Error:MISSING DATA"
                 prev_error=prev_error+1
                 return prev_error
             
@@ -107,7 +107,7 @@ def parse(list_data,line_number,prev_error):
         elif(list_data[15]!="po")and(list_data[15]!="pa")and(list_data[15]!="B"):
             if(prev_error<1000):
                 print "line:",line_number+1,
-                print "column :",col_list[15],",column index:",15,",Error BAD DATA (po,pa,B)-",list_data[15]
+                print "column:",col_list[15],",column index:",15,",Error BAD DATA (po,pa,B)-",list_data[15]
             prev_error=prev_error+1
             return prev_error
         i=i+1
@@ -115,11 +115,11 @@ def parse(list_data,line_number,prev_error):
     index=0
     for value in list_data:
         
-        if isinstance(value, unicode): #check data type
+        if isinstance(value, unicode):#check data type
             list_data[index]=value.encode("utf-8",'ignore')
              #removes leading and trailing spaces from string types
             
-        elif isinstance(value, str): #check data type
+        elif isinstance(value, str):#check data type
             list_data[index]=value.strip()
         elif isinstance(value, float):
             list_data[index]=int(value)
