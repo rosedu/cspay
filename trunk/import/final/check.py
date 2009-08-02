@@ -17,7 +17,7 @@ import MySQLdb
 print """"
 <html>
     <head>
-        <title>Errors XLS<title>
+        <title>Errors XLS</title>
     <head>
     <body>
     <p>
@@ -96,7 +96,14 @@ col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf
 ################################################
 print "</p>"
 print """<table border="1">"""
-
+print "<tr>"
+print "<td> Line Number </td>"
+print "<td> Column Name </td>"
+print "<td> Column Index </td>"
+print "<td> Error Type </td>"
+print "<td> Data Expected </td>"
+print "<td> Other info </td>"
+print "</tr>"
 cursor.execute("TRUNCATE TABLE ore")
 sheet = file_xls.sheet_by_index(0)
 #get sheet and pass it to read line
