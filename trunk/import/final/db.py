@@ -18,7 +18,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             error+="<td>"+str(1)+"</td>"
             error+="<td>"+"Bad Data"+"</td>"
             error+="<td>"+"DB Response"+"</td>"
-            error+="<td>"+"found: ",list_data[0]+"</td>"
+            error+="<td>"+"found: "+list_data[0]+"</td>"
             error+="</tr>"
             print error
         prev_error+=1
@@ -39,7 +39,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 error+="<td>"+str(3)+"</td>"
                 error+="<td>"+"Bad Data"+"</td>"
                 error+="<td>"+"DB Response"+"</td>"
-                error+="<td>"+"found: ",list_data[2]+"</td>"
+                error+="<td>"+"found: "+list_data[2]+"</td>"
                 error+="</tr>"
                 print error
             prev_error=prev_error+1
@@ -60,7 +60,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     error+="<td>"+str(20)+"</td>"
                     error+="<td>"+"Bad Data"+"</td>"
                     error+="<td>"+"lu(p/i),ma(p/i)..."+"</td>"
-                    error+="<td>"+"found: ",line_data[19][0:3]+"</td>"
+                    error+="<td>"+"found: "+line_data[19][0:3]+"</td>"
                     error+="</tr>"
                     print error
                     
