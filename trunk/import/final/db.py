@@ -13,12 +13,12 @@ def db_write_line(cursor,line_data,line_index,prev_error):
     if not link_fac:
         if(prev_error<1000):
             error="<tr>"
-            error+="<td>",line_index+1,"</td>"
-            error+="<td>","facultate","</td>"
-            error+="<td>",1,"</td>"
-            error+="<td>","Bad Data","</td>"
-            error+="<td>","DB Response","</td>"
-            error+="<td>","found: ",list_data[0],"</td>"
+            error+="<td>"+line_index+1+"</td>"
+            error+="<td>"+"facultate"+"</td>"
+            error+="<td>"+1+"</td>"
+            error+="<td>"+"Bad Data"+"</td>"
+            error+="<td>"+"DB Response"+"</td>"
+            error+="<td>"+"found: ",list_data[0]+"</td>"
             error+="</tr>"
             print error
         prev_error+=1
@@ -34,12 +34,12 @@ def db_write_line(cursor,line_data,line_index,prev_error):
         if not id_ora:
             if(prev_error<1000):
                 error="<tr>"
-                error+="<td>",line_index+1,"</td>"
-                error+="<td>","discipline","</td>"
-                error+="<td>",3,"</td>"
-                error+="<td>","Bad Data","</td>"
-                error+="<td>","DB Response","</td>"
-                error+="<td>","found: ",list_data[2],"</td>"
+                error+="<td>"+line_index+1+"</td>"
+                error+="<td>"+"discipline"+"</td>"
+                error+="<td>"+3+"</td>"
+                error+="<td>"+"Bad Data"+"</td>"
+                error+="<td>"+"DB Response"+"</td>"
+                error+="<td>"+"found: ",list_data[2]+"</td>"
                 error+="</tr>"
                 print error
             prev_error=prev_error+1
@@ -55,12 +55,12 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             else:
                 if(prev_error<1000):
                     error="<tr>"
-                    error+="<td>",line_index+1,"</td>"
-                    error+="<td>","paritate","</td>"
-                    error+="<td>",20,"</td>"
-                    error+="<td>","Bad Data","</td>"
-                    error+="<td>","lu(p/i),ma(p/i)...","</td>"
-                    error+="<td>","found: ",line_data[19][0:3],"</td>"
+                    error+="<td>"+line_index+1+"</td>"
+                    error+="<td>"+"paritate"+"</td>"
+                    error+="<td>"+20+"</td>"
+                    error+="<td>"+"Bad Data"+"</td>"
+                    error+="<td>"+"lu(p/i),ma(p/i)..."+"</td>"
+                    error+="<td>"+"found: ",line_data[19][0:3]+"</td>"
                     error+="</tr>"
                     print error
                     
