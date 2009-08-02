@@ -171,7 +171,7 @@ def parse(list_data,line_number,prev_error):
                 error+="<td>"+str(16)+"</td>"
                 error+="<td>"+"Bad Data"+"</td>"
                 error+="<td>"+"po/pa/B"+"</td>"
-                error+="<td>"+"found: ",list_data[15]+"</td>"
+                error+="<td>"+"found: "+list_data[15]+"</td>"
                 error+="</tr>"
                 print error
             prev_error=prev_error+1
