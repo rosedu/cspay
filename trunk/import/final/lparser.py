@@ -52,10 +52,10 @@ def parse(list_data,line_number,prev_error):
     if(i>22):
         if(prev_error<1000):
             error="<tr>"
-            error+="<td>"+line_number+1+"</td>"
+            error+="<td>"+str(line_number+1)+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
-            error+="<td>"+i,"cells"+"</td>"
+            error+="<td>"+str(i),"cells"+"</td>"
             error+="<td>"+"22 cells"+"</td>"
             error+="<td>"+"too many"+"</td>"
             error+="</tr>"
@@ -68,7 +68,7 @@ def parse(list_data,line_number,prev_error):
             error+="<td>"+line_number+1+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
-            error+="<td>"+i,"cells"+"</td>"
+            error+="<td>"+str(i),"cells"+"</td>"
             error+="<td>"+"22 cells"+"</td>"
             error+="<td>"+"too few"+"</td>"
             error+="</tr>"
@@ -78,7 +78,7 @@ def parse(list_data,line_number,prev_error):
     if ii>21:
         if(prev_error<1000):
             error="<tr>"
-            error+="<td>"+line_number+1+"</td>"
+            error+="<td>"+str(line_number+1)+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"0 cells"+"</td>"
@@ -98,9 +98,9 @@ def parse(list_data,line_number,prev_error):
             if(i==10)and(list_data[1]=="C"):
                 if(prev_error<1000):
                     error="<tr>"
-                    error+="<td>"+line_number+1+"</td>"
-                    error+="<td>"+col_list[i]+"</td>"
-                    error+="<td>"+i+1+"</td>"
+                    error+="<td>"+str(line_number+1)+"</td>"
+                    error+="<td>"+str(col_list[i])+"</td>"
+                    error+="<td>"+str(i+1)+"</td>"
                     error+="<td>"+"Missing Data"+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+""+"</td>"
@@ -111,9 +111,9 @@ def parse(list_data,line_number,prev_error):
             if(i==11)and(list_data[1]=="L"):
                 if(prev_error<1000):
                     error="<tr>"
-                    error+="<td>"+line_number+1+"</td>"
-                    error+="<td>"+col_list[i]+"</td>"
-                    error+="<td>"+i+1+"</td>"
+                    error+="<td>"+str(line_number+1)+"</td>"
+                    error+="<td>"+str(col_list[i])+"</td>"
+                    error+="<td>"+str(i+1)+"</td>"
                     error+="<td>"+"Missing Data"+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
@@ -124,9 +124,9 @@ def parse(list_data,line_number,prev_error):
             if(i==11)and(list_data[1]=="P"):
                 if(prev_error<1000):
                     error="<tr>"
-                    error+="<td>"+line_number+1+"</td>"
-                    error+="<td>"+col_list[i]+"</td>"
-                    error+="<td>"+i+1+"</td>"
+                    error+="<td>"+str(line_number+1)+"</td>"
+                    error+="<td>"+str(col_list[i])+"</td>"
+                    error+="<td>"+str(i+1)+"</td>"
                     error+="<td>"+"Missing Data"+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
@@ -137,9 +137,9 @@ def parse(list_data,line_number,prev_error):
             if(i==11)and(list_data[1]=="S"):
                 if(prev_error<1000):
                     error="<tr>"
-                    error+="<td>"+line_number+1+"</td>"
-                    error+="<td>"+col_list[i]+"</td>"
-                    error+="<td>"+i+1+"</td>"
+                    error+="<td>"+str(line_number+1)+"</td>"
+                    error+="<td>"+str(col_list[i])+"</td>"
+                    error+="<td>"+str(i+1)+"</td>"
                     error+="<td>"+"Missing Data"+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
@@ -150,9 +150,9 @@ def parse(list_data,line_number,prev_error):
             if(i==oblig[i])and(i!=10)and(i!=11):
                 if(prev_error<1000):
                     error="<tr>"
-                    error+="<td>"+line_number+1+"</td>"
-                    error+="<td>"+col_list[i]+"</td>"
-                    error+="<td>"+i+1+"</td>"
+                    error+="<td>"+str(line_number+1)+"</td>"
+                    error+="<td>"+str(col_list[i])+"</td>"
+                    error+="<td>"+str(i+1)+"</td>"
                     error+="<td>"+"Missing Data"+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
@@ -166,9 +166,9 @@ def parse(list_data,line_number,prev_error):
         elif(list_data[15]!="po")and(list_data[15]!="pa")and(list_data[15]!="B"):
             if(prev_error<1000):
                 error="<tr>"
-                error+="<td>"+line_number+1+"</td>"
-                error+="<td>"+col_list[15]+"</td>"
-                error+="<td>"+16+"</td>"
+                error+="<td>"+str(line_number+1)+"</td>"
+                error+="<td>"+str(col_list[15])+"</td>"
+                error+="<td>"+str(16)+"</td>"
                 error+="<td>"+"Bad Data"+"</td>"
                 error+="<td>"+"po/pa/B"+"</td>"
                 error+="<td>"+"found: ",list_data[15]+"</td>"
