@@ -34,7 +34,7 @@ if(move_uploaded_file($_FILES['file']['tmp_name'], $target_path)) {
 } else{
     echo "There was an error uploading the file, please try again!";
 }
-$command="cd /home/cspay/web-exec-scripts/ && /usr/bin/python check.py /upload/".$_FILES['file']['tmp_name'] ;
+$command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python check.py /upload/".$_FILES['file']['tmp_name'] ;
 exec($command,&$output);
 echo $output;
 
