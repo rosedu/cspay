@@ -37,7 +37,7 @@ Calea catre fisier (.XLS):<br>
 <input type="submit" value="Send">
 </div>
 </form>';
-add($form);
+add($form,'');
 add($content,$form);
 $layout->replace('CONTENT',$content);
 $layout->print_template();
