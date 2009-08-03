@@ -25,7 +25,9 @@ $content = '<script type="text/javascript">
 			</script>';
 add($content,'<div class="title" align="center">Verificare formular</div>');
 add($content,'<br><div class="content_center">');
+add($content,'tmp_name=');
 add($content,$_FILES['file']['tmp_name']);
+add($content,'name=');
 add($content,$_FILES['file']['name']);
 $command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python check.py".$_FILES['file']['tmp_name'];
 $output=array();
