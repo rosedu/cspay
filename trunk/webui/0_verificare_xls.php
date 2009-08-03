@@ -26,5 +26,18 @@ $content = '<script type="text/javascript">
 add($content,'<div class="title" align="center">Verificare formular</div>');
 add($content,'<br><div class="content_center">');
 $layout->replace('CONTENT',$content);
+
+
+<form action="http://www.rosedu.org/~cspay/2009/0_verificare_xls2.php"
+enctype="multipart/form-data" method="post">
+<p>
+Calea catre fisier (.XLS):<br>
+<input type="file" name="datafile" size="40">
+</p>
+<div>
+<input type="submit" value="Send">
+</div>
+</form>
+
 $layout->print_template();
 ?>
