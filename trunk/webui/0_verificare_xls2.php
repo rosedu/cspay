@@ -26,9 +26,18 @@ $content = '<script type="text/javascript">
 add($content,'<div class="title" align="center">Verificare formular</div>');
 add($content,'<br><div class="content_center">');
 
+$target_path = "/upload";
+$target_path = $target_path . basename( $_FILES['file']['name']); 
+if(move_uploaded_file($_FILES['file']['tmp_name'], $target_path)) {
+    echo "The file ".  basename( $_FILES['file']['name']). 
+    " has been uploaded";
+} else{
+    echo "There was an error uploading the file, please try again!";
+}
+$command="cd /home/cspay/web-exec-scripts/ && /usr/bin/python check.py /upload/".$_FILES['file']['tmp_name'] ;
+exec($command,&$output);
+echo $output;
 
-
-add($content,"<p> Verificarea nu a returnat nici o eroare ! </p>");
 $layout->replace('CONTENT',$content);
 $layout->print_template();
 ?>
