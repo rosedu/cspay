@@ -25,6 +25,18 @@ $content = '<script type="text/javascript">
 			</script>';
 add($content,'<div class="title" align="center">Incarcare formular</div>');
 add($content,'<br><div class="content_center">');
+
+$form ='<form action="http://www.rosedu.org/~cspay/2009/0_verificare_xls2.php" method="post">
+<p>
+Calea catre fisier (.XLS):<br><br>
+<input type="file" name="datafile" size="40">
+</p>
+<div>
+<input type="submit" value="Send">
+</div>
+</form>';
+add($form,'');
+add($content,$form);
 $layout->replace('CONTENT',$content);
 $layout->print_template();
 ?>

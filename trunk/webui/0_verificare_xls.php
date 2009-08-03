@@ -30,7 +30,7 @@ add($content,'<br><div class="content_center">');
 
 $form ='<form action="http://www.rosedu.org/~cspay/2009/0_verificare_xls2.php" method="post">
 <p>
-Calea catre fisier (.XLS):<br>
+Calea catre fisier (.XLS):<br><br>
 <input type="file" name="datafile" size="40">
 </p>
 <div>
