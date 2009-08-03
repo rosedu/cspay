@@ -29,7 +29,8 @@ add($content,'<br><div class="content_center">');
 $command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python check.py ".$_FILES['file']['name'] ;
 $output=array();
 exec($command,&$output);
-add($content,$output);
+foreach($output as $line)$ics=$ics.$line;
+add($content,$ics);
 $layout->replace('CONTENT',$content);
 $layout->print_template();
 ?>
