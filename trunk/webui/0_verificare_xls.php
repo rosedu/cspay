@@ -38,6 +38,7 @@ Calea catre fisier (.XLS):<br>
 </div>
 </form>';
 add($form);
+add($content,$form);
 $layout->replace('CONTENT',$content);
 $layout->print_template();
 ?>
