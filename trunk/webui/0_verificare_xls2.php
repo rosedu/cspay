@@ -26,7 +26,7 @@ $content = '<script type="text/javascript">
 add($content,'<div class="title" align="center">Verificare formular</div>');
 add($content,'<br><div class="content_center">');
 
-$command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python check.py ".$_FILES['file']['name'] ;
+$command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python check.py".$_FILES['file']['name'] ;
 $output=array();
 exec($command,&$output);
 foreach($output as $line)$ics=$ics.$line;
