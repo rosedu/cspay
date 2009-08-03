@@ -23,7 +23,8 @@ $content = '<script type="text/javascript">
 			}
 			}
 			</script>';
-add($content,'<div class="title" align="center">Salvare formular</div>');
+add($content,'<div class="title" align="center">Verificare formular</div>');
 add($content,'<br><div class="content_center">');
+$layout->replace('CONTENT',$content);
 $layout->print_template();
 ?>
