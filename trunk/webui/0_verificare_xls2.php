@@ -26,15 +26,7 @@ $content = '<script type="text/javascript">
 add($content,'<div class="title" align="center">Verificare formular</div>');
 add($content,'<br><div class="content_center">');
 
-$target_path = "/upload";
-$target_path = $target_path . basename( $_FILES['file']['name']); 
-if(move_uploaded_file($_FILES['file']['tmp_name'], $target_path)) {
-    echo "The file ".  basename( $_FILES['file']['name']). 
-    " has been uploaded";
-} else{
-    echo "There was an error uploading the file, please try again!";
-}
-$command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python check.py /upload/".$_FILES['file']['tmp_name'] ;
+$command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python check.py ".$_FILES['file']['name'] ;
 exec($command,&$output);
 echo $output;
 
