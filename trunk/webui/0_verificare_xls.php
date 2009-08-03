@@ -28,7 +28,7 @@ add($content,'<br><div class="content_center">');
 
 
 
-$form ='<form action="http://www.rosedu.org/~cspay/2009/0_verificare_xls2.php" method="post">
+$form ='<form action="http://www.rosedu.org/~cspay/2009/0_verificare_xls2.php" enctype="multipart/form-data" method="post">
 <p>
 Calea catre fisier (.XLS):<br><br>
 <input type="file" name="file" size="40">
@@ -37,7 +37,6 @@ Calea catre fisier (.XLS):<br><br>
 <input type="submit" value="Verifica">
 </div>
 </form>';
-add($form,'');
 add($content,$form);
 $layout->replace('CONTENT',$content);
 $layout->print_template();
