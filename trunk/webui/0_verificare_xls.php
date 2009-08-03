@@ -34,7 +34,7 @@ Calea catre fisier (.XLS):<br><br>
 <input type="file" name="datafile" size="40">
 </p>
 <div>
-<input type="submit" value="Send">
+<input type="submit" value="Verifica">
 </div>
 </form>';
 add($form,'');
