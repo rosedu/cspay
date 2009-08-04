@@ -86,7 +86,7 @@ col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf
 
 ################################################
 print "</p>"
-print """<table border="1"  style="margin-left: auto; margin-right: auto;">"""
+print """<table border="1" ">"""
 print "<tr>"
 print "<td><b> Linie </b></td>"
 print "<td><b> Coloana </b></td>"
