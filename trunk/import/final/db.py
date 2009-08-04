@@ -55,7 +55,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     error="<tr>"
                     error+="<td>"+str(line_index+1)+"</td>"
                     error+="<td>"+"Serie"+"</td>"
-                    error+="<td>"+str(3)+"</td>"
+                    error+="<td>"+str(6)+"</td>"
                     error+="<td"+error_color+"Date gresite"+error_color2+"</td>"
                     error+="<td>"+"eroare BD"+"</td>"
                     error+="<td>"+"Gasit: "+line_data[2]+"</td>"
