@@ -48,7 +48,8 @@ def db_write_line(cursor,line_data,line_index,prev_error):
 
             cursor.execute ("""SELECT tit_id
                            FROM titulari
-                           WHERE link_disc=%s AND serie=%s""",(id_ora,line_data[6]))
+                           WHERE link_disc=%s AND serie=%s""",
+                            (id_ora['disc_id'],line_data[6]))
             tit_id=cursor.fetchone()
             if not tit_id:
                 if(prev_error<1000):
