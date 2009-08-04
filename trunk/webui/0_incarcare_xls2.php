@@ -25,10 +25,11 @@ $content = '<script type="text/javascript">
 			</script>';
 add($content,'<div class="title" align="center">Verificare formular</div>');
 add($content,'<br><div class="content_center">');
-
-
-
-add($content,"<p> Verificarea nu a returnat nici o eroare ! </p>");
+$command="cd /home/cspay/web-exec-scripts/final && /usr/bin/python insert.py ".$_FILES['file']['tmp_name'];
+$output=array();
+exec($command,&$output);
+foreach($output as $line)$ics=$ics.$line;
+add($content,$ics);
 $layout->replace('CONTENT',$content);
 $layout->print_template();
 ?>
