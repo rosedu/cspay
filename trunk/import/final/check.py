@@ -14,7 +14,7 @@ import MySQLdb
 # all files -> start_check=0 , end_check=0
 # line a -> start_check=a end_check<start_check
 # lines a-b -> start_check=a and end_check=b where a<b
-print """"
+print """
 <html>
     <head>
         <title>Errors XLS</title>
@@ -95,7 +95,6 @@ col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf
 
 ################################################
 print "</p>"
-print "<br><p><b>List of errors that have been found </h3><br></b><p>"
 print """<table border="1">"""
 print "<tr>"
 print "<td><b> Line Number </b></td>"
