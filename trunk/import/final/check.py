@@ -15,11 +15,6 @@ import MySQLdb
 # line a -> start_check=a end_check<start_check
 # lines a-b -> start_check=a and end_check=b where a<b
 print """
-<html>
-    <head>
-        <title>Errors XLS</title>
-    <head>
-    <body>
     <p>
 """
 file_name=""
