@@ -95,15 +95,16 @@ col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf
 
 ################################################
 print "</p>"
+print "<br><h3>List of errors that have occured ...</h3><br><br>"
 print """<table border="1">"""
-print "<tr><b>"
-print "<td> Line Number </td>"
-print "<td> Column Name </td>"
-print "<td> Column Index </td>"
-print "<td> Error Type </td>"
-print "<td> Data Expected </td>"
-print "<td> Other info </td>"
-print "</b></tr>"
+print "<tr>"
+print "<td><b> Line Number </b></td>"
+print "<td><b> Column Name </b></td>"
+print "<td><b> Column Index </b></td>"
+print "<td><b> Error Type </b></td>"
+print "<td><b> Data Expected </b></td>"
+print "<td><b> Other info </b></td>"
+print "</tr>"
 cursor.execute("TRUNCATE TABLE ore")
 sheet = file_xls.sheet_by_index(0)
 #get sheet and pass it to read line
@@ -133,5 +134,9 @@ while index_line<end_check:
 
 cursor.execute("TRUNCATE TABLE ore")
 print """</table></body></html>"""
+if(prev_error>0):
+    print "<h3>Errors have been found...Please correct them</h3>"
+else:
+    print "<h3>No errors have been found ...</h3>"
 cursor.close ()
 conn.close()
