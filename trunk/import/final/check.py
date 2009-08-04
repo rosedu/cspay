@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-#script for xls to database insertion
+#script for xls to Datebase insertion
 import xlrd
 import lparser
 import lreader
@@ -32,11 +32,7 @@ for arg in sys.argv:
 if nr_argv>1:
     file_name=sys.argv[1]
 else :
-    print """ ERROR  -> Possible parameters :
-            \n python check.py filename.xls     ->go threw all lines
-            \n python check.py filename.xls x   ->go only at line x
-            \n python check.py filename.xls x y ->go only threw lines x->y
-            """
+    print """ Eroare de apelare script !"""
     
 
 if nr_argv>2:
@@ -58,15 +54,15 @@ while file_exists==0:
         file_xls=xlrd.open_workbook(file_name)
         file_exists=1
     except:
-        print "Error! File (.xls) not found "
-        file_name=raw_input(" Enter the correct path to the xls file ")
+        print "Eroare! Fisierul (.xls) nu a fost gasit "
+        file_name=raw_input("Directorul fisierului este ")
         file_exists=0
 
 
 
 ################################################
 #
-# Connection database
+# Connection Datebase
 #
 ################################################
 
@@ -97,12 +93,12 @@ col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf
 print "</p>"
 print """<table border="1"  style="margin-left: auto; margin-right: auto;">"""
 print "<tr>"
-print "<td><b> Line Number </b></td>"
-print "<td><b> Column Name </b></td>"
-print "<td><b> Column Index </b></td>"
-print "<td><b> Error Type </b></td>"
-print "<td><b> Data Expected </b></td>"
-print "<td><b> Other info </b></td>"
+print "<td><b> Linie </b></td>"
+print "<td><b> Coloana </b></td>"
+print "<td><b> Index </b></td>"
+print "<td><b> Eroare </b></td>"
+print "<td><b> Date </b></td>"
+print "<td><b> Alte </b></td>"
 print "</tr>"
 cursor.execute("TRUNCATE TABLE ore")
 sheet = file_xls.sheet_by_index(0)
@@ -117,26 +113,16 @@ index_line=start_check-1
 while index_line<end_check:
     line=lreader.read_line(sheet,index_line)
     error_check=prev_error
-    prev_error=lparser.parse(line,index_line,prev_error) #if "OK" data is consistent
+    prev_error=lparser.parse(line,index_line,prev_error) #if "OK" Date is consistent
     if error_check==prev_error:
         prev_error=db.db_write_line(cursor,line,index_line,prev_error)  #pass the line and its number
-    #elif error_check=="Ignore":
-   #     print "Line ",index_line+2," has been ignored "
-   # elif (prev_error<3):
-   #     print "\n\n   --------------------------------- \n    "
-   #     print "Data missing on line :",
-    #    print error_check+1," Sheet :",sheet.name
-    #    prev_error=prev_error+1
-    #else:
-     #   prev_error=prev_error+1
+    
     index_line+=1
 
 cursor.execute("TRUNCATE TABLE ore")
-print """</table></body></html>"""
 if(prev_error<=0):
-    print "<p><b>No errors have been found ...</b><p>"
+    print "<p><b>Nu au fost gasite erori ...</b><p>"
 else :
-    print "<p><b>A total of",prev_error," have been found</b></p><br>"
-    print "<p><b>Please correct them !</b></p>"
+    print "<p><b>Numar erori gasite :",prev_error," </b></p><br>"
 cursor.close ()
 conn.close()

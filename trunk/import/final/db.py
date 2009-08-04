@@ -17,9 +17,9 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             error+="<td>"+str(line_index+1)+"</td>"
             error+="<td>"+"Facultate"+"</td>"
             error+="<td>"+str(1)+"</td>"
-            error+="<td"+error_color+"Bad Data"+error_color2+"</td>"
-            error+="<td>"+"DB Response"+"</td>"
-            error+="<td>"+"found: "+line_data[0]+"</td>"
+            error+="<td"+error_color+"Date gresite"+error_color2+"</td>"
+            error+="<td>"+"eroare BD"+"</td>"
+            error+="<td>"+"Gasit: "+line_data[0]+"</td>"
             error+="</tr>"
             print error
         prev_error+=1
@@ -38,9 +38,9 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 error+="<td>"+str(line_index+1)+"</td>"
                 error+="<td>"+"Discipline"+"</td>"
                 error+="<td>"+str(3)+"</td>"
-                error+="<td"+error_color+"Bad Data"+error_color2+"</td>"
-                error+="<td>"+"DB Response"+"</td>"
-                error+="<td>"+"found: "+line_data[2]+"</td>"
+                error+="<td"+error_color+"Date gresite"+error_color2+"</td>"
+                error+="<td>"+"eroare BD"+"</td>"
+                error+="<td>"+"Gasit: "+line_data[2]+"</td>"
                 error+="</tr>"
                 print error
             prev_error=prev_error+1
@@ -59,9 +59,9 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     error+="<td>"+str(line_index+1)+"</td>"
                     error+="<td>"+"Paritate"+"</td>"
                     error+="<td>"+str(20)+"</td>"
-                    error+="<td"+error_color+"Bad Data"+error_color2+"</td>"
+                    error+="<td"+error_color+"Date gresite"+error_color2+"</td>"
                     error+="<td>"+"lu(p/i),ma(p/i)..."+"</td>"
-                    error+="<td>"+"found: "+line_data[19][0:3]+"</td>"
+                    error+="<td>"+"Gasit: "+line_data[19][0:3]+"</td>"
                     error+="</tr>"
                     print error
                     
