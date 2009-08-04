@@ -62,6 +62,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     error+="</tr>"
                     print error
                 prev_error=prev_error+1
+                break
             if str.lower(line_data[19][0:2]) in ["lu","ma","mi","jo","vi","sa","du"]:
                 if(str.lower(line_data[19][2:3])=='i'):
                     paritate="2"
