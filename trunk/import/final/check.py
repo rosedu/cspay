@@ -116,7 +116,7 @@ while index_line<end_check:
 
 cursor.execute("TRUNCATE TABLE ore")
 print """</table>"""
-if(prev_error<=0):
+if(prev_error<1):
     print "<p><b>Nu au fost gasite erori ...</b></p>"
 else :
     print "<p><b>Numar erori gasite :",prev_error," </b></p><br>"
