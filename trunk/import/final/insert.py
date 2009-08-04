@@ -120,7 +120,7 @@ while index_line<end_check:
     index_line+=1
 
 
-print """</table></body></html>"""
+print """</table>"""
 if(prev_error<=0):
     print "<p><b>Nu au fost gasite erori ...</b><p>"
     print "<p><b>Datele au fost incarcate </b></p>"
@@ -128,5 +128,6 @@ else :
     cursor.execute("TRUNCATE TABLE ore")
     print "<p><b>Numar erori gasite :",prev_error," </b></p><br>"
     print "<p><b>Datele NU au fost incarcate </b></p>"
+
 cursor.close ()
 conn.close()

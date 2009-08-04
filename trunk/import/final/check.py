@@ -120,7 +120,7 @@ while index_line<end_check:
     index_line+=1
 
 cursor.execute("TRUNCATE TABLE ore")
-print """</table></body></html>"""
+print """</table>"""
 if(prev_error<=0):
     print "<p><b>Nu au fost gasite erori ...</b><p>"
 else :
