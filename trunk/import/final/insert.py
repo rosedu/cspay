@@ -117,7 +117,7 @@ while index_line<end_check:
 
 print """</table>"""
 if(prev_error<=0):
-    print "<p><b>Nu au fost gasite erori ...</b><p>"
+    print "<p><b>Nu au fost gasite erori ...</b></p>"
     print "<p><b>Datele au fost incarcate </b></p>"
 else :
     cursor.execute("TRUNCATE TABLE ore")
