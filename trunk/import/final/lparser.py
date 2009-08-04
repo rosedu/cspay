@@ -10,8 +10,8 @@
 
 ################################################
 
-error_color=""">"""
-
+error_color="""><FONT COLOR="#CC0000">"""
+error_color2="""</FONT>"""
 col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stud",
           "Nr gr/sg","sg","C2","A2","Post","Grad","PERS","Tip","Acoperit",
           "Acop.efectiv","An/Gr","Zi","Ora","Sala"]
@@ -69,7 +69,7 @@ def parse(list_data,line_number,prev_error):
             error+="<td>"+line_number+1+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
-            error+="<td"+error_color+str(i),"cells"+"</td>"
+            error+="<td"+error_color+str(i)+error_color2+"cells"+"</td>"
             error+="<td>"+"22 cells"+"</td>"
             error+="<td>"+"too few"+"</td>"
             error+="</tr>"
@@ -82,7 +82,7 @@ def parse(list_data,line_number,prev_error):
             error+="<td>"+str(line_number+1)+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
-            error+="<td"+error_color+"0 cells"+"</td>"
+            error+="<td"+error_color+"0 cells"+error_color2+"</td>"
             error+="<td>"+"22 cells"+"</td>"
             error+="<td>"+"line ignored"+"</td>"
             error+="</tr>"
@@ -102,7 +102,7 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+"</td>"
+                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+""+"</td>"
                     error+="</tr>"
@@ -115,7 +115,7 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+"</td>"
+                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
                     error+="</tr>"
@@ -128,7 +128,7 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+"</td>"
+                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
                     error+="</tr>"
@@ -141,7 +141,7 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+"</td>"
+                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
                     error+="</tr>"
@@ -154,7 +154,7 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+"</td>"
+                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+"found: N/A"+"</td>"
                     error+="</tr>"
@@ -170,7 +170,7 @@ def parse(list_data,line_number,prev_error):
                 error+="<td>"+str(line_number+1)+"</td>"
                 error+="<td>"+str(col_list[15])+"</td>"
                 error+="<td>"+str(16)+"</td>"
-                error+="<td"+error_color+"Bad Data"+"</td>"
+                error+="<td"+error_color+"Bad Data"+error_color2+"</td>"
                 error+="<td>"+"po/pa/B"+"</td>"
                 error+="<td>"+"found: "+list_data[15]+"</td>"
                 error+="</tr>"
