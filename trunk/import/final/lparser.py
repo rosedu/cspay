@@ -43,7 +43,7 @@ oblig=[0, # Facultate
 
 def parse(list_data,line_number,prev_error):
     #print "Parser called at line number:",line_number
-    #all cells in a line are empty=>ignore the line, return Ok
+    #all celule in a line are empty=>ignore the line, return Ok
     ii=0
     i=0
     for check in list_data:
@@ -56,9 +56,9 @@ def parse(list_data,line_number,prev_error):
             error+="<td>"+str(line_number+1)+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
-            error+="<td>"+str(i),"cells"+"</td>"
-            error+="<td>"+"22 cells"+"</td>"
-            error+="<td>"+"too many"+"</td>"
+            error+="<td>"+str(i),"celule"+"</td>"
+            error+="<td>"+"22 celule"+"</td>"
+            error+="<td>"+"Prea multe"+"</td>"
             error+="</tr>"
             print error
         prev_error=prev_error+1
@@ -69,9 +69,9 @@ def parse(list_data,line_number,prev_error):
             error+="<td>"+line_number+1+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
-            error+="<td"+error_color+str(i)+error_color2+"cells"+"</td>"
-            error+="<td>"+"22 cells"+"</td>"
-            error+="<td>"+"too few"+"</td>"
+            error+="<td"+error_color+str(i)+error_color2+"celule"+"</td>"
+            error+="<td>"+"22 celule"+"</td>"
+            error+="<td>"+"Prea putine"+"</td>"
             error+="</tr>"
             print error
         prev_error=prev_error+1
@@ -82,9 +82,9 @@ def parse(list_data,line_number,prev_error):
             error+="<td>"+str(line_number+1)+"</td>"
             error+="<td>"+"N/A"+"</td>"
             error+="<td>"+"N/A"+"</td>"
-            error+="<td"+error_color+"0 cells"+error_color2+"</td>"
-            error+="<td>"+"22 cells"+"</td>"
-            error+="<td>"+"line ignored"+"</td>"
+            error+="<td"+error_color+"0 celule"+error_color2+"</td>"
+            error+="<td>"+"22 celule"+"</td>"
+            error+="<td>"+"Linie ignorata"+"</td>"
             error+="</tr>"
             print error
         prev_error=prev_error+1
@@ -102,7 +102,7 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
+                    error+="<td"+error_color+"Date lipsa"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
                     error+="<td>"+""+"</td>"
                     error+="</tr>"
@@ -115,9 +115,9 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
+                    error+="<td"+error_color+"Data lipsa"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
-                    error+="<td>"+"found: N/A"+"</td>"
+                    error+="<td>"+"Gasit: N/A"+"</td>"
                     error+="</tr>"
                     print error
                 prev_error=prev_error+1
@@ -128,9 +128,9 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
+                    error+="<td"+error_color+"Data lipsa"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
-                    error+="<td>"+"found: N/A"+"</td>"
+                    error+="<td>"+"Gasit: N/A"+"</td>"
                     error+="</tr>"
                     print error
                 prev_error=prev_error+1
@@ -141,9 +141,9 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
+                    error+="<td"+error_color+"Data lipsa"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
-                    error+="<td>"+"found: N/A"+"</td>"
+                    error+="<td>"+"Gasit: N/A"+"</td>"
                     error+="</tr>"
                     print error
                 prev_error=prev_error+1
@@ -154,9 +154,9 @@ def parse(list_data,line_number,prev_error):
                     error+="<td>"+str(line_number+1)+"</td>"
                     error+="<td>"+str(col_list[i])+"</td>"
                     error+="<td>"+str(i+1)+"</td>"
-                    error+="<td"+error_color+"Missing Data"+error_color2+"</td>"
+                    error+="<td"+error_color+"Data lipsa"+error_color2+"</td>"
                     error+="<td>"+"C/L/P/S"+"</td>"
-                    error+="<td>"+"found: N/A"+"</td>"
+                    error+="<td>"+"Gasit: N/A"+"</td>"
                     error+="</tr>"
                     print error
                 prev_error=prev_error+1
@@ -170,9 +170,9 @@ def parse(list_data,line_number,prev_error):
                 error+="<td>"+str(line_number+1)+"</td>"
                 error+="<td>"+str(col_list[15])+"</td>"
                 error+="<td>"+str(16)+"</td>"
-                error+="<td"+error_color+"Bad Data"+error_color2+"</td>"
+                error+="<td"+error_color+"Date gresite"+error_color2+"</td>"
                 error+="<td>"+"po/pa/B"+"</td>"
-                error+="<td>"+"found: "+list_data[15]+"</td>"
+                error+="<td>"+"Gasit: "+list_data[15]+"</td>"
                 error+="</tr>"
                 print error
             prev_error=prev_error+1

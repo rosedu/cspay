@@ -134,13 +134,11 @@ while index_line<end_check:
 
 print """</table></body></html>"""
 if(prev_error<=0):
-    print "<p><b>No errors have been found ...</b><p>"
-    print "<p><b>Data has been inserted into DB</b></p>"
+    print "<p><b>Nu au fost gasite erori ...</b><p>"
+    print "<p><b>Datele au fost incarcate </b></p>"
 else :
     cursor.execute("TRUNCATE TABLE ore")
-    print "<p><b>Data has been inserted into DB</b></p>"
-    print "<p><b>A total of",prev_error," have been found</b></p><br>"
-    print "<p><b>Please correct them !</b></p>"
-    print "<p><b>Data has not been inserted into the DB</b></p>"
+    print "<p><b>Numar erori gasite :",prev_error," </b></p><br>"
+    print "<p><b>Datele NU au fost incarcate </b></p>"
 cursor.close ()
 conn.close()
