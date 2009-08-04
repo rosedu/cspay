@@ -66,7 +66,7 @@ try:
                                     passwd = "huashaquou", db = "rosedu_cspay")
 except MySQLdb.Error, e:
     print "Error %d: %s" % (e.args[0], e.args[1])
-    print "</p></body></html>"
+    print "</p>"
     sys.exit (1)
 cursor = conn.cursor (MySQLdb.cursors.DictCursor)
 
