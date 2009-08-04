@@ -1,7 +1,7 @@
 import MySQLdb
 import sys
 
-error_color=""" style="color:#CC0000>"""
+error_color=""" >"""
 
 def db_write_line(cursor,line_data,line_index,prev_error):
     

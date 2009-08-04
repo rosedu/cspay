@@ -10,7 +10,7 @@
 
 ################################################
 
-error_color=""" style="color:#CC0000>"""
+error_color=""">"""
 
 col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stud",
           "Nr gr/sg","sg","C2","A2","Post","Grad","PERS","Tip","Acoperit",
