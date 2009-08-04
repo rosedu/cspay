@@ -95,7 +95,7 @@ col_list=["Facultate","C,L,P,S","Titlu disc","Forma","Cod","An","Serie","Nr Stuf
 
 ################################################
 print "</p>"
-print "<br><h3>List of errors that have occured ...</h3><br><br>"
+print "<br><p><b>List of errors that have been found </h3><br></b><p>"
 print """<table border="1">"""
 print "<tr>"
 print "<td><b> Line Number </b></td>"
@@ -134,9 +134,10 @@ while index_line<end_check:
 
 cursor.execute("TRUNCATE TABLE ore")
 print """</table></body></html>"""
-if(prev_error>0):
-    print "<h3>Errors have been found...Please correct them</h3>"
-else:
-    print "<h3>No errors have been found ...</h3>"
+if(prev_error<=0):
+    print "<p><b>No errors have been found ...</b><p>"
+else :
+    print "<p><b>A total of",prev_error," have been found</b></p><br>"
+    print "<p><b>Please correct them !</b></p>"
 cursor.close ()
 conn.close()
