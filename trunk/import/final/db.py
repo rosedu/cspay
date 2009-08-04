@@ -45,6 +45,23 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 print error
             prev_error=prev_error+1
         else:
+
+            cursor.execute ("""SELECT tit_id
+                           FROM titulari
+                           WHERE link_disc=%s AND serie=%""",(id_ora,line_data[6]))
+            tit_id=cursor.fetchone()
+            if not tit_id:
+                if(prev_error<1000):
+                    error="<tr>"
+                    error+="<td>"+str(line_index+1)+"</td>"
+                    error+="<td>"+"Serie"+"</td>"
+                    error+="<td>"+str(3)+"</td>"
+                    error+="<td"+error_color+"Date gresite"+error_color2+"</td>"
+                    error+="<td>"+"eroare BD"+"</td>"
+                    error+="<td>"+"Gasit: "+line_data[2]+"</td>"
+                    error+="</tr>"
+                    print error
+                prev_error=prev_error+1
             if str.lower(line_data[19][0:2]) in ["lu","ma","mi","jo","vi","sa","du"]:
                 if(str.lower(line_data[19][2:3])=='i'):
                     paritate="2"
