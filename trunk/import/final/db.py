@@ -1,6 +1,7 @@
 import MySQLdb
 import sys
 
+error_color=""" style="color:#CC0000>"""
 
 def db_write_line(cursor,line_data,line_index,prev_error):
     
@@ -16,7 +17,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             error+="<td>"+str(line_index+1)+"</td>"
             error+="<td>"+"facultate"+"</td>"
             error+="<td>"+str(1)+"</td>"
-            error+="<td>"+"Bad Data"+"</td>"
+            error+="<td"+error_color+"Bad Data"+"</td>"
             error+="<td>"+"DB Response"+"</td>"
             error+="<td>"+"found: "+line_data[0]+"</td>"
             error+="</tr>"
@@ -37,7 +38,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 error+="<td>"+str(line_index+1)+"</td>"
                 error+="<td>"+"discipline"+"</td>"
                 error+="<td>"+str(3)+"</td>"
-                error+="<td>"+"Bad Data"+"</td>"
+                error+="<td"+error_color+"Bad Data"+"</td>"
                 error+="<td>"+"DB Response"+"</td>"
                 error+="<td>"+"found: "+line_data[2]+"</td>"
                 error+="</tr>"
@@ -58,7 +59,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     error+="<td>"+str(line_index+1)+"</td>"
                     error+="<td>"+"paritate"+"</td>"
                     error+="<td>"+str(20)+"</td>"
-                    error+="<td>"+"Bad Data"+"</td>"
+                    error+="<td"+error_color+"Bad Data"+"</td>"
                     error+="<td>"+"lu(p/i),ma(p/i)..."+"</td>"
                     error+="<td>"+"found: "+line_data[19][0:3]+"</td>"
                     error+="</tr>"
