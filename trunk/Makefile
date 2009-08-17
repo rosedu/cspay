@@ -11,6 +11,7 @@ WEB_PUBLISH_FOLDER = /home/cspay/public_html/2009
 all: publish
 
 publish: publish_web publish_scripts
+	-chown -R cspay:projects $(WEB_PUBLISH_FOLDER)
 
 publish_web: clean_web
 	-svn export --force $(SVN_REPO_BASE_URL)/webui $(WEB_PUBLISH_FOLDER)
