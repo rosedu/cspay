@@ -29,7 +29,6 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                            FROM discipline
                            WHERE link_fac=%s AND nume=%s""",
                         (link_fac['fac_id'],line_data[2]))
-	print "link_fac: ", link_fac
         id_ora = cursor.fetchone ()
         paritate="1"
         paritate_start="1"
