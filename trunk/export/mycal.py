@@ -5,6 +5,7 @@ from icalendar import DaylightT, UTC, UIDGenerator
 from datetime import datetime, timedelta
 
 
+
 days = ['MO','TU','WE','TH', 'FR', 'SA','SU']
 
 class Entry():
