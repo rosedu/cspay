@@ -101,7 +101,7 @@ else
 	$serie = "";
 	$an = "";
 	$herarch = display_select_herarch(5,0);
-	$finish = '"adauga_cat" value="Adaug&#259;">';
+	$finish = '"adauga_tit" value="Adaug&#259;">';
 	$hide ='';
 	}
 

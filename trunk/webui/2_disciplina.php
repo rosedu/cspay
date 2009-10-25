@@ -26,9 +26,10 @@ if(isset($_POST['adauga_disc']))
 	$nume = addslashes(html_entity_decode($_POST['nume']));
 	$nume_sc = addslashes(html_entity_decode($_POST['nume_scurt']));
 	$cat = $_POST['catedra'];
+	$facultate = $_POST['facultate'];
 	
-	$query = "INSERT INTO `discipline` (`nume`,`nume_scurt`, `link_cat`) 
-			  VALUES('".$nume."','".$nume_sc."',$cat)";
+	$query = "INSERT INTO `discipline` (`nume`,`nume_scurt`,`link_cat`,`link_fac`) 
+			  VALUES('".$nume."','".$nume_sc."','".$cat."','".$facultate."')";
 	$result = mysql_query($query);
 	
 	if($result)
@@ -98,7 +99,7 @@ else
 	$nume = "";
 	$numesc = "";
 	$herarch = display_select_herarch(3,0);
-	$finish = '"adauga_cat" value="Adaug&#259;">';
+	$finish = '"adauga_disc" value="Adaug&#259;">';
 	$hide ='';
 	}
 //formular de adaugare cont
