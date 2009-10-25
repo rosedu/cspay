@@ -193,7 +193,3 @@ def parse(list_data,line_number,prev_error):
         index=index+1
     
     return prev_error
-        
-
-
-
