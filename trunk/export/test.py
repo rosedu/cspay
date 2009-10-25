@@ -5,7 +5,7 @@ if __name__ == "__main__":
         luni = range(2,7)
         an = "2008/2009"
         profi = [ "Rughinis Razvan", "Octavian Purdila", 
-                  "Mihai Capotă", "Iulian Moraru", "Mihaela Dumitrache",
+                  "Iulian Moraru", "Mihaela Dumitrache",
                   "Marius Zaharia", "Razvan Deaconescu"]
         univ="Universitatea Politehnica Bucuresti"
         facl="Facultatea de Automatica si Calculatoare"

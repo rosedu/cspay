@@ -25,7 +25,7 @@ def make_parity():
         for univ in univ_set:
                 uid=univ['univ_id']
                 parities.update({uid:{}})
-                for i in range (1,53):
+                for i in range (1,54):
                         parities[uid].update({i:0})
 
         for univ in univ_set:

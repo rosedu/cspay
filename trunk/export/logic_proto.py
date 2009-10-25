@@ -25,6 +25,7 @@ def output_table(input, holidays, parities, path):
 			year = int(year2)
 		else:
 			year = int(year1)
+
 		i = 0
 		C_count = {'prof': [], 'conf': [], 'sl': [], 'as': [] }
 		A_count = {'prof': [], 'conf': [], 'sl': [], 'as': [] }
@@ -33,15 +34,23 @@ def output_table(input, holidays, parities, path):
                              input['catedra'], input['functie_baza'],
                              input['profesor'], input['statut'], month)
 		
+#		print "written header for month", month
 		courses = input['ore']
 		for curs in courses:
+#			print "prepare to insert (", S, ", ", i, ", ", curs, ", ", year, ", ", month, ", ", input['semestru'], ", ", holidays, ", ", parities, ", ", C_count, ", ", A_count, ")"
 			i = insert_course(S, i, curs, year, month,
-                                          input['semestru'], holidays, 
-										  parities, C_count, A_count)
+                                          input['semestru'], holidays, parities, C_count, A_count)
+#			print "inserted (", S, ", ", i, ", ", curs, ", ", year, ", ", month, ", ", input['semestru'], ", ", holidays, ", ", parities, ", ", C_count, ", ", A_count, ")"
+
+#		print "written courses for month", month
+
 		write_totals(S, i + 7, C_count, A_count)
 		write_footer(S, i + 16, input['profesor'],
                              input['titular_curs'], input['sef_catedra'],
                              input['decan'])
+
+#		print "written info for month", month
+
 	dw.finish(F, title)
 
 	
@@ -82,6 +91,7 @@ def insert_course(ws, i, curs, year, month, semester, holidays, parit,
 	lenght = int(stop) - int(start)
 	j = i
 
+#	print "month: ", month, "; d.month = ", d.month
 	if d.weekday()>curs['zi']:
 		d = d + timedelta(days=(7 + curs['zi'] - d.weekday()))
 	else:
@@ -89,6 +99,8 @@ def insert_course(ws, i, curs, year, month, semester, holidays, parit,
 
 	if ws.col(3).width < (len(curs['disciplina']) * 256):
 		ws.col(3).width = len(curs['disciplina']) * 256
+
+#	print "month: ", month, "; d.month = ", d.month
 
 	while d.month == month:
 		if (inside(d, semester) and
@@ -98,6 +110,7 @@ def insert_course(ws, i, curs, year, month, semester, holidays, parit,
                         == curs['pari_st']))
                     and outside(d, holidays)) :
 			dw.write(ws, 7 + i, 0, i + 1, dw.boxed(1,0,0,0))
+
 			dw.write(ws, 7 + i, 1,
                                  curs['functie'] + str(curs['nr_post']),
                                  dw.boxed(1))
