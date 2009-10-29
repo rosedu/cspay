@@ -8,6 +8,8 @@
 #Does not change attempt to correct data errors
 #If the data is inconsistent it gives an error and halts execution
 
+DEBUG = False
+
 ################################################
 
 error_color="""><FONT COLOR="#CC0000">"""
@@ -46,6 +48,10 @@ def parse(list_data,line_number,prev_error):
     #all celule in a line are empty=>ignore the line, return Ok
     ii=0
     i=0
+
+    if DEBUG == True:
+	    print "parse line number ", line_number
+
     for check in list_data:
         if not check:
             ii=ii+1

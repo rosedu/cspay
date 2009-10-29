@@ -234,8 +234,14 @@ INSERT INTO `titulari` (`link_disc`, `nume`, `an`, `serie`) VALUES
 (50, 'Ciprian Dobre', 4, 'D'),
 (51, 'Ciprian Dobre', 4, 'D'),
 (52, 'Cristian Morarescu', 4, 'D'),
+(73, 'Adrian Surpateanu', 2, 'AA'),
+(73, 'Adrian Surpateanu', 2, 'AB'),
+(73, 'Adrian Surpateanu', 2, 'AC'),
 (77, 'Costin Stefanescu', 2, 'CA'),
-(77, 'Adrian Surpateanu', 2, 'CB');
+(77, 'Adrian Surpateanu', 2, 'CB'),
+(74, 'Cristian Morarescu', 3, 'AB'),
+(74, 'Radu Voicu', 3, 'AC');
+
 
 --
 -- Dumping data for table `utilizatori`
