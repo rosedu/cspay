@@ -73,4 +73,3 @@ def set_parities(parity, start, stop, vacante):
 		
 if __name__ == "__main__":
 	make_parity()
-			
