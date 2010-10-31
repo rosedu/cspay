@@ -22,13 +22,14 @@ start_check=0
 end_check=0
 nr_argv=0
 for arg in sys.argv:
-    nr_argv+=1
-    
-if nr_argv>1:
+    nr_argv += 1
+
+if nr_argv > 1:
     file_name=sys.argv[1]
-else :
-    print """ Eroare de apelare script !"""
-    
+else:
+    print "Error calling script. Number of arguments is ", nr_argv
+    sys.exit(1)
+
 
 if nr_argv>2:
     start_check=int(sys.argv[2])
