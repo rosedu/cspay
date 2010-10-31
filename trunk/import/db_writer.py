@@ -38,7 +38,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 elif(str.lower(line_data[19][2:3])=='p'):
                     paritate="2"
                     paritate_start="2"
-                
+
             else:
                 if(prev_error<1000):
                     print "SQL : SELECT disc_id FROM discipline WHERE link_fac=",link_fac['fac_id'],
@@ -55,11 +55,11 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             db+='\''+str(line_data[1])+'\',' #tip
             db+='\''+str(line_data[3])+'\',' #forma
             db+='\''+str(line_data[4])+'\',' #cod
-            db+=str(line_data[5])+',' #an
-            db+='\''+str(line_data[6])+'\',' #serie
-            db+=str(line_data[7])+',' #nr_stud
-            db+=str(line_data[8])+',' #nr_grup
-            db+='\''+str(line_data[9])+'\',' #tip_grup_app
+            db+='\''+str(line_data[5])+'\',' #serie
+            db+=str(line_data[6])+',' #nr_grup
+            db+='\''+str(line_data[7])+'\',' #tip_grup_app
+            db+='\''+str(line_data[8])+'\',' #tip
+            db+='\''+str(line_data[9])+'\',' #an
             db+=str(line_data[10])+',' #nr_ore_curs
             db+=str(line_data[11])+',' #nr_ore_aplicatii
             db+=str(line_data[12])+',' #nr_post
@@ -74,10 +74,6 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             db+='\''+str(line_data[21])+'\',' #sala
             db+='\''+paritate+'\','#paritate, #
             db+='\''+paritate_start+'\')'#,paritate_start)
-            
+
             cursor.execute(db)
     return prev_error
-                        
-                            
-        
-    

@@ -4,13 +4,13 @@ import sys
 error_color="""><FONT COLOR="#CC0000">"""
 error_color2="""</FONT>"""
 def db_write_line(cursor,line_data,line_index,prev_error):
-    
+
     cursor.execute ("""SELECT fac_id
                            FROM facultati
                            WHERE nume_scurt=%s""",
                         (line_data[0]))
     link_fac = cursor.fetchone ()
-    
+
     if not link_fac:
         if(prev_error<1000):
             error="<tr>"
@@ -23,7 +23,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             error+="</tr>"
             print error
         prev_error+=1
-        
+
     else :   
         cursor.execute ("""SELECT disc_id
                            FROM discipline
@@ -49,17 +49,17 @@ def db_write_line(cursor,line_data,line_index,prev_error):
             cursor.execute ("""SELECT tit_id
                            FROM titulari
                            WHERE link_disc=%s AND serie=%s""",
-                            (id_ora['disc_id'],line_data[6]))
+                            (id_ora['disc_id'],line_data[5]))
             tit_id=cursor.fetchone()
             if not tit_id:
                 if(prev_error<1000):
                     error="<tr>"
                     error+="<td>"+str(line_index+1)+"</td>"
                     error+="<td>"+"Serie"+"</td>"
-                    error+="<td>"+str(6)+"</td>"
+                    error+="<td>"+str(5)+"</td>"
                     error+="<td"+error_color+"Date gresite"+error_color2+"</td>"
                     error+="<td>"+"eroare BD"+"</td>"
-                    error+="<td>"+"Gasit: "+line_data[6]+"</td>"
+                    error+="<td>"+"Gasit: "+line_data[5]+"</td>"
                     error+="</tr>"
                     print error
                 prev_error=prev_error+1
@@ -72,7 +72,7 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                     elif(str.lower(line_data[19][2:3])=='p'):
                         paritate="2"
                         paritate_start="2"
-                    
+
                 else:
                     if(prev_error<1000):
                         error="<tr>"
@@ -84,22 +84,22 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                         error+="<td>"+"Gasit: "+line_data[19][0:3]+"</td>"
                         error+="</tr>"
                         print error
-                        
+
                     prev_error=prev_error+1
-                    
+
                 db="""INSERT INTO ore (link_disc,tip_ora,forma,cod,an,serie,
-              nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
-              grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
-              sala,paritate,paritate_start) VALUES ("""
+    	  nr_stud,nr_grupa,tip_grupa_aplicatii,nr_ore_curs,nr_ore_aplicatii,nr_post,
+    	  grad_post,pers_norma,tip_ocupare,pers_acoperit,pers_acoperit_efect,an_grupa,zi,ora,
+    	  sala,paritate,paritate_start) VALUES ("""
                 db+=str(id_ora['disc_id'])+',' #link_disc
                 db+='\''+str(line_data[1])+'\',' #tip
                 db+='\''+str(line_data[3])+'\',' #forma
                 db+='\''+str(line_data[4])+'\',' #cod
-                db+=str(line_data[5])+',' #an
-                db+='\''+str(line_data[6])+'\',' #serie
-                db+=str(line_data[7])+',' #nr_stud
-                db+=str(line_data[8])+',' #nr_grup
-                db+='\''+str(line_data[9])+'\',' #tip_grup_app
+                db+='\''+str(line_data[9])+'\',' #an
+                db+='\''+str(line_data[5])+'\',' #serie
+                db+='0,'
+                db+=str(line_data[6])+',' #nr_grupa
+                db+='\''+str(line_data[7])+'\',' #tip_grup_app
                 db+=str(line_data[10])+',' #nr_ore_curs
                 db+=str(line_data[11])+',' #nr_ore_aplicatii
                 db+=str(line_data[12])+',' #nr_post
@@ -114,10 +114,6 @@ def db_write_line(cursor,line_data,line_index,prev_error):
                 db+='\''+str(line_data[21])+'\',' #sala
                 db+='\''+paritate+'\','#paritate, #
                 db+='\''+paritate_start+'\')'#,paritate_start)
-                
+
                 cursor.execute(db)
     return prev_error
-                        
-                            
-        
-    

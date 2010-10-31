@@ -10,6 +10,8 @@ import sys
 import MySQLdb
 #pointer to the xls file
 
+DEBUG = False
+
 # Each file is checked between line numbers (ex: all lines,line 6,lines 5-10)
 # all files -> start_check=0 , end_check=0
 # line a -> start_check=a end_check<start_check
@@ -107,10 +109,12 @@ if(start_check==0):
 index_line=start_check-1
 
 while index_line<end_check:
-    print "index_line ", index_line
     line=lreader.read_line(sheet,index_line)
     error_check=prev_error
-    print "line is ", line
+    if DEBUG == True:
+        print "index_line ", index_line
+        print "line is ", line
+
     prev_error=lparser.parse(line,index_line,prev_error) #if "OK" Date is consistent
     if error_check==prev_error:
         prev_error=db.db_write_line(cursor,line,index_line,prev_error)  #pass the line and its number
